@@ -27,26 +27,31 @@ export const commercialServices = [
     title: "Building Washing",
     description: "Soft wash and pressure wash systems for office buildings, retail centers, and multi-story commercial exteriors.",
     icon: "Building2" as const,
+    featured: false,
   },
   {
     title: "Parking Lots & Loading Docks",
     description: "Hot water pressure washing removes oil, grease, and grime from high-traffic commercial surfaces.",
     icon: "Car" as const,
+    featured: false,
   },
   {
     title: "Storefront & Retail",
     description: "Keep your storefront inviting. We clean facades, sidewalks, awnings, and entryways on your schedule.",
     icon: "Store" as const,
+    featured: false,
   },
   {
     title: "HOA & Multi-Unit",
     description: "Common areas, walkways, siding, and shared surfaces maintained consistently across your entire property.",
     icon: "Home" as const,
+    featured: false,
   },
   {
     title: "Commercial Windows",
     description: "Streak-free results with our reverse osmosis water purification system. Safe for multi-story buildings.",
     icon: "Sparkles" as const,
+    featured: false,
   },
   {
     title: "Recurring Maintenance Programs",
