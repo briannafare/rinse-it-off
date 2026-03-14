@@ -1,106 +1,53 @@
 "use client";
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, type ReactNode } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 
-export function FadeUp({
-  children,
-  delay = 0,
-  className = "",
-}: {
-  children: ReactNode;
-  delay?: number;
-  className?: string;
-}) {
+export function FadeIn({ children, delay = 0, className = "", y = 30 }: { children: ReactNode; delay?: number; className?: string; y?: number }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-
+  const inView = useInView(ref, { once: true, margin: "-80px" });
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-      transition={{ duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] }}
-      className={className}
-    >
+    <motion.div ref={ref} initial={{ opacity: 0, y }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>
       {children}
     </motion.div>
   );
 }
 
-export function StaggerContainer({
-  children,
-  className = "",
-  stagger = 0.08,
-}: {
-  children: ReactNode;
-  className?: string;
-  stagger?: number;
-}) {
+export function Stagger({ children, className = "", stagger = 0.08 }: { children: ReactNode; className?: string; stagger?: number }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px" });
-
+  const inView = useInView(ref, { once: true, margin: "-40px" });
   return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      variants={{
-        hidden: {},
-        visible: { transition: { staggerChildren: stagger } },
-      }}
-      className={className}
-    >
+    <motion.div ref={ref} initial="hidden" animate={inView ? "show" : "hidden"} variants={{ hidden: {}, show: { transition: { staggerChildren: stagger } } }} className={className}>
       {children}
     </motion.div>
   );
 }
 
-export function StaggerItem({
-  children,
-  className = "",
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function StaggerChild({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
-        },
-      }}
-      className={className}
-    >
+    <motion.div variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } } }} className={className}>
       {children}
     </motion.div>
   );
 }
 
-export function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
+export function Parallax({ children, speed = 0.15, className = "" }: { children: ReactNode; speed?: number; className?: string }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  const [count, setCount] = useState(0);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [speed * -100, speed * 100]);
+  return (
+    <motion.div ref={ref} style={{ y }} className={className}>
+      {children}
+    </motion.div>
+  );
+}
 
-  useEffect(() => {
-    if (!isInView) return;
-    const duration = 1500;
-    const steps = 40;
-    const increment = target / steps;
-    let current = 0;
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(current));
-      }
-    }, duration / steps);
-    return () => clearInterval(timer);
-  }, [isInView, target]);
-
-  return <span ref={ref}>{count}{suffix}</span>;
+export function SlideIn({ children, from = "left", delay = 0, className = "" }: { children: ReactNode; from?: "left" | "right"; delay?: number; className?: string }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const x = from === "left" ? -60 : 60;
+  return (
+    <motion.div ref={ref} initial={{ opacity: 0, x }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>
+      {children}
+    </motion.div>
+  );
 }

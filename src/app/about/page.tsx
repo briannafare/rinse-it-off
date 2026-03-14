@@ -1,111 +1,52 @@
 "use client";
 import Link from "next/link";
-import { ArrowRight, Phone, Leaf, Wrench, MapPin, CalendarCheck, Building2, Shield, Droplets } from "lucide-react";
-import { siteConfig } from "@/lib/data";
-import { FadeUp, StaggerContainer, StaggerItem } from "@/lib/animations";
+import { ArrowRight, Phone, Leaf, Wrench, MapPin, CalendarCheck } from "lucide-react";
+import { site } from "@/lib/data";
+import { FadeIn, Stagger, StaggerChild } from "@/lib/animations";
 
-const differentiators = [
-  { icon: Wrench, title: "Full-Scope Maintenance", description: "Building, parking lot, windows, gutters, roof — we handle every exterior surface with one team and one plan." },
-  { icon: MapPin, title: "PNW Climate Expertise", description: "Our methods and products are built for Oregon\u2019s specific challenges: moss, algae, mold, and constant moisture." },
-  { icon: Leaf, title: "Eco-Friendly by Default", description: "Every cleaning product we use is biodegradable and safe for Portland\u2019s waterways. Not an upsell — the standard." },
-  { icon: CalendarCheck, title: "Recurring Programs", description: "We build custom schedules so your property stays maintained without you managing it." },
-];
-
-const stats = [
-  { label: "Years Serving Portland", value: "[CLIENT TO PROVIDE]" },
-  { label: "Oregon Licensed & Insured", value: "[CLIENT TO PROVIDE: CCB#]" },
-  { label: "Eco-Friendly Products", value: "100%" },
-  { label: "Locally Owned & Operated", value: "Portland, OR" },
+const diffs = [
+  { icon: Wrench, title: "Full-Scope Maintenance", desc: "Building, parking lot, windows, gutters, roof \u2014 one team, one plan." },
+  { icon: MapPin, title: "PNW Climate Expertise", desc: "Methods and products built for Oregon\u2019s moss, algae, and constant moisture." },
+  { icon: Leaf, title: "Eco-Friendly by Default", desc: "Biodegradable products safe for Portland\u2019s waterways. Not an upsell \u2014 the standard." },
+  { icon: CalendarCheck, title: "Recurring Programs", desc: "Custom schedules so your property stays maintained without you managing it." },
 ];
 
 export default function AboutPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="pt-32 pb-16 bg-surface-alt">
-        <div className="container-main text-center">
-          <FadeUp>
-            <h1 className="font-display font-800 text-h1 tracking-display leading-heading text-text-primary mb-4">About Rinse It Off</h1>
-            <p className="text-text-secondary text-lg max-w-lg mx-auto">Portland&apos;s commercial exterior cleaning specialists.</p>
-          </FadeUp>
-        </div>
-      </section>
+      <section className="pt-28 pb-16 bg-surface-alt"><div className="container-site text-center"><FadeIn>
+        <h1 className="font-display font-800 text-display-lg text-brand-black mb-4">About Rinse It Off</h1>
+        <p className="text-text-secondary text-lg">Portland&apos;s commercial exterior cleaning specialists.</p>
+      </FadeIn></div></section>
 
-      {/* Story */}
-      <section className="section-padding bg-white">
-        <div className="container-main max-w-3xl">
-          <FadeUp>
-            <h2 className="font-display font-800 text-h2 tracking-heading leading-heading text-text-primary mb-6 text-center">
-              Built for Portland. <span className="text-brand-blue">Built Different.</span>
-            </h2>
-            <div className="prose prose-slate max-w-none text-text-secondary leading-relaxed space-y-5">
-              <p>
-                Rinse It Off is a Portland-based commercial pressure washing and exterior cleaning company. We specialize in maintaining commercial properties — storefronts, office buildings, HOA communities, parking lots, and industrial facilities — with recurring maintenance programs that keep exteriors clean, safe, and professional year-round.
-              </p>
-              <p>
-                We also serve Portland homeowners with the same professional-grade methods: gentle soft wash house cleaning, roof and gutter treatment, concrete restoration, deck cleaning, and streak-free window washing.
-              </p>
-              <p>
-                Every product we use is eco-friendly and biodegradable — formulated specifically for the Pacific Northwest climate and safe for Portland&apos;s waterways. We know what Oregon&apos;s rain, moss, and algae do to buildings because we live here too.
-              </p>
-              <p className="text-brand-blue/80 italic border-l-2 border-brand-blue/20 pl-4">
-                [CLIENT TO PROVIDE: Founder story, years in business, team background, personal motivation for starting the company.]
-              </p>
-            </div>
-          </FadeUp>
+      <section className="section-gap bg-white"><div className="container-site max-w-3xl"><FadeIn>
+        <h2 className="font-display font-800 text-display text-brand-black mb-6 text-center">Built for Portland. <span className="text-gradient-blue">Built Different.</span></h2>
+        <div className="text-text-secondary leading-relaxed space-y-5">
+          <p>Rinse It Off is a Portland-based commercial pressure washing and exterior cleaning company. We specialize in maintaining commercial properties &mdash; storefronts, office buildings, HOA communities, parking lots, and industrial facilities &mdash; with recurring maintenance programs that keep exteriors clean, safe, and professional year-round.</p>
+          <p>We also serve Portland homeowners with the same professional-grade methods: gentle soft wash house cleaning, roof and gutter treatment, concrete restoration, deck cleaning, and streak-free window washing.</p>
+          <p>Every product we use is eco-friendly and biodegradable &mdash; formulated specifically for the Pacific Northwest climate and safe for Portland&apos;s waterways.</p>
+          <p className="text-brand-blue/70 italic border-l-2 border-brand-blue/20 pl-4">[CLIENT TO PROVIDE: Founder story, years in business, team background.]</p>
         </div>
-      </section>
+      </FadeIn></div></section>
 
-      {/* Differentiators */}
-      <section className="section-padding bg-surface-alt">
-        <div className="container-main">
-          <FadeUp className="text-center mb-12">
-            <h2 className="font-display font-800 text-h2 tracking-heading text-text-primary">What Sets Us Apart</h2>
-          </FadeUp>
-          <StaggerContainer className="grid md:grid-cols-2 gap-6">
-            {differentiators.map((d) => (
-              <StaggerItem key={d.title}>
-                <div className="bg-white p-7 rounded-2xl border border-slate-100 hover-lift h-full">
-                  <div className="w-11 h-11 bg-brand-blue-50 rounded-xl flex items-center justify-center mb-4">
-                    <d.icon className="w-5 h-5 text-brand-blue" />
-                  </div>
-                  <h3 className="font-display font-700 text-lg text-text-primary mb-2">{d.title}</h3>
-                  <p className="text-sm text-text-secondary leading-relaxed">{d.description}</p>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
+      <section className="section-gap bg-surface-alt"><div className="container-site">
+        <FadeIn className="text-center mb-12"><h2 className="font-display font-800 text-display text-brand-black">What Sets Us Apart</h2></FadeIn>
+        <Stagger className="grid md:grid-cols-2 gap-6">{diffs.map((d) => (
+          <StaggerChild key={d.title}><div className="bg-white p-7 rounded-3xl border border-border-light hover-lift h-full">
+            <d.icon className="w-8 h-8 text-brand-blue mb-4" strokeWidth={1.5} />
+            <h3 className="font-display font-700 text-lg text-brand-black mb-2">{d.title}</h3>
+            <p className="text-sm text-text-secondary leading-relaxed">{d.desc}</p>
+          </div></StaggerChild>
+        ))}</Stagger>
+      </div></section>
 
-      {/* Stats */}
-      <section className="py-12 bg-white border-y border-slate-100">
-        <div className="container-main">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat) => (
-              <FadeUp key={stat.label}>
-                <div className="text-center">
-                  <p className="font-display font-800 text-xl text-brand-blue mb-1">{stat.value}</p>
-                  <p className="text-xs text-text-muted">{stat.label}</p>
-                </div>
-              </FadeUp>
-            ))}
-          </div>
+      <section className="py-20 gradient-cta"><div className="container-site text-center"><FadeIn>
+        <h2 className="font-display font-800 text-display text-brand-black mb-6">Let&apos;s Talk About Your Property.</h2>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link href="/contact" className="btn-dark group">Get a Free Assessment <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" /></Link>
+          <a href={site.phoneHref} className="inline-flex items-center gap-2 px-7 py-3.5 border-2 border-brand-dark/15 text-brand-dark text-sm font-semibold rounded-full transition-all"><Phone className="w-4 h-4" />{site.phone}</a>
         </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 gradient-cta">
-        <div className="container-main text-center">
-          <FadeUp>
-            <h2 className="font-display font-800 text-h2 tracking-heading text-brand-dark mb-4">Let&apos;s Talk About Your Property.</h2>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-              <Link href="/contact" className="inline-flex items-center gap-2 px-7 py-3.5 bg-brand-dark text-white font-semibold rounded-full transition-all text-sm">Get a Free Assessment <ArrowRight className="w-4 h-4" /></Link>
-              <a href={siteConfig.phoneHref} className="inline-flex items-center gap-2 px-7 py-3.5 border border-brand-dark/20 text-brand-dark font-medium rounded-full transition-all text-sm"><Phone className="w-4 h-4" />{siteConfig.phone}</a>
-            </div>
-          </FadeUp>
-        </div>
-      </section>
+      </FadeIn></div></section>
     </>
   );
 }

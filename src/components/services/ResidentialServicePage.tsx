@@ -3,175 +3,72 @@ import Link from "next/link";
 import { ArrowRight, Phone, Check, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { siteConfig } from "@/lib/data";
-import { FadeUp, StaggerContainer, StaggerItem } from "@/lib/animations";
+import { site } from "@/lib/data";
+import { FadeIn, SlideIn } from "@/lib/animations";
 
-interface ServicePageProps {
-  overline?: string;
-  headline: string;
-  subheadline: string;
-  badge?: string;
-  problemHeadline: string;
-  problemBody: string;
-  definition?: string;
-  included: string[];
-  industryStatNote?: string;
-  processSteps?: { number: string; title: string; description: string }[];
-  faqs: { q: string; a: string }[];
-  ctaHeadline: string;
+interface Props {
+  overline?: string; headline: string; subheadline: string; badge?: string;
+  problemHeadline: string; problemBody: string; definition?: string;
+  included: string[]; statNote?: string;
+  processSteps?: { num: string; title: string; body: string }[];
+  faqs: { q: string; a: string }[]; ctaLine: string;
 }
 
-export function ResidentialServicePage({
-  overline = "Residential Services",
-  headline,
-  subheadline,
-  badge,
-  problemHeadline,
-  problemBody,
-  definition,
-  included,
-  industryStatNote,
-  processSteps,
-  faqs,
-  ctaHeadline,
-}: ServicePageProps) {
+export function ResidentialServicePage(p: Props) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-
   return (
     <>
-      {/* Hero */}
-      <section className="pt-32 pb-16 md:pb-20 bg-surface-alt relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-brand-blue/[0.03] rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-        <div className="container-main relative z-10 text-center">
-          <FadeUp>
-            <span className="overline mb-3 block">{overline}</span>
-            <h1 className="font-display font-800 text-h1 tracking-display leading-heading text-text-primary mb-5 max-w-3xl mx-auto">
-              {headline}
-            </h1>
-            <p className="text-text-secondary text-lg max-w-2xl mx-auto mb-6">
-              {subheadline}
-            </p>
-            {badge && (
-              <div className="flex items-center justify-center gap-2 mb-6">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-mint-100 text-emerald-600 text-xs font-semibold rounded-full border border-emerald-200/50">
-                  {badge}
-                </span>
-              </div>
-            )}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/contact" className="inline-flex items-center gap-2 px-7 py-3.5 bg-brand-blue text-white font-semibold rounded-full shadow-glow hover:shadow-glow-lg hover:bg-brand-blue-dark transition-all text-sm">
-                Get a Free Quote <ArrowRight className="w-4 h-4" />
-              </Link>
-              <a href={siteConfig.phoneHref} className="inline-flex items-center gap-2 text-sm font-medium text-text-secondary hover:text-brand-blue transition-colors">
-                <Phone className="w-4 h-4" /> {siteConfig.phone}
-              </a>
+      <section className="pt-28 pb-16 bg-surface-alt relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-72 h-72 bg-brand-blue/[0.03] rounded-full blur-[80px] pointer-events-none" />
+        <div className="container-site relative z-10 text-center">
+          <FadeIn>
+            <span className="overline mb-4 block">{p.overline || "Residential Services"}</span>
+            <h1 className="font-display font-800 text-display-lg text-brand-black mb-5 max-w-3xl mx-auto">{p.headline}</h1>
+            <p className="text-text-secondary text-lg max-w-2xl mx-auto mb-6">{p.subheadline}</p>
+            {p.badge && <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-blue/[0.06] text-brand-blue text-xs font-semibold rounded-full mb-6">{p.badge}</span>}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-2">
+              <Link href="/contact" className="btn-primary group">Get a Free Quote <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" /></Link>
+              <a href={site.phoneHref} className="btn-outline"><Phone className="w-4 h-4" />{site.phone}</a>
             </div>
-          </FadeUp>
+          </FadeIn>
         </div>
       </section>
-
-      {/* Problem / Solution */}
-      <section className="section-padding bg-white">
-        <div className="container-main">
-          <div className="grid md:grid-cols-2 gap-12 items-start">
-            <FadeUp>
-              <h2 className="font-display font-800 text-h2 tracking-heading leading-heading text-text-primary mb-5">{problemHeadline}</h2>
-              {definition && (
-                <div className="p-4 bg-brand-blue-50 border-l-2 border-brand-blue rounded-r-xl mb-5">
-                  <p className="text-sm text-text-secondary leading-relaxed">{definition}</p>
-                </div>
-              )}
-              <div className="text-text-secondary leading-relaxed space-y-4">
-                {problemBody.split("\n\n").map((p, i) => (
-                  <p key={i}>{p}</p>
-                ))}
-              </div>
-              {industryStatNote && (
-                <p className="mt-5 text-xs text-text-muted italic">{industryStatNote}</p>
-              )}
-            </FadeUp>
-
-            <FadeUp delay={0.15}>
-              <div className="bg-surface-alt rounded-2xl p-7 border border-slate-100">
-                <h3 className="font-display font-700 text-lg text-text-primary mb-5">What&apos;s Included</h3>
-                <ul className="space-y-3">
-                  {included.map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-sm text-text-secondary">
-                      <Check className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </FadeUp>
-          </div>
-        </div>
-      </section>
-
-      {/* Process Steps (if provided) */}
-      {processSteps && (
-        <section className="section-padding bg-surface-alt">
-          <div className="container-main">
-            <FadeUp className="text-center mb-12">
-              <span className="overline mb-3 block">How It Works</span>
-              <h2 className="font-display font-700 text-2xl text-text-primary">Simple as 1-2-3</h2>
-            </FadeUp>
-            <StaggerContainer className="grid md:grid-cols-3 gap-8 lg:gap-12">
-              {processSteps.map((step, i) => (
-                <StaggerItem key={step.number}>
-                  <div className="relative">
-                    <span className="font-mono font-bold text-5xl text-brand-blue/15 block mb-3">{step.number}</span>
-                    <h3 className="font-display font-700 text-lg text-text-primary mb-2">{step.title}</h3>
-                    <p className="text-sm text-text-secondary leading-relaxed">{step.description}</p>
-                    {i < processSteps.length - 1 && (
-                      <div className="hidden md:block absolute top-8 -right-6 lg:-right-8 w-8 lg:w-12 border-t border-dashed border-brand-blue/15" />
-                    )}
-                  </div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
-          </div>
-        </section>
-      )}
-
-      {/* FAQ */}
-      <section className={`section-padding ${processSteps ? "bg-white" : "bg-surface-alt"}`}>
-        <div className="container-main max-w-3xl">
-          <FadeUp className="text-center mb-10">
-            <h2 className="font-display font-700 text-2xl text-text-primary">Frequently Asked Questions</h2>
-          </FadeUp>
-          <div className="space-y-3">
-            {faqs.map((faq, i) => (
-              <div key={i} className={`border border-slate-100 rounded-xl overflow-hidden ${processSteps ? "bg-white" : "bg-white"}`}>
-                <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-5 text-left hover:bg-surface-alt transition-colors">
-                  <span className="font-display font-600 text-sm text-text-primary pr-4">{faq.q}</span>
-                  <ChevronDown className={`w-4 h-4 text-text-muted flex-shrink-0 transition-transform duration-200 ${openFaq === i ? "rotate-180" : ""}`} />
-                </button>
-                <AnimatePresence initial={false}>
-                  {openFaq === i && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
-                      <p className="px-5 pb-5 text-sm text-text-secondary leading-relaxed">{faq.a}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 gradient-cta">
-        <div className="container-main text-center">
-          <FadeUp>
-            <h2 className="font-display font-800 text-h2 tracking-heading text-brand-dark mb-4 max-w-2xl mx-auto">{ctaHeadline}</h2>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-              <Link href="/contact" className="inline-flex items-center gap-2 px-7 py-3.5 bg-brand-dark text-white font-semibold rounded-full transition-all text-sm">Get a Free Quote <ArrowRight className="w-4 h-4" /></Link>
-              <a href={siteConfig.phoneHref} className="inline-flex items-center gap-2 px-7 py-3.5 border border-brand-dark/20 text-brand-dark font-medium rounded-full transition-all text-sm"><Phone className="w-4 h-4" />{siteConfig.phone}</a>
+      <section className="section-gap bg-white">
+        <div className="container-site"><div className="grid md:grid-cols-2 gap-12 items-start">
+          <SlideIn from="left">
+            <h2 className="font-display font-800 text-display text-brand-black mb-5">{p.problemHeadline}</h2>
+            {p.definition && <div className="p-4 bg-brand-blue/[0.04] border-l-2 border-brand-blue rounded-r-xl mb-5"><p className="text-sm text-text-secondary">{p.definition}</p></div>}
+            <div className="text-text-secondary leading-relaxed space-y-4">{p.problemBody.split("\n\n").map((para,i)=><p key={i}>{para}</p>)}</div>
+            {p.statNote && <p className="mt-5 text-xs text-text-muted italic">{p.statNote}</p>}
+          </SlideIn>
+          <SlideIn from="right" delay={0.1}>
+            <div className="bg-surface-card rounded-3xl p-7 border border-border-light">
+              <h3 className="font-display font-700 text-lg text-brand-black mb-5">What&apos;s Included</h3>
+              <ul className="space-y-3">{p.included.map((item)=><li key={item} className="flex items-start gap-3 text-sm text-text-secondary"><Check className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0"/>{item}</li>)}</ul>
             </div>
-          </FadeUp>
-        </div>
+          </SlideIn>
+        </div></div>
       </section>
+      {p.processSteps && <section className="section-gap bg-surface-alt"><div className="container-site"><FadeIn className="text-center mb-12"><span className="overline mb-4 block">How It Works</span></FadeIn><div className="grid md:grid-cols-3 gap-10">{p.processSteps.map((s)=>(<FadeIn key={s.num}><div className="text-center"><span className="font-mono font-bold text-[64px] leading-none text-brand-blue/[0.06] block">{s.num}</span><h3 className="font-display font-700 text-lg text-brand-black mb-2 -mt-8 relative z-10">{s.title}</h3><p className="text-sm text-text-secondary">{s.body}</p></div></FadeIn>))}</div></div></section>}
+      <section className={`section-gap ${p.processSteps?"bg-white":"bg-surface-alt"}`}><div className="container-site max-w-3xl">
+        <FadeIn className="text-center mb-10"><h2 className="font-display font-700 text-display-sm text-brand-black">Frequently Asked Questions</h2></FadeIn>
+        <div className="space-y-2.5">{p.faqs.map((faq,i)=>(
+          <div key={i} className="rounded-2xl border border-border overflow-hidden bg-white">
+            <button onClick={()=>setOpenFaq(openFaq===i?null:i)} className="w-full flex items-center justify-between p-5 text-left">
+              <span className="font-display font-600 text-[15px] text-brand-black pr-4">{faq.q}</span>
+              <ChevronDown className={`w-4 h-4 text-brand-blue flex-shrink-0 transition-transform ${openFaq===i?"rotate-180":""}`}/>
+            </button>
+            <AnimatePresence initial={false}>{openFaq===i&&(<motion.div initial={{height:0,opacity:0}} animate={{height:"auto",opacity:1}} exit={{height:0,opacity:0}} transition={{duration:0.25}} className="overflow-hidden"><p className="px-5 pb-5 text-sm text-text-secondary leading-relaxed">{faq.a}</p></motion.div>)}</AnimatePresence>
+          </div>
+        ))}</div>
+      </div></section>
+      <section className="py-20 gradient-cta"><div className="container-site text-center"><FadeIn>
+        <h2 className="font-display font-800 text-display text-brand-black mb-6 max-w-2xl mx-auto">{p.ctaLine}</h2>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link href="/contact" className="btn-dark group">Get a Free Quote <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5"/></Link>
+          <a href={site.phoneHref} className="inline-flex items-center gap-2 px-7 py-3.5 border-2 border-brand-dark/15 text-brand-dark text-sm font-semibold rounded-full hover:bg-brand-dark/[0.04] transition-all"><Phone className="w-4 h-4"/>{site.phone}</a>
+        </div>
+      </FadeIn></div></section>
     </>
   );
 }
