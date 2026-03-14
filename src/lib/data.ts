@@ -8,10 +8,10 @@ export const siteConfig = {
 } as const;
 
 export const navLinks = [
-  { label: "Commercial Services", href: "/commercial-services" },
+  { label: "Commercial Services", href: "/commercial-services", hasDropdown: false },
   { label: "Residential", href: "/residential/house-washing", hasDropdown: true },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: "About", href: "/about", hasDropdown: false },
+  { label: "Contact", href: "/contact", hasDropdown: false },
 ] as const;
 
 export const residentialLinks = [
