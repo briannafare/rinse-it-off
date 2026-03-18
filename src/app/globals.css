@@ -6,11 +6,12 @@
   :root {
     --font-sora: 'Sora', system-ui, sans-serif;
     --font-dm-sans: 'DM Sans', system-ui, sans-serif;
+    --font-dm-serif: 'DM Serif Display', Georgia, serif;
     --font-jetbrains: 'JetBrains Mono', monospace;
   }
   html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
   body { @apply bg-white text-text-primary font-body; }
-  ::selection { background: rgba(98,196,235,0.25); }
+  ::selection { background: rgba(77,255,166,0.25); }
 }
 
 @layer components {
@@ -60,21 +61,43 @@
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, #62C4EB 0%, #3AA8D4 100%);
   }
+  .text-gradient-mint {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #4DFFA6 0%, #36D68B 100%);
+  }
+
+  /* ── PILLS / TAGS ── */
+  .pill {
+    @apply inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border;
+  }
+  .pill-mint {
+    @apply pill bg-brand-mint/10 text-brand-mint border-brand-mint/20;
+  }
+  .pill-blue {
+    @apply pill bg-brand-blue/10 text-brand-blue-dark border-brand-blue/20;
+  }
+  .pill-outline {
+    @apply pill bg-transparent text-text-secondary border-border;
+  }
 
   /* ── INTERACTIVE ── */
   .hover-lift { @apply transition-all duration-300 ease-out; }
   .hover-lift:hover { transform: translateY(-6px); @apply shadow-card-hover; }
 
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-7 py-3.5 bg-brand-blue text-white text-sm font-semibold rounded-full 
-    shadow-glow hover:shadow-glow-lg hover:bg-brand-blue-dark transition-all duration-300;
+    @apply inline-flex items-center gap-2 px-7 py-3.5 bg-brand-black text-white text-sm font-semibold rounded-full 
+    hover:bg-brand-dark transition-all duration-300;
+  }
+  .btn-mint {
+    @apply inline-flex items-center gap-2 px-7 py-3.5 bg-brand-mint text-brand-black text-sm font-bold rounded-full
+    shadow-glow-mint hover:shadow-glow-mint-lg hover:brightness-110 transition-all duration-300;
   }
   .btn-outline {
-    @apply inline-flex items-center gap-2 px-7 py-3.5 border-2 border-brand-blue text-brand-blue text-sm font-semibold rounded-full
-    hover:bg-brand-blue hover:text-white transition-all duration-300;
+    @apply inline-flex items-center gap-2 px-7 py-3.5 border-2 border-brand-black text-brand-black text-sm font-semibold rounded-full
+    hover:bg-brand-black hover:text-white transition-all duration-300;
   }
-  .btn-dark {
-    @apply inline-flex items-center gap-2 px-7 py-3.5 bg-brand-black text-white text-sm font-semibold rounded-full
-    hover:bg-brand-dark transition-all duration-300;
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 text-sm font-semibold text-text-primary
+    hover:text-brand-blue transition-colors duration-300;
   }
 }

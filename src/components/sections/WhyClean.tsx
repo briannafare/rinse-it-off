@@ -1,109 +1,80 @@
 "use client";
 import { Reveal } from "@/components/ui/Reveal";
-import { motion } from "framer-motion";
-import { useInView } from "@/lib/useInView";
+import { ArrowRight } from "lucide-react";
 
-function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: string }) {
-  const { ref, isInView } = useInView(0.3);
-
-  return (
-    <motion.span
-      ref={ref}
-      className="font-display font-extrabold text-4xl md:text-5xl text-brand-blue"
-      initial={{ opacity: 0 }}
-      animate={isInView ? { opacity: 1 } : {}}
-    >
-      {isInView ? (
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          {value}{suffix}
-        </motion.span>
-      ) : (
-        "0"
-      )}
-    </motion.span>
-  );
-}
-
-const STATS = [
-  { value: 164, suffix: "", label: "Days of rain per year in Portland" },
-  { value: 37, suffix: "\"", label: "Average annual rainfall" },
-  { value: 90, suffix: "%", label: "Of buildings develop algae within 2 years" },
+const PROBLEMS = [
+  { problem: "Moss & algae growth", surface: "North-facing walls, roofs, concrete", frequency: "Year-round", severity: "high" },
+  { problem: "Oil & grease stains", surface: "Parking lots, drive-throughs", frequency: "Ongoing", severity: "high" },
+  { problem: "Atmospheric grime", surface: "All exterior surfaces", frequency: "Seasonal", severity: "medium" },
+  { problem: "Gum & organic buildup", surface: "Sidewalks, entryways", frequency: "Daily", severity: "medium" },
+  { problem: "Hard water deposits", surface: "Windows, glass facades", frequency: "After rain", severity: "low" },
+  { problem: "Mildew & black streaks", surface: "Gutters, trim, siding", frequency: "Spring/Fall", severity: "high" },
 ];
 
 export function WhyClean() {
   return (
-    <section className="relative py-24 md:py-32 bg-dark-section text-white overflow-hidden">
-      {/* Wave top */}
-      <div className="absolute top-0 left-0 right-0 rotate-180">
-        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" className="w-full h-[50px] md:h-[72px]" fill="none">
-          <path fill="#FFFFFF" d="M0,56 C180,20 360,72 540,48 C720,24 900,64 1080,44 C1260,24 1380,56 1440,40 L1440,72 L0,72 Z" />
-        </svg>
-      </div>
+    <section className="relative py-24 md:py-32 bg-brand-dark text-white overflow-hidden">
+      <div className="container-site relative z-10">
+        {/* Header */}
+        <div className="grid md:grid-cols-2 gap-8 mb-14 items-end">
+          <Reveal>
+            <span className="text-brand-mint text-[11px] font-bold tracking-[0.1em] uppercase font-display mb-3 block">The Portland Problem</span>
+            <h2 className="font-display font-extrabold text-display-lg text-white">
+              164 Days of Rain.
+              <br />
+              <span className="font-serif font-normal italic text-brand-mint">Your Building Feels Every One.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="text-white/50 text-lg leading-relaxed">
+              Nine months of drizzle means every commercial property in Portland is fighting moss, algae, and atmospheric grime. Regular cleaning isn&apos;t cosmetic — it&apos;s protection.
+            </p>
+          </Reveal>
+        </div>
 
-      {/* Decorative floating elements */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <div className="absolute top-[20%] right-[10%] w-2 h-2 rounded-full bg-brand-blue/20 animate-float" />
-        <div className="absolute top-[40%] left-[5%] w-3 h-3 rounded-full bg-brand-blue/15 animate-float-slow" />
-        <div className="absolute bottom-[30%] right-[20%] w-1.5 h-1.5 rounded-full bg-brand-mint/20 animate-float-slower" />
-      </div>
+        {/* Table-style problem list */}
+        <Reveal>
+          <div className="rounded-3xl border border-white/[0.06] overflow-hidden">
+            {/* Table header */}
+            <div className="grid grid-cols-12 gap-4 px-5 md:px-8 py-4 border-b border-white/[0.06] text-xs font-display uppercase tracking-wider text-white/30">
+              <div className="col-span-4 md:col-span-4">Problem</div>
+              <div className="col-span-4 md:col-span-4 hidden md:block">Surfaces Affected</div>
+              <div className="col-span-4 md:col-span-2">Frequency</div>
+              <div className="col-span-4 md:col-span-2 text-right">Severity</div>
+            </div>
 
-      <div className="container-site relative z-10 pt-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left: Copy */}
-          <div>
-            <Reveal>
-              <span className="overline mb-4 block">The Portland Problem</span>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <h2 className="font-display font-extrabold text-display-lg text-white mb-6">
-                Portland Weather Doesn&apos;t Take Days Off.
-                <br />
-                <span className="text-brand-blue">Neither Should Your Cleaning.</span>
-              </h2>
-            </Reveal>
-            <Reveal delay={0.2}>
-              <p className="text-lg text-white/70 leading-relaxed mb-6">
-                Nine months of drizzle. Moss on every north-facing wall. Green algae creeping across your parking lot. That signature Pacific Northwest &ldquo;patina&rdquo; isn&apos;t charming — it&apos;s deteriorating your surfaces and driving away customers.
-              </p>
-            </Reveal>
-            <Reveal delay={0.3}>
-              <p className="text-lg text-white/70 leading-relaxed mb-8">
-                Regular exterior maintenance isn&apos;t cosmetic. It protects your investment, extends surface life, and tells every person who walks by that you give a damn about your property.
-              </p>
-            </Reveal>
-            <Reveal delay={0.4}>
-              <a href="#contact" className="btn-primary group">
-                Get a Free Property Assessment
-                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </a>
-            </Reveal>
-          </div>
-
-          {/* Right: Stats */}
-          <div className="space-y-8">
-            {STATS.map((stat, i) => (
-              <Reveal key={stat.label} delay={0.1 * i}>
-                <div className="flex items-start gap-6 p-6 rounded-2xl bg-white/[0.04] border border-white/[0.06] backdrop-blur-sm">
-                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-                  <p className="text-white/60 text-base leading-relaxed pt-2">{stat.label}</p>
+            {/* Rows */}
+            {PROBLEMS.map((item, i) => (
+              <div key={item.problem} className="grid grid-cols-12 gap-4 px-5 md:px-8 py-5 border-b border-white/[0.04] last:border-b-0 group hover:bg-white/[0.02] transition-colors">
+                <div className="col-span-8 md:col-span-4">
+                  <p className="font-display font-semibold text-white text-sm group-hover:text-brand-mint transition-colors">{item.problem}</p>
+                  <p className="text-white/30 text-xs mt-0.5 md:hidden">{item.surface}</p>
                 </div>
-              </Reveal>
+                <div className="col-span-4 hidden md:flex items-center">
+                  <p className="text-white/40 text-sm">{item.surface}</p>
+                </div>
+                <div className="hidden md:flex col-span-2 items-center">
+                  <span className="pill-outline border-white/10 text-white/50">{item.frequency}</span>
+                </div>
+                <div className="col-span-4 md:col-span-2 flex items-center justify-end">
+                  <span className={`w-2 h-2 rounded-full ${item.severity === "high" ? "bg-brand-mint" : item.severity === "medium" ? "bg-brand-blue" : "bg-white/30"}`} />
+                  <span className="text-xs text-white/40 ml-2 capitalize">{item.severity}</span>
+                </div>
+              </div>
             ))}
           </div>
-        </div>
-      </div>
+        </Reveal>
 
-      {/* Wave bottom */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" className="w-full h-[50px] md:h-[72px]" fill="none">
-          <path fill="#FFFFFF" d="M0,56 C180,20 360,72 540,48 C720,24 900,64 1080,44 C1260,24 1380,56 1440,40 L1440,72 L0,72 Z" />
-        </svg>
+        {/* Bottom CTA */}
+        <Reveal className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <p className="text-white/40 text-sm max-w-md">
+            Regular exterior maintenance extends surface life, prevents costly repairs, and shows tenants and customers you care about your property.
+          </p>
+          <a href="#contact" className="btn-mint group flex-shrink-0">
+            Get a Free Assessment
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </a>
+        </Reveal>
       </div>
     </section>
   );

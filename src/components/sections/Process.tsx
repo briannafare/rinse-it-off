@@ -1,70 +1,73 @@
 "use client";
-import { Reveal, StaggerContainer, StaggerItem } from "@/components/ui/Reveal";
-import { ClipboardCheck, CalendarCheck, Sparkles } from "lucide-react";
+import { Reveal } from "@/components/ui/Reveal";
+import { ArrowRight } from "lucide-react";
 
 const STEPS = [
   {
     num: "01",
     title: "Request an Assessment",
-    desc: "Tell us about your property. We'll schedule a free walkthrough to identify problem areas, surface types, and the right cleaning approach.",
-    icon: <ClipboardCheck className="w-6 h-6" />,
+    desc: "Tell us about your property. We'll walk the site, identify problem areas, and match the right cleaning approach.",
   },
   {
     num: "02",
     title: "Get Your Custom Plan",
-    desc: "We'll build a cleaning plan specific to your property — scope, schedule, pricing. No surprises, no hidden fees, no guesswork.",
-    icon: <CalendarCheck className="w-6 h-6" />,
+    desc: "Scope, schedule, pricing — everything in writing. No surprises, no hidden fees, no guesswork.",
   },
   {
     num: "03",
-    title: "Sit Back. We Handle It.",
-    desc: "Our crew shows up on time, every time. You get a property that looks like new and a maintenance schedule that keeps it that way.",
-    icon: <Sparkles className="w-6 h-6" />,
+    title: "We Handle It",
+    desc: "Our crew shows up on time, every time. You get a clean property and a maintenance schedule that keeps it that way.",
   },
 ];
 
 export function Process() {
   return (
-    <section id="process" className="section-gap bg-white relative overflow-hidden">
-      {/* Subtle bg decoration */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-brand-blue/[0.02] blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-
-      <div className="container-site relative z-10">
+    <section id="process" className="section-gap bg-surface-alt relative overflow-hidden">
+      <div className="container-site">
         <Reveal className="text-center max-w-2xl mx-auto mb-16">
           <span className="overline mb-3 block">How It Works</span>
-          <h2 className="font-display font-extrabold text-display-lg text-text-primary mb-4">
-            Three Steps to a Cleaner Property
+          <h2 className="font-display font-extrabold text-display-lg text-text-primary">
+            Three Steps. <span className="font-serif font-normal italic text-brand-blue">Zero</span> Hassle.
           </h2>
-          <p className="text-text-secondary text-lg">
-            No hassle. No run-around. Just a straightforward process that gets results.
-          </p>
         </Reveal>
 
-        <StaggerContainer className="grid md:grid-cols-3 gap-8 relative">
-          {/* Connecting line (desktop) */}
-          <div className="hidden md:block absolute top-[72px] left-[16.67%] right-[16.67%] h-px bg-gradient-to-r from-brand-blue/20 via-brand-blue/40 to-brand-blue/20" />
+        {/* Horizontal visual element — "We → Clean → Everything" */}
+        <Reveal className="mb-16 hidden md:block">
+          <div className="flex items-center justify-center gap-5">
+            <div className="w-28 h-28 rounded-full bg-white border border-border-light flex items-center justify-center">
+              <span className="font-display font-extrabold text-lg text-text-primary">We</span>
+            </div>
+            <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-brand-blue/10 to-brand-blue/5 border border-brand-blue/15 overflow-hidden flex items-center justify-center">
+              <span className="font-serif italic text-2xl text-brand-blue">Clean</span>
+            </div>
+            <div className="w-12 h-12 rounded-full bg-brand-mint flex items-center justify-center">
+              <ArrowRight className="w-5 h-5 text-brand-black" />
+            </div>
+            <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-[#1a3040] to-[#2a4050] border border-white/5 overflow-hidden flex items-center justify-center relative">
+              <span className="font-display font-bold text-lg text-white">Everything</span>
+              <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px)", backgroundSize: "12px 12px" }} />
+            </div>
+          </div>
+        </Reveal>
 
-          {STEPS.map((step) => (
-            <StaggerItem key={step.num}>
-              <div className="relative text-center group">
-                {/* Step number circle */}
-                <div className="relative mx-auto mb-6 w-[88px] h-[88px]">
-                  {/* Glow ring */}
-                  <div className="absolute inset-0 rounded-full border-2 border-brand-blue/20 group-hover:border-brand-blue/40 transition-colors duration-500" />
-                  <div className="absolute inset-2 rounded-full bg-surface-blue group-hover:bg-brand-blue/10 transition-colors duration-500 flex items-center justify-center">
-                    <span className="font-display font-extrabold text-2xl text-brand-blue">{step.num}</span>
-                  </div>
-                  {/* Floating icon */}
-                  <div className="absolute -top-2 -right-2 w-9 h-9 rounded-full bg-white shadow-card flex items-center justify-center text-brand-blue border border-border-light">
-                    {step.icon}
-                  </div>
+        {/* Step cards */}
+        <div className="grid md:grid-cols-3 gap-5">
+          {STEPS.map((step, i) => (
+            <Reveal key={step.num} delay={i * 0.1}>
+              <div className="group rounded-3xl bg-white border border-border-light p-7 md:p-8 hover:border-brand-mint/30 hover:shadow-soft-md transition-all duration-500 h-full">
+                {/* Step number */}
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-mono text-sm text-brand-mint font-bold">{step.num}</span>
+                  <span className="w-8 h-8 rounded-full border border-border-light flex items-center justify-center text-text-muted group-hover:border-brand-mint group-hover:text-brand-mint transition-all duration-300">
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
                 </div>
                 <h3 className="font-display font-bold text-lg text-text-primary mb-3">{step.title}</h3>
-                <p className="text-text-secondary text-sm leading-relaxed max-w-xs mx-auto">{step.desc}</p>
+                <p className="text-sm text-text-secondary leading-relaxed">{step.desc}</p>
               </div>
-            </StaggerItem>
+            </Reveal>
           ))}
-        </StaggerContainer>
+        </div>
       </div>
     </section>
   );

@@ -1,146 +1,133 @@
 "use client";
 import { Reveal, StaggerContainer, StaggerItem } from "@/components/ui/Reveal";
+import { ArrowUpRight } from "lucide-react";
 
-const COMMERCIAL_SERVICES = [
+const SERVICES = [
   {
     title: "Building Washing",
-    desc: "Multi-story exterior cleaning for offices, retail, and industrial buildings. We handle every surface type safely.",
-    icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10">
-        <rect x="8" y="16" width="32" height="26" rx="2" stroke="#62C4EB" strokeWidth="2" />
-        <rect x="14" y="22" width="6" height="6" rx="1" fill="#62C4EB" fillOpacity="0.15" stroke="#62C4EB" strokeWidth="1.5" />
-        <rect x="28" y="22" width="6" height="6" rx="1" fill="#62C4EB" fillOpacity="0.15" stroke="#62C4EB" strokeWidth="1.5" />
-        <rect x="14" y="32" width="6" height="6" rx="1" fill="#62C4EB" fillOpacity="0.15" stroke="#62C4EB" strokeWidth="1.5" />
-        <rect x="28" y="32" width="6" height="6" rx="1" fill="#62C4EB" fillOpacity="0.15" stroke="#62C4EB" strokeWidth="1.5" />
-        <path d="M24 16V8L18 12" stroke="#62C4EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
+    desc: "Multi-story exterior cleaning for offices, retail, and industrial",
+    tags: ["commercial", "soft wash"],
+    gradient: "from-[#1a3040] via-[#2a4858] to-[#1a2e3d]",
+    size: "lg",
   },
   {
     title: "Parking Lots & Trash Pads",
-    desc: "Hot water cleaning for oil stains, grease traps, and high-traffic parking areas. Restore and maintain.",
-    icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10">
-        <rect x="6" y="28" width="36" height="14" rx="2" stroke="#62C4EB" strokeWidth="2" />
-        <path d="M12 28V22H36V28" stroke="#62C4EB" strokeWidth="2" strokeLinecap="round" />
-        <circle cx="16" cy="35" r="3" fill="#62C4EB" fillOpacity="0.15" stroke="#62C4EB" strokeWidth="1.5" />
-        <circle cx="32" cy="35" r="3" fill="#62C4EB" fillOpacity="0.15" stroke="#62C4EB" strokeWidth="1.5" />
-        <path d="M20 18L24 6L28 18" stroke="#62C4EB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.5" />
-      </svg>
-    ),
-  },
-  {
-    title: "Sidewalks & Curbs",
-    desc: "High-pressure surface cleaning that removes gum, stains, and years of grime from concrete and stone.",
-    icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10">
-        <path d="M6 38H42" stroke="#62C4EB" strokeWidth="2" strokeLinecap="round" />
-        <rect x="10" y="26" width="8" height="12" rx="1" fill="#62C4EB" fillOpacity="0.10" stroke="#62C4EB" strokeWidth="1.5" />
-        <rect x="20" y="26" width="8" height="12" rx="1" fill="#62C4EB" fillOpacity="0.10" stroke="#62C4EB" strokeWidth="1.5" />
-        <rect x="30" y="26" width="8" height="12" rx="1" fill="#62C4EB" fillOpacity="0.10" stroke="#62C4EB" strokeWidth="1.5" />
-        <path d="M38 20C38 20 34 10 28 14C22 18 18 8 14 12" stroke="#62C4EB" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.4" />
-      </svg>
-    ),
+    desc: "Hot water degreasing for oil stains and high-traffic areas",
+    tags: ["hot water", "degreasing"],
+    gradient: "from-[#2d3a28] via-[#3d4a38] to-[#2a3525]",
+    size: "sm",
   },
   {
     title: "Storefronts",
-    desc: "Keep your business entrance spotless and inviting. First impressions happen at the front door.",
-    icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10">
-        <path d="M8 18L24 8L40 18" stroke="#62C4EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <rect x="10" y="18" width="28" height="24" rx="1" stroke="#62C4EB" strokeWidth="2" />
-        <rect x="18" y="28" width="12" height="14" rx="1" fill="#62C4EB" fillOpacity="0.15" stroke="#62C4EB" strokeWidth="1.5" />
-        <path d="M14 22H20M28 22H34" stroke="#62C4EB" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.5" />
-      </svg>
-    ),
+    desc: "Keep your entrance spotless and inviting for every customer",
+    tags: ["retail", "recurring"],
+    gradient: "from-[#3a2d28] via-[#4a3d38] to-[#352a25]",
+    size: "sm",
+  },
+  {
+    title: "Sidewalks & Curbs",
+    desc: "High-pressure surface cleaning removes gum, stains, and years of grime",
+    tags: ["concrete", "high pressure"],
+    gradient: "from-[#28303a] via-[#384050] to-[#252d38]",
+    size: "sm",
   },
   {
     title: "HOA & Multi-Unit",
-    desc: "Apartment complexes, condos, townhomes. Consistent maintenance across every building in the community.",
-    icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10">
-        <rect x="4" y="20" width="16" height="22" rx="1" stroke="#62C4EB" strokeWidth="2" />
-        <rect x="28" y="14" width="16" height="28" rx="1" stroke="#62C4EB" strokeWidth="2" />
-        <rect x="8" y="24" width="4" height="4" rx="0.5" fill="#62C4EB" fillOpacity="0.15" />
-        <rect x="8" y="32" width="4" height="4" rx="0.5" fill="#62C4EB" fillOpacity="0.15" />
-        <rect x="32" y="18" width="4" height="4" rx="0.5" fill="#62C4EB" fillOpacity="0.15" />
-        <rect x="32" y="26" width="4" height="4" rx="0.5" fill="#62C4EB" fillOpacity="0.15" />
-        <rect x="32" y="34" width="4" height="4" rx="0.5" fill="#62C4EB" fillOpacity="0.15" />
-        <path d="M20 36H28" stroke="#62C4EB" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="2 2" />
-      </svg>
-    ),
+    desc: "Consistent maintenance across every building in the community",
+    tags: ["apartment", "community"],
+    gradient: "from-[#2a2d3a] via-[#3a3d4a] to-[#252838]",
+    size: "sm",
   },
   {
     title: "Window Cleaning",
-    desc: "Reverse osmosis water purification for streak-free, spot-free glass. Interior and exterior.",
-    icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10">
-        <rect x="10" y="8" width="28" height="32" rx="2" stroke="#62C4EB" strokeWidth="2" />
-        <line x1="24" y1="8" x2="24" y2="40" stroke="#62C4EB" strokeWidth="1.5" strokeOpacity="0.3" />
-        <line x1="10" y1="24" x2="38" y2="24" stroke="#62C4EB" strokeWidth="1.5" strokeOpacity="0.3" />
-        <path d="M15 14L18 18" stroke="#62C4EB" strokeWidth="1" strokeLinecap="round" strokeOpacity="0.4" />
-        <circle cx="33" cy="14" r="4" fill="#62C4EB" fillOpacity="0.10" stroke="#62C4EB" strokeWidth="1" strokeOpacity="0.3" />
-      </svg>
-    ),
+    desc: "Streak-free glass with reverse osmosis water purification",
+    tags: ["RO water", "interior/exterior"],
+    gradient: "from-[#1a2840] via-[#2a3858] to-[#1a253d]",
+    size: "md",
   },
   {
     title: "Recurring Maintenance",
-    desc: "Monthly, quarterly, or seasonal programs tailored to your property. Set it and forget it.",
-    icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10">
-        <circle cx="24" cy="24" r="16" stroke="#62C4EB" strokeWidth="2" />
-        <path d="M24 14V24L30 28" stroke="#62C4EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M38 12L42 8M10 36L6 40" stroke="#62C4EB" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.4" />
-        <circle cx="24" cy="24" r="2" fill="#62C4EB" fillOpacity="0.3" />
-      </svg>
-    ),
-  },
-  {
-    title: "Soft Washing",
-    desc: "Low-pressure chemical treatment for delicate surfaces — stucco, wood siding, painted finishes, and more.",
-    icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10">
-        <path d="M12 36C12 36 14 24 20 20C26 16 30 24 36 20" stroke="#62C4EB" strokeWidth="2" strokeLinecap="round" />
-        <path d="M8 40C8 40 16 32 24 32C32 32 40 40 40 40" stroke="#62C4EB" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.3" />
-        <circle cx="20" cy="12" r="3" fill="#62C4EB" fillOpacity="0.15" stroke="#62C4EB" strokeWidth="1.5" />
-        <circle cx="34" cy="14" r="2" fill="#62C4EB" fillOpacity="0.10" stroke="#62C4EB" strokeWidth="1" />
-      </svg>
-    ),
+    desc: "Monthly, quarterly, or seasonal programs tailored to your property",
+    tags: ["scheduled", "programs"],
+    gradient: "from-[#283a2d] via-[#384a3d] to-[#253828]",
+    size: "md",
   },
 ];
+
+function ServiceCard({ service, index }: { service: typeof SERVICES[0]; index: number }) {
+  const isLarge = service.size === "lg";
+
+  return (
+    <div className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br ${service.gradient} border border-white/5 cursor-pointer transition-all duration-500 hover:shadow-soft-lg hover:scale-[1.01] ${isLarge ? "md:col-span-2 md:row-span-2 min-h-[280px] md:min-h-[360px]" : "min-h-[200px] md:min-h-[240px]"}`}>
+      {/* Subtle grid texture */}
+      <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
+
+      {/* Hover glow */}
+      <div className="absolute inset-0 bg-brand-mint/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      {/* Content */}
+      <div className="relative h-full flex flex-col justify-between p-5 md:p-6">
+        {/* Top: tags + arrow */}
+        <div className="flex items-start justify-between">
+          <div className="flex flex-wrap gap-1.5">
+            {service.tags.map((tag) => (
+              <span key={tag} className="pill bg-white/8 border-white/10 text-white/60 text-[10px]">{tag}</span>
+            ))}
+          </div>
+          <span className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 group-hover:bg-brand-mint group-hover:border-brand-mint group-hover:text-brand-black transition-all duration-300">
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </span>
+        </div>
+
+        {/* Bottom: title + desc */}
+        <div>
+          <h3 className={`font-display font-bold text-white mb-1.5 group-hover:text-brand-mint transition-colors duration-300 ${isLarge ? "text-2xl md:text-3xl" : "text-lg"}`}>
+            {service.title}
+          </h3>
+          <p className={`text-white/50 leading-relaxed ${isLarge ? "text-sm max-w-md" : "text-xs"}`}>
+            {service.desc}
+          </p>
+        </div>
+      </div>
+
+      {/* Photo placeholder indicator */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/[0.06] pointer-events-none">
+        <svg className="w-16 h-16" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1">
+          <rect x="8" y="16" width="48" height="32" rx="4" />
+          <circle cx="44" cy="28" r="4" />
+          <path d="M8 40L24 30L36 38L48 26L56 34" strokeLinejoin="round" />
+        </svg>
+      </div>
+    </div>
+  );
+}
 
 export function CommercialServices() {
   return (
     <section id="services" className="section-gap bg-white relative">
       <div className="container-site">
-        <Reveal className="text-center max-w-2xl mx-auto mb-16">
-          <span className="overline mb-3 block">What We Do</span>
-          <h2 className="font-display font-extrabold text-display-lg text-text-primary mb-4">
-            Commercial Exterior Cleaning
-          </h2>
-          <p className="text-text-secondary text-lg leading-relaxed">
-            From single storefronts to multi-building complexes, we keep Portland&apos;s commercial properties clean, safe, and looking sharp.
-          </p>
-        </Reveal>
+        {/* Section header — editorial style */}
+        <div className="grid md:grid-cols-2 gap-6 mb-12 md:mb-16 items-end">
+          <Reveal>
+            <span className="overline mb-3 block">What We Do</span>
+            <h2 className="font-display font-extrabold text-display-lg text-text-primary">
+              Commercial Exterior
+              <br />
+              <span className="font-serif font-normal italic text-brand-blue">Cleaning</span> Services
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="text-text-secondary text-lg leading-relaxed md:text-right">
+              From single storefronts to multi-building complexes — we keep Portland&apos;s commercial properties clean, safe, and sharp.
+            </p>
+          </Reveal>
+        </div>
 
-        <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {COMMERCIAL_SERVICES.map((svc) => (
-            <StaggerItem key={svc.title}>
-              <div className="group relative bg-surface-card rounded-2xl p-6 border border-border-light hover-lift cursor-default h-full">
-                {/* Hover glow */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-blue/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative">
-                  <div className="mb-4 w-14 h-14 rounded-xl bg-surface-blue flex items-center justify-center group-hover:bg-brand-blue/10 transition-colors duration-300">
-                    {svc.icon}
-                  </div>
-                  <h3 className="font-display font-bold text-base text-text-primary mb-2 group-hover:text-brand-blue-dark transition-colors duration-300">
-                    {svc.title}
-                  </h3>
-                  <p className="text-sm text-text-secondary leading-relaxed">
-                    {svc.desc}
-                  </p>
-                </div>
-              </div>
+        {/* Service card grid — bento style */}
+        <StaggerContainer className="grid md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+          {SERVICES.map((service, i) => (
+            <StaggerItem key={service.title}>
+              <ServiceCard service={service} index={i} />
             </StaggerItem>
           ))}
         </StaggerContainer>

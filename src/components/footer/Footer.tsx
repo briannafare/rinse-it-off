@@ -1,13 +1,8 @@
-"use client";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, ArrowRight } from "lucide-react";
 
 const SERVICE_LINKS = [
-  { label: "Building Washing", href: "#services" },
-  { label: "Parking Lots", href: "#services" },
-  { label: "Storefronts", href: "#services" },
-  { label: "HOA & Multi-Unit", href: "#services" },
-  { label: "Window Cleaning", href: "#services" },
-  { label: "Recurring Maintenance", href: "#services" },
+  "Building Washing", "Parking Lots", "Storefronts",
+  "HOA & Multi-Unit", "Window Cleaning", "Recurring Maintenance",
 ];
 
 const COMPANY_LINKS = [
@@ -18,81 +13,75 @@ const COMPANY_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="bg-dark-section text-white relative overflow-hidden">
-      {/* Wave top */}
-      <div className="absolute top-0 left-0 right-0 rotate-180">
-        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" className="w-full h-[50px] md:h-[72px]" fill="none">
-          <path fill="#FFFFFF" d="M0,56 C180,20 360,72 540,48 C720,24 900,64 1080,44 C1260,24 1380,56 1440,40 L1440,72 L0,72 Z" />
-        </svg>
-      </div>
+    <footer className="bg-brand-dark text-white relative overflow-hidden">
+      {/* Subtle top border with mint */}
+      <div className="h-px bg-gradient-to-r from-transparent via-brand-mint/30 to-transparent" />
 
-      <div className="container-site pt-24 pb-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          {/* Brand column */}
+      <div className="container-site pt-16 md:pt-20 pb-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
+          {/* Brand */}
           <div className="lg:col-span-1">
             <img src="/logo-white.png" alt="Rinse It Off" className="h-12 w-auto mb-5" />
-            <p className="text-white/50 text-sm leading-relaxed mb-6">
-              Portland&apos;s commercial exterior cleaning experts. Building washing, parking structures, and recurring maintenance programs.
+            <p className="text-white/40 text-sm leading-relaxed mb-6">
+              Portland&apos;s commercial exterior cleaning experts. Building washing, parking structures, and recurring maintenance.
             </p>
-            <div className="space-y-3">
-              <a href="tel:+15037043755" className="flex items-center gap-3 text-sm text-white/70 hover:text-brand-blue transition-colors">
-                <Phone className="w-4 h-4 text-brand-blue/60" />
-                (503) 704-3755
+            <div className="space-y-2.5">
+              <a href="tel:+15037043755" className="flex items-center gap-3 text-sm text-white/60 hover:text-brand-mint transition-colors">
+                <Phone className="w-3.5 h-3.5 text-brand-mint/50" /> (503) 704-3755
               </a>
-              <a href="mailto:hello@rinseitoff.com" className="flex items-center gap-3 text-sm text-white/70 hover:text-brand-blue transition-colors">
-                <Mail className="w-4 h-4 text-brand-blue/60" />
-                hello@rinseitoff.com
+              <a href="mailto:hello@rinseitoff.com" className="flex items-center gap-3 text-sm text-white/60 hover:text-brand-mint transition-colors">
+                <Mail className="w-3.5 h-3.5 text-brand-mint/50" /> hello@rinseitoff.com
               </a>
-              <div className="flex items-center gap-3 text-sm text-white/50">
-                <MapPin className="w-4 h-4 text-brand-blue/60" />
-                Portland, Oregon
+              <div className="flex items-center gap-3 text-sm text-white/40">
+                <MapPin className="w-3.5 h-3.5 text-brand-mint/50" /> Portland, Oregon
               </div>
             </div>
           </div>
 
-          {/* Services column */}
+          {/* Services */}
           <div>
-            <h4 className="font-display font-bold text-sm uppercase tracking-wider text-white/40 mb-4">Services</h4>
-            <nav className="space-y-2.5">
-              {SERVICE_LINKS.map((link) => (
-                <a key={link.label} href={link.href} className="block text-sm text-white/60 hover:text-brand-blue transition-colors duration-300">
-                  {link.label}
+            <h4 className="font-display font-bold text-xs uppercase tracking-wider text-white/30 mb-4">Services</h4>
+            <nav className="space-y-2">
+              {SERVICE_LINKS.map((label) => (
+                <a key={label} href="#services" className="block text-sm text-white/50 hover:text-brand-mint transition-colors duration-300">
+                  {label}
                 </a>
               ))}
             </nav>
           </div>
 
-          {/* Company column */}
+          {/* Company */}
           <div>
-            <h4 className="font-display font-bold text-sm uppercase tracking-wider text-white/40 mb-4">Company</h4>
-            <nav className="space-y-2.5">
+            <h4 className="font-display font-bold text-xs uppercase tracking-wider text-white/30 mb-4">Company</h4>
+            <nav className="space-y-2">
               {COMPANY_LINKS.map((link) => (
-                <a key={link.label} href={link.href} className="block text-sm text-white/60 hover:text-brand-blue transition-colors duration-300">
+                <a key={link.label} href={link.href} className="block text-sm text-white/50 hover:text-brand-mint transition-colors duration-300">
                   {link.label}
                 </a>
               ))}
             </nav>
           </div>
 
-          {/* CTA column */}
+          {/* CTA */}
           <div>
-            <h4 className="font-display font-bold text-sm uppercase tracking-wider text-white/40 mb-4">Get Started</h4>
-            <p className="text-sm text-white/50 leading-relaxed mb-5">
-              Ready for a cleaner property? Book a free assessment — no commitment required.
+            <h4 className="font-display font-bold text-xs uppercase tracking-wider text-white/30 mb-4">Get Started</h4>
+            <p className="text-sm text-white/40 leading-relaxed mb-5">
+              Book a free property assessment. No commitment required.
             </p>
-            <a href="#contact" className="btn-primary text-sm w-full justify-center">
+            <a href="#contact" className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-mint text-brand-black text-sm font-bold rounded-full hover:brightness-110 transition-all duration-300">
               Free Assessment
+              <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-white/30">
+        {/* Bottom */}
+        <div className="border-t border-white/[0.06] pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-white/25">
             &copy; {new Date().getFullYear()} Rinse It Off. All rights reserved.
           </p>
-          <p className="text-xs text-white/20">
-            Built by <a href="https://eighty5labs.com" target="_blank" rel="noopener noreferrer" className="text-white/30 hover:text-brand-blue transition-colors">eighty5labs</a>
+          <p className="text-xs text-white/15">
+            Built by <a href="https://eighty5labs.com" target="_blank" rel="noopener noreferrer" className="text-white/25 hover:text-brand-mint transition-colors">eighty5labs</a>
           </p>
         </div>
       </div>

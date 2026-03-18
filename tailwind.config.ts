@@ -11,11 +11,20 @@ const config: Config = {
           "blue-dark": "#3AA8D4",
           "blue-glow": "rgba(98, 196, 235, 0.15)",
           mint: "#4DFFA6",
-          violet: "#A78BFA",
+          "mint-soft": "#B8FFD9",
+          "mint-glow": "rgba(77, 255, 166, 0.15)",
+          neon: "#4DFFA6",
           black: "#0C1215",
           dark: "#0E1419",
         },
-        surface: { DEFAULT: "#FFFFFF", alt: "#F6FAFE", blue: "#EDF7FC", card: "#F8FBFE" },
+        surface: {
+          DEFAULT: "#FFFFFF",
+          alt: "#F5F7F4",
+          warm: "#FAFAF7",
+          blue: "#EDF7FC",
+          card: "#F8FBFE",
+          mint: "#F0FFF6",
+        },
         text: {
           primary: "#0C1215",
           secondary: "#4B5C6B",
@@ -26,13 +35,14 @@ const config: Config = {
       },
       fontFamily: {
         display: ["var(--font-sora)", "system-ui", "sans-serif"],
+        serif: ["var(--font-dm-serif)", "Georgia", "serif"],
         body: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-jetbrains)", "monospace"],
       },
       fontSize: {
         hero: ["clamp(3rem, 8vw, 5.5rem)", { lineHeight: "1.0", letterSpacing: "-0.03em" }],
         "display-lg": ["clamp(2.25rem, 5vw, 3.5rem)", { lineHeight: "1.08", letterSpacing: "-0.025em" }],
-        "display": ["clamp(1.75rem, 3.5vw, 2.75rem)", { lineHeight: "1.12", letterSpacing: "-0.02em" }],
+        display: ["clamp(1.75rem, 3.5vw, 2.75rem)", { lineHeight: "1.12", letterSpacing: "-0.02em" }],
         "display-sm": ["clamp(1.375rem, 2.5vw, 1.75rem)", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
       },
       letterSpacing: { overline: "0.1em" },
@@ -40,6 +50,8 @@ const config: Config = {
       boxShadow: {
         glow: "0 0 24px rgba(98,196,235,0.20)",
         "glow-lg": "0 0 48px rgba(98,196,235,0.30)",
+        "glow-mint": "0 0 24px rgba(77,255,166,0.20)",
+        "glow-mint-lg": "0 0 48px rgba(77,255,166,0.25)",
         soft: "0 2px 16px rgba(12,18,21,0.04)",
         "soft-md": "0 4px 32px rgba(12,18,21,0.06)",
         "soft-lg": "0 12px 48px rgba(12,18,21,0.08)",
@@ -49,16 +61,7 @@ const config: Config = {
       keyframes: {
         "float-gentle": {
           "0%,100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-14px)" },
-        },
-        "float-drift": {
-          "0%,100%": { transform: "translate(0,0) rotate(0deg)" },
-          "33%": { transform: "translate(10px,-18px) rotate(2deg)" },
-          "66%": { transform: "translate(-8px,8px) rotate(-1deg)" },
-        },
-        ripple: {
-          "0%": { transform: "scale(0.8)", opacity: "0.5" },
-          "100%": { transform: "scale(2.5)", opacity: "0" },
+          "50%": { transform: "translateY(-10px)" },
         },
         "spin-slow": { to: { transform: "rotate(360deg)" } },
         "scroll-x": {
@@ -68,10 +71,6 @@ const config: Config = {
       },
       animation: {
         float: "float-gentle 5s ease-in-out infinite",
-        "float-slow": "float-drift 20s ease-in-out infinite",
-        "float-slower": "float-drift 28s ease-in-out infinite reverse",
-        ripple: "ripple 2.5s ease-out infinite",
-        "ripple-delayed": "ripple 2.5s ease-out 0.8s infinite",
         "spin-slow": "spin-slow 25s linear infinite",
         "scroll-x": "scroll-x 30s linear infinite",
       },

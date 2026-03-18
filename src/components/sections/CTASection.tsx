@@ -1,50 +1,72 @@
 "use client";
 import { Reveal } from "@/components/ui/Reveal";
-import { Phone, ArrowRight } from "lucide-react";
+import { Phone, ArrowRight, Mail } from "lucide-react";
 
 export function CTASection() {
   return (
     <section id="contact" className="section-gap bg-white relative overflow-hidden">
-      {/* Decorative glow */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-brand-blue/[0.05] blur-3xl" />
-      </div>
+      <div className="container-site">
+        <Reveal>
+          <div className="relative rounded-[32px] overflow-hidden">
+            {/* Mint gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-mint/[0.08] via-brand-mint/[0.04] to-brand-blue/[0.06]" />
+            <div className="absolute inset-0 border border-brand-mint/15 rounded-[32px]" />
 
-      <div className="container-site relative z-10">
-        <div className="max-w-4xl mx-auto bg-gradient-to-br from-surface-blue via-white to-surface-card rounded-[32px] p-8 md:p-16 border border-brand-blue/10 shadow-glow-xl text-center">
-          <Reveal>
-            <span className="overline mb-4 block">Ready to Get Started?</span>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h2 className="font-display font-extrabold text-display-lg text-text-primary mb-5">
-              Let&apos;s Make Your Property
-              <br />
-              <span className="text-gradient-blue">Look Like New</span>
-            </h2>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p className="text-text-secondary text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-              Schedule a free property assessment. We&apos;ll walk your site, identify what needs attention, and give you an honest quote — no pressure, no obligation.
-            </p>
-          </Reveal>
-          <Reveal delay={0.3}>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="mailto:hello@rinseitoff.com" className="btn-primary group text-base px-8 py-4">
-                Request a Free Assessment
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </a>
-              <a href="tel:+15037043755" className="btn-dark group text-base px-8 py-4">
-                <Phone className="w-5 h-5" />
-                Call (503) 704-3755
-              </a>
+            {/* Decorative dot */}
+            <div className="absolute top-6 right-6 w-3 h-3 rounded-full bg-brand-mint" />
+            <div className="absolute bottom-6 left-6 w-2 h-2 rounded-full bg-brand-blue/30" />
+
+            {/* Subtle grid */}
+            <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, #0C1215 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+
+            <div className="relative p-8 md:p-16">
+              <div className="grid md:grid-cols-2 gap-10 items-center">
+                {/* Left: Copy */}
+                <div>
+                  <span className="pill-mint mb-5 inline-flex">Ready to get started?</span>
+                  <h2 className="font-display font-extrabold text-display-lg text-text-primary mb-5">
+                    Let&apos;s Make Your
+                    <br />
+                    Property <span className="font-serif font-normal italic text-brand-blue">Shine.</span>
+                  </h2>
+                  <p className="text-text-secondary text-lg leading-relaxed max-w-md">
+                    Schedule a free property assessment. We&apos;ll walk the site, identify what needs attention, and give you an honest quote — no pressure.
+                  </p>
+                </div>
+
+                {/* Right: Action cards */}
+                <div className="space-y-4">
+                  <a href="mailto:hello@rinseitoff.com" className="group flex items-center gap-5 p-5 rounded-2xl bg-white border border-border-light hover:border-brand-mint/30 hover:shadow-soft-md transition-all duration-300">
+                    <span className="w-12 h-12 rounded-xl bg-brand-mint/10 flex items-center justify-center text-brand-mint flex-shrink-0 group-hover:bg-brand-mint group-hover:text-brand-black transition-all duration-300">
+                      <Mail className="w-5 h-5" />
+                    </span>
+                    <div className="flex-1">
+                      <p className="font-display font-bold text-sm text-text-primary">Request an Assessment</p>
+                      <p className="text-xs text-text-muted">hello@rinseitoff.com</p>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-text-muted group-hover:text-brand-mint group-hover:translate-x-1 transition-all duration-300" />
+                  </a>
+
+                  <a href="tel:+15037043755" className="group flex items-center gap-5 p-5 rounded-2xl bg-white border border-border-light hover:border-brand-blue/30 hover:shadow-soft-md transition-all duration-300">
+                    <span className="w-12 h-12 rounded-xl bg-brand-blue/10 flex items-center justify-center text-brand-blue flex-shrink-0 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300">
+                      <Phone className="w-5 h-5" />
+                    </span>
+                    <div className="flex-1">
+                      <p className="font-display font-bold text-sm text-text-primary">Talk to a Real Person</p>
+                      <p className="text-xs text-text-muted">(503) 704-3755</p>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-text-muted group-hover:text-brand-blue group-hover:translate-x-1 transition-all duration-300" />
+                  </a>
+
+                  <div className="flex items-center gap-3 pt-2 px-2">
+                    <span className="w-2 h-2 rounded-full bg-brand-mint" />
+                    <p className="text-xs text-text-muted">Portland, OR — Licensed & Insured — Free estimates</p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </Reveal>
-          <Reveal delay={0.4}>
-            <p className="mt-6 text-sm text-text-muted">
-              Portland, OR &bull; Licensed &amp; Insured &bull; Free estimates for commercial and residential
-            </p>
-          </Reveal>
-        </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
