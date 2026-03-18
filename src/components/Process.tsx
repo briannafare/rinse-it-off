@@ -16,7 +16,7 @@ export function Process() {
     <section id="process" className="py-24 md:py-32 bg-white">
       <div className="container-site">
         <div ref={headRef} className="max-w-xl mb-14">
-          <h2 className="font-display font-extrabold text-display-lg text-text-primary leading-tight mb-4">
+          <h2 className="font-display font-bold text-display-lg text-text-primary leading-tight mb-4">
             Three Steps. <span className="font-serif font-normal italic text-brand-blue">No</span> Run-Around.
           </h2>
           <p className="text-text-secondary text-lg leading-relaxed">
@@ -25,11 +25,11 @@ export function Process() {
         </div>
 
         <div ref={stepsRef} className="grid md:grid-cols-3 gap-px bg-border-light rounded-3xl overflow-hidden border border-border-light">
-          {STEPS.map((step, i) => (
+          {STEPS.map((step) => (
             <div key={step.num} className="bg-white p-7 md:p-9 group hover:bg-surface-alt transition-colors duration-500">
               <div className="flex items-center justify-between mb-8">
-                <span className="font-mono text-sm text-brand-mint font-bold">{step.num}</span>
-                <div className="w-8 h-8 rounded-full border border-border-light flex items-center justify-center text-text-muted group-hover:border-brand-mint group-hover:text-brand-mint transition-all duration-300">
+                <span className="font-mono text-sm text-brand-blue font-bold">{step.num}</span>
+                <div className="w-8 h-8 rounded-full border border-border-light flex items-center justify-center text-text-muted group-hover:border-brand-blue/30 group-hover:text-brand-blue transition-all duration-300">
                   <ArrowRight className="w-3.5 h-3.5" />
                 </div>
               </div>

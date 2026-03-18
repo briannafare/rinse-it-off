@@ -86,7 +86,7 @@ export function Residential() {
     <section className="py-24 md:py-32 bg-white">
       <div className="container-site">
         <div ref={headRef} className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
-          <h2 className="font-display font-extrabold text-display-lg text-text-primary max-w-md leading-tight">
+          <h2 className="font-display font-bold text-display-lg text-text-primary max-w-md leading-tight">
             Residential <span className="font-serif font-normal italic text-brand-blue">Cleaning</span>
           </h2>
           <p className="text-text-secondary text-base max-w-sm md:text-right leading-relaxed">

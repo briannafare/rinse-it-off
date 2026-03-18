@@ -14,11 +14,11 @@ export function CTA() {
 
           <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center">
             <div>
-              <h2 className="font-display font-extrabold text-white leading-tight mb-5"
+              <h2 className="font-display font-bold text-white leading-tight mb-5"
                   style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", letterSpacing: "-0.02em" }}>
                 Ready to make your property
                 <br />
-                <span className="font-serif font-normal italic text-brand-mint">look like new?</span>
+                <span className="font-serif font-normal italic text-brand-pink">look like new?</span>
               </h2>
               <p className="text-white/50 text-base leading-relaxed max-w-md">
                 Schedule a free property assessment. We walk the site, give you an honest quote, and never pressure you into anything.
@@ -26,26 +26,26 @@ export function CTA() {
             </div>
 
             <div className="space-y-3">
-              <a href="mailto:hello@rinseitoff.com" className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.05] border border-white/[0.08] hover:bg-white/[0.08] transition-colors">
-                <span className="w-10 h-10 rounded-lg bg-brand-mint/15 flex items-center justify-center text-brand-mint flex-shrink-0">
+              <a href="mailto:hello@rinseitoff.com" className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.05] border border-white/[0.08] hover:bg-brand-peach/[0.06] hover:border-brand-peach/20 transition-all duration-300">
+                <span className="w-10 h-10 rounded-lg bg-brand-peach/20 flex items-center justify-center text-brand-peach-warm flex-shrink-0">
                   <Mail className="w-4 h-4" />
                 </span>
                 <div className="flex-1 min-w-0">
                   <p className="font-display font-bold text-sm text-white">Request an Assessment</p>
                   <p className="text-xs text-white/40 truncate">hello@rinseitoff.com</p>
                 </div>
-                <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-brand-mint group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" />
+                <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-brand-peach-warm group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" />
               </a>
 
-              <a href="tel:+15037043755" className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.05] border border-white/[0.08] hover:bg-white/[0.08] transition-colors">
-                <span className="w-10 h-10 rounded-lg bg-brand-blue/15 flex items-center justify-center text-brand-blue flex-shrink-0">
+              <a href="tel:+15037043755" className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.05] border border-white/[0.08] hover:bg-brand-lavender/[0.06] hover:border-brand-lavender/20 transition-all duration-300">
+                <span className="w-10 h-10 rounded-lg bg-brand-lavender/20 flex items-center justify-center text-brand-lavender-deep flex-shrink-0">
                   <Phone className="w-4 h-4" />
                 </span>
                 <div className="flex-1 min-w-0">
                   <p className="font-display font-bold text-sm text-white">Talk to a Real Person</p>
                   <p className="text-xs text-white/40">(503) 704-3755</p>
                 </div>
-                <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-brand-blue group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" />
+                <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-brand-lavender-deep group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" />
               </a>
 
               <div className="flex items-center gap-2 pt-2 px-1">

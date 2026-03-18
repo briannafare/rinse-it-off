@@ -215,7 +215,7 @@ export function Features() {
     <section className="py-24 md:py-32 bg-white">
       <div className="container-site">
         <div ref={headingRef} className="max-w-xl mb-14">
-          <h2 className="font-display font-extrabold text-display-lg text-text-primary leading-tight mb-4">
+          <h2 className="font-display font-bold text-display-lg text-text-primary leading-tight mb-4">
             How We <span className="font-serif font-normal italic text-brand-blue">Operate</span>
           </h2>
           <p className="text-text-secondary text-lg leading-relaxed">
@@ -225,7 +225,7 @@ export function Features() {
 
         <div ref={cardsRef} className="grid md:grid-cols-3 gap-5">
           {cards.map((card) => (
-            <div key={card.heading} className="group rounded-[2rem] bg-white border border-border-light p-6 md:p-7 shadow-soft hover:shadow-soft-lg transition-shadow duration-500">
+            <div key={card.heading} className="group rounded-[2rem] bg-white border border-border-light p-6 md:p-7 shadow-soft hover:shadow-soft-lg hover:border-brand-blue/15 transition-all duration-500">
               {card.content}
               <div className="mt-5 pt-5 border-t border-border-light">
                 <h3 className="font-display font-bold text-base text-text-primary mb-1.5">{card.heading}</h3>

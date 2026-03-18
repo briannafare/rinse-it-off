@@ -10,6 +10,7 @@ const SERVICES = [
     img: IMG.breezeway,
     alt: "Freshly pressure washed commercial breezeway with stone columns in Portland Oregon",
     span: "md:col-span-2 md:row-span-2",
+    tint: "group-hover:bg-brand-lavender/[0.08]",
   },
   {
     title: "Parking Lot & Surface Cleaning",
@@ -17,6 +18,7 @@ const SERVICES = [
     img: IMG.parkingLot,
     alt: "Rinse It Off crew cleaning a commercial parking lot with surface cleaner and hot water rig",
     span: "",
+    tint: "group-hover:bg-brand-peach/[0.10]",
   },
   {
     title: "Sidewalk & Curb Restoration",
@@ -24,6 +26,7 @@ const SERVICES = [
     img: IMG.curb,
     alt: "Freshly cleaned concrete curb and sidewalk with green grass in Portland",
     span: "",
+    tint: "group-hover:bg-brand-mint/[0.06]",
   },
   {
     title: "Storefront & Entrance Cleaning",
@@ -31,6 +34,7 @@ const SERVICES = [
     img: IMG.patio,
     alt: "Clean commercial patio entrance after pressure washing treatment",
     span: "",
+    tint: "group-hover:bg-brand-pink/[0.08]",
   },
   {
     title: "HOA & Multi-Unit Properties",
@@ -38,6 +42,7 @@ const SERVICES = [
     img: IMG.driveway,
     alt: "Clean driveway and building exterior at a property management site in Portland",
     span: "",
+    tint: "group-hover:bg-brand-lime/[0.08]",
   },
   {
     title: "Recurring Maintenance Programs",
@@ -45,6 +50,7 @@ const SERVICES = [
     img: IMG.walkway,
     alt: "Freshly cleaned commercial walkway and landscaping at a Portland property",
     span: "md:col-span-2",
+    tint: "group-hover:bg-brand-lavender/[0.06]",
   },
 ];
 
@@ -57,7 +63,7 @@ export function Services() {
       <div className="container-site">
         <div ref={headRef} className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-14">
           <div>
-            <h2 className="font-display font-extrabold text-display-lg text-text-primary max-w-lg leading-tight">
+            <h2 className="font-display font-bold text-display-lg text-text-primary max-w-lg leading-tight">
               Commercial Exterior <span className="font-serif font-normal italic text-brand-blue">Services</span>
             </h2>
           </div>
@@ -76,6 +82,8 @@ export function Services() {
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              {/* Pastel color tint — appears on hover */}
+              <div className={`absolute inset-0 transition-colors duration-700 ${svc.tint}`} />
               <div className="absolute inset-0 flex flex-col justify-between p-5 md:p-6">
                 <div className="flex justify-end">
                   <span className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/50 group-hover:bg-brand-mint group-hover:border-brand-mint group-hover:text-brand-black transition-all duration-300">

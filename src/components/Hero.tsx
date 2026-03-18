@@ -32,7 +32,7 @@ export function Hero() {
       </div>
 
       {/* Content — bottom-left third */}
-      <div ref={wrapRef} className="absolute inset-0 flex flex-col justify-end container-site pb-16 md:pb-24 lg:pb-28">
+      <div ref={wrapRef} className="absolute inset-0 flex flex-col justify-end container-site pt-28 pb-16 md:pb-24 lg:pb-28">
         <div className="max-w-3xl">
           <p data-hero className="text-white/50 text-sm font-mono tracking-wide mb-5">
             Commercial &amp; Residential Pressure Washing — Portland, OR
@@ -44,7 +44,15 @@ export function Hero() {
             <span className="relative inline-block">
               <span className="relative z-10">Dirty</span>
               <svg className="absolute -bottom-1 left-0 w-full h-3 z-0" viewBox="0 0 200 12" fill="none" preserveAspectRatio="none">
-                <path d="M2 8 C40 3, 80 10, 120 5 S180 9, 198 6" stroke="#4DFFA6" strokeWidth="3" strokeLinecap="round" fill="none" />
+                <defs>
+                  <linearGradient id="underline-grad" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#FFDBB0" />
+                    <stop offset="35%" stopColor="#DF99F7" />
+                    <stop offset="70%" stopColor="#ACAAFF" />
+                    <stop offset="100%" stopColor="#4DFFA6" />
+                  </linearGradient>
+                </defs>
+                <path d="M2 8 C40 3, 80 10, 120 5 S180 9, 198 6" stroke="url(#underline-grad)" strokeWidth="3" strokeLinecap="round" fill="none" />
               </svg>
             </span>{" "}
             Buildings<br />
@@ -56,7 +64,7 @@ export function Hero() {
           </p>
 
           <div data-hero className="flex flex-wrap items-center gap-4">
-            <a href="#contact" className="group inline-flex items-center gap-2 bg-brand-mint text-brand-black font-bold text-sm px-7 py-3.5 rounded-full shadow-glow-mint hover:shadow-glow-mint-lg hover:brightness-110 transition-all duration-300">
+            <a href="#contact" className="group inline-flex items-center gap-2 bg-brand-mint text-brand-black font-bold text-sm px-7 py-3.5 rounded-full shadow-glow-mint hover:shadow-glow-spectrum hover:brightness-110 transition-all duration-300">
               Get a Free Property Assessment
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </a>

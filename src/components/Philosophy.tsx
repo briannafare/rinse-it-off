@@ -42,11 +42,11 @@ export function Philosophy() {
           {w("Most pressure washing companies in Portland treat every surface the same way. One pressure setting, one nozzle, one speed. Your property is just another invoice.")}
         </p>
         <h2 ref={line2Ref} className="leading-[1.05] mb-10" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}>
-          {w("We match", "font-display font-extrabold text-white")}
-          <span className="inline-block mr-[0.3em] font-serif font-normal italic text-brand-mint">every method</span>
-          {w("to the surface. Hot water where it matters. Soft wash where it counts. And a", "font-display font-extrabold text-white")}
-          <span className="inline-block mr-[0.3em] font-serif font-normal italic text-brand-blue">maintenance plan</span>
-          {w("that keeps Portland weather from winning.", "font-display font-extrabold text-white")}
+          {w("We match", "font-display font-bold text-white")}
+          <span className="inline-block mr-[0.3em] font-serif font-normal italic text-brand-lavender">every method</span>
+          {w("to the surface. Hot water where it matters. Soft wash where it counts. And a", "font-display font-bold text-white")}
+          <span className="inline-block mr-[0.3em] font-serif font-normal italic text-brand-peach-warm">maintenance plan</span>
+          {w("that keeps Portland weather from winning.", "font-display font-bold text-white")}
         </h2>
         <div className="flex items-center gap-3 text-white/25 text-sm font-mono">
           <span className="w-8 h-px bg-brand-mint/30" />

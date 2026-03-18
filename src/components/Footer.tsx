@@ -2,7 +2,9 @@ import { Phone, Mail, MapPin } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-brand-dark text-white rounded-t-[3rem] md:rounded-t-[4rem] -mt-8 relative z-10">
+    <footer className="bg-brand-dark text-white rounded-t-[3rem] md:rounded-t-[4rem] -mt-8 relative z-10 overflow-hidden">
+      {/* Subtle spectrum line at top edge */}
+      <div className="h-px w-full" style={{ background: "linear-gradient(90deg, transparent 5%, #FFDBB0 20%, #DF99F7 40%, #ACAAFF 60%, #62C4EB 80%, transparent 95%)", opacity: 0.4 }} />
       <div className="container-site pt-16 md:pt-20 pb-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
           {/* Brand */}
