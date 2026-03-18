@@ -35,7 +35,7 @@ export function FAQ() {
           </div>
 
           <div className="lg:col-span-3">
-            <div className="bg-white rounded-3xl border border-border-light shadow-soft overflow-hidden">
+            <div className="bg-white rounded-3xl border border-border-light shadow-[0_4px_24px_rgba(255,219,176,0.15)] overflow-hidden">
               {FAQS.map((faq, i) => (
                 <div key={i} className="border-b border-border-light last:border-b-0">
                   <button onClick={() => setOpenIdx(openIdx === i ? -1 : i)} className="flex items-center justify-between w-full py-5 px-6 text-left group">

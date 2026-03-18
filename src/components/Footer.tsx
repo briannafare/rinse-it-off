@@ -63,7 +63,7 @@ export function Footer() {
             <p className="text-xs text-white/25 leading-relaxed mb-5">
               Accepting new commercial and residential clients in Portland metro.
             </p>
-            <a href="#contact" className="inline-flex items-center gap-2 px-5 py-2 bg-brand-mint text-brand-black text-xs font-bold rounded-full hover:brightness-110 transition-all">
+            <a href="#contact" className="inline-flex items-center gap-2 px-5 py-2 bg-white text-brand-black text-xs font-bold rounded-full shadow-[0_4px_20px_rgba(77,255,166,0.35)] hover:shadow-[0_4px_28px_rgba(77,255,166,0.5)] transition-all">
               Free Assessment →
             </a>
           </div>

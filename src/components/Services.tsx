@@ -75,7 +75,7 @@ export function Services() {
 
         <div ref={gridRef} className="grid md:grid-cols-4 gap-3 md:gap-4">
           {SERVICES.map((svc) => (
-            <div key={svc.title} className={`group relative overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer ${svc.span} ${svc.span.includes("row-span-2") ? "min-h-[320px] md:min-h-[480px]" : "min-h-[200px] md:min-h-[240px]"}`}>
+            <div key={svc.title} className={`group relative overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer transition-shadow duration-500 hover:shadow-[0_8px_40px_rgba(77,255,166,0.2)] ${svc.span} ${svc.span.includes("row-span-2") ? "min-h-[320px] md:min-h-[480px]" : "min-h-[200px] md:min-h-[240px]"}`}>
               <img
                 src={svc.img}
                 alt={svc.alt}

@@ -30,8 +30,8 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
       </div>
 
-      {/* pt-40 on desktop = 160px — well below the ~70px navbar */}
-      <div ref={wrapRef} className="absolute inset-0 flex flex-col justify-end container-site pt-36 md:pt-40 pb-16 md:pb-24 lg:pb-28">
+      {/* Content — starts well below the full-width navbar (which is ~72px) */}
+      <div ref={wrapRef} className="absolute inset-0 flex flex-col justify-end container-site pb-16 md:pb-24 lg:pb-28">
         <div className="max-w-3xl">
           <p data-hero className="text-white/50 text-sm font-mono tracking-wide mb-6">
             Commercial &amp; Residential Pressure Washing — Portland, OR
@@ -42,12 +42,10 @@ export function Hero() {
             We Make{" "}
             <span className="relative inline-block">
               Dirty
-              {/* Solid mint underline — not rainbow */}
               <span className="absolute left-0 right-0 -bottom-1 h-[3px] bg-brand-mint rounded-full" />
             </span>{" "}
-            Buildings
-            <br />
-            <span className="text-brand-mint">Clean.</span>
+            Buildings<br />
+            <span className="font-serif font-normal italic text-brand-blue">Clean.</span>
           </h1>
 
           <p data-hero className="text-white/60 text-lg md:text-xl max-w-lg leading-relaxed mb-8">
@@ -55,7 +53,8 @@ export function Hero() {
           </p>
 
           <div data-hero className="flex flex-wrap items-center gap-4">
-            <a href="#contact" className="group inline-flex items-center gap-2 bg-brand-mint text-brand-black font-bold text-sm px-7 py-3.5 rounded-full shadow-glow-mint hover:shadow-glow-mint-lg hover:brightness-110 transition-all duration-300">
+            {/* Neutral button with chunky neon shadow — like Framer site */}
+            <a href="#contact" className="group inline-flex items-center gap-2 bg-white text-brand-black font-bold text-sm px-7 py-3.5 rounded-full shadow-[0_4px_24px_rgba(77,255,166,0.4),0_0_60px_rgba(77,255,166,0.15)] hover:shadow-[0_4px_32px_rgba(77,255,166,0.55),0_0_80px_rgba(77,255,166,0.2)] transition-all duration-300">
               Get a Free Property Assessment
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </a>

@@ -15,7 +15,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.85);
+    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.15);
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
@@ -24,19 +24,21 @@ export function Navbar() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
-        <div className="container-site flex justify-center">
+        <div className={`mx-auto transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          scrolled ? "max-w-3xl px-0 mt-3" : "max-w-full px-0 mt-0"
+        }`}>
           <nav
-            className={`pointer-events-auto mt-3 md:mt-4 flex items-center justify-between rounded-full transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            className={`pointer-events-auto flex items-center justify-between transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               scrolled
-                ? "bg-white/95 backdrop-blur-2xl border border-black/[0.06] shadow-[0_2px_20px_rgba(0,0,0,0.06)] w-full px-4 md:px-8 py-3"
-                : "bg-white/[0.06] backdrop-blur-sm border border-white/[0.10] w-full px-4 md:px-8 py-3"
+                ? "bg-white/95 backdrop-blur-2xl border border-black/[0.06] shadow-[0_2px_20px_rgba(0,0,0,0.06)] rounded-full mx-4 px-5 md:px-6 py-2.5"
+                : "bg-black/20 backdrop-blur-sm border-b border-white/[0.08] rounded-none px-5 md:px-10 lg:px-16 py-4"
             }`}
           >
             <a href="/" className="flex-shrink-0">
               <img
                 src={scrolled ? "/logo-dark.png" : "/logo-white.png"}
                 alt="Rinse It Off"
-                className="h-8 md:h-10 w-auto transition-opacity duration-500"
+                className={`w-auto transition-all duration-500 ${scrolled ? "h-7 md:h-8" : "h-8 md:h-10"}`}
               />
             </a>
 
@@ -48,7 +50,7 @@ export function Navbar() {
                   className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                     scrolled
                       ? "text-text-secondary hover:text-text-primary hover:bg-black/[0.04]"
-                      : "text-white/70 hover:text-white hover:bg-white/[0.08]"
+                      : "text-white/70 hover:text-white hover:bg-white/[0.06]"
                   }`}
                 >
                   {link.label}
@@ -69,10 +71,10 @@ export function Navbar() {
 
               <a
                 href="#contact"
-                className={`hidden md:flex items-center gap-2 px-6 py-2.5 text-sm font-bold rounded-full transition-all duration-500 ${
+                className={`hidden md:flex items-center gap-2 px-5 py-2 text-sm font-bold rounded-full transition-all duration-500 ${
                   scrolled
                     ? "bg-brand-black text-white hover:bg-brand-dark"
-                    : "bg-brand-mint text-brand-black hover:brightness-110"
+                    : "bg-white text-brand-black hover:bg-white/90 shadow-[0_0_20px_rgba(77,255,166,0.35)]"
                 }`}
               >
                 Free Assessment
@@ -108,7 +110,7 @@ export function Navbar() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
-                className="text-3xl font-display font-bold text-text-primary hover:text-brand-blue transition-colors"
+                className="text-3xl font-display font-semibold text-text-primary hover:text-brand-blue transition-colors"
               >
                 {link.label}
               </motion.a>
@@ -119,7 +121,7 @@ export function Navbar() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="mt-6 bg-brand-mint text-brand-black font-bold px-8 py-3 rounded-full text-lg"
+              className="mt-6 bg-brand-black text-white font-bold px-8 py-3 rounded-full text-lg shadow-[0_0_24px_rgba(77,255,166,0.3)]"
             >
               Free Assessment →
             </motion.a>

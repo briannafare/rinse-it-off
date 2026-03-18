@@ -225,7 +225,7 @@ export function Features() {
 
         <div ref={cardsRef} className="grid md:grid-cols-3 gap-5">
           {cards.map((card) => (
-            <div key={card.heading} className="group rounded-[2rem] bg-white border border-border-light p-6 md:p-7 shadow-soft hover:shadow-soft-lg hover:border-brand-blue/15 transition-all duration-500">
+            <div key={card.heading} className="group rounded-[2rem] bg-white border border-border-light p-6 md:p-7 shadow-soft hover:shadow-[0_8px_40px_rgba(172,170,255,0.2)] hover:border-brand-lavender/20 transition-all duration-500">
               {card.content}
               <div className="mt-5 pt-5 border-t border-border-light">
                 <h3 className="font-display font-bold text-base text-text-primary mb-1.5">{card.heading}</h3>
