@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { NavHeader } from "@/components/nav/NavHeader";
-import { Footer } from "@/components/footer/Footer";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="bg-white text-text-primary font-body antialiased overflow-x-hidden">
-        <NavHeader />
+        <Navbar />
         <main>{children}</main>
         <Footer />
         {/* GHL_CHAT_WIDGET — replace with GHL embed code when ready */}

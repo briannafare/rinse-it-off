@@ -1,25 +1,23 @@
-import { Hero } from "@/components/sections/Hero";
-import { ServiceTicker } from "@/components/sections/ServiceTicker";
-import { CommercialServices } from "@/components/sections/CommercialServices";
-import { WhyClean } from "@/components/sections/WhyClean";
-import { Process } from "@/components/sections/Process";
-import { BeforeAfter } from "@/components/sections/BeforeAfter";
-import { ResidentialServices } from "@/components/sections/ResidentialServices";
-import { FAQ } from "@/components/sections/FAQ";
-import { CTASection } from "@/components/sections/CTASection";
+import { Hero } from "@/components/Hero";
+import { Features } from "@/components/Features";
+import { Services } from "@/components/Services";
+import { Philosophy } from "@/components/Philosophy";
+import { Process } from "@/components/Process";
+import { Residential } from "@/components/Residential";
+import { FAQ } from "@/components/FAQ";
+import { CTA } from "@/components/CTA";
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <ServiceTicker />
-      <CommercialServices />
-      <WhyClean />
+      <Features />
+      <Services />
+      <Philosophy />
       <Process />
-      <BeforeAfter />
-      <ResidentialServices />
+      <Residential />
       <FAQ />
-      <CTASection />
+      <CTA />
     </>
   );
 }

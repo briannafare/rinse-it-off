@@ -16,57 +16,14 @@
 
 @layer components {
   .container-site { @apply max-w-7xl mx-auto px-5 sm:px-6 lg:px-8; }
-  .section-gap { @apply py-20 md:py-28 lg:py-32; }
-  .overline { @apply text-[11px] font-bold tracking-overline uppercase text-brand-blue font-display inline-block; }
 
-  /* ── GRADIENT BACKGROUNDS ── */
-  .bg-hero-gradient {
-    background:
-      radial-gradient(ellipse at 70% 20%, rgba(98,196,235,0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 20% 80%, rgba(77,255,166,0.03) 0%, transparent 40%),
-      linear-gradient(180deg, #FFFFFF 0%, #F6FAFE 100%);
-  }
-  .bg-dark-section {
-    background:
-      radial-gradient(ellipse at 25% 40%, rgba(98,196,235,0.10) 0%, transparent 55%),
-      radial-gradient(ellipse at 75% 70%, rgba(77,255,166,0.04) 0%, transparent 45%),
-      linear-gradient(180deg, #0E1419 0%, #111920 100%);
-  }
-  .gradient-cta { background: linear-gradient(135deg, #62C4EB 0%, #4DFFA6 100%); }
-
-  /* ── GLASS ── */
-  .glass-light {
-    @apply bg-white/70 backdrop-blur-xl border border-white/60;
-  }
-
-  /* ── WATER WAVE DIVIDERS ── */
-  .wave-bottom-white {
-    position: relative;
-  }
-  .wave-bottom-white::after {
-    content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 72px; z-index: 5;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 72'%3E%3Cpath fill='%23ffffff' d='M0,56 C180,20 360,72 540,48 C720,24 900,64 1080,44 C1260,24 1380,56 1440,40 L1440,72 L0,72 Z'/%3E%3C/svg%3E") no-repeat bottom center / cover;
-  }
-  .wave-bottom-blue::after {
-    content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 72px; z-index: 5;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 72'%3E%3Cpath fill='%23F6FAFE' d='M0,56 C180,20 360,72 540,48 C720,24 900,64 1080,44 C1260,24 1380,56 1440,40 L1440,72 L0,72 Z'/%3E%3C/svg%3E") no-repeat bottom center / cover;
-  }
-  .wave-bottom-dark::after {
-    content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 72px; z-index: 5;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 72'%3E%3Cpath fill='%230E1419' d='M0,56 C180,20 360,72 540,48 C720,24 900,64 1080,44 C1260,24 1380,56 1440,40 L1440,72 L0,72 Z'/%3E%3C/svg%3E") no-repeat bottom center / cover;
-  }
-
-  /* ── TEXT UTILITIES ── */
+  /* ── TEXT ── */
   .text-gradient-blue {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, #62C4EB 0%, #3AA8D4 100%);
   }
-  .text-gradient-mint {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #4DFFA6 0%, #36D68B 100%);
-  }
 
-  /* ── PILLS / TAGS ── */
+  /* ── PILLS ── */
   .pill {
     @apply inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border;
   }
@@ -80,12 +37,9 @@
     @apply pill bg-transparent text-text-secondary border-border;
   }
 
-  /* ── INTERACTIVE ── */
-  .hover-lift { @apply transition-all duration-300 ease-out; }
-  .hover-lift:hover { transform: translateY(-6px); @apply shadow-card-hover; }
-
+  /* ── BUTTONS ── */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-7 py-3.5 bg-brand-black text-white text-sm font-semibold rounded-full 
+    @apply inline-flex items-center gap-2 px-7 py-3.5 bg-brand-black text-white text-sm font-semibold rounded-full
     hover:bg-brand-dark transition-all duration-300;
   }
   .btn-mint {
@@ -96,8 +50,8 @@
     @apply inline-flex items-center gap-2 px-7 py-3.5 border-2 border-brand-black text-brand-black text-sm font-semibold rounded-full
     hover:bg-brand-black hover:text-white transition-all duration-300;
   }
-  .btn-ghost {
-    @apply inline-flex items-center gap-2 text-sm font-semibold text-text-primary
-    hover:text-brand-blue transition-colors duration-300;
-  }
+
+  /* ── MISC ── */
+  .hover-lift { @apply transition-all duration-300 ease-out; }
+  .hover-lift:hover { transform: translateY(-6px); @apply shadow-card-hover; }
 }
