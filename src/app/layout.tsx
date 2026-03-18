@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
-import { Sora, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { NavHeader } from "@/components/nav/NavHeader";
-import { FooterFull } from "@/components/footer/FooterFull";
+import { Footer } from "@/components/footer/Footer";
 import "./globals.css";
-
-const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap", weight: ["400","500","600","700","800"] });
-const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap", weight: ["400","500","600","700"] });
-const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap", weight: ["400","700"] });
 
 export const metadata: Metadata = {
   title: { default: "Rinse It Off | Commercial Pressure Washing Portland OR", template: "%s | Rinse It Off" },
@@ -16,12 +11,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sora.variable} ${dmSans.variable} ${jetbrains.variable}`}>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="bg-white text-text-primary font-body antialiased overflow-x-hidden">
         <NavHeader />
         <main>{children}</main>
-        <FooterFull />
-        {/* GHL_CHAT_WIDGET */}
+        <Footer />
+        {/* GHL_CHAT_WIDGET — replace with GHL embed code when ready */}
       </body>
     </html>
   );

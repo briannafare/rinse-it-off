@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --font-sora: 'Sora', system-ui, sans-serif;
+    --font-dm-sans: 'DM Sans', system-ui, sans-serif;
+    --font-jetbrains: 'JetBrains Mono', monospace;
+  }
   html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
   body { @apply bg-white text-text-primary font-body; }
   ::selection { background: rgba(98,196,235,0.25); }
