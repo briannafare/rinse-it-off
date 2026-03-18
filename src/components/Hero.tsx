@@ -37,14 +37,15 @@ export function Hero() {
             Commercial &amp; Residential Pressure Washing — Portland, OR
           </p>
 
-          <h1 data-hero className="font-display font-semibold text-white leading-[0.95] mb-7"
-              style={{ fontSize: "clamp(2.6rem, 7vw, 5rem)", letterSpacing: "-0.025em" }}>
-            We Make{" "}
+          <h1 data-hero className="font-display font-bold text-white leading-[0.95] mb-7"
+              style={{ fontSize: "clamp(2.8rem, 7.5vw, 5.5rem)", letterSpacing: "-0.03em" }}>
+            We Make<br />
             <span className="relative inline-block">
-              Dirty
-              <span className="absolute left-0 right-0 -bottom-1 h-[3px] bg-brand-mint rounded-full" />
-            </span>{" "}
-            Buildings<br />
+              <span className="relative z-10">Dirty</span>
+              <svg className="absolute -bottom-1 left-0 w-full h-3 z-0" viewBox="0 0 200 12" fill="none" preserveAspectRatio="none">
+                <path d="M2 8 C40 3, 80 10, 120 5 S180 9, 198 6" stroke="#4DFFA6" strokeWidth="3" strokeLinecap="round" fill="none" />
+              </svg>
+            </span>{" "}Buildings<br />
             <span className="font-serif font-normal italic text-brand-blue">Clean.</span>
           </h1>
 
