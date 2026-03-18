@@ -22,21 +22,24 @@ export function Navbar() {
 
   return (
     <>
-      {/* Desktop floating pill */}
       <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
         <nav
-          className={`pointer-events-auto mt-4 md:mt-5 flex items-center gap-1 rounded-full px-2 py-2 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`pointer-events-auto mt-4 md:mt-5 flex items-center gap-1 rounded-full px-2.5 py-2 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             scrolled
               ? "bg-white/60 backdrop-blur-2xl border border-black/[0.06] shadow-[0_2px_24px_rgba(0,0,0,0.06)]"
               : "bg-white/[0.04] backdrop-blur-sm border border-white/[0.08]"
           }`}
         >
-          {/* Logo text */}
-          <a href="/" className={`px-4 py-1.5 font-display font-extrabold text-sm tracking-tight transition-colors duration-500 ${scrolled ? "text-text-primary" : "text-white"}`}>
-            Rinse It Off
+          {/* Logo — actual brand logo, swaps dark/light based on scroll */}
+          <a href="/" className="px-2 py-1 flex-shrink-0">
+            <img
+              src={scrolled ? "/logo-dark.png" : "/logo-white.png"}
+              alt="Rinse It Off"
+              className="h-7 md:h-8 w-auto transition-opacity duration-500"
+            />
           </a>
 
-          {/* Nav links — desktop */}
+          {/* Nav links */}
           <div className="hidden md:flex items-center">
             {LINKS.map((link) => (
               <a
@@ -66,7 +69,6 @@ export function Navbar() {
             <ArrowRight className="w-3 h-3" />
           </a>
 
-          {/* Phone — only when scrolled */}
           <a
             href="tel:+15037043755"
             className={`hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-full transition-all duration-500 ${
@@ -77,7 +79,6 @@ export function Navbar() {
             <span className="hidden xl:inline">(503) 704-3755</span>
           </a>
 
-          {/* Mobile toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className={`md:hidden p-2 rounded-full transition-colors ${scrolled ? "text-text-primary" : "text-white"}`}
@@ -88,7 +89,6 @@ export function Navbar() {
         </nav>
       </header>
 
-      {/* Mobile overlay */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -97,6 +97,8 @@ export function Navbar() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40 bg-white flex flex-col items-center justify-center gap-2"
           >
+            {/* Logo in mobile menu */}
+            <img src="/logo-dark.png" alt="Rinse It Off" className="h-10 w-auto mb-8" />
             {LINKS.map((link, i) => (
               <motion.a
                 key={link.href}

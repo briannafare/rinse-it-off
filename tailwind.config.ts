@@ -34,7 +34,7 @@ const config: Config = {
         border: { DEFAULT: "#E4ECF1", light: "#EFF4F7" },
       },
       fontFamily: {
-        display: ["var(--font-sora)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "system-ui", "sans-serif"],
         serif: ["var(--font-dm-serif)", "Georgia", "serif"],
         body: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-jetbrains)", "monospace"],

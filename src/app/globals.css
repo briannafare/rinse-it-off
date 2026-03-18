@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --font-sora: 'Sora', system-ui, sans-serif;
+    --font-display: 'Outfit', system-ui, sans-serif;
     --font-dm-sans: 'DM Sans', system-ui, sans-serif;
     --font-dm-serif: 'DM Serif Display', Georgia, serif;
     --font-jetbrains: 'JetBrains Mono', monospace;
