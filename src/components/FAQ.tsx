@@ -23,7 +23,7 @@ export function FAQ() {
       <div className="container-site">
         <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
           <div className="lg:col-span-2" ref={headRef}>
-            <h2 className="font-display font-semibold text-display-lg text-text-primary mb-4 leading-tight">
+            <h2 className="font-display font-semibold text-display-lg text-text-primary mb-3">
               Questions? <span className="font-serif font-normal italic text-brand-blue">Answered.</span>
             </h2>
             <p className="text-text-secondary text-lg leading-relaxed mb-4">

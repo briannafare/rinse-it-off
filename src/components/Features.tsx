@@ -215,7 +215,7 @@ export function Features() {
     <section className="py-24 md:py-32 bg-white">
       <div className="container-site">
         <div ref={headingRef} className="max-w-xl mb-14">
-          <h2 className="font-display font-semibold text-display-lg text-text-primary leading-tight mb-4">
+          <h2 className="font-display font-semibold text-display-lg text-text-primary mb-3">
             How We <span className="font-serif font-normal italic text-brand-blue">Operate</span>
           </h2>
           <p className="text-text-secondary text-lg leading-relaxed">

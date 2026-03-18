@@ -17,7 +17,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative h-[100dvh] min-h-[640px] overflow-hidden">
+    <section className="relative h-[100dvh] min-h-[700px] overflow-hidden">
       <div className="absolute inset-0">
         <img
           src={IMG.hero}
@@ -30,15 +30,22 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
       </div>
 
-      <div ref={wrapRef} className="absolute inset-0 flex flex-col justify-end container-site pt-32 md:pt-36 pb-16 md:pb-24 lg:pb-28">
+      {/* pt-40 on desktop = 160px — well below the ~70px navbar */}
+      <div ref={wrapRef} className="absolute inset-0 flex flex-col justify-end container-site pt-36 md:pt-40 pb-16 md:pb-24 lg:pb-28">
         <div className="max-w-3xl">
-          <p data-hero className="text-white/50 text-sm font-mono tracking-wide mb-5">
+          <p data-hero className="text-white/50 text-sm font-mono tracking-wide mb-6">
             Commercial &amp; Residential Pressure Washing — Portland, OR
           </p>
 
-          <h1 data-hero className="font-display font-bold text-white leading-[0.95] mb-6"
+          <h1 data-hero className="font-display font-semibold text-white leading-[0.95] mb-7"
               style={{ fontSize: "clamp(2.6rem, 7vw, 5rem)", letterSpacing: "-0.025em" }}>
-            We Make Dirty Buildings
+            We Make{" "}
+            <span className="relative inline-block">
+              Dirty
+              {/* Solid mint underline — not rainbow */}
+              <span className="absolute left-0 right-0 -bottom-1 h-[3px] bg-brand-mint rounded-full" />
+            </span>{" "}
+            Buildings
             <br />
             <span className="text-brand-mint">Clean.</span>
           </h1>

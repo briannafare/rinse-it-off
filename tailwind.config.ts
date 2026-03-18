@@ -47,9 +47,9 @@ const config: Config = {
       },
       fontSize: {
         hero: ["clamp(3rem, 8vw, 5.5rem)", { lineHeight: "1.0", letterSpacing: "-0.03em" }],
-        "display-lg": ["clamp(2.25rem, 5vw, 3.5rem)", { lineHeight: "1.08", letterSpacing: "-0.025em" }],
-        display: ["clamp(1.75rem, 3.5vw, 2.75rem)", { lineHeight: "1.12", letterSpacing: "-0.02em" }],
-        "display-sm": ["clamp(1.375rem, 2.5vw, 1.75rem)", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
+        "display-lg": ["clamp(2.25rem, 5vw, 3.5rem)", { lineHeight: "1.0", letterSpacing: "-0.025em" }],
+        display: ["clamp(1.75rem, 3.5vw, 2.75rem)", { lineHeight: "1.05", letterSpacing: "-0.02em" }],
+        "display-sm": ["clamp(1.375rem, 2.5vw, 1.75rem)", { lineHeight: "1.15", letterSpacing: "-0.01em" }],
       },
       letterSpacing: { overline: "0.1em" },
       borderRadius: { "2xl": "16px", "3xl": "24px", "4xl": "32px" },

@@ -23,70 +23,72 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-4 md:px-6">
-        <nav
-          className={`pointer-events-auto mt-3 md:mt-4 flex items-center justify-between rounded-full transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] w-full ${
-            scrolled
-              ? "bg-white/95 backdrop-blur-2xl border border-black/[0.06] shadow-[0_2px_20px_rgba(0,0,0,0.06)] max-w-5xl px-5 md:px-8 py-3"
-              : "bg-white/[0.06] backdrop-blur-sm border border-white/[0.10] max-w-4xl px-4 md:px-6 py-3"
-          }`}
-        >
-          <a href="/" className="flex-shrink-0">
-            <img
-              src={scrolled ? "/logo-dark.png" : "/logo-white.png"}
-              alt="Rinse It Off"
-              className="h-8 md:h-9 w-auto transition-opacity duration-500"
-            />
-          </a>
+      <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
+        <div className="container-site flex justify-center">
+          <nav
+            className={`pointer-events-auto mt-3 md:mt-4 flex items-center justify-between rounded-full transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              scrolled
+                ? "bg-white/95 backdrop-blur-2xl border border-black/[0.06] shadow-[0_2px_20px_rgba(0,0,0,0.06)] w-full px-4 md:px-8 py-3"
+                : "bg-white/[0.06] backdrop-blur-sm border border-white/[0.10] w-full px-4 md:px-8 py-3"
+            }`}
+          >
+            <a href="/" className="flex-shrink-0">
+              <img
+                src={scrolled ? "/logo-dark.png" : "/logo-white.png"}
+                alt="Rinse It Off"
+                className="h-8 md:h-10 w-auto transition-opacity duration-500"
+              />
+            </a>
 
-          <div className="hidden md:flex items-center gap-1">
-            {LINKS.map((link) => (
+            <div className="hidden md:flex items-center gap-1">
+              {LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+                    scrolled
+                      ? "text-text-secondary hover:text-text-primary hover:bg-black/[0.04]"
+                      : "text-white/70 hover:text-white hover:bg-white/[0.08]"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-3">
               <a
-                key={link.href}
-                href={link.href}
-                className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
-                  scrolled
-                    ? "text-text-secondary hover:text-text-primary hover:bg-black/[0.04]"
-                    : "text-white/70 hover:text-white hover:bg-white/[0.08]"
+                href="tel:+15037043755"
+                className={`hidden lg:flex items-center gap-2 text-sm font-medium transition-all duration-500 ${
+                  scrolled ? "text-text-secondary hover:text-text-primary" : "text-white/60 hover:text-white"
                 }`}
               >
-                {link.label}
+                <Phone className="w-3.5 h-3.5" />
+                (503) 704-3755
               </a>
-            ))}
-          </div>
 
-          <div className="flex items-center gap-3">
-            <a
-              href="tel:+15037043755"
-              className={`hidden lg:flex items-center gap-2 text-sm font-medium transition-all duration-500 ${
-                scrolled ? "text-text-secondary hover:text-text-primary" : "text-white/60 hover:text-white"
-              }`}
-            >
-              <Phone className="w-3.5 h-3.5" />
-              (503) 704-3755
-            </a>
+              <a
+                href="#contact"
+                className={`hidden md:flex items-center gap-2 px-6 py-2.5 text-sm font-bold rounded-full transition-all duration-500 ${
+                  scrolled
+                    ? "bg-brand-black text-white hover:bg-brand-dark"
+                    : "bg-brand-mint text-brand-black hover:brightness-110"
+                }`}
+              >
+                Free Assessment
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
 
-            <a
-              href="#contact"
-              className={`hidden md:flex items-center gap-2 px-5 py-2 text-sm font-bold rounded-full transition-all duration-500 ${
-                scrolled
-                  ? "bg-brand-black text-white hover:bg-brand-dark"
-                  : "bg-brand-mint text-brand-black hover:brightness-110"
-              }`}
-            >
-              Free Assessment
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
-
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className={`md:hidden p-2 rounded-full transition-colors ${scrolled ? "text-text-primary" : "text-white"}`}
-              aria-label="Menu"
-            >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
-        </nav>
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className={`md:hidden p-2 rounded-full transition-colors ${scrolled ? "text-text-primary" : "text-white"}`}
+                aria-label="Menu"
+              >
+                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
+          </nav>
+        </div>
       </header>
 
       <AnimatePresence>

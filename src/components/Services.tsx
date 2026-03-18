@@ -61,10 +61,11 @@ export function Services() {
   return (
     <section id="services" className="py-24 md:py-32 bg-surface-alt">
       <div className="container-site">
-        <div ref={headRef} className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-14">
+        <div ref={headRef} className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
           <div>
-            <h2 className="font-display font-semibold text-display-lg text-text-primary max-w-lg leading-tight">
-              Commercial Exterior <span className="font-serif font-normal italic text-brand-blue">Services</span>
+            <h2 className="font-display font-semibold text-display-lg text-text-primary max-w-lg">
+              Commercial Exterior{" "}
+              <span className="font-serif font-normal italic text-brand-blue">Services</span>
             </h2>
           </div>
           <p className="text-text-secondary text-base md:text-right max-w-sm leading-relaxed">
