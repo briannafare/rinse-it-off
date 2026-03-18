@@ -7,6 +7,7 @@ const LINKS = [
   { label: "Services", href: "#services" },
   { label: "Process", href: "#process" },
   { label: "FAQ", href: "#faq" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export function Navbar() {
@@ -22,30 +23,28 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-4">
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-4 md:px-6">
         <nav
-          className={`pointer-events-auto mt-4 md:mt-5 flex items-center justify-between rounded-full transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`pointer-events-auto mt-3 md:mt-4 flex items-center justify-between rounded-full transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] w-full ${
             scrolled
-              ? "bg-white/90 backdrop-blur-2xl border border-black/[0.06] shadow-[0_2px_24px_rgba(0,0,0,0.06)] px-4 md:px-6 py-2.5 w-full max-w-3xl"
-              : "bg-white/[0.06] backdrop-blur-sm border border-white/[0.10] px-3 md:px-5 py-2.5 w-auto"
+              ? "bg-white/95 backdrop-blur-2xl border border-black/[0.06] shadow-[0_2px_20px_rgba(0,0,0,0.06)] max-w-5xl px-5 md:px-8 py-3"
+              : "bg-white/[0.06] backdrop-blur-sm border border-white/[0.10] max-w-4xl px-4 md:px-6 py-3"
           }`}
         >
-          {/* Logo */}
-          <a href="/" className="px-1.5 py-0.5 flex-shrink-0">
+          <a href="/" className="flex-shrink-0">
             <img
               src={scrolled ? "/logo-dark.png" : "/logo-white.png"}
               alt="Rinse It Off"
-              className="h-7 md:h-8 w-auto transition-opacity duration-500"
+              className="h-8 md:h-9 w-auto transition-opacity duration-500"
             />
           </a>
 
-          {/* Nav links */}
-          <div className="hidden md:flex items-center gap-1 mx-4">
+          <div className="hidden md:flex items-center gap-1">
             {LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 ${
+                className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                   scrolled
                     ? "text-text-secondary hover:text-text-primary hover:bg-black/[0.04]"
                     : "text-white/70 hover:text-white hover:bg-white/[0.08]"
@@ -56,28 +55,27 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Right side */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <a
               href="tel:+15037043755"
-              className={`hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-full transition-all duration-500 ${
+              className={`hidden lg:flex items-center gap-2 text-sm font-medium transition-all duration-500 ${
                 scrolled ? "text-text-secondary hover:text-text-primary" : "text-white/60 hover:text-white"
               }`}
             >
-              <Phone className="w-3 h-3" />
+              <Phone className="w-3.5 h-3.5" />
               (503) 704-3755
             </a>
 
             <a
               href="#contact"
-              className={`hidden md:flex items-center gap-1.5 px-5 py-2 text-[13px] font-bold rounded-full transition-all duration-500 ${
+              className={`hidden md:flex items-center gap-2 px-5 py-2 text-sm font-bold rounded-full transition-all duration-500 ${
                 scrolled
                   ? "bg-brand-black text-white hover:bg-brand-dark"
                   : "bg-brand-mint text-brand-black hover:brightness-110"
               }`}
             >
               Free Assessment
-              <ArrowRight className="w-3 h-3" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </a>
 
             <button
@@ -108,7 +106,7 @@ export function Navbar() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
-                className="text-3xl font-display font-extrabold text-text-primary hover:text-brand-blue transition-colors"
+                className="text-3xl font-display font-bold text-text-primary hover:text-brand-blue transition-colors"
               >
                 {link.label}
               </motion.a>
@@ -118,7 +116,7 @@ export function Navbar() {
               onClick={() => setMobileOpen(false)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25 }}
+              transition={{ delay: 0.3 }}
               className="mt-6 bg-brand-mint text-brand-black font-bold px-8 py-3 rounded-full text-lg"
             >
               Free Assessment →
@@ -127,7 +125,7 @@ export function Navbar() {
               href="tel:+15037043755"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.35 }}
+              transition={{ delay: 0.4 }}
               className="mt-4 text-text-muted text-sm flex items-center gap-2"
             >
               <Phone className="w-4 h-4" /> (503) 704-3755

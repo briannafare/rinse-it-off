@@ -14,11 +14,11 @@ export function CTA() {
 
           <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center">
             <div>
-              <h2 className="font-display font-bold text-white leading-tight mb-5"
+              <h2 className="font-display font-semibold text-white leading-tight mb-5"
                   style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", letterSpacing: "-0.02em" }}>
                 Ready to make your property
                 <br />
-                <span className="font-serif font-normal italic text-brand-pink">look like new?</span>
+                <span className="font-serif font-normal italic text-brand-blue">look like new?</span>
               </h2>
               <p className="text-white/50 text-base leading-relaxed max-w-md">
                 Schedule a free property assessment. We walk the site, give you an honest quote, and never pressure you into anything.

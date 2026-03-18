@@ -16,8 +16,8 @@ export function Process() {
     <section id="process" className="py-24 md:py-32 bg-white">
       <div className="container-site">
         <div ref={headRef} className="max-w-xl mb-14">
-          <h2 className="font-display font-bold text-display-lg text-text-primary leading-tight mb-4">
-            Three Steps. <span className="font-serif font-normal italic text-brand-blue">No</span> Run-Around.
+          <h2 className="font-display font-semibold text-display-lg text-text-primary leading-tight mb-4">
+            Three Steps. <span className="text-brand-blue">No</span> Run-Around.
           </h2>
           <p className="text-text-secondary text-lg leading-relaxed">
             Straightforward process, honest pricing, real results.
