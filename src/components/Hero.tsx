@@ -60,8 +60,8 @@ export function Hero() {
             style={{ fontSize: "clamp(1.85rem, 5.25vw, 4.75rem)", letterSpacing: "-0.03em" }}
           >
             <span className="underline decoration-[#4DFFA6] decoration-[3px] underline-offset-[6px]">Exterior cleaning</span>{" "}
-            that keeps Portland{" "}
-            <span className="whitespace-nowrap">properties <span className="font-serif font-normal italic text-brand-blue">looking sharp.</span></span>
+            that keeps<br className="hidden sm:block" /> Portland properties{" "}
+            <span className="font-serif font-normal italic text-brand-blue">looking sharp.</span>
           </h1>
 
           {/* Subheadline */}

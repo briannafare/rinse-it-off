@@ -27,15 +27,16 @@ export function AudienceRouter() {
       <div className="container-site">
 
         {/* Section heading */}
-        <div ref={headingRef} className="text-center max-w-2xl mx-auto mb-14">
+        <div ref={headingRef} className="text-center max-w-3xl mx-auto mb-14">
           <p className="text-[11px] font-mono text-text-muted tracking-widest uppercase mb-4">
             Who We Serve
           </p>
           <h2
-            className="font-display font-semibold text-text-primary leading-tight"
+            className="font-display font-semibold text-text-primary leading-[1.05]"
             style={{ fontSize: "clamp(2rem, 5.5vw, 4.5rem)", letterSpacing: "-0.025em" }}
           >
-            Built for Portland properties{" "}
+            Built for Portland properties
+            <br className="hidden md:block" />
             <span className="font-serif font-normal italic text-brand-blue">of all kinds.</span>
           </h2>
         </div>
