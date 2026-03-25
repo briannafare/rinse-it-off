@@ -85,14 +85,14 @@ export function Differentiators() {
           {CARDS.map((card) => (
             <motion.div
               key={card.num}
-              className="group relative rounded-[1.75rem] flex flex-col p-8 md:p-9 overflow-hidden cursor-default"
+              className="group relative rounded-[2rem] flex flex-col p-8 md:p-9 overflow-hidden cursor-default"
               style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
               whileHover={{ y: -6 }}
               transition={{ type: "spring", stiffness: 280, damping: 22 }}
             >
               {/* Per-card hover glow — opacity driven by CSS group-hover */}
               <div
-                className="absolute inset-0 rounded-[1.75rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                className="absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                 style={{ boxShadow: `inset 0 0 48px ${card.glow}, 0 0 48px ${card.glow}`, border: `1px solid ${card.border}` }}
               />
 
@@ -111,20 +111,14 @@ export function Differentiators() {
                 {card.num}
               </span>
 
-              {/* Tag pill */}
-              <div className="relative mb-5">
-                <span
-                  className="inline-flex items-center gap-1.5 text-[10px] font-mono tracking-widest uppercase px-2.5 py-1 rounded-full"
-                  style={{
-                    color: card.accent,
-                    background: card.glow,
-                    border: `1px solid ${card.border}`,
-                  }}
-                >
-                  <span className="w-1 h-1 rounded-full shrink-0" style={{ background: card.accent }} />
-                  {card.tag}
-                </span>
-              </div>
+              {/* Category label — same eyebrow pattern used across the site */}
+              <p
+                className="relative flex items-center gap-1.5 text-[10px] font-mono tracking-widest uppercase mb-5"
+                style={{ color: card.accent }}
+              >
+                <span className="w-1 h-1 rounded-full shrink-0" style={{ background: card.accent }} />
+                {card.tag}
+              </p>
 
               {/* Title */}
               <h3
