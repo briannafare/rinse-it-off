@@ -57,7 +57,7 @@ export function Hero() {
           <h1
             data-hero
             className="font-display font-bold text-white leading-[1.05] mb-5 text-pretty"
-            style={{ fontSize: "clamp(1.85rem, 6.5vw, 6rem)", letterSpacing: "-0.03em" }}
+            style={{ fontSize: "clamp(1.85rem, 5.25vw, 4.75rem)", letterSpacing: "-0.03em" }}
           >
             <span className="underline decoration-[#4DFFA6] decoration-[3px] underline-offset-[6px]">Exterior cleaning</span>{" "}
             that keeps Portland{" "}

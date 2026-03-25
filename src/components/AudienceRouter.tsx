@@ -33,7 +33,7 @@ export function AudienceRouter() {
           </p>
           <h2
             className="font-display font-semibold text-text-primary leading-tight"
-            style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)", letterSpacing: "-0.025em" }}
+            style={{ fontSize: "clamp(2rem, 5.5vw, 4.5rem)", letterSpacing: "-0.025em" }}
           >
             Built for Portland properties{" "}
             <span className="font-serif font-normal italic text-brand-blue">of all kinds.</span>

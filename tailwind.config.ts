@@ -21,7 +21,8 @@ const config: Config = {
           pink: "#DF99F7",
           lime: "#DAFF99",
           black: "#3A3936",
-          dark: "#0E1419",
+          dark: "#3A3936",
+          darker: "#2A2927",
         },
         surface: {
           DEFAULT: "#FFFFFF",
