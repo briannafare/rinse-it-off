@@ -1,4 +1,5 @@
 import { Hero } from "@/components/Hero";
+import { AudienceRouter } from "@/components/AudienceRouter";
 import { Features } from "@/components/Features";
 import { Services } from "@/components/Services";
 import { Philosophy } from "@/components/Philosophy";
@@ -11,6 +12,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <AudienceRouter />
       <Features />
       <Services />
       <Philosophy />
