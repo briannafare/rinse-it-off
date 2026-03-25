@@ -1,5 +1,6 @@
 import { Hero } from "@/components/Hero";
 import { AudienceRouter } from "@/components/AudienceRouter";
+import { Differentiators } from "@/components/Differentiators";
 import { Features } from "@/components/Features";
 import { Services } from "@/components/Services";
 import { Philosophy } from "@/components/Philosophy";
@@ -13,6 +14,7 @@ export default function HomePage() {
     <>
       <Hero />
       <AudienceRouter />
+      <Differentiators />
       <Features />
       <Services />
       <Philosophy />
