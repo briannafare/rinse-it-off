@@ -46,7 +46,7 @@ export function Hero() {
         ref={wrapRef}
         className="absolute inset-0 flex flex-col items-center justify-center text-center px-5 sm:px-8"
       >
-        <div className="w-full max-w-[700px]">
+        <div className="w-full max-w-[700px] md:max-w-[920px]">
 
           {/* Eyebrow */}
           <p data-hero className="text-white/45 text-[11px] font-mono tracking-widest uppercase mb-5">
@@ -56,10 +56,11 @@ export function Hero() {
           {/* Headline */}
           <h1
             data-hero
-            className="font-display font-bold text-white leading-[1.05] mb-5"
-            style={{ fontSize: "clamp(2rem, 5.5vw, 4rem)", letterSpacing: "-0.03em" }}
+            className="font-display font-bold text-white leading-[1.05] mb-5 text-pretty"
+            style={{ fontSize: "clamp(1.85rem, 5.25vw, 4.75rem)", letterSpacing: "-0.03em" }}
           >
-            Exterior cleaning that keeps<br className="hidden sm:block" /> Portland properties{" "}
+            <span className="underline decoration-[#4DFFA6] decoration-[3px] underline-offset-[6px]">Exterior cleaning</span>{" "}
+            that keeps Portland properties{" "}
             <span className="font-serif font-normal italic text-brand-blue">looking sharp.</span>
           </h1>
 
