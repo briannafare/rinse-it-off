@@ -8,27 +8,27 @@ const STEPS = [
   {
     num: "01",
     title: "Property Assessment",
-    desc: "We walk your site, identify problem areas, assess surface types, and determine the right cleaning methods. No generic quotes — every property is different.",
+    desc: "We review the site, identify problem areas, assess surface types, and determine the right cleaning approach.",
     icon: <ClipboardCheck className="w-6 h-6" />,
-    detail: "Surface analysis • Problem mapping • Method matching",
+    bullets: ["Surface & material evaluation", "Problem area identification", "Method matching per surface"],
     color: "bg-brand-peach",
     shadowColor: "shadow-[0_8px_30px_rgba(255,219,176,0.35)]",
   },
   {
     num: "02",
-    title: "Custom Plan & Quote",
-    desc: "You get a written scope, schedule, and price. We break down exactly what we're doing, when, and what it costs. No surprises, no padding, no fine print.",
+    title: "Custom Scope & Quote",
+    desc: "You get a written scope, schedule, and price with clear recommendations based on the property and service needs.",
     icon: <FileText className="w-6 h-6" />,
-    detail: "Scope documentation • Schedule • Transparent pricing",
+    bullets: ["Written scope of work", "Itemized schedule", "Transparent, no-surprise pricing"],
     color: "bg-brand-lavender",
     shadowColor: "shadow-[0_8px_30px_rgba(219,215,255,0.4)]",
   },
   {
     num: "03",
     title: "We Show Up & Deliver",
-    desc: "On time, every time. Your property looks like new when we leave, and we set up a maintenance schedule so it stays that way through Portland's 164 days of rain.",
+    desc: "We complete the work professionally and can recommend a recurring maintenance cadence if the property needs ongoing upkeep.",
     icon: <Sparkles className="w-6 h-6" />,
-    detail: "On-time arrival • Full cleanup • Maintenance plan",
+    bullets: ["On-time arrival", "Full cleanup", "Recurring options available"],
     color: "bg-brand-lime",
     shadowColor: "shadow-[0_8px_30px_rgba(218,255,153,0.35)]",
   },
@@ -54,15 +54,15 @@ export function Process() {
   return (
     <section id="process" className="py-24 md:py-32 bg-white">
       <div className="container-site">
-        <div ref={headRef} className="max-w-xl mb-10">
-          <h2 className="font-display font-semibold text-display-lg text-text-primary mb-3">
-            Three Steps.{" "}
-            <span className="font-serif font-normal italic text-brand-blue">No</span>{" "}
-            Run-Around.
+        <div ref={headRef} className="max-w-2xl mb-10">
+          <h2
+            className="font-display font-semibold text-text-primary leading-tight"
+            style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)", letterSpacing: "-0.025em" }}
+          >
+            Simple process. Clear scope.
+            <br className="hidden md:block" />
+            <span className="font-serif font-normal italic text-brand-blue">No one-size-fits-all washing.</span>
           </h2>
-          <p className="text-text-secondary text-lg leading-relaxed">
-            Straightforward process, honest pricing, real results.
-          </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
@@ -86,12 +86,7 @@ export function Process() {
                     <span className={`font-mono text-xs font-bold ${active === i ? "text-brand-black" : "text-text-muted"}`}>{step.num}</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-display font-semibold text-lg text-text-primary mb-1">{step.title}</h3>
-                    <p className={`text-sm leading-relaxed transition-all duration-500 overflow-hidden ${
-                      active === i ? "text-text-secondary max-h-40 opacity-100" : "text-text-muted max-h-0 opacity-0"
-                    }`}>
-                      {step.desc}
-                    </p>
+                    <h3 className="font-display font-semibold text-lg text-text-primary">{step.title}</h3>
                   </div>
                   {/* Arrow */}
                   <ArrowRight className={`w-4 h-4 flex-shrink-0 mt-1 transition-all duration-300 ${
@@ -129,14 +124,15 @@ export function Process() {
                   </p>
                 </div>
 
-                {/* Bottom — detail tags */}
-                <div className="mt-8 flex flex-wrap gap-2">
-                  {STEPS[active].detail.split(" • ").map((tag) => (
-                    <span key={tag} className="px-3 py-1 rounded-full bg-brand-black/[0.06] text-brand-black/70 text-xs font-medium">
-                      {tag}
-                    </span>
+                {/* Bottom — bullet list */}
+                <ul className="mt-8 space-y-2">
+                  {STEPS[active].bullets.map((item) => (
+                    <li key={item} className="flex items-center gap-2.5 text-sm text-brand-black/60">
+                      <span className="w-1.5 h-1.5 rounded-full bg-brand-black/30 shrink-0" />
+                      {item}
+                    </li>
                   ))}
-                </div>
+                </ul>
 
                 {/* Progress bar */}
                 <div className="mt-6 h-1 bg-brand-black/[0.08] rounded-full overflow-hidden">
