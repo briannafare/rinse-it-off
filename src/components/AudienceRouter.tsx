@@ -134,7 +134,7 @@ export function AudienceRouter() {
               {/* CTA */}
               <a
                 href="#services"
-                className="group/btn self-start inline-flex items-center gap-2 bg-brand-black text-white font-bold text-sm px-6 py-3 rounded-full hover:bg-emerald-800 transition-all duration-300 shadow-[0_0_20px_rgba(77,255,166,0.18)]"
+                className="group/btn self-start inline-flex items-center gap-2 bg-brand-blue text-brand-black font-bold text-sm px-6 py-3 rounded-full hover:bg-brand-blue-dark hover:text-white transition-all duration-300 shadow-[0_0_20px_rgba(98,196,235,0.25)]"
               >
                 Explore Residential
                 <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5" />
