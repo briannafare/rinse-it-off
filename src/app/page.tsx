@@ -1,6 +1,4 @@
 import { Hero } from "@/components/Hero";
-import { TrustBar } from "@/components/TrustBar";
-import { SupportingLine } from "@/components/SupportingLine";
 import { Features } from "@/components/Features";
 import { Services } from "@/components/Services";
 import { Philosophy } from "@/components/Philosophy";
@@ -13,8 +11,6 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <TrustBar />
-      <SupportingLine />
       <Features />
       <Services />
       <Philosophy />
