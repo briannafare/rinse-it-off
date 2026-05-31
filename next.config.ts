@@ -4,17 +4,6 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
-  async rewrites() {
-    return {
-      beforeFiles: [
-        {
-          source: "/:path*",
-          destination: "/training",
-          has: [{ type: "host", value: "training.rinseitoff.com" }],
-        },
-      ],
-    };
-  },
 };
 
 export default nextConfig;
