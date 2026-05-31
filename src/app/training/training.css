@@ -592,29 +592,82 @@
   .mobile-header { display: flex; }
 }
 
-/* Back button */
+/* Back button — pearlescent */
 .back-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 7px;
   font-size: 13px;
   font-weight: 500;
-  color: var(--ink-2);
+  color: var(--ink);
   cursor: pointer;
   padding: 8px 14px;
   margin-bottom: 20px;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-  background: #fff;
-  border: 1.5px solid var(--line);
+  border: 1.5px solid rgba(180, 190, 210, 0.55);
   border-radius: 8px;
   font-family: var(--font-text);
+  background:
+    linear-gradient(
+      115deg,
+      #fdfbff 0%,
+      #f4e8f5 14%,
+      #e8f0fb 28%,
+      #ecfaf2 42%,
+      #fff5e6 56%,
+      #f1e6fb 70%,
+      #e6f4fb 84%,
+      #fdfbff 100%
+    );
+  background-size: 320% 320%;
+  animation: pearlescent-shift 11s ease-in-out infinite;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1px 0 rgba(150, 160, 180, 0.12),
+    0 1px 2px rgba(20, 24, 27, 0.04);
+  overflow: hidden;
+  isolation: isolate;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.back-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 70%
+  );
+  background-size: 220% 100%;
+  animation: pearlescent-gloss 9s ease-in-out infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: -1;
 }
 .back-btn:hover {
-  background: var(--paper-2);
-  border-color: var(--ink-3);
-  color: var(--ink);
+  border-color: rgba(140, 150, 180, 0.7);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(150, 160, 180, 0.15),
+    0 4px 10px rgba(120, 130, 180, 0.18);
 }
-.back-btn svg { width: 15px; height: 15px; }
+.back-btn svg { width: 15px; height: 15px; position: relative; z-index: 1; }
+
+@keyframes pearlescent-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes pearlescent-gloss {
+  0%, 100% { background-position: 130% 0; }
+  50%      { background-position: -30% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .back-btn { animation: none; }
+  .back-btn::before { animation: none; }
+}
 
 /* Completion banner */
 .completion-banner {
