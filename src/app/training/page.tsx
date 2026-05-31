@@ -28,6 +28,7 @@ const Icons = {
   phone: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>,
   mail: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
   reset: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>,
+  lock: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
   sparkle: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>,
   menu: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>,
   notebook: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
@@ -321,11 +322,11 @@ function ModuleView({ module, completedLessons, onToggleLesson, onBack }: {
           </div>
         )}
         {module.notebookUrl && (
-          <a href={module.notebookUrl} target="_blank" rel="noopener noreferrer" className="timer-btn secondary"
-            style={{ marginTop: 16, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ width: 16, height: 16, display: 'inline-flex' }}>{Icons.notebook}</span>
-            Open in NotebookLM
-            <span style={{ width: 14, height: 14, display: 'inline-flex', opacity: 0.5 }}>{Icons.externalLink}</span>
+          <a href={module.notebookUrl} target="_blank" rel="noopener noreferrer"
+            style={{ marginTop: 16, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--ink-3)', fontWeight: 400 }}>
+            <span style={{ width: 14, height: 14, display: 'inline-flex' }}>{Icons.lock}</span>
+            Open in NotebookLM — RIO login required
+            <span style={{ width: 13, height: 13, display: 'inline-flex', opacity: 0.5 }}>{Icons.externalLink}</span>
           </a>
         )}
       </div>
@@ -363,9 +364,14 @@ function ModuleView({ module, completedLessons, onToggleLesson, onBack }: {
                     {les.duration}
                   </span>
                   {link && (
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 3, color: 'var(--electric)', fontSize: 12, fontWeight: 500 }}>
-                      Open <span style={{ width: 11, height: 11, display: 'inline-flex' }}>{Icons.externalLink}</span>
-                    </span>
+                    les.type === 'notebook'
+                      ? <span style={{ display: 'flex', alignItems: 'center', gap: 3, color: 'var(--ink-3)', fontSize: 12, fontWeight: 400 }}>
+                          <span style={{ width: 11, height: 11, display: 'inline-flex' }}>{Icons.lock}</span>
+                          RIO login required
+                        </span>
+                      : <span style={{ display: 'flex', alignItems: 'center', gap: 3, color: 'var(--electric)', fontSize: 12, fontWeight: 500 }}>
+                          Open <span style={{ width: 11, height: 11, display: 'inline-flex' }}>{Icons.externalLink}</span>
+                        </span>
                   )}
                 </div>
               </div>
@@ -458,16 +464,17 @@ function ResourceLibraryView({ onBack }: { onBack: () => void }) {
 
       <div className="section-label">Master Knowledge Base</div>
       <a href="https://notebooklm.google.com/notebook/1f6cfdc0-3a1a-45d6-9e05-48e32c8a7265" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-        <div className="module-card" style={{ borderColor: 'rgba(69,123,241,0.2)', background: 'rgba(69,123,241,0.02)' }}>
-          <div className="module-card-icon" style={{ background: 'rgba(69,123,241,0.08)' }}>
-            <span style={{ width: 24, height: 24, display: 'flex', color: '#457BF1' }}>{Icons.sparkle}</span>
+        <div className="module-card">
+          <div className="module-card-icon" style={{ background: 'var(--paper-2)' }}>
+            <span style={{ width: 24, height: 24, display: 'flex', color: 'var(--ink-3)' }}>{Icons.sparkle}</span>
           </div>
           <div className="module-card-info">
             <div className="module-card-name">RIO Master Knowledge Base</div>
             <div className="module-card-desc">Ask any question about RIO — AI-powered reference in NotebookLM</div>
           </div>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 13, fontWeight: 500, color: 'var(--electric)' }}>
-            Open <span style={{ width: 14, height: 14, display: 'inline-flex' }}>{Icons.externalLink}</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: 'var(--ink-3)', fontWeight: 400 }}>
+            <span style={{ width: 13, height: 13, display: 'inline-flex' }}>{Icons.lock}</span>
+            RIO login required
           </span>
         </div>
       </a>
@@ -511,8 +518,9 @@ function ResourceLibraryView({ onBack }: { onBack: () => void }) {
                 </div>
                 <div style={{ fontSize: 13, color: 'var(--ink-3)', marginTop: 2 }}>{mod.subtitle}</div>
               </div>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 500, color: 'var(--electric)', flexShrink: 0 }}>
-                NotebookLM <span style={{ width: 12, height: 12, display: 'inline-flex' }}>{Icons.externalLink}</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: 'var(--ink-3)', fontWeight: 400, flexShrink: 0 }}>
+                <span style={{ width: 12, height: 12, display: 'inline-flex' }}>{Icons.lock}</span>
+                RIO login required
               </span>
             </div>
           </a>
