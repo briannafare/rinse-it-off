@@ -9,6 +9,7 @@ import {
   QUICK_REFERENCE,
   type TrainingModule,
   type Lesson,
+  type MediaAsset,
 } from './data';
 
 // ---- Icons ----
@@ -289,6 +290,67 @@ function DashboardView({ modules, completedLessons, onNavigate }: {
   );
 }
 
+// ---- Media Asset Card (inline embed) ----
+function MediaAssetCard({ asset }: { asset: MediaAsset }) {
+  const [expanded, setExpanded] = useState(false);
+  const tc = typeConfig[asset.type] || typeConfig.reference;
+  const embedSrc = `https://drive.google.com/file/d/${asset.driveId}/preview`;
+  const openUrl = `https://drive.google.com/file/d/${asset.driveId}/view`;
+
+  const iframeHeight =
+    asset.type === 'audio' ? 80 :
+    asset.type === 'video' ? 460 :
+    asset.type === 'pdf' ? 620 :
+    520;
+
+  const ctaLabel =
+    asset.type === 'audio' ? 'Listen' :
+    asset.type === 'video' ? 'Watch' :
+    asset.type === 'pdf' ? 'Read' :
+    'View';
+
+  return (
+    <div className="media-asset">
+      <div className="media-asset-row" onClick={() => setExpanded(e => !e)}>
+        <div className="media-asset-icon" style={{ background: tc.bg, color: tc.color }}>
+          <span style={{ width: 18, height: 18, display: 'inline-flex' }}>{tc.icon}</span>
+        </div>
+        <div className="media-asset-info">
+          <div className="media-asset-title">{asset.title}</div>
+          {asset.description && <div className="media-asset-desc">{asset.description}</div>}
+          <div className="lesson-meta" style={{ marginTop: 6 }}>
+            <span className="lesson-tag" style={{ background: tc.bg, color: tc.color }}>
+              <span style={{ width: 11, height: 11, display: 'inline-flex' }}>{tc.icon}</span>
+              {tc.label}
+            </span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 3, color: 'var(--electric)', fontSize: 12, fontWeight: 500 }}>
+              {expanded ? 'Hide' : `${ctaLabel} here`}
+            </span>
+          </div>
+        </div>
+      </div>
+      {expanded && (
+        <div className="media-asset-embed">
+          <iframe
+            src={embedSrc}
+            width="100%"
+            height={iframeHeight}
+            allow="autoplay; encrypted-media; fullscreen"
+            allowFullScreen
+            style={{ border: 0, borderRadius: 10, background: '#000' }}
+            title={asset.title}
+          />
+          <div style={{ marginTop: 8, fontSize: 12, color: 'var(--ink-3)' }}>
+            Trouble playing? <a href={openUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--electric)', textDecoration: 'none' }}>
+              Open in a new tab
+            </a>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ---- Module Detail View ----
 function ModuleView({ module, completedLessons, onToggleLesson, onBack }: {
   module: TrainingModule;
@@ -330,6 +392,17 @@ function ModuleView({ module, completedLessons, onToggleLesson, onBack }: {
           </a>
         )}
       </div>
+
+      {module.mediaAssets && module.mediaAssets.length > 0 && (
+        <>
+          <div className="section-label">Watch & Listen</div>
+          <div className="media-list">
+            {module.mediaAssets.map((asset) => (
+              <MediaAssetCard key={asset.id} asset={asset} />
+            ))}
+          </div>
+        </>
+      )}
 
       <div className="section-label">Lessons & Resources</div>
       <div className="lesson-list">

@@ -8,6 +8,16 @@ export interface Lesson {
   driveId?: string;
 }
 
+export type MediaType = 'audio' | 'video' | 'image' | 'pdf';
+
+export interface MediaAsset {
+  id: string;
+  title: string;
+  description?: string;
+  type: MediaType;
+  driveId: string;
+}
+
 export interface TrainingModule {
   id: string;
   number: string;
@@ -19,6 +29,7 @@ export interface TrainingModule {
   notebookUrl?: string;
   description: string;
   lessons: Lesson[];
+  mediaAssets?: MediaAsset[];
 }
 
 export interface Resource {
@@ -50,6 +61,14 @@ export const TRAINING_MODULES: TrainingModule[] = [
       { id: 'm1-l5', title: 'Commercial Field Guide', description: 'Commercial standards, hot water degreasing, environmental compliance, parking lots', duration: '20 min', type: 'doc', driveId: '1BFgNS0GKjGeSKo4nB7bU1u3nSsGxyZYh' },
       { id: 'm1-l6', title: 'Daily Truck & Equipment Checklist', description: 'Pre-departure checklist — never skip this step', duration: '5 min', type: 'checklist' },
     ],
+    mediaAssets: [
+      { id: 'm1-a1', title: 'Built for the Job', description: 'How RIO\'s equipment is purpose-built for commercial exterior work', type: 'video', driveId: '1301_NnYJRK7Vi0aePCgLlvmLLXwQJnmx' },
+      { id: 'm1-a2', title: 'Portland vs. The Pacific Northwest', description: 'Why our climate demands a different approach', type: 'video', driveId: '1l_4PO3bGgscRIAvVhXoMHAJ9EkpVKl2E' },
+      { id: 'm1-a3', title: 'Why your building is being eaten alive', description: 'The biological growth problem every Portland building faces', type: 'audio', driveId: '1qOo83-TDa_JN-OWXS0Fy4EX5U7S2gKtU' },
+      { id: 'm1-a4', title: 'Beating Portland\'s relentless biological growth', description: 'How RIO\'s methodology stops algae, moss, and mildew', type: 'audio', driveId: '1QwwCWTlIkM6zN301fZ1rI-hphjkDBJM3' },
+      { id: 'm1-a5', title: 'Portland Biological Growth Cycle', description: 'Visual reference — the year-round growth pattern', type: 'image', driveId: '18FiKLBLU0jBG-whV3wJ6csDRg3DQFoJo' },
+      { id: 'm1-a6', title: 'Professional Method-Matching Cleaning Services', description: 'The differentiator visualized', type: 'image', driveId: '1So03kx6BztKAT3IRnzLFga6Hllm4jgbE' },
+    ],
   },
   {
     id: 'module-2',
@@ -66,6 +85,10 @@ export const TRAINING_MODULES: TrainingModule[] = [
       { id: 'm2-l2', title: 'Portland Competitive Landscape', description: 'SNUGS, PDX ProWash, and others — how to position against each', duration: '15 min', type: 'doc', driveId: '1VvekBZb8o9W6XGVwkTsrApET6N4Waf94WJ6tZTMcw-Q' },
       { id: 'm2-l3', title: 'Commercial vs. Residential Sales', description: 'Different approaches for different property types and decision makers', duration: '12 min', type: 'pdf', driveId: '1OHicwS92hajXWZJjP_DwzWNY8VVxIO8u' },
       { id: 'm2-l4', title: 'Brand Voice & Messaging', description: 'Professional. Direct. No-fluff. How to speak the RIO brand.', duration: '8 min', type: 'reference' },
+    ],
+    mediaAssets: [
+      { id: 'm2-a1', title: 'The assessment is the sale', description: 'Why the property walkthrough is your highest-leverage moment', type: 'audio', driveId: '1B0ewsKQhr3Gany-P05zhwMD8tltZ-FdA' },
+      { id: 'm2-a2', title: 'Sales Flashcards', description: 'Quick-reference visual — talk tracks and key facts', type: 'image', driveId: '1at3-jGciqybJZ99ZEyC8WvcyZoQpgjOk' },
     ],
   },
   {
@@ -85,6 +108,11 @@ export const TRAINING_MODULES: TrainingModule[] = [
       { id: 'm3-l4', title: 'Why Pressure Washing Runoff Triggers EPA Fines', description: 'NotebookLM audio deep dive on environmental compliance', duration: '15 min', type: 'audio', driveId: '1QdcCPD-B97Nv4OqCM7m_9U8bMbiOnFC4' },
       { id: 'm3-l5', title: 'Portland Climate & Environmental Compliance', description: 'City Code 17.39, Mobile Washer Discharge Authorization, containment', duration: '10 min', type: 'reference' },
     ],
+    mediaAssets: [
+      { id: 'm3-a1', title: 'The Physics of Failure', description: 'What goes wrong when pressure, temperature, or chemistry is mismatched', type: 'video', driveId: '1gEC2jhPeVZAuQ5xZL7pcmrwAlfJwk3Lv' },
+      { id: 'm3-a2', title: 'Method-matching for commercial exterior cleaning', description: 'Audio deep dive — how to assess and choose the right approach', type: 'audio', driveId: '14w1ruev4cJDqdFx76zShoHfcc1bMetDu' },
+      { id: 'm3-a3', title: 'The assessment is the sale', description: 'Pre-cleaning surface evaluation as the close', type: 'audio', driveId: '1C-zU1xsrN5lODVtP4RN4CDJsP6nxw3Hf' },
+    ],
   },
   {
     id: 'module-4',
@@ -102,6 +130,11 @@ export const TRAINING_MODULES: TrainingModule[] = [
       { id: 'm4-l3', title: 'Prospecting & Pipeline Tools', description: 'Neighboring contract approach, CRM documentation, follow-up cadence', duration: '15 min', type: 'pdf', driveId: '1UhdV-ZhWB_eAi5G9w8B3C8s2aMuZEtXp' },
       { id: 'm4-l4', title: 'The 30-Second Elevator Speech', description: 'Soft washing explained cold — memorize this', duration: '5 min', type: 'practice' },
     ],
+    mediaAssets: [
+      { id: 'm4-a1', title: 'The RIO Psychological Cold Calling Playbook', description: 'Audio playbook on the mindset and script structure that works', type: 'audio', driveId: '1Jeezp41jlRZMh0796H6YZMKYsaGhe-ip' },
+      { id: 'm4-a2', title: 'Precision Prospecting', description: 'PDF guide — how to identify and approach high-value targets', type: 'pdf', driveId: '1akWVsLNEB7LbvzMNCtxJeyRBBc0NCeyW' },
+      { id: 'm4-a3', title: 'Five-Step Pre-Call Sales Checklist', description: 'Visual checklist for every call', type: 'image', driveId: '1ym7eoy0QWjmZ2jjbWVS0SHWLtEBrmDpx' },
+    ],
   },
   {
     id: 'module-5',
@@ -117,6 +150,12 @@ export const TRAINING_MODULES: TrainingModule[] = [
       { id: 'm5-l1', title: 'Property Assessment Walkthrough', description: 'The 5-stage process: arrive, walk, document, present, follow up', duration: '20 min', type: 'notebook', driveUrl: 'https://notebooklm.google.com/notebook/7224de8b-1dce-437f-9b15-c3bbe4eb069b' },
       { id: 'm5-l2', title: 'Documentation & Before/After Photos', description: 'What to photograph, how to present findings', duration: '10 min', type: 'reference' },
       { id: 'm5-l3', title: 'Neighboring Contract Script', description: 'The Austin Davis approach adapted for Portland', duration: '8 min', type: 'reference' },
+    ],
+    mediaAssets: [
+      { id: 'm5-a1', title: 'The Property Assessment: Professional Scoping for High-Value Sales', description: 'Video walkthrough — how to run a winning property assessment', type: 'video', driveId: '1decjy29mCgLGuwCArX40TIkzV0hszjgb' },
+      { id: 'm5-a2', title: 'Read buildings to win commercial contracts', description: 'Audio — how to read a building like a pro', type: 'audio', driveId: '15q9hGHnVB6fEvWG_OxeZy8_eEjNXtH4p' },
+      { id: 'm5-a3', title: 'Property Contamination and Treatment Guide', description: 'Visual reference — common contamination types and the right treatment', type: 'image', driveId: '1iWv297xnsgM01AQTODi8Tnp98COJvzaE' },
+      { id: 'm5-a4', title: 'Professional Scoping Reference', description: 'The Property Assessment scoping infographic', type: 'image', driveId: '16_XUghF6VX3pgQrffwpcdPWErLLACeiJ' },
     ],
   },
   {
@@ -135,6 +174,10 @@ export const TRAINING_MODULES: TrainingModule[] = [
       { id: 'm6-l3', title: 'Commercial Property Manager Track', description: 'The full conversation from intro to close', duration: '10 min', type: 'reference' },
       { id: 'm6-l4', title: 'Residential Homeowner Track', description: 'Approaching homeowners — from first call to signed contract', duration: '10 min', type: 'reference' },
     ],
+    mediaAssets: [
+      { id: 'm6-a1', title: 'Sell Psychological Relief, Not Exterior Cleaning', description: 'Audio — the emotional sale behind every property cleaning', type: 'audio', driveId: '1t84Q2dxMgWyubUu94Am5r6Q6A4CvaKaR' },
+      { id: 'm6-a2', title: 'The Buyer Matrix Infographic', description: 'Visual — all buyer personas at a glance', type: 'image', driveId: '1WRuPg9i8uvN2JjlboERgrZZ_q39dhD9z' },
+    ],
   },
   {
     id: 'module-7',
@@ -152,6 +195,9 @@ export const TRAINING_MODULES: TrainingModule[] = [
       { id: 'm7-l3', title: '"I\'ll Do It Myself" Responses', description: 'DIY objection — equipment, chemicals, and results gap', duration: '8 min', type: 'reference' },
       { id: 'm7-l4', title: 'Tire-Kicker Disqualification', description: 'When to walk away — and how to do it professionally', duration: '5 min', type: 'reference' },
     ],
+    mediaAssets: [
+      { id: 'm7-a1', title: 'An objection almost never means no', description: 'Audio — reframing objections as buying signals', type: 'audio', driveId: '1Xt3H7XdchnJ81bdiv0J8_hP_dSCm0nPa' },
+    ],
   },
   {
     id: 'module-8',
@@ -168,6 +214,10 @@ export const TRAINING_MODULES: TrainingModule[] = [
       { id: 'm8-l2', title: 'Recurring Maintenance Programs', description: 'Monthly, quarterly, seasonal — the upsell that retains', duration: '10 min', type: 'reference' },
       { id: 'm8-l3', title: 'Proposal Structure & Templates', description: 'Written proposals that close commercial work', duration: '12 min', type: 'reference' },
       { id: 'm8-l4', title: 'Commission Structure', description: '15% one-time, up to 22% on monthly contracts, bonuses to 35-45%', duration: '5 min', type: 'reference' },
+    ],
+    mediaAssets: [
+      { id: 'm8-a1', title: 'Stop pricing your services from fear', description: 'Audio — pricing psychology and confidence on the close', type: 'audio', driveId: '1KM4CQpO2jO3HKIQuigBwyQyB6DWPmhWz' },
+      { id: 'm8-a2', title: 'The X-Ray Proposal Playbook', description: 'PDF — the full proposal framework with templates', type: 'pdf', driveId: '1u1EFmhID_rGPVxFE-cJQ9Sc9taPql6YM' },
     ],
   },
 ];
