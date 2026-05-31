@@ -25,12 +25,12 @@ export function Navbar() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
         <div className={`mx-auto transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          scrolled ? "max-w-3xl px-0 mt-3" : "max-w-full px-0 mt-0"
+          scrolled ? "max-w-5xl px-0 mt-3" : "max-w-full px-0 mt-0"
         }`}>
           <nav
             className={`pointer-events-auto flex items-center justify-between transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               scrolled
-                ? "bg-white/95 backdrop-blur-2xl border border-black/[0.06] shadow-[0_2px_20px_rgba(0,0,0,0.06)] rounded-full mx-4 px-5 md:px-6 py-2.5"
+                ? "bg-white/75 backdrop-blur-2xl border border-black/[0.08] shadow-[0_2px_20px_rgba(0,0,0,0.08)] rounded-full mx-4 px-5 md:px-7 py-3"
                 : "bg-black/20 backdrop-blur-sm border-b border-white/[0.08] rounded-none px-5 md:px-10 lg:px-16 py-4"
             }`}
           >

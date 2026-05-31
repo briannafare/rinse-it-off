@@ -20,8 +20,9 @@ const config: Config = {
           "lavender-deep": "#ACAAFF",
           pink: "#DF99F7",
           lime: "#DAFF99",
-          black: "#0C1215",
-          dark: "#0E1419",
+          black: "#3A3936",
+          dark: "#3A3936",
+          darker: "#2A2927",
         },
         surface: {
           DEFAULT: "#FFFFFF",
@@ -32,7 +33,7 @@ const config: Config = {
           mint: "#F0FFF6",
         },
         text: {
-          primary: "#0C1215",
+          primary: "#3A3936",
           secondary: "#4B5C6B",
           muted: "#8899A6",
           inverse: "#FFFFFF",
