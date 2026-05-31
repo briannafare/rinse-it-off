@@ -2,12 +2,11 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const hostname = request.headers.get('host') || '';
-  const isTrainingSubdomain = hostname.startsWith('training.');
+  const hostname = request.nextUrl.hostname;
 
-  if (isTrainingSubdomain && !request.nextUrl.pathname.startsWith('/training')) {
+  if (hostname === 'training.rinseitoff.com' && !request.nextUrl.pathname.startsWith('/training')) {
     const url = request.nextUrl.clone();
-    url.pathname = '/training' + (url.pathname === '/' ? '' : url.pathname);
+    url.pathname = '/training';
     return NextResponse.rewrite(url);
   }
 
