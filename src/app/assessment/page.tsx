@@ -238,17 +238,17 @@ export default function AssessmentPage() {
                 <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.0625rem", color: "var(--ink)" }}>{apptLabel}</div>
               </div>
               <p style={{ fontFamily: "var(--font-body)", color: "var(--text-muted)", fontSize: "0.9375rem", lineHeight: 1.6, maxWidth: 400, margin: "0 auto 36px" }}>
-                We&apos;ll confirm by phone or text before the visit{form.email ? ` and send your written quote to ${form.email}` : ""}.
+                We&apos;ll confirm by phone or text before the visit{form.email ? `. Confirmation will be sent to ${form.email}` : ""}.
               </p>
             </>
           ) : (
             <p style={{ fontFamily: "var(--font-body)", color: "var(--text-secondary)", fontSize: "1.0625rem", lineHeight: 1.6, maxWidth: 420, margin: "0 auto 36px" }}>
-              We received your request and will be in touch within a few hours{form.email ? ` at ${form.email}` : ""}. No pressure, no sales pitch.
+              We received your request and will be in touch within a few hours to schedule your free on-site walkthrough{form.email ? ` — confirmation to ${form.email}` : ""}.
             </p>
           )}
           <div style={{ background: "var(--ink)", borderRadius: "var(--r-lg)", padding: "20px 32px", display: "inline-block" }}>
             <div style={{ fontFamily: "var(--font-body)", color: "rgba(255,255,255,0.55)", fontSize: "0.8125rem", letterSpacing: "0.04em", marginBottom: 6 }}>Questions? Call or text</div>
-            <a href="tel:5037043755" style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.5rem", color: "var(--mint)", textDecoration: "none", letterSpacing: "-0.02em" }}>(503) 704-3755</a>
+            <a href="tel:5037768367" style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.5rem", color: "var(--mint)", textDecoration: "none", letterSpacing: "-0.02em" }}>(503) 776-8367</a>
           </div>
         </div>
       </>
@@ -262,9 +262,9 @@ export default function AssessmentPage() {
 
       {/* Header */}
       <header style={{ background: "var(--ink)", padding: "18px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
-        <img src="/logo-white.png" alt="Rinse It Off" style={{ height: 36, width: "auto" }} onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-        <a href="tel:5037043755" style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "0.9375rem", color: "var(--mint)", textDecoration: "none", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>
-          (503) 704-3755
+        <a href="https://www.rinseitoff.com" style={{ display: "inline-block" }}><img src="/logo-white.png" alt="Rinse It Off" style={{ height: 36, width: "auto" }} onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} /></a>
+        <a href="tel:5037768367" style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "0.9375rem", color: "var(--mint)", textDecoration: "none", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>
+          (503) 776-8367
         </a>
       </header>
 
@@ -276,7 +276,7 @@ export default function AssessmentPage() {
             Get a free on-site<br /><span style={{ color: "var(--blue)", fontWeight: 500 }}>property assessment.</span>
           </h1>
           <p style={{ fontFamily: "var(--font-body)", color: "var(--text-secondary)", fontSize: "1.0625rem", lineHeight: 1.6, maxWidth: 420, margin: "0 auto" }}>
-            We walk the property with you, identify every surface that needs attention, and hand you a written quote. No charge, no commitment.
+            We come to you, walk the property, and put together a detailed assessment of what needs attention. No charge, no commitment.
           </p>
         </div>
       </div>
@@ -387,9 +387,9 @@ export default function AssessmentPage() {
             {/* Step 4 — Calendar */}
             {propertyType && (
               <div style={{ marginBottom: 32 }}>
-                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 4 }}>Schedule a free site assessment</div>
+                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 4 }}>Schedule your walkthrough</div>
                 <p style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-muted)", marginBottom: 12, lineHeight: 1.5 }}>
-                  Optional — we walk the property with you and hand you a written condition report.
+                  Optional — pick a time that works and we'll come to you.
                 </p>
                 <div style={{ border: "2px solid var(--border)", borderRadius: "var(--r-lg)", overflow: "hidden", background: "var(--surface)" }}>
                   {/* Calendar header */}
@@ -478,13 +478,13 @@ export default function AssessmentPage() {
             {propertyType && (
               <div style={{ background: "var(--aura-water)", backgroundColor: "var(--blue-wash, #EDF7FC)", borderRadius: "var(--r-xl)", padding: "24px", marginTop: 8 }}>
                 <button type="submit" disabled={sending || !form.name || !form.phone} className="btn-glass">
-                  <span>{sending ? "Sending your request..." : apptLabel ? "Book My Free Assessment" : "Get My Free Quote"}</span>
+                  <span>{sending ? "Sending your request..." : apptLabel ? "Request My Free Assessment" : "Request My Free Assessment"}</span>
                   {!sending && (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                   )}
                 </button>
                 <p style={{ fontFamily: "var(--font-body)", textAlign: "center", fontSize: "0.8125rem", color: "var(--text-muted)", marginTop: 12 }}>
-                  No spam. No sales pressure. We respond within a few hours.
+                  No spam. No sales pressure. We respond within a few hours to schedule your walkthrough.
                 </p>
               </div>
             )}
