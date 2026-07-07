@@ -66,3 +66,53 @@
   .hover-lift { @apply transition-all duration-300 ease-out; }
   .hover-lift:hover { transform: translateY(-6px); @apply shadow-card-hover; }
 }
+
+/* ── STEAM — billowing plumes off the surface cleaner (hero) ── */
+@keyframes steam-rise {
+  0%   { transform: translate3d(0, 0, 0) scale(0.55); opacity: 0; }
+  12%  { opacity: var(--puff-op, 0.5); }
+  70%  { opacity: calc(var(--puff-op, 0.5) * 0.45); }
+  100% { transform: translate3d(var(--puff-x, 40px), -62vh, 0) scale(2.4); opacity: 0; }
+}
+.steam-puff {
+  position: absolute;
+  width: var(--puff-size, 160px);
+  height: var(--puff-size, 160px);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255,255,255,0.9), rgba(255,255,255,0.35) 55%, transparent 72%);
+  filter: blur(16px);
+  mix-blend-mode: screen;
+  animation: steam-rise var(--puff-dur, 9s) cubic-bezier(0.3, 0, 0.4, 1) var(--puff-delay, 0s) infinite;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+/* low ground-mist over the wet concrete */
+@keyframes mist-drift {
+  0%, 100% { transform: translateX(-3%) scaleY(1); opacity: 0.35; }
+  50%      { transform: translateX(3%) scaleY(1.15); opacity: 0.5; }
+}
+.steam-mist {
+  position: absolute;
+  filter: blur(28px);
+  background: linear-gradient(to top, rgba(255,255,255,0.5), transparent 75%);
+  mix-blend-mode: screen;
+  animation: mist-drift 11s ease-in-out infinite;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .steam-puff, .steam-mist { animation: none; opacity: 0.25; }
+}
+
+/* ── WATER AURA — slow drifting brand-color blobs (light sections) ── */
+@keyframes aura-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(4%, -6%) scale(1.12); }
+}
+.aura-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  animation: aura-drift 16s ease-in-out infinite;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) { .aura-blob { animation: none; } }
