@@ -1,23 +1,21 @@
-import { Hero } from "@/components/Hero";
-import { Features } from "@/components/Features";
-import { Services } from "@/components/Services";
-import { Philosophy } from "@/components/Philosophy";
-import { Process } from "@/components/Process";
-import { Residential } from "@/components/Residential";
+import { WipeHero } from "@/components/WipeHero";
+import { DualFunnel } from "@/components/DualFunnel";
+import { ServicesGrid } from "@/components/ServicesGrid";
+import { BeforeAfter } from "@/components/BeforeAfter";
+import { Promise } from "@/components/Promise";
 import { FAQ } from "@/components/FAQ";
-import { CTA } from "@/components/CTA";
+import { StickyMobileBar } from "@/components/StickyMobileBar";
 
 export default function HomePage() {
   return (
     <>
-      <Hero />
-      <Features />
-      <Services />
-      <Philosophy />
-      <Process />
-      <Residential />
+      <WipeHero />
+      <DualFunnel />
+      <ServicesGrid />
+      <BeforeAfter />
+      <Promise />
       <FAQ />
-      <CTA />
+      <StickyMobileBar />
     </>
   );
 }

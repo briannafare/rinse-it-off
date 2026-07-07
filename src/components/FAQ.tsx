@@ -24,7 +24,7 @@ export function FAQ() {
         <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
           <div className="lg:col-span-2" ref={headRef}>
             <h2 className="font-display font-semibold text-display-lg text-text-primary mb-3">
-              Questions? <span className="font-serif font-normal italic text-brand-blue">Answered.</span>
+              Questions? <span className="text-brand-blue">Answered.</span>
             </h2>
             <p className="text-text-secondary text-lg leading-relaxed mb-4">
               Everything you need to know about commercial and residential pressure washing in Portland.

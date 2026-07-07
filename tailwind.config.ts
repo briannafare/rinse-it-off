@@ -41,9 +41,9 @@ const config: Config = {
       },
       fontFamily: {
         display: ["var(--font-display)", "system-ui", "sans-serif"],
-        serif: ["var(--font-dm-serif)", "Georgia", "serif"],
-        body: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-jetbrains)", "monospace"],
+        serif: ["var(--font-display)", "system-ui", "sans-serif"],
+        body: ["var(--font-text)", "system-ui", "sans-serif"],
+        mono: ["var(--font-text)", "system-ui", "sans-serif"],
       },
       fontSize: {
         hero: ["clamp(3rem, 8vw, 5.5rem)", { lineHeight: "1.0", letterSpacing: "-0.03em" }],

@@ -26,9 +26,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Rinse It Off",
-    url: "https://www.rinseitoff.com",
+    url: "https://rinseitoff.com",
   },
-  alternates: { canonical: "https://www.rinseitoff.com" },
+  alternates: { canonical: "https://rinseitoff.com" },
   robots: { index: true, follow: true },
 };
 
@@ -37,10 +37,10 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "LocalBusiness",
-      "@id": "https://www.rinseitoff.com/#business",
+      "@id": "https://rinseitoff.com/#business",
       name: "Rinse It Off",
       description: "Commercial and residential exterior cleaning services in Portland, Oregon. Specializing in hot water pressure washing, soft washing, building washing, parking lot cleaning, and recurring maintenance programs.",
-      url: "https://www.rinseitoff.com",
+      url: "https://rinseitoff.com",
       telephone: "+1-503-704-3755",
       email: "hello@rinseitoff.com",
       address: {
@@ -82,10 +82,10 @@ const jsonLd = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://www.rinseitoff.com/#website",
-      url: "https://www.rinseitoff.com",
+      "@id": "https://rinseitoff.com/#website",
+      url: "https://rinseitoff.com",
       name: "Rinse It Off",
-      publisher: { "@id": "https://www.rinseitoff.com/#business" },
+      publisher: { "@id": "https://rinseitoff.com/#business" },
     },
   ],
 };
@@ -157,12 +157,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
+        <link rel="stylesheet" href="https://use.typekit.net/asf7gwn.css" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

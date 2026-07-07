@@ -1,0 +1,242 @@
+/* ============================================================
+   RINSE IT OFF — Component primitives  (single source of truth)
+   Pair with colors_and_type.css. ONE button system, soft-rect
+   shapes only, hairline borders, soft neutral shadows.
+   No pills. No status dots. No accent-bar gimmicks. No doodles.
+   The ONLY loud component is the iridescent CTA (iridescent.css).
+   ============================================================ */
+
+/* ---- LAYOUT ---- */
+.container-site { max-width: 80rem; margin: 0 auto; padding: 0 1.25rem; }
+@media (min-width: 640px) { .container-site { padding: 0 1.5rem; } }
+@media (min-width: 1024px){ .container-site { padding: 0 2rem; } }
+
+/* ============================================================
+   BADGES — soft rectangles (8px), quiet. Never pills.
+   ============================================================ */
+.badge {
+  display: inline-flex; align-items: center; gap: 0.375rem;
+  padding: 0.25rem 0.625rem; font-size: var(--fs-xs); font-weight: 500;
+  border-radius: var(--r-sm); border: 1px solid var(--border);
+  font-family: var(--font-body); color: var(--text-secondary);
+  background: var(--surface);
+}
+.badge-blue { background: var(--blue-wash); color: var(--blue-deep); border-color: rgba(98,196,235,0.22); }
+.badge-ink  { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* legacy alias: .pill used to exist — map it to the soft-rect badge */
+.pill { border-radius: var(--r-sm) !important; }
+
+/* ============================================================
+   BUTTONS — ONE system.
+   Primary  = LIQUID GLASS. The signature material is the standard
+              primary CTA system-wide: a clear, wet bubble of glass
+              with an iridescent rim and soap-film tint. Works on
+              dark and light contexts (smokes on .theme-dark).
+   Outline  = 1.5px ink border, inverts on hover. Quiet foil.
+   Text-link = underlined word + arrow (the inline secondary).
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.625rem;
+  padding: 0.95rem 1.75rem; font-family: var(--font-display);
+  font-size: 1rem; font-weight: 500; border-radius: var(--r-md);
+  border: none; cursor: pointer; text-decoration: none;
+  letter-spacing: -0.01em; position: relative; white-space: nowrap;
+  transition: transform var(--dur-base) var(--ease-out-expo),
+              box-shadow var(--dur-base) var(--ease-out-expo),
+              background var(--dur-base);
+}
+.btn svg { width: 18px; height: 18px; transition: transform var(--dur-base) var(--ease-out-expo); }
+
+/* ============================================================
+   .btn-primary  —  LIQUID GLASS  (the signature CTA, system-wide)
+   Self-contained: works with plain `<a class="btn btn-primary">label</a>`
+   markup. For the cursor-tracked sheen + tilt variant, use the
+   richer `.iri-btn` class (iridescent.css + iridescent.js) instead.
+   ============================================================ */
+@keyframes bp-rim {
+  0%   { background-position: 0%   50%, 0%   50%; }
+  100% { background-position: 0%   50%, 200% 50%; }
+}
+/* jelly glint — a band of light travelling across the glass, pausing between passes */
+@keyframes bp-sweep {
+  0%      { transform: translateX(-240%) skewX(-15deg); }
+  55%,100%{ transform: translateX(360%)  skewX(-15deg); }
+}
+.btn-primary {
+  position: relative; isolation: isolate; overflow: hidden;
+  color: var(--ink); font-weight: 600;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.8);
+  border-radius: 999px;   /* glass pill — the signature shape */
+  padding: 0.95rem 1.9rem;
+  -webkit-backdrop-filter: blur(6px) saturate(1.5) brightness(1.1);
+          backdrop-filter: blur(6px) saturate(1.5) brightness(1.1);
+  background:
+    radial-gradient(95% 70% at 50% -12%, rgba(255,255,255,0.9), rgba(255,255,255,0.28) 40%, transparent 68%),  /* convex dome — 3D */
+    radial-gradient(40% 56% at 22% 30%, rgba(122,255,206,0.16), transparent 64%),  /* faint iridescence */
+    radial-gradient(44% 60% at 80% 26%, rgba(255,214,138,0.13), transparent 64%),
+    radial-gradient(46% 64% at 80% 80%, rgba(190,168,255,0.16), transparent 66%),
+    linear-gradient(180deg, rgba(255,255,255,0.20), rgba(238,248,255,0.12));
+  background-color: rgba(255,255,255,0.16);
+  box-shadow:
+    inset 0 2px 2px rgba(255,255,255,1),               /* top hot rim */
+    inset 0 0 0 1px rgba(255,255,255,0.30),            /* glass inner ring */
+    inset 0 10px 18px -10px rgba(255,255,255,0.9),     /* upper dome sheen */
+    inset 0 -16px 26px -12px rgba(40,80,110,0.30),     /* underside shadow = depth */
+    inset 0 -2px 3px rgba(255,255,255,0.6),            /* bottom light catch */
+    0 6px 14px -4px rgba(20,45,60,0.16),               /* contact shadow */
+    0 20px 38px -14px rgba(20,45,60,0.20),             /* soft elevation */
+    14px 22px 40px -20px rgba(150,210,255,0.26);       /* ONE faint cool caustic */
+}
+/* rim — bright glass bevel with a subtle colour fringe */
+.btn-primary::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; padding: 1.5px;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1), rgba(255,255,255,0.18) 28%, transparent 55%, rgba(255,255,255,0.5) 100%),
+    linear-gradient(110deg,
+      rgba(150,235,255,0.6) 0%,  rgba(150,255,210,0.4) 18%, rgba(190,168,255,0.45) 40%,
+      rgba(255,170,210,0.4) 60%, rgba(255,214,150,0.45) 80%, rgba(150,235,255,0.5) 100%);
+  background-size: 100% 100%, 200% 100%;
+  background-blend-mode: screen;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0.7;
+  animation: bp-rim 16s linear infinite;
+}
+/* moving light sweep — the jelly glint (always alive, faster on hover) */
+.btn-primary::after {
+  content: ""; position: absolute; top: -40%; bottom: -40%; left: 0; width: 38%;
+  z-index: 1; pointer-events: none;
+  background: linear-gradient(100deg, transparent 0%,
+    rgba(255,255,255,0.45) 40%, rgba(255,255,255,0.85) 50%,
+    rgba(255,255,255,0.45) 60%, transparent 100%);
+  filter: blur(5px); mix-blend-mode: screen;
+  transform: translateX(-240%) skewX(-15deg);
+  animation: bp-sweep 7s cubic-bezier(0.55, 0, 0.3, 1) infinite;
+}
+.btn-primary:hover::after { animation-duration: 2.8s; }
+.btn-primary > * { position: relative; z-index: 2; }
+.btn-primary svg { color: currentColor; }
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.015);
+  box-shadow:
+    inset 0 2px 2px rgba(255,255,255,1),
+    inset 0 0 0 1px rgba(255,255,255,0.42),
+    inset 0 10px 18px -10px rgba(255,255,255,1),
+    inset 0 -16px 28px -12px rgba(40,80,110,0.34),
+    inset 0 -2px 3px rgba(255,255,255,0.7),
+    0 10px 20px -4px rgba(20,45,60,0.20),
+    0 28px 50px -14px rgba(20,45,60,0.26),
+    18px 28px 50px -20px rgba(150,210,255,0.34);
+}
+.btn-primary:hover svg { transform: translateX(4px); }
+@media (prefers-reduced-motion: reduce) { .btn-primary::before, .btn-primary::after { animation: none; } }
+
+/* Outline — confident 1.5px ink edge */
+.btn-outline {
+  background: transparent; color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--border);
+}
+.btn-outline:hover { box-shadow: inset 0 0 0 1.5px var(--ink); transform: translateY(-2px); }
+.btn-outline:hover svg { transform: translateX(4px); }
+
+/* Ghost — minimal */
+.btn-ghost { background: transparent; color: var(--text-secondary); padding: 0.5rem 0; }
+.btn-ghost:hover { color: var(--text-primary); }
+
+/* Text link with arrow — the refined secondary action */
+.tlink {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  color: var(--text-primary); text-decoration: none; font-weight: 500;
+  font-family: var(--font-display); letter-spacing: -0.01em;
+  border-bottom: 1px solid var(--border); padding-bottom: 3px;
+  transition: border-color var(--dur-base);
+}
+.tlink:hover { border-color: var(--text-primary); }
+.tlink svg { width: 16px; height: 16px; transition: transform var(--dur-base); }
+.tlink:hover svg { transform: translate(3px, -3px); }
+
+/* dark-surface buttons — the glass smokes (ink finish), lighter & subtler */
+.theme-dark .btn-primary, .dark-panel .btn-primary {
+  color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  border-color: rgba(255,255,255,0.42);
+  background:
+    radial-gradient(95% 70% at 50% -12%, rgba(255,255,255,0.5), rgba(255,255,255,0.12) 42%, transparent 68%),  /* convex dome */
+    radial-gradient(42% 58% at 24% 30%, rgba(120,210,255,0.22), transparent 62%),  /* faint iridescence */
+    radial-gradient(44% 62% at 80% 78%, rgba(190,168,255,0.18), transparent 64%),
+    radial-gradient(120% 120% at 50% 0%, rgba(70,92,110,0.40), rgba(28,42,54,0.46) 60%, transparent 100%),
+    linear-gradient(180deg, rgba(52,70,86,0.42), rgba(24,38,50,0.52));
+  background-color: rgba(40,55,68,0.28);
+  box-shadow:
+    inset 0 2px 2px rgba(255,255,255,0.6),
+    inset 0 0 0 1px rgba(255,255,255,0.14),
+    inset 0 12px 20px -12px rgba(255,255,255,0.42),
+    inset 0 -16px 26px -12px rgba(0,0,0,0.4),
+    inset 0 -2px 3px rgba(150,210,255,0.45),
+    0 8px 18px -4px rgba(6,14,20,0.34),
+    0 22px 42px -14px rgba(6,14,20,0.32),
+    16px 24px 44px -20px rgba(120,200,255,0.28);
+}
+.theme-dark .btn-outline, .dark-panel .btn-outline { color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.25); }
+.theme-dark .btn-outline:hover, .dark-panel .btn-outline:hover { box-shadow: inset 0 0 0 1.5px #fff; }
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card {
+  background: var(--surface); border: 1px solid var(--border-light);
+  border-radius: var(--r-xl); padding: 1.75rem;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--dur-slow) var(--ease-out-expo),
+              box-shadow var(--dur-slow) var(--ease-out-expo);
+}
+.card-lg { border-radius: var(--r-2xl); padding: 2.25rem; }
+.card-hover:hover { transform: translateY(-6px); box-shadow: var(--shadow-card-hover); }
+
+/* Photo tile — image card with bottom-up dark scrim + label */
+.photo-tile {
+  position: relative; overflow: hidden; border-radius: var(--r-xl);
+  min-height: 240px; cursor: pointer;
+  transition: box-shadow var(--dur-slow) var(--ease-out-expo);
+}
+.photo-tile:hover { box-shadow: var(--shadow-soft-lg); }
+.photo-tile img { position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; transition: transform var(--dur-xslow) var(--ease-out-expo); }
+.photo-tile:hover img { transform: scale(1.03); }
+.photo-tile .scrim { position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.80), rgba(0,0,0,0.18) 52%, transparent); }
+
+/* Arrow affordance — soft square, not a circle/pill */
+.arrow-chip {
+  width: 2rem; height: 2rem; border-radius: var(--r-sm);
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255,255,255,0.20); color: rgba(255,255,255,0.55);
+  transition: all var(--dur-base) var(--ease-out-expo);
+}
+.group:hover .arrow-chip { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.3); color: #fff; }
+
+/* ============================================================
+   GLASS CARD — frosted, for the "wet glass" surfaces.
+   The calm sibling of the iridescent CTA. Light, restrained.
+   ============================================================ */
+.glass-card {
+  background: var(--glass-light);
+  border: 1px solid var(--glass-light-brd);
+  border-radius: var(--r-xl);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-soft);
+  padding: 1.75rem;
+}
+
+/* ============================================================
+   DARK PANEL — CTA / footer surface
+   ============================================================ */
+.dark-panel { background: var(--ink-soft); color: #fff; border-radius: var(--r-2xl); }
+
+/* Utility lift */
+.hover-lift { transition: all var(--dur-base) var(--ease-out-expo); }
+.hover-lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }

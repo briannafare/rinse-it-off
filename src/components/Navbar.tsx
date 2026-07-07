@@ -30,7 +30,7 @@ export function Navbar() {
           <nav
             className={`pointer-events-auto flex items-center justify-between transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               scrolled
-                ? "bg-white/95 backdrop-blur-2xl border border-black/[0.06] shadow-[0_2px_20px_rgba(0,0,0,0.06)] rounded-full mx-4 px-5 md:px-6 py-2.5"
+                ? "bg-white/95 backdrop-blur-2xl border border-black/[0.06] shadow-[0_2px_20px_rgba(0,0,0,0.06)] rounded-xl mx-4 px-5 md:px-6 py-2.5"
                 : "bg-black/20 backdrop-blur-sm border-b border-white/[0.08] rounded-none px-5 md:px-10 lg:px-16 py-4"
             }`}
           >
@@ -47,7 +47,7 @@ export function Navbar() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+                  className={`px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300 ${
                     scrolled
                       ? "text-text-secondary hover:text-text-primary hover:bg-black/[0.04]"
                       : "text-white/70 hover:text-white hover:bg-white/[0.06]"
@@ -71,7 +71,7 @@ export function Navbar() {
 
               <a
                 href="#contact"
-                className={`hidden md:flex items-center gap-2 px-5 py-2 text-sm font-bold rounded-full transition-all duration-500 ${
+                className={`hidden md:flex items-center gap-2 px-5 py-2 text-sm font-bold rounded-xl transition-all duration-500 ${
                   scrolled
                     ? "bg-brand-black text-white hover:bg-brand-dark"
                     : "bg-white text-brand-black hover:bg-white/90 shadow-[0_0_20px_rgba(77,255,166,0.35)]"
@@ -83,7 +83,7 @@ export function Navbar() {
 
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className={`md:hidden p-2 rounded-full transition-colors ${scrolled ? "text-text-primary" : "text-white"}`}
+                className={`md:hidden p-2 rounded-xl transition-colors ${scrolled ? "text-text-primary" : "text-white"}`}
                 aria-label="Menu"
               >
                 {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -121,7 +121,7 @@ export function Navbar() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="mt-6 bg-brand-black text-white font-bold px-8 py-3 rounded-full text-lg shadow-[0_0_24px_rgba(77,255,166,0.3)]"
+              className="mt-6 bg-brand-black text-white font-bold px-8 py-3 rounded-xl text-lg shadow-[0_0_24px_rgba(77,255,166,0.3)]"
             >
               Free Assessment →
             </motion.a>

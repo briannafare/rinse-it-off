@@ -1,0 +1,242 @@
+/* ============================================================
+   RINSE IT OFF — Liquid Glass  (the signature material)
+   ------------------------------------------------------------
+   A wet, soap-bubble-iridescent glass. What makes real liquid
+   glass read as GLASS (and not a frosted chip) is the interplay
+   of five things — all present here:
+
+     1. REFRACTIVE BODY — backdrop blur+saturate so the surface
+        behind stays perceptible AND gets brightened, like light
+        bending through a clear lens.
+     2. THICK LIT RIM   — a bright, chunky bevel that wraps the
+        edge (brightest at top, glowing through at the bottom).
+        This is what sells "thickness". Thin-film colour fringes
+        the rim — the soap on wet glass.
+     3. SOAP FILM        — a slow drifting cyan→mint→lavender→
+        magenta→gold rainbow inside the glass (screen blend),
+        the one full-colour moment in the system.
+     4. CONVEX GLOSS + SPECULAR — a curved top reflection (the
+        bubble's wet shine) plus a small cursor-tracked light
+        catch.
+     5. CAUSTIC SPILL    — soft prismatic light leaking out onto
+        the surface below/right, the way a wet lens throws colour.
+
+   Glass only reads as glass OVER content — put it on a photo or
+   the water aura, not flat white.
+
+   Variants:  .iri-soap (clear/light) · .iri-ink (smoked/dark)
+   Shapes:    default (rounded rect) · .iri-round (circle/FAB)
+   ============================================================ */
+
+/* (soap-film palette --soap-* now lives in colors_and_type.css — single source of truth) */
+
+@keyframes iri-drift {
+  0%   { transform: translate(-7%, -5%) rotate(0deg)   scale(1.5); }
+  50%  { transform: translate(6%,  7%)  rotate(10deg)  scale(1.65); }
+  100% { transform: translate(-3%, 4%)  rotate(-5deg)  scale(1.55); }
+}
+@keyframes iri-rim-shift {
+  0%   { background-position: 0%   50%; }
+  100% { background-position: 200% 50%; }
+}
+/* the jelly glint — a soft band of light that travels across the glass,
+   pausing between passes. Speeds up on hover. */
+@keyframes iri-sweep {
+  0%      { transform: translateX(-240%) skewX(-15deg); }
+  55%,100%{ transform: translateX(360%)  skewX(-15deg); }
+}
+
+/* ============================================================
+   1. BODY  — shared shell
+   ============================================================ */
+.iri-btn {
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  gap: 11px;
+  padding: var(--iri-py, 18px) var(--iri-px, 38px);
+  font-family: var(--font-display); font-weight: 600; font-size: var(--iri-fs, 17px);
+  letter-spacing: -0.01em; line-height: 1; white-space: nowrap;
+  text-decoration: none; cursor: pointer; appearance: none;
+  border-radius: var(--iri-radius, 20px);
+  border: 1px solid var(--iri-edge, rgba(255,255,255,0.5));
+  -webkit-backdrop-filter: blur(7px) saturate(2) brightness(1.08);
+          backdrop-filter: blur(7px) saturate(2) brightness(1.08);
+  overflow: hidden; isolation: isolate;
+  transition: transform 0.45s var(--ease-out-expo), box-shadow 0.45s var(--ease-out-expo);
+  will-change: transform;
+}
+.iri-btn .iri-label,
+.iri-btn .iri-arrow,
+.iri-btn .iri-ico { position: relative; z-index: 6; }
+.iri-btn .iri-arrow { display: flex; transition: transform 0.35s var(--ease-out-expo); }
+.iri-btn .iri-arrow svg { width: 18px; height: 18px; }
+.iri-btn:hover .iri-arrow { transform: translateX(4px); }
+
+/* ---------- 3. SOAP FILM — drifting rainbow inside the glass ---------- */
+.iri-btn .iri-film {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  mix-blend-mode: var(--iri-film-blend, screen);
+  animation: iri-drift var(--iri-speed, 17s) ease-in-out infinite alternate;
+}
+/* ---------- 4b. SPECULAR — small cursor-tracked light catch ---------- */
+.iri-btn .iri-spec {
+  position: absolute; inset: 0; z-index: 4; border-radius: inherit; pointer-events: none;
+  mix-blend-mode: screen; transition: opacity 0.4s;
+}
+/* ---------- 4a. MOVING LIGHT SWEEP — the jelly glint (always alive) ---------- */
+.iri-btn::after {
+  content: ""; position: absolute; top: -35%; bottom: -35%; left: 0; width: 40%;
+  z-index: 3; pointer-events: none;
+  background: linear-gradient(100deg, transparent 0%,
+    rgba(255,255,255,0.45) 40%, rgba(255,255,255,0.85) 50%,
+    rgba(255,255,255,0.45) 60%, transparent 100%);
+  filter: blur(6px); mix-blend-mode: screen;
+  transform: translateX(-240%) skewX(-15deg);
+  animation: iri-sweep var(--iri-sweep-dur, 7s) cubic-bezier(0.55, 0, 0.3, 1) infinite;
+}
+.iri-btn:hover::after { --iri-sweep-dur: 2.8s; }
+/* ---------- 2. THICK LIT RIM — iridescent bevel, brightest at top ---------- */
+.iri-btn::before {
+  content: ""; position: absolute; inset: 0; z-index: 5; border-radius: inherit; pointer-events: none;
+  padding: var(--iri-rimw, 2px);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.10) 30%, transparent 55%,
+      rgba(255,255,255,0.45) 100%),
+    linear-gradient(110deg,
+      rgba(150,235,255,0.65) 0%, rgba(150,255,210,0.45) 18%, rgba(190,168,255,0.5) 40%,
+      rgba(255,170,210,0.45) 60%, rgba(255,214,150,0.5) 80%, rgba(150,235,255,0.55) 100%);
+  background-size: 100% 100%, 200% 100%;
+  background-blend-mode: screen;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: var(--iri-rim, 0.62);
+  animation: iri-rim-shift var(--iri-speed, 17s) linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .iri-btn .iri-film, .iri-btn::before, .iri-btn::after { animation: none; }
+}
+
+/* ============================================================
+   .iri-soap — CLEAR / LIGHT liquid glass  (the hero finish)
+   A bright bubble of glass. Body nearly clear; rim and film do
+   the talking. Caustic spills soap-colour onto the surface.
+   ============================================================ */
+.iri-soap {
+  --iri-edge: rgba(255,255,255,0.8);
+  /* on light/clear glass, screen-blend would wash the rainbow to white —
+     blend the film NORMALLY so the faint oil-slick tint actually shows. */
+  --iri-film-blend: normal;
+  color: var(--ink); text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+  background:
+    radial-gradient(95% 70% at 50% -12%, rgba(255,255,255,0.9), rgba(255,255,255,0.28) 40%, transparent 68%),  /* convex dome — 3D */
+    radial-gradient(120% 120% at 50% 0%, rgba(255,255,255,0.30), rgba(255,255,255,0.10) 50%, rgba(255,255,255,0.04) 100%),
+    linear-gradient(180deg, rgba(255,255,255,0.20), rgba(236,248,255,0.12));
+  box-shadow:
+    inset 0 2px 2px rgba(255,255,255,1),               /* top hot rim */
+    inset 0 0 0 1px rgba(255,255,255,0.32),            /* inner glass ring */
+    inset 0 10px 18px -10px rgba(255,255,255,0.9),     /* upper dome sheen */
+    inset 0 -16px 26px -12px rgba(40,80,110,0.30),     /* underside shadow = depth */
+    inset 0 -2px 3px rgba(255,255,255,0.6),            /* bottom light catch */
+    0 6px 14px -4px rgba(20,45,60,0.16),               /* contact shadow */
+    0 20px 38px -14px rgba(20,45,60,0.20),             /* soft elevation */
+    14px 22px 40px -20px rgba(150,210,255,0.28);       /* ONE faint cool caustic */
+}
+.iri-soap:hover {
+  box-shadow:
+    inset 0 2px 2px rgba(255,255,255,1),
+    inset 0 0 0 1px rgba(255,255,255,0.42),
+    inset 0 10px 18px -10px rgba(255,255,255,1),
+    inset 0 -16px 28px -12px rgba(40,80,110,0.34),
+    inset 0 -2px 3px rgba(255,255,255,0.7),
+    0 10px 20px -4px rgba(20,45,60,0.20),
+    0 28px 50px -14px rgba(20,45,60,0.26),
+    18px 28px 50px -20px rgba(150,210,255,0.36);
+}
+.iri-soap .iri-film {
+  background:
+    radial-gradient(34% 48% at var(--mx,50%) var(--my,40%), var(--soap-cyan) 0%, transparent 64%),
+    radial-gradient(40% 52% at 20% 24%, var(--soap-mint) 0%, transparent 62%),
+    radial-gradient(46% 54% at 82% 28%, var(--soap-gold) 0%, transparent 64%),
+    radial-gradient(50% 58% at 80% 82%, var(--soap-lav) 0%, transparent 66%),
+    radial-gradient(44% 52% at 28% 88%, var(--soap-rose) 0%, transparent 64%);
+  filter: blur(13px) saturate(1.15); opacity: var(--iri-film-op, 0.32);
+}
+.iri-soap .iri-spec {
+  background: radial-gradient(circle 26% at var(--mx,50%) var(--my,38%),
+    rgba(255,255,255,0.95) 0%, rgba(210,248,255,0.5) 32%, transparent 62%);
+  opacity: 0.55;
+}
+.iri-soap:hover .iri-spec { opacity: 0.9; }
+
+/* ============================================================
+   .iri-ink — SMOKED / DARK liquid glass
+   Translucent dark body; background dims through it but stays
+   perceptible. White label. Same wet rim + caustic, richer film.
+   ============================================================ */
+.iri-ink {
+  --iri-edge: rgba(255,255,255,0.42);
+  color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  /* lighter, more translucent smoked glass — reads as glass, not a black chip */
+  background:
+    radial-gradient(95% 70% at 50% -12%, rgba(255,255,255,0.5), rgba(255,255,255,0.12) 42%, transparent 68%),  /* convex dome — 3D */
+    radial-gradient(120% 120% at 50% 0%, rgba(70,92,110,0.40), rgba(28,42,54,0.46) 60%, transparent 100%),
+    linear-gradient(180deg, rgba(52,70,86,0.42), rgba(24,38,50,0.52));
+  box-shadow:
+    inset 0 2px 2px rgba(255,255,255,0.6),
+    inset 0 0 0 1px rgba(255,255,255,0.14),
+    inset 0 12px 20px -12px rgba(255,255,255,0.42),    /* upper dome sheen */
+    inset 0 -16px 26px -12px rgba(0,0,0,0.4),          /* underside shadow = depth */
+    inset 0 -2px 3px rgba(150,210,255,0.45),           /* bottom light catch */
+    0 8px 18px -4px rgba(6,14,20,0.34),
+    0 22px 42px -14px rgba(6,14,20,0.32),
+    16px 24px 44px -20px rgba(120,200,255,0.30);       /* ONE faint cool caustic */
+}
+.iri-ink:hover {
+  box-shadow:
+    inset 0 2px 2px rgba(255,255,255,0.7),
+    inset 0 0 0 1px rgba(255,255,255,0.18),
+    inset 0 12px 20px -12px rgba(255,255,255,0.52),
+    inset 0 -16px 28px -12px rgba(0,0,0,0.42),
+    inset 0 -2px 3px rgba(150,210,255,0.6),
+    0 12px 24px -4px rgba(6,14,20,0.4),
+    0 30px 54px -14px rgba(6,14,20,0.38),
+    20px 30px 54px -20px rgba(120,200,255,0.4);
+}
+.iri-ink .iri-film {
+  background:
+    radial-gradient(38% 52% at var(--mx,50%) var(--my,46%), var(--soap-cyan) 0%, transparent 58%),
+    radial-gradient(46% 56% at 24% 28%, rgba(90,200,255,1) 0%, transparent 58%),
+    radial-gradient(50% 56% at 80% 32%, var(--soap-gold) 0%, transparent 58%),
+    radial-gradient(54% 60% at 80% 80%, var(--soap-lav) 0%, transparent 60%),
+    radial-gradient(46% 54% at 30% 88%, var(--soap-mint) 0%, transparent 58%);
+  filter: blur(11px) saturate(1.25); opacity: var(--iri-film-op, 0.4);
+}
+.iri-ink .iri-spec {
+  background: radial-gradient(circle 26% at var(--mx,50%) var(--my,46%),
+    rgba(255,255,255,0.95) 0%, rgba(170,240,255,0.5) 30%, transparent 62%);
+  opacity: 0.45;
+}
+.iri-ink:hover .iri-spec { opacity: 0.9; }
+
+/* ============================================================
+   .iri-round — circular variant (icon buttons + chat FAB)
+   Same material, equal padding, perfectly round.
+   ============================================================ */
+.iri-round {
+  --iri-radius: 50%;
+  padding: var(--iri-round-pad, 18px);
+  width: var(--iri-round-size, 60px); height: var(--iri-round-size, 60px);
+  gap: 0;
+}
+.iri-round .iri-ico { display: flex; align-items: center; justify-content: center; }
+.iri-round .iri-ico svg { width: var(--iri-ico, 24px); height: var(--iri-ico, 24px); }
+
+/* ---------- touch / no-hover: scroll driver lifts the resting sheen ---------- */
+.iri-btn.iri-scrollwash .iri-spec { opacity: 0.7; }
+.iri-btn.iri-scrollwash .iri-arrow { transform: translateX(3px); }
+
+/* ---------- floating chat widget anchor ---------- */
+.iri-fab {
+  position: fixed; right: 26px; bottom: 26px; z-index: 60;
+  --iri-round-size: 64px; --iri-round-pad: 19px; --iri-ico: 26px;
+}

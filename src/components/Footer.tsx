@@ -55,15 +55,15 @@ export function Footer() {
             <h4 className="text-[11px] font-display font-bold uppercase tracking-wider text-white/25 mb-4">Status</h4>
             <div className="flex items-center gap-2 mb-3">
               <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-mint opacity-40" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-mint" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-xl bg-brand-mint opacity-40" />
+                <span className="relative inline-flex rounded-xl h-2.5 w-2.5 bg-brand-mint" />
               </span>
               <span className="text-sm font-mono text-white/50">Operational</span>
             </div>
             <p className="text-xs text-white/25 leading-relaxed mb-5">
               Accepting new commercial and residential clients in Portland metro.
             </p>
-            <a href="#contact" className="inline-flex items-center gap-2 px-5 py-2 bg-white text-brand-black text-xs font-bold rounded-full shadow-[0_4px_20px_rgba(77,255,166,0.35)] hover:shadow-[0_4px_28px_rgba(77,255,166,0.5)] transition-all">
+            <a href="#contact" className="inline-flex items-center gap-2 px-5 py-2 bg-white text-brand-black text-xs font-bold rounded-xl shadow-[0_4px_20px_rgba(77,255,166,0.35)] hover:shadow-[0_4px_28px_rgba(77,255,166,0.5)] transition-all">
               Free Assessment →
             </a>
           </div>

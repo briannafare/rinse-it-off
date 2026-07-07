@@ -1,7 +1,7 @@
 "use server";
 
-const GHL_API_KEY = "pit-378af010-dde9-480d-b607-8dd3d9f340e0";
-const GHL_LOCATION_ID = "UiIMlTlrvkxfxHx5ErG2";
+const GHL_API_KEY = process.env.GHL_API_KEY ?? "";
+const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID ?? "UiIMlTlrvkxfxHx5ErG2";
 const GHL_API_BASE = "https://services.leadconnectorhq.com";
 
 export interface AssessmentFormData {

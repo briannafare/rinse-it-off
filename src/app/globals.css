@@ -1,13 +1,24 @@
+@import "../styles/iridescent.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --font-display: 'Outfit', system-ui, sans-serif;
-    --font-dm-sans: 'DM Sans', system-ui, sans-serif;
-    --font-dm-serif: 'DM Serif Display', Georgia, serif;
-    --font-jetbrains: 'JetBrains Mono', monospace;
+    --font-display: 'neue-haas-grotesk-display', system-ui, sans-serif;
+    --font-text: 'neue-haas-grotesk-text', system-ui, sans-serif;
+    /* legacy aliases — old components reference these; all resolve to the one family */
+    --font-dm-sans: var(--font-text);
+    --font-dm-serif: var(--font-display);
+    --font-jetbrains: var(--font-text);
+    /* liquid-glass CTA dependencies (from the design system) */
+    --ink: #0C1215;
+    --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+    --soap-cyan: rgba(120, 232, 255, 1);
+    --soap-mint: rgba(122, 255, 206, 1);
+    --soap-lav:  rgba(190, 168, 255, 1);
+    --soap-rose: rgba(255, 158, 214, 1);
+    --soap-gold: rgba(255, 214, 138, 1);
   }
   html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
   body { @apply bg-white text-text-primary font-body; }

@@ -1,0 +1,212 @@
+/* ============================================================
+   RINSE IT OFF — Colors & Type  (single source of truth)
+   ------------------------------------------------------------
+   ONE idea: clean water. A calm, light, minimal system where the
+   ONLY moment of full color is the soap-film iridescence on the
+   hero CTA — the way a film of soap catches light on wet glass.
+   Everything else stays quiet so that one moment is memorable.
+
+   Pared down 2026: one typeface, one accent, one shape language,
+   one signature. No pills, no mono overlines, no status dots,
+   no citron, no pastel zoo, no dot-matrix, no gauges.
+   ============================================================ */
+
+/* ---- FONTS — Adobe Fonts (Typekit kit asf7gwn) ------------------
+   ONE family does all the work: Neue Haas Grotesk.
+   • Display (400 / 500 / 700) — headlines, numerals, nav, buttons
+   • Text    (400 / 500)       — body, labels, UI
+   Load this @import in CSS, AND add the matching <link> in HTML
+   <head> so the dashboard's font scan resolves the kit:
+     <link rel="stylesheet" href="https://use.typekit.net/asf7gwn.css">
+   No serif. No mono. No italic accent. */
+@import url("https://use.typekit.net/asf7gwn.css");
+
+:root {
+  /* ===========================================================
+     COLOR — the water palette (deliberately tiny)
+     Ink + white + ONE accent (water blue). Mint is a whisper,
+     reserved for selection and the iridescent film.
+     =========================================================== */
+  --ink:           #0C1215;   /* near-black — text, buttons, dark panels */
+  --ink-soft:      #0E1419;   /* dark slate — footer / dark surfaces */
+
+  --blue:          #62C4EB;   /* water blue — THE single accent */
+  --blue-deep:     #3AA8D4;   /* hover / on-light text-safe */
+  --blue-wash:     #EDF7FC;   /* faint tint surface / hover wash */
+
+  --mint:          #4DFFA6;   /* whisper only: selection + soap film */
+
+  /* legacy aliases kept so older artifacts don't break (point to new) */
+  --brand-black:   var(--ink);
+  --brand-dark:    var(--ink-soft);
+  --brand-blue:    var(--blue);
+  --brand-blue-dark: var(--blue-deep);
+  --brand-mint:    var(--mint);
+
+  /* ===========================================================
+     SURFACES — light is the canvas, always
+     =========================================================== */
+  --surface:       #FFFFFF;
+  --surface-alt:   #F4F7F8;   /* cool, watery off-white — alternating bands */
+  --surface-card:  #FAFCFD;
+
+  /* ===========================================================
+     TEXT
+     =========================================================== */
+  --text-primary:   #0C1215;
+  --text-secondary: #4B5C6B;
+  --text-muted:     #8C9AA5;
+  --text-inverse:   #FFFFFF;
+
+  /* ---- BORDERS — hairline & quiet ---- */
+  --border:        #E4ECF1;
+  --border-light:  #EFF4F7;
+
+  /* ===========================================================
+     TYPE — ONE family (Adobe Fonts kit asf7gwn)
+     =========================================================== */
+  --font-display: "neue-haas-grotesk-display", system-ui, -apple-system, sans-serif;
+  --font-body:    "neue-haas-grotesk-text", system-ui, -apple-system, sans-serif;
+
+  /* fluid semantic sizes */
+  --fs-hero:        clamp(2.8rem, 7.5vw, 5.5rem);
+  --fs-display-lg:  clamp(2.25rem, 5vw, 3.5rem);
+  --fs-display:     clamp(1.75rem, 3.5vw, 2.75rem);
+  --fs-display-sm:  clamp(1.375rem, 2.5vw, 1.75rem);
+  --fs-lead:        1.125rem;
+  --fs-body:        1rem;
+  --fs-sm:          0.875rem;
+  --fs-xs:          0.8125rem;   /* labels — sentence case, NOT mono caps */
+
+  --lh-tight:   0.95;
+  --lh-snug:    1.05;
+  --lh-body:    1.6;
+
+  --tracking-hero:    -0.03em;
+  --tracking-display: -0.02em;
+
+  /* ===========================================================
+     RADII — ONE shape language: soft rectangles. No pills.
+     =========================================================== */
+  --r-sm:   8px;     /* badges, chips, small controls */
+  --r-md:   12px;    /* buttons */
+  --r-lg:   16px;    /* small cards */
+  --r-xl:   24px;    /* cards */
+  --r-2xl:  32px;    /* large cards / dark panels */
+  /* (no --r-pill — pills are retired) */
+
+  /* ===========================================================
+     SHADOWS — soft neutral lift. The only "glow" left in the
+     system is the iridescent film itself (see iridescent.css).
+     =========================================================== */
+  --shadow-soft:      0 2px 16px rgba(12,18,21,0.05);
+  --shadow-soft-md:   0 6px 28px rgba(12,18,21,0.07);
+  --shadow-soft-lg:   0 14px 48px rgba(12,18,21,0.10);
+  --shadow-card-hover:0 4px 12px rgba(12,18,21,0.06), 0 22px 50px rgba(12,18,21,0.09);
+
+  /* ===========================================================
+     MOTION — smooth, restrained, never bouncy
+     =========================================================== */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast:  150ms;
+  --dur-base:  300ms;
+  --dur-slow:  500ms;
+  --dur-xslow: 700ms;
+
+  /* ===========================================================
+     WATER AURA — the ONE ambient gradient that survives.
+     A pale, cool radial mesh for hero bands only. Not a SaaS
+     linear gradient; not a rainbow. Just light on water.
+     =========================================================== */
+  --aura-water: radial-gradient(120% 120% at 12% 10%, #DDF1FB 0%, transparent 55%),
+                radial-gradient(120% 120% at 88% 22%, #E9FBF3 0%, transparent 55%),
+                radial-gradient(140% 130% at 55% 100%, #EEF5FB 0%, transparent 60%);
+
+  /* ---- FROSTED GLASS (used by the iridescent CTA + glass cards) ---- */
+  --glass-light:     rgba(255,255,255,0.55);
+  --glass-light-brd: rgba(255,255,255,0.70);
+  --glass-blur:      blur(18px) saturate(1.25);
+
+  /* ---- DARK VARIANT surfaces (opt in with .theme-dark) ---- */
+  --dk-bg:      #0A0E14;
+  --dk-surface: #11161D;
+  --dk-text:    #FFFFFF;
+  --dk-text-2:  rgba(255,255,255,0.62);
+  --dk-text-3:  rgba(255,255,255,0.34);
+  --dk-border:  rgba(255,255,255,0.09);
+
+  /* ===========================================================
+     SOAP-FILM PALETTE — the iridescence inside every glass surface.
+     Magenta · gold · cyan · green — the thin-film interference order.
+     Shared by components.css (.btn-primary) and iridescent.css.
+     =========================================================== */
+  --soap-cyan: rgba(120, 232, 255, 1);
+  --soap-mint: rgba(122, 255, 206, 1);
+  --soap-lav:  rgba(190, 168, 255, 1);
+  --soap-rose: rgba(255, 158, 214, 1);
+  --soap-gold: rgba(255, 214, 138, 1);
+}
+
+/* Light is the product default. Dark is a VARIANT, never the canvas. */
+.theme-dark {
+  --surface: var(--dk-bg);
+  --surface-alt: var(--dk-surface);
+  --surface-card: var(--dk-surface);
+  --text-primary: var(--dk-text);
+  --text-secondary: var(--dk-text-2);
+  --text-muted: var(--dk-text-3);
+  --border: var(--dk-border);
+  --border-light: var(--dk-border);
+  background: var(--dk-bg);
+  color: var(--dk-text);
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES — opt in by adding .rio to a wrapper.
+   ============================================================ */
+.rio { font-family: var(--font-body); color: var(--text-primary); background: var(--surface); }
+
+.rio h1, .rio .h1 {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: var(--fs-hero); line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-hero); color: var(--text-primary);
+}
+.rio h2, .rio .h2 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: var(--fs-display-lg); line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-display);
+}
+.rio h3, .rio .h3 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.01em;
+}
+.rio p, .rio .body {
+  font-family: var(--font-body); font-size: var(--fs-body);
+  line-height: var(--lh-body); color: var(--text-secondary);
+}
+.rio .lead { font-size: var(--fs-lead); color: var(--text-secondary); line-height: var(--lh-body); }
+
+/* The emphasis-word gesture (REPLACES the retired blue italic serif):
+   one word in a heading set in the SAME grotesk, water-blue, weight 500.
+   Same idea — "We make dirty buildings <span class='accent-word'>clean.</span>"
+   — but one typeface, no serif, no italic. */
+.accent-word { color: var(--blue); font-weight: 500; font-style: normal; }
+
+/* Labels / eyebrows — sentence-case grotesk at low contrast. NOT mono, NOT uppercase. */
+.label, .overline {
+  font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 500;
+  text-transform: none; letter-spacing: 0; color: var(--text-muted);
+}
+
+/* Big numerals — light-weight, tabular. (No dot-matrix.) */
+.num-display { font-family: var(--font-display); font-weight: 300; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.num-display .unit { font-weight: 400; opacity: 0.55; font-size: 0.42em; margin-left: 0.12em; }
+
+::selection { background: rgba(77,255,166,0.25); }
+
+/* ------------------------------------------------------------
+   DEPRECATED — kept as no-op-ish shims so old artifacts that
+   still reference these don't visibly break while being migrated.
+   .serif-accent now renders as the new grotesk accent word.
+   ------------------------------------------------------------ */
+.serif-accent { font-family: var(--font-display); font-style: normal; font-weight: 500; color: var(--blue); }

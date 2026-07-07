@@ -1,0 +1,48 @@
+/* ============================================================
+   RINSE IT OFF — Aura + imagery helpers  (pared down 2026)
+   Pairs with colors_and_type.css. What survived the cleanup:
+   the ONE water aura wash, calm aura stat cards (water tones),
+   and the real service-icon tints. Everything else (dot-matrix,
+   tick gauges, range tracks, waveforms, dot rows, frosted pills,
+   day selectors, citron) has been retired.
+   ============================================================ */
+
+/* ---------- AURA MESH BACKDROP (hero / section band) ---------- */
+/* The single ambient gradient: pale light-on-water. Never a rainbow. */
+.aura-bg { position: relative; background: var(--aura-water); }
+.aura-bg.grain::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* ---------- AURA STAT CARD (calm water glow) ---------- */
+.aura-card {
+  position: relative; overflow: hidden; border-radius: var(--r-xl);
+  padding: 22px 24px; border: 1px solid var(--border-light);
+  background: #fff; box-shadow: var(--shadow-soft-md);
+  isolation: isolate;
+}
+.aura-card::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--card-aura, radial-gradient(95% 130% at 82% 115%, #B6E8FF 0%, transparent 58%), radial-gradient(85% 105% at 8% -10%, #D6FFEC 0%, transparent 55%));
+}
+.aura-card .label { font-family: var(--font-display); font-weight: 500; font-size: 14px; color: var(--text-secondary); }
+.aura-card .value { font-family: var(--font-display); font-weight: 300; font-size: clamp(34px, 6vw, 52px); line-height: 1; letter-spacing: -0.02em; color: var(--text-primary); margin-top: 8px; }
+.aura-card .value .unit { font-size: 0.42em; font-weight: 400; opacity: 0.55; margin-left: 0.2em; }
+
+/* water-tone presets only */
+.aura-card.tide  { --card-aura: radial-gradient(95% 130% at 82% 115%, #B6E8FF 0%, transparent 58%), radial-gradient(85% 105% at 8% -10%, #D6FFEC 0%, transparent 55%); }
+.aura-card.ocean { --card-aura: radial-gradient(100% 120% at 50% 125%, #AECBFF 0%, transparent 62%); }
+
+/* Dark VARIANT: opaque base + soft water glow */
+.theme-dark .aura-card { background: var(--dk-surface); border-color: rgba(255,255,255,0.06); box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 18px 40px rgba(0,0,0,0.5); }
+.theme-dark .aura-card .value, .theme-dark .aura-card .label { color: #fff; }
+.theme-dark .aura-card.tide  { --card-aura: radial-gradient(90% 90% at 50% 120%, #0f5a3a 0%, #0a0e14 62%); }
+.theme-dark .aura-card.ocean { --card-aura: radial-gradient(90% 90% at 50% 120%, #1B3A8F 0%, #0a0e14 62%); }
+
+/* ---------- SERVICE ICON CHIP (real PNG line icons) ---------- */
+.svc-ico { width: 100%; height: 100%; object-fit: contain; }
+/* Icons ship WHITE on transparent → tint via filter for light surfaces. */
+.svc-ico.ink  { filter: brightness(0) saturate(100%); }                  /* → near-black */
+.svc-ico.blue { filter: brightness(0) saturate(100%) invert(58%) sepia(86%) saturate(1900%) hue-rotate(176deg) brightness(96%) contrast(91%); } /* → brand water-blue */
+/* On dark surfaces use the raw white icon (no filter). */
