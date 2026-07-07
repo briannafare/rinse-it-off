@@ -17,8 +17,8 @@ export function WipeHero() {
         transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
       >
         <Image
-          src="/brand/photos/walkway-cleaner.jpg"
-          alt="A Portland sidewalk mid-clean — the left half still dark with grime, the right half freshly washed"
+          src="/brand/photos/clubhouse-patio.jpg"
+          alt="A white clubhouse building with its patio freshly washed, the surface cleaner still sitting on the wet concrete"
           fill
           priority
           sizes="100vw"
@@ -26,7 +26,7 @@ export function WipeHero() {
         />
       </motion.div>
       {/* legibility scrim only — the photo stays honest */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-black/25" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-black/20" />
 
       <div className="container-site relative z-10 flex h-full flex-col justify-end pb-24 md:pb-28">
         <motion.div
@@ -38,13 +38,14 @@ export function WipeHero() {
             className="max-w-3xl text-5xl font-bold leading-[1.02] tracking-tight text-white md:text-7xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            We make dirty buildings{" "}
-            <span style={{ color: "#62C4EB" }}>clean.</span>
+            Portland wears on every surface.
+            <br />
+            We <span style={{ color: "#62C4EB" }}>rinse it off.</span>
           </h1>
           <p className="mt-5 max-w-xl text-lg text-white/85 md:text-xl">
-            164 days of rain per year. Your building feels every one. Exterior
-            cleaning for Portland homes and commercial properties — the method
-            matched to the surface, every time.
+            164 days of rain per year — your home, storefront, roof, and
+            concrete feel every one. Soft wash to hot water, the method matched
+            to the surface, across the Portland metro.
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-6">
             <IridescentCTA href="/assessment">Get your quote</IridescentCTA>
@@ -58,9 +59,9 @@ export function WipeHero() {
         </motion.div>
       </div>
 
-      {/* the receipt: this photo is one real pass, not a mockup */}
+      {/* the receipt: real job, not a mockup */}
       <p className="absolute bottom-6 right-5 z-10 hidden text-xs text-white/55 md:block lg:right-8">
-        Real job, one pass — the line is where the machine stopped.
+        Real job, shot mid-clean — that&apos;s our surface cleaner by the porch.
       </p>
     </section>
   );
