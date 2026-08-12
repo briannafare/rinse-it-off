@@ -363,7 +363,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
             </Link>
             <Link
-              href="/quote"
+              href="/assessment?type=residential"
               className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
               style={{ fontFamily: "var(--font-display)" }}
             >

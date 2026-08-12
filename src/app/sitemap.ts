@@ -7,11 +7,11 @@ const BASE_URL = "https://rinseitoff.com";
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
-  // Top-level routes.
+  // Top-level routes. NOTE: /quote is the internal audit tool — intentionally
+  // excluded (noindex + robots disallow), same as /flyer and /training.
   const pages = [
     { path: "/", priority: 1 },
     { path: "/assessment", priority: 0.9 },
-    { path: "/quote", priority: 0.9 },
     { path: "/commercial", priority: 0.8 },
     { path: "/services", priority: 0.8 },
     { path: "/areas", priority: 0.7 },

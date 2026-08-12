@@ -140,7 +140,7 @@ export default function ContactPage() {
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
                 </a>
                 <a
-                  href="/quote"
+                  href="/assessment?type=residential"
                   className="inline-flex min-h-11 items-center rounded-lg px-1 text-sm font-semibold text-white hover:text-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >

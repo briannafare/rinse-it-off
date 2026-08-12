@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
       // Internal-only routes that should stay out of search results.
-      disallow: ["/flyer", "/training"],
+      disallow: ["/flyer", "/training", "/quote"],
     },
     sitemap: `${BASE_URL}/sitemap.xml`,
     host: BASE_URL,

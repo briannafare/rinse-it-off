@@ -9,7 +9,7 @@ const FUNNELS = [
     title: "My home",
     body: "Siding, roof, gutters, driveway, deck. We assess on-site and hand you a firm quote the same day — no runaround.",
     cta: "Start my quote",
-    href: "/quote",
+    href: "/assessment?type=residential",
     img: "/brand/photos/hero-woman.webp",
     alt: "A homeowner outside her freshly rinsed home",
   },

@@ -119,7 +119,7 @@ export default function ServicesIndexPage() {
                 Free assessment
               </Link>
               <Link
-                href="/quote"
+                href="/assessment?type=residential"
                 className="inline-flex items-center gap-2 rounded-xl bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >

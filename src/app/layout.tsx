@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "Rinse It Off | Commercial Pressure Washing Portland OR", template: "%s | Rinse It Off Portland" },
-  description: "Portland\u2019s commercial exterior cleaning experts. Hot water pressure washing, soft washing, parking lot cleaning, building washing, and recurring maintenance programs. Licensed & insured. Free property assessments. Serving Portland, Beaverton, Lake Oswego, Tigard & the Willamette Valley.",
+  title: { default: "Rinse It Off | Pressure Washing Portland OR \u2014 Commercial & Residential", template: "%s | Rinse It Off Portland" },
+  description: "Portland\u2019s exterior cleaning experts for commercial properties and homes. Hot water pressure washing, soft washing, roof and house washing, parking lot cleaning, and recurring maintenance programs. Insured. Free property assessments. Serving Portland, Beaverton, Lake Oswego, Tigard & the Willamette Valley.",
   keywords: [
     "commercial pressure washing Portland",
     "pressure washing Portland OR",
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
     "roof cleaning Portland Oregon",
   ],
   openGraph: {
-    title: "Rinse It Off | Commercial Pressure Washing Portland OR",
-    description: "Hot water pressure washing, soft washing & recurring maintenance for commercial properties across Portland metro. Free property assessments.",
+    title: "Rinse It Off | Pressure Washing Portland OR — Commercial & Residential",
+    description: "Hot water pressure washing, soft washing & recurring maintenance for commercial properties and homes across Portland metro. Free property assessments.",
     type: "website",
     locale: "en_US",
     siteName: "Rinse It Off",
