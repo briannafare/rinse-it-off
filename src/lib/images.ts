@@ -1,15 +1,12 @@
-// Real job photos from Rinse It Off projects — served via Google Drive CDN
-const gdrive = (id: string, w = 1200) => `https://lh3.googleusercontent.com/d/${id}=w${w}`;
-
+// Local, approved job photos — served from /public/brand/photos (all optimized .webp).
+// No Google-Drive / Unsplash / stock hotlinks; nothing over ~300KB.
 export const IMG = {
-  // Job photos — country club commercial project
-  hero:       gdrive("101ixwMWFKGIbZ7aRNhLpl13cyBOoQnk4", 1920),  // surface cleaner with steam, green PNW backdrop
-  parkingLot: gdrive("1dQTkKBhIIi8SQx8VFYC6KdFiY0KJsVof", 1200),  // wide parking lot with crew + rig + cones
-  breezeway:  gdrive("1poxYZHiR2W5NpWpiPWfxcHNzjq7xlA5K", 1200),  // breezeway columns, freshly cleaned concrete
-  walkway:    gdrive("11vg0i5mPSizV6lipyJPrUay5HnCdOHL8", 1200),  // clean path with clubhouse + greens
-  patio:      gdrive("101-GAwx9ToLCnUZuzuH3X2ex57xzsqqg", 1200),  // patio entrance area mid-clean
-  driveway:   gdrive("1-wAWQ4jjA52m0JQYW2nXeRxvyBviPY7J", 1200),  // sweeping curve driveway + clubhouse
-  curb:       gdrive("1-ZmSqOAo9tBt05dt0_243yU6tyvd6JU3", 1200),  // low angle curb + blue sky
-  // Unsplash — atmospheric only (no service-specific faking)
-  portland:   "https://images.unsplash.com/photo-1577495508326-19a1b3cf65b7?w=1920&q=80&auto=format&fit=crop",
+  hero:       "/brand/photos/hero-woman.webp",        // hero — operator with wand
+  parkingLot: "/brand/photos/surface-cleaning.webp",  // flat surface / lot cleaning
+  breezeway:  "/brand/photos/hotwater-degrease.webp", // hot-water degrease, covered walk
+  walkway:    "/brand/photos/building-wash.webp",     // building / path wash
+  patio:      "/brand/photos/window-purewater.webp",  // pure-water glass + patio
+  driveway:   "/brand/photos/roof-softwash.webp",     // soft wash on pitched surface
+  curb:       "/brand/photos/masonry-coldwater.webp", // masonry / cold-water curb
+  portland:   "/brand/photos/window-purewater.webp",  // atmospheric, light PNW frame
 } as const;

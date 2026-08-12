@@ -70,6 +70,8 @@
 .iri-btn .iri-arrow { display: flex; transition: transform 0.35s var(--ease-out-expo); }
 .iri-btn .iri-arrow svg { width: 18px; height: 18px; }
 .iri-btn:hover .iri-arrow { transform: translateX(4px); }
+/* keyboard focus — visible over dark hero + busy glass (WCAG 2.4.7/2.4.11) */
+.iri-btn:focus-visible { outline: 3px solid #62C4EB; outline-offset: 3px; }
 
 /* ---------- 3. SOAP FILM — drifting rainbow inside the glass ---------- */
 .iri-btn .iri-film {

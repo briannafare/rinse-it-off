@@ -1,12 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Phone, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const LINKS = [
-  { label: "Services", href: "#services" },
-  { label: "Proof", href: "#proof" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Services", href: "/services" },
+  { label: "Commercial", href: "/commercial" },
+  { label: "Proof", href: "/#proof" },
+  { label: "FAQ", href: "/#faq" },
 ];
 
 const PHONE_DISPLAY = "(503) 704-3755";
@@ -26,7 +28,23 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // lock background scroll while the mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  // over the cinematic photo hero the bar is wet glass with white text; after
+  // scroll it settles onto solid white with dark ink.
   const ink = scrolled ? "text-[#0C1215]" : "text-white";
+  // shared focus-visible ring; offset color flips with the bar's state
+  const focusRing =
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2";
+  const offset = scrolled
+    ? "focus-visible:ring-offset-white"
+    : "focus-visible:ring-offset-[#0C1215]";
 
   return (
     <>
@@ -38,10 +56,17 @@ export function Navbar() {
         }`}
       >
         <nav className="container-site flex h-16 items-center justify-between md:h-[72px]">
-          <a href="/" className="flex-shrink-0" aria-label="Rinse It Off — home">
-            <img
+          <a
+            href="/"
+            className={`flex-shrink-0 rounded ${focusRing} ${offset}`}
+            aria-label="Rinse It Off — home"
+          >
+            <Image
               src={scrolled ? "/logo-dark.png" : "/logo-white.png"}
               alt="Rinse It Off"
+              width={706}
+              height={438}
+              priority
               className="h-8 w-auto md:h-9"
             />
           </a>
@@ -51,7 +76,7 @@ export function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
-                className={`text-sm font-medium transition-colors duration-300 ${ink} opacity-80 hover:opacity-100`}
+                className={`rounded px-1 text-sm font-medium transition-colors duration-300 ${ink} opacity-80 hover:opacity-100 ${focusRing} ${offset} motion-reduce:transition-none`}
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {l.label}
@@ -62,29 +87,31 @@ export function Navbar() {
           <div className="hidden items-center gap-5 md:flex">
             <a
               href={PHONE_TEL}
-              className={`flex items-center gap-2 text-sm font-medium transition-colors duration-300 ${ink} opacity-80 hover:opacity-100`}
+              className={`flex items-center gap-2 rounded px-1 text-sm font-medium transition-colors duration-300 ${ink} opacity-80 hover:opacity-100 ${focusRing} ${offset} motion-reduce:transition-none`}
             >
               <Phone className="h-3.5 w-3.5" aria-hidden />
               {PHONE_DISPLAY}
             </a>
             <a
               href="/assessment"
-              className={`rounded-xl px-5 py-2.5 text-sm font-semibold transition-colors duration-300 ${
+              className={`inline-flex items-center rounded-xl px-6 py-3.5 text-sm font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 motion-reduce:transition-none ${
                 scrolled
-                  ? "bg-[#0C1215] text-white hover:bg-[#1d2830]"
-                  : "bg-white text-[#0C1215] hover:bg-white/90"
+                  ? "bg-[#62C4EB] text-[#0C1215] hover:bg-[#7CD0EF] focus-visible:ring-offset-white"
+                  : "bg-white text-[#0C1215] hover:bg-white/90 focus-visible:ring-offset-[#0C1215]"
               }`}
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Get a quote
+              Free assessment
             </a>
           </div>
 
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
-            className={`p-2 md:hidden ${ink}`}
+            className={`flex min-h-11 min-w-11 items-center justify-center rounded md:hidden ${ink} ${focusRing} ${offset}`}
             aria-label="Open menu"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
           >
             <Menu className="h-6 w-6" />
           </button>
@@ -94,6 +121,7 @@ export function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            id="mobile-menu"
             className="fixed inset-0 z-[60] flex flex-col bg-[#0C1215] px-6 pt-5 pb-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -101,11 +129,17 @@ export function Navbar() {
             transition={{ duration: 0.25 }}
           >
             <div className="flex items-center justify-between">
-              <img src="/logo-white.png" alt="Rinse It Off" className="h-8 w-auto" />
+              <Image
+                src="/logo-white.png"
+                alt="Rinse It Off"
+                width={706}
+                height={438}
+                className="h-8 w-auto"
+              />
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
-                className="p-2 text-white"
+                className="flex min-h-11 min-w-11 items-center justify-center rounded text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
                 aria-label="Close menu"
               >
                 <X className="h-6 w-6" />
@@ -118,7 +152,7 @@ export function Navbar() {
                   key={l.href}
                   href={l.href}
                   onClick={() => setMobileOpen(false)}
-                  className="py-3 text-3xl font-medium text-white"
+                  className="rounded py-3 text-3xl font-medium text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
                   style={{ fontFamily: "var(--font-display)" }}
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -132,7 +166,7 @@ export function Navbar() {
             <div className="mt-auto flex flex-col gap-4">
               <a
                 href={PHONE_TEL}
-                className="flex items-center gap-3 text-lg font-medium text-white/85"
+                className="flex items-center gap-3 rounded text-lg font-medium text-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
               >
                 <Phone className="h-5 w-5" aria-hidden />
                 {PHONE_DISPLAY}
@@ -140,10 +174,10 @@ export function Navbar() {
               <a
                 href="/assessment"
                 onClick={() => setMobileOpen(false)}
-                className="rounded-xl bg-[#62C4EB] px-6 py-4 text-center text-base font-semibold text-[#0C1215]"
+                className="rounded-xl bg-[#62C4EB] px-6 py-4 text-center text-base font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Get a quote
+                Free assessment
               </a>
             </div>
           </motion.div>

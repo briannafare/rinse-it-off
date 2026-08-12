@@ -90,69 +90,6 @@ const jsonLd = {
   ],
 };
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What is the difference between pressure washing and soft washing?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Pressure washing uses high-pressure water for hard surfaces like concrete and stone. Soft washing uses lower pressure with specialized cleaning solutions, making it safe for delicate surfaces like vinyl siding, stucco, wood, and painted finishes. Rinse It Off uses both methods and matches the technique to each surface type.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How much does commercial pressure washing cost in Portland?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Commercial pressure washing pricing varies based on square footage, surface type, and level of buildup. Rinse It Off provides free property assessments with transparent, written quotes. Recurring maintenance programs offer reduced per-visit pricing compared to one-time cleanings.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What areas in Portland do you serve?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Rinse It Off serves the entire Portland metro area including Beaverton, Hillsboro, Lake Oswego, Tigard, Gresham, Milwaukie, and surrounding communities. For larger commercial projects, we serve clients throughout the Willamette Valley.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Do you offer recurring pressure washing maintenance programs?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. Rinse It Off offers monthly, quarterly, and seasonal maintenance plans for commercial properties. Recurring programs keep your building consistently clean, prevent long-term surface damage from moss and algae, and cost less per visit than one-off cleanings.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is Rinse It Off licensed and insured?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. Rinse It Off carries full general liability insurance and workers compensation coverage. We provide certificates of insurance to property managers and building owners upon request.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What is hot water pressure washing and when is it needed?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Hot water pressure washing uses heated water to dissolve oil, grease, and biological buildup that cold water alone cannot remove. It is essential for parking lots, trash pads, loading docks, and commercial kitchen exhaust areas. Rinse It Off brings both hot and cold water systems to every commercial job.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Will pressure washing damage my building or property?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Not when performed correctly. Rinse It Off matches pressure levels and nozzle types to each surface. We use soft washing on delicate materials like stucco and wood siding, and protect landscaping, windows, and fixtures during every job.",
-      },
-    },
-  ],
-};
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -161,10 +98,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       </head>
       <body className="bg-white text-text-primary font-body antialiased overflow-x-hidden">

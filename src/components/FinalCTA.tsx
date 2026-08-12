@@ -1,16 +1,15 @@
 "use client";
 import Image from "next/image";
 import { Phone } from "lucide-react";
-import { IridescentCTA } from "./IridescentCTA";
 
-/** The closer: show them the after — a patio you'd actually sit in. */
+/** The closer: show them the after — a surface restored from gray to bright. */
 export function FinalCTA() {
   return (
     <section className="relative overflow-hidden">
       <div className="relative h-[70vh] min-h-[480px]">
         <Image
-          src="/brand/photos/patio-umbrellas.jpg"
-          alt="A freshly washed patio with bright blue umbrellas and a fire pit, ready for guests"
+          src="/brand/photos/surface-cleaning.webp"
+          alt="A concrete surface being rinsed clean, restored from gray to bright"
           fill
           sizes="100vw"
           className="object-cover"
@@ -22,24 +21,29 @@ export function FinalCTA() {
             className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            This patio was gray last week.
+            This surface was gray last week.
             <br />
             <span style={{ color: "#62C4EB" }}>Yours is next.</span>
           </h2>
           <p className="mt-4 max-w-lg text-lg text-white/85">
-            Same-day quote, 50% books your date, and you approve the work
-            before the balance charges.
+            Book your free 21-point property audit and get a firm, itemized
+            quote the same day we walk your property — home or business. Backed
+            by our Clean Water Promise: we re-rinse anything you&rsquo;re not
+            happy with, free, within 48 hours.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-6">
-            <IridescentCTA href="/assessment" finish="iri-ink">
+            <a
+              href="/assessment"
+              className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+            >
               Get your same-day quote
-            </IridescentCTA>
+            </a>
             <a
               href="tel:+15037043755"
-              className="flex items-center gap-2 text-sm font-medium text-white/85 hover:text-white"
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
             >
               <Phone className="h-4 w-4" aria-hidden />
-              (503) 704-3755 — talk to Kenn
+              (503) 704-3755 — talk to the team
             </a>
           </div>
         </div>

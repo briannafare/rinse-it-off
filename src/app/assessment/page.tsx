@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
-import { submitAssessmentForm, type AssessmentFormData } from "./actions";
+import { useState, useEffect } from "react";
+import { submitAssessmentForm, getFreeSlots, type AssessmentFormData } from "./actions";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const COMMERCIAL_SERVICES = [
@@ -19,7 +19,6 @@ const RESIDENTIAL_SERVICES = [
   "Window Washing",
   "Patio & Outdoor Living",
 ];
-const TIME_SLOTS = ["8:00 AM", "10:00 AM", "12:00 PM", "2:00 PM", "4:00 PM"];
 const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
@@ -31,14 +30,19 @@ function calDays(year: number, month: number): (number | null)[] {
   for (let d = 1; d <= daysInMonth; d++) cells.push(d);
   return cells;
 }
-function isDisabled(year: number, month: number, day: number): boolean {
-  const date = new Date(year, month, day);
-  const today = new Date(); today.setHours(0, 0, 0, 0);
-  return date < today || date.getDay() === 0;
-}
 function fmtDate(year: number, month: number, day: number): string {
   return new Date(year, month, day).toLocaleDateString("en-US", {
     weekday: "long", month: "long", day: "numeric", year: "numeric",
+  });
+}
+// "YYYY-MM-DD" key matching the GHL free-slots response keys.
+function dateKey(year: number, month: number, day: number): string {
+  return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+// A GHL slot ISO ("2026-07-13T08:00:00-07:00") → "8:00 AM" in Pacific time.
+function slotLabel(iso: string): string {
+  return new Date(iso).toLocaleTimeString("en-US", {
+    hour: "numeric", minute: "2-digit", timeZone: "America/Los_Angeles",
   });
 }
 
@@ -52,10 +56,7 @@ const DS = `
     --ink:          #0C1215;
     --ink-soft:     #0E1419;
     --blue:         #62C4EB;
-    --blue-deep:    #3AA8D4;
     --blue-wash:    #EDF7FC;
-    --mint:         #4DFFA6;
-    --mint-wash:    #f0fff8;
     --surface:      #FFFFFF;
     --surface-alt:  #F4F7F8;
     --text-primary: #0C1215;
@@ -71,16 +72,18 @@ const DS = `
     --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
     --aura-water:
       radial-gradient(120% 120% at 12% 10%, #DDF1FB 0%, transparent 55%),
-      radial-gradient(120% 120% at 88% 22%, #E9FBF3 0%, transparent 55%),
+      radial-gradient(120% 120% at 88% 22%, #E9F6FC 0%, transparent 55%),
       radial-gradient(140% 130% at 55% 100%, #EEF5FB 0%, transparent 60%);
-    --soap-cyan: rgba(120,232,255,1); --soap-mint: rgba(122,255,206,1);
-    --soap-lav:  rgba(190,168,255,1); --soap-rose: rgba(255,158,214,1);
-    --soap-gold: rgba(255,214,138,1);
   }
 
   html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
   body { font-family: var(--font-body); color: var(--text-primary); background: var(--surface); }
-  ::selection { background: rgba(77,255,166,0.25); }
+  ::selection { background: rgba(98,196,235,0.25); }
+
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--blue) !important;
+    outline-offset: 2px;
+  }
 
   /* ── Liquid-glass CTA ─────────────────────────────────────────────────── */
   @keyframes bp-rim {
@@ -100,14 +103,14 @@ const DS = `
     text-decoration: none; cursor: pointer; appearance: none;
     color: var(--ink); text-shadow: 0 1px 0 rgba(255,255,255,0.7);
     border: 1px solid rgba(255,255,255,0.8);
-    border-radius: 999px;
+    border-radius: var(--r-lg);
     -webkit-backdrop-filter: blur(6px) saturate(1.5) brightness(1.1);
             backdrop-filter: blur(6px) saturate(1.5) brightness(1.1);
     background:
       radial-gradient(95% 70% at 50% -12%, rgba(255,255,255,0.9), rgba(255,255,255,0.28) 40%, transparent 68%),
-      radial-gradient(40% 56% at 22% 30%, rgba(122,255,206,0.16), transparent 64%),
-      radial-gradient(44% 60% at 80% 26%, rgba(255,214,138,0.13), transparent 64%),
-      radial-gradient(46% 64% at 80% 80%, rgba(190,168,255,0.16), transparent 66%),
+      radial-gradient(40% 56% at 22% 30%, rgba(98,196,235,0.16), transparent 64%),
+      radial-gradient(44% 60% at 80% 26%, rgba(98,196,235,0.13), transparent 64%),
+      radial-gradient(46% 64% at 80% 80%, rgba(98,196,235,0.14), transparent 66%),
       linear-gradient(180deg, rgba(255,255,255,0.20), rgba(238,248,255,0.12));
     background-color: rgba(255,255,255,0.16);
     box-shadow:
@@ -127,8 +130,8 @@ const DS = `
     background:
       linear-gradient(180deg, rgba(255,255,255,1), rgba(255,255,255,0.18) 28%, transparent 55%, rgba(255,255,255,0.5) 100%),
       linear-gradient(110deg,
-        rgba(150,235,255,0.6) 0%, rgba(150,255,210,0.4) 18%, rgba(190,168,255,0.45) 40%,
-        rgba(255,170,210,0.4) 60%, rgba(255,214,150,0.45) 80%, rgba(150,235,255,0.5) 100%);
+        rgba(98,196,235,0.6) 0%, rgba(98,196,235,0.4) 18%, rgba(98,196,235,0.45) 40%,
+        rgba(98,196,235,0.4) 60%, rgba(98,196,235,0.45) 80%, rgba(98,196,235,0.5) 100%);
     background-size: 100% 100%, 200% 100%;
     background-blend-mode: screen;
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -167,6 +170,7 @@ const DS = `
   }
   @media (prefers-reduced-motion: reduce) {
     .btn-glass::before, .btn-glass::after { animation: none; }
+    .btn-glass, .btn-glass:hover { transform: none; transition: none; }
   }
 `;
 
@@ -180,16 +184,31 @@ export default function AssessmentPage() {
   const [cm, setCm] = useState(today.getMonth());
   const [day, setDay] = useState<number | null>(null);
   const [time, setTime] = useState("");
+  const [selectedISO, setSelectedISO] = useState("");
+  const [slotMap, setSlotMap] = useState<Record<string, string[]>>({});
+  const [slotsLoaded, setSlotsLoaded] = useState(false);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
 
+  // Pull real availability for the audit calendar (today → +45 days) once.
+  useEffect(() => {
+    const now = Date.now();
+    getFreeSlots(now, now + 45 * 24 * 60 * 60 * 1000)
+      .then((r) => setSlotMap(r.days))
+      .catch(() => setSlotMap({}))
+      .finally(() => setSlotsLoaded(true));
+  }, []);
+
   const serviceList = propertyType === "commercial" ? COMMERCIAL_SERVICES : propertyType === "residential" ? RESIDENTIAL_SERVICES : [];
   const toggleService = (s: string) => setServices(p => p.includes(s) ? p.filter(x => x !== s) : [...p, s]);
   const days = calDays(cy, cm);
+  const dayHasSlots = (d: number) => (slotMap[dateKey(cy, cm, d)]?.length ?? 0) > 0;
+  const selectedSlots = day !== null ? slotMap[dateKey(cy, cm, day)] ?? [] : [];
+  const clearPick = () => { setDay(null); setTime(""); setSelectedISO(""); };
   const prevDisabled = cy === today.getFullYear() && cm === today.getMonth();
-  const prevMonth = () => { if (cm === 0) { setCy(cy - 1); setCm(11); } else setCm(cm - 1); setDay(null); setTime(""); };
-  const nextMonth = () => { if (cm === 11) { setCy(cy + 1); setCm(0); } else setCm(cm + 1); setDay(null); setTime(""); };
+  const prevMonth = () => { if (cm === 0) { setCy(cy - 1); setCm(11); } else setCm(cm - 1); clearPick(); };
+  const nextMonth = () => { if (cm === 11) { setCy(cy + 1); setCm(0); } else setCm(cm + 1); clearPick(); };
   const apptLabel = day ? `${fmtDate(cy, cm, day)}${time ? ` at ${time}` : ""}` : "";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -206,6 +225,7 @@ export default function AssessmentPage() {
       message: form.message,
       appointmentDate: day ? fmtDate(cy, cm, day) : undefined,
       appointmentTime: time || undefined,
+      appointmentISO: selectedISO || undefined,
     };
     const result = await submitAssessmentForm(payload);
     setSending(false);
@@ -223,7 +243,7 @@ export default function AssessmentPage() {
       <>
         <style dangerouslySetInnerHTML={{ __html: DS }} />
         <div style={{ minHeight: "100vh", background: "var(--surface)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px 20px", textAlign: "center" }}>
-          <div style={{ width: 64, height: 64, background: "var(--mint)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 28px", color: "var(--ink)" }}>
+          <div style={{ width: 64, height: 64, background: "var(--blue)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 28px", color: "var(--ink)" }}>
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
           <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(1.75rem, 5vw, 2.5rem)", color: "var(--ink)", letterSpacing: "-0.02em", marginBottom: 16, lineHeight: 1.05 }}>
@@ -232,23 +252,23 @@ export default function AssessmentPage() {
           {apptLabel ? (
             <>
               <p style={{ fontFamily: "var(--font-body)", color: "var(--text-secondary)", fontSize: "1.0625rem", lineHeight: 1.6, maxWidth: 440, margin: "0 auto 24px" }}>
-                Your free site assessment has been requested for:
+                Your free on-site walkthrough is scheduled for:
               </p>
-              <div style={{ display: "inline-block", border: "2px solid var(--mint)", borderRadius: "var(--r-lg)", padding: "14px 28px", background: "var(--mint-wash)", marginBottom: 24 }}>
+              <div style={{ display: "inline-block", border: "2px solid var(--blue)", borderRadius: "var(--r-lg)", padding: "14px 28px", background: "var(--blue-wash)", marginBottom: 24 }}>
                 <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.0625rem", color: "var(--ink)" }}>{apptLabel}</div>
               </div>
               <p style={{ fontFamily: "var(--font-body)", color: "var(--text-muted)", fontSize: "0.9375rem", lineHeight: 1.6, maxWidth: 400, margin: "0 auto 36px" }}>
-                We&apos;ll confirm by phone or text before the visit{form.email ? `. Confirmation will be sent to ${form.email}` : ""}.
+                We&apos;ll reach out by phone or text within a few hours.
               </p>
             </>
           ) : (
             <p style={{ fontFamily: "var(--font-body)", color: "var(--text-secondary)", fontSize: "1.0625rem", lineHeight: 1.6, maxWidth: 420, margin: "0 auto 36px" }}>
-              We received your request and will be in touch within a few hours to schedule your free on-site walkthrough{form.email ? ` — confirmation to ${form.email}` : ""}.
+              We received your request and will reach out by phone or text within a few hours to schedule your free on-site walkthrough.
             </p>
           )}
           <div style={{ background: "var(--ink)", borderRadius: "var(--r-lg)", padding: "20px 32px", display: "inline-block" }}>
             <div style={{ fontFamily: "var(--font-body)", color: "rgba(255,255,255,0.55)", fontSize: "0.8125rem", letterSpacing: "0.04em", marginBottom: 6 }}>Questions? Call or text</div>
-            <a href="tel:5037768367" style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.5rem", color: "var(--mint)", textDecoration: "none", letterSpacing: "-0.02em" }}>(503) 776-8367</a>
+            <a href="tel:+15037043755" style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.5rem", color: "var(--blue)", textDecoration: "none", letterSpacing: "-0.02em" }}>(503) 704-3755</a>
           </div>
         </div>
       </>
@@ -263,8 +283,8 @@ export default function AssessmentPage() {
       {/* Header */}
       <header style={{ background: "var(--ink)", padding: "18px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
         <a href="https://www.rinseitoff.com" style={{ display: "inline-block" }}><img src="/logo-white.png" alt="Rinse It Off" style={{ height: 36, width: "auto" }} onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} /></a>
-        <a href="tel:5037768367" style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "0.9375rem", color: "var(--mint)", textDecoration: "none", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>
-          (503) 776-8367
+        <a href="tel:+15037043755" style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "0.9375rem", color: "var(--blue)", textDecoration: "none", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>
+          (503) 704-3755
         </a>
       </header>
 
@@ -293,7 +313,7 @@ export default function AssessmentPage() {
                 {(["commercial", "residential"] as const).map((t) => (
                   <button key={t} type="button" onClick={() => { setPropertyType(t); setServices([]); }}
                     style={{
-                      padding: "14px 16px", border: propertyType === t ? "2px solid var(--mint)" : "2px solid var(--border)",
+                      padding: "14px 16px", border: propertyType === t ? "2px solid var(--blue)" : "2px solid var(--border)",
                       borderRadius: "var(--r-md)", background: propertyType === t ? "var(--ink)" : "var(--surface)",
                       color: propertyType === t ? "#fff" : "var(--ink)",
                       fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "0.9375rem",
@@ -317,13 +337,13 @@ export default function AssessmentPage() {
                     return (
                       <button key={s} type="button" onClick={() => toggleService(s)}
                         style={{
-                          padding: "10px 13px", border: on ? "2px solid var(--mint)" : "2px solid var(--border)",
-                          borderRadius: "var(--r-sm)", background: on ? "var(--mint-wash)" : "var(--surface)",
+                          padding: "10px 13px", border: on ? "2px solid var(--blue)" : "2px solid var(--border)",
+                          borderRadius: "var(--r-sm)", background: on ? "var(--blue-wash)" : "var(--surface)",
                           color: "var(--ink)", fontFamily: "var(--font-body)", fontWeight: on ? 600 : 400,
                           fontSize: "0.875rem", textAlign: "left", cursor: "pointer", transition: "all 0.15s",
                           display: "flex", alignItems: "center", gap: 8,
                         }}>
-                        <span style={{ width: 14, height: 14, borderRadius: 3, border: on ? "none" : "2px solid var(--border)", background: on ? "var(--mint)" : "transparent", flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                        <span style={{ width: 14, height: 14, borderRadius: 3, border: on ? "none" : "2px solid var(--border)", background: on ? "var(--blue)" : "transparent", flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
                           {on && <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="var(--ink)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="2 6 5 9 10 3"/></svg>}
                         </span>
                         {s}
@@ -387,9 +407,9 @@ export default function AssessmentPage() {
             {/* Step 4 — Calendar */}
             {propertyType && (
               <div style={{ marginBottom: 32 }}>
-                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 4 }}>Schedule your walkthrough</div>
+                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 4 }}>Book your walkthrough</div>
                 <p style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-muted)", marginBottom: 12, lineHeight: 1.5 }}>
-                  Optional — pick a time that works and we'll come to you.
+                  {slotsLoaded ? "Pick a real open time — it's booked the moment you submit." : "Loading live availability…"}
                 </p>
                 <div style={{ border: "2px solid var(--border)", borderRadius: "var(--r-lg)", overflow: "hidden", background: "var(--surface)" }}>
                   {/* Calendar header */}
@@ -410,21 +430,21 @@ export default function AssessmentPage() {
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 2, padding: 8, background: "var(--surface-alt)" }}>
                     {days.map((d, i) => {
                       if (d === null) return <div key={"e" + i} />;
-                      const dis = isDisabled(cy, cm, d);
+                      const dis = !dayHasSlots(d);
                       const sel = day === d;
                       const isToday = cy === today.getFullYear() && cm === today.getMonth() && d === today.getDate();
                       return (
-                        <button key={d} type="button" disabled={dis} onClick={() => { setDay(d); setTime(""); }}
+                        <button key={d} type="button" disabled={dis} onClick={() => { setDay(d); setTime(""); setSelectedISO(""); }}
                           style={{
-                            aspectRatio: "1", border: sel ? "2px solid var(--mint)" : "2px solid transparent",
+                            aspectRatio: "1", border: sel ? "2px solid var(--blue)" : "2px solid transparent",
                             borderRadius: "var(--r-sm)",
-                            background: sel ? "var(--ink)" : isToday ? "var(--mint-wash)" : "var(--surface)",
-                            color: sel ? "var(--mint)" : dis ? "var(--border)" : "var(--ink)",
+                            background: sel ? "var(--ink)" : isToday ? "var(--blue-wash)" : "var(--surface)",
+                            color: sel ? "var(--blue)" : dis ? "var(--border)" : "var(--ink)",
                             fontFamily: "var(--font-body)", fontWeight: sel ? 700 : isToday ? 600 : 400,
                             fontSize: "0.875rem", cursor: dis ? "not-allowed" : "pointer", transition: "all 0.12s",
                           }}
-                          onMouseEnter={(e) => { if (!dis && !sel) { (e.currentTarget as HTMLButtonElement).style.background = "var(--mint-wash)"; (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--mint)"; } }}
-                          onMouseLeave={(e) => { if (!dis && !sel) { (e.currentTarget as HTMLButtonElement).style.background = isToday ? "var(--mint-wash)" : "var(--surface)"; (e.currentTarget as HTMLButtonElement).style.borderColor = "transparent"; } }}>
+                          onMouseEnter={(e) => { if (!dis && !sel) { (e.currentTarget as HTMLButtonElement).style.background = "var(--blue-wash)"; (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--blue)"; } }}
+                          onMouseLeave={(e) => { if (!dis && !sel) { (e.currentTarget as HTMLButtonElement).style.background = isToday ? "var(--blue-wash)" : "var(--surface)"; (e.currentTarget as HTMLButtonElement).style.borderColor = "transparent"; } }}>
                           {d}
                         </button>
                       );
@@ -437,26 +457,30 @@ export default function AssessmentPage() {
                         Available times — {MONTHS[cm]} {day}
                       </div>
                       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        {TIME_SLOTS.map((v) => (
-                          <button key={v} type="button" onClick={() => setTime(v)}
-                            style={{
-                              padding: "7px 14px", border: time === v ? "2px solid var(--mint)" : "2px solid var(--border)",
-                              borderRadius: "var(--r-sm)", background: time === v ? "var(--ink)" : "var(--surface)",
-                              color: time === v ? "var(--mint)" : "var(--text-secondary)",
-                              fontFamily: "var(--font-body)", fontWeight: time === v ? 700 : 400,
-                              fontSize: "0.875rem", cursor: "pointer", transition: "all 0.12s",
-                            }}>{v}</button>
-                        ))}
+                        {selectedSlots.map((iso) => {
+                          const v = slotLabel(iso);
+                          const on = selectedISO === iso;
+                          return (
+                            <button key={iso} type="button" onClick={() => { setTime(v); setSelectedISO(iso); }}
+                              style={{
+                                padding: "7px 14px", border: on ? "2px solid var(--blue)" : "2px solid var(--border)",
+                                borderRadius: "var(--r-sm)", background: on ? "var(--ink)" : "var(--surface)",
+                                color: on ? "var(--blue)" : "var(--text-secondary)",
+                                fontFamily: "var(--font-body)", fontWeight: on ? 700 : 400,
+                                fontSize: "0.875rem", cursor: "pointer", transition: "all 0.12s",
+                              }}>{v}</button>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
                   {/* Confirmed slot */}
                   {day !== null && time && (
-                    <div style={{ borderTop: "2px solid var(--mint)", background: "var(--mint-wash)", padding: "13px 16px", display: "flex", alignItems: "center", gap: 10 }}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <div style={{ borderTop: "2px solid var(--blue)", background: "var(--blue-wash)", padding: "13px 16px", display: "flex", alignItems: "center", gap: 10 }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                       <div>
-                        <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.8125rem", color: "var(--ink)" }}>Assessment Requested</div>
-                        <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-secondary)" }}>{fmtDate(cy, cm, day)} at {time}</div>
+                        <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.8125rem", color: "var(--ink)" }}>Time selected</div>
+                        <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-secondary)" }}>{fmtDate(cy, cm, day)} at {time} — booked when you submit</div>
                       </div>
                     </div>
                   )}

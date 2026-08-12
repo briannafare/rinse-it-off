@@ -15,6 +15,13 @@ export function useScrollReveal(options?: { y?: number; delay?: number; duration
   useEffect(() => {
     if (!ref.current) return;
     const el = ref.current;
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      gsap.set(el, { y: 0, opacity: 1 });
+      return;
+    }
     gsap.fromTo(el,
       { y: options?.y ?? 60, opacity: 0 },
       {
@@ -36,6 +43,13 @@ export function useStaggerReveal(stagger = 0.1) {
   useEffect(() => {
     if (!ref.current) return;
     const children = ref.current.children;
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      gsap.set(children, { y: 0, opacity: 1 });
+      return;
+    }
     gsap.fromTo(children,
       { y: 50, opacity: 0 },
       {

@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useScrollReveal, useStaggerReveal } from "@/lib/gsap";
 
 /** Show the machine actually working (real footage), beside the four-step
@@ -6,29 +7,38 @@ import { useScrollReveal, useStaggerReveal } from "@/lib/gsap";
 const STEPS = [
   {
     n: "01",
-    title: "Tell us what's dirty",
-    body: "Two minutes online or one phone call. Photos help — you'll have a firm quote the same day.",
+    title: "We audit your property — free, 21 points",
+    body: "We assess every surface on-site — home, storefront, or facility — and hand you a firm, itemized quote the same day.",
   },
   {
     n: "02",
-    title: "A 50% deposit books your date",
-    body: "Accept the quote, pick your day. The deposit locks your price and your slot — nothing else charges yet.",
+    title: "Reserve your slot, lock your price",
+    body: "Accept the quote and pick your day. Your price is locked, and a small deposit simply holds the date — nothing else charges yet.",
   },
   {
     n: "03",
     title: "We clean. You walk it.",
-    body: "Method matched to every surface. When we're done, you inspect the work before anything else happens.",
+    body: "Method matched to every surface, residential or commercial. When we're done, you inspect the work before anything else happens.",
   },
   {
     n: "04",
     title: "Pay the rest only when it's right",
-    body: "Balance settles after your walkthrough. Spot something within 48 hours? We re-rinse it free.",
+    body: "Balance settles after your walkthrough. Not happy with something? Our Clean Water Promise — we re-rinse anything you're not happy with, free, within 48 hours.",
   },
 ];
 
 export function ProcessSection() {
   const headRef = useScrollReveal();
   const stepsRef = useStaggerReveal(0.12);
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduceMotion(mq.matches);
+    const onChange = () => setReduceMotion(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   return (
     <section id="process" className="bg-white py-16 md:py-24">
@@ -47,15 +57,17 @@ export function ProcessSection() {
           <div className="relative overflow-hidden rounded-3xl border border-[#E4ECF1] shadow-[0_30px_60px_-30px_rgba(20,45,60,0.3)]">
             <video
               src="/brand/video/surface-cleaning.mp4"
-              autoPlay
+              poster="/brand/photos/surface-cleaning.webp"
+              autoPlay={!reduceMotion}
               muted
-              loop
+              loop={!reduceMotion}
+              controls={reduceMotion}
               playsInline
               className="aspect-[4/3] w-full object-cover"
               aria-label="Rotary surface cleaner removing grime in a single pass"
             />
             <span className="absolute bottom-4 left-4 rounded-lg bg-black/50 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
-              Live footage — one pass, no edit
+              Actual RIO job footage
             </span>
           </div>
 
@@ -80,6 +92,15 @@ export function ProcessSection() {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="mt-12 flex md:mt-16">
+          <a
+            href="/assessment"
+            className="group inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+          >
+            Book your free 21-point audit
+          </a>
         </div>
       </div>
     </section>
