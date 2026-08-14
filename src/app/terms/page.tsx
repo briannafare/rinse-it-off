@@ -10,6 +10,7 @@ import {
   Phone,
   Mail,
   ArrowRight,
+  MessageSquare,
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -170,6 +171,30 @@ export default function TermsPage() {
                   Need to reschedule or cancel? Give us a reasonable heads-up and we&apos;ll
                   sort it out — we&apos;re people, not a penalty machine. We may update these
                   terms from time to time; the version posted here is the one in effect.
+                </p>
+              </article>
+
+              {/* Text messaging — the section carriers check */}
+              <article>
+                <h2
+                  className="flex items-center gap-3 text-xl font-semibold text-[#0C1215] md:text-2xl"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  <MessageSquare className="h-5 w-5 shrink-0 text-[#62C4EB]" aria-hidden />
+                  Calls &amp; text messages
+                </h2>
+                <p className="mt-3 text-base leading-relaxed text-[#4B5C6B]">
+                  By giving us your phone number — through the site, over the phone, or in
+                  person — you agree that Rinse It Off (a DBA of Fresh Rinse, LLC) may call or
+                  text you about your quote, appointment, or service. Message frequency varies.
+                  Message and data rates may apply. Reply <strong>STOP</strong> to opt out at
+                  any time, or <strong>HELP</strong> for help. Carriers aren&apos;t liable for
+                  delayed or undelivered messages. Your number is never shared or sold to third
+                  parties for their own marketing — see our{" "}
+                  <a href="/privacy" className="font-semibold text-[#3AA8D4] underline">
+                    Privacy Policy
+                  </a>
+                  .
                 </p>
               </article>
 

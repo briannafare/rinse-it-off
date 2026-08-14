@@ -510,6 +510,12 @@ export default function AssessmentPage() {
                 <p style={{ fontFamily: "var(--font-body)", textAlign: "center", fontSize: "0.8125rem", color: "var(--text-muted)", marginTop: 12 }}>
                   No spam. No sales pressure. We respond within a few hours to schedule your walkthrough.
                 </p>
+                <p style={{ fontFamily: "var(--font-body)", textAlign: "center", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: 8, lineHeight: 1.5 }}>
+                  By submitting, you agree to receive calls and texts about your quote and appointment from Rinse It Off. Msg &amp; data rates may apply, frequency varies. Reply STOP to opt out, HELP for help. See our{" "}
+                  <a href="/privacy" style={{ color: "var(--blue)", textDecoration: "underline" }}>Privacy Policy</a>{" "}
+                  and{" "}
+                  <a href="/terms" style={{ color: "var(--blue)", textDecoration: "underline" }}>Terms</a>.
+                </p>
               </div>
             )}
 
