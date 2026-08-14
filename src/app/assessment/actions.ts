@@ -1,5 +1,8 @@
 "use server";
 
+import { headers } from "next/headers";
+import { createWindow } from "@/lib/abuse-window.mjs";
+
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
 const GHL_API_BASE = "https://services.leadconnectorhq.com";
@@ -9,8 +12,8 @@ const GHL_VERSION = "2021-07-28";
 // Env-overridable so nothing is hardcoded to one account long-term.
 const COMMERCIAL_PIPELINE_ID = process.env.GHL_COMMERCIAL_PIPELINE_ID || "ohb2ZfnHPdrhfCqwqVSE";
 const COMMERCIAL_STAGE_ID = process.env.GHL_COMMERCIAL_STAGE_ID || "bad7e4f8-2c55-465d-8f19-8d2eaf953bf6"; // "New Lead"
-// Residential pipeline does not exist yet (Bri's UI-only step). Once created,
-// set these envs and residential audits will drop into it automatically.
+// "Residential Pressure Washing Pipeline" — created 2026-08-14. Env-set in
+// Vercel; if either is missing the opportunity step is skipped, not fatal.
 const RESIDENTIAL_PIPELINE_ID = process.env.GHL_RESIDENTIAL_PIPELINE_ID || "";
 const RESIDENTIAL_STAGE_ID = process.env.GHL_RESIDENTIAL_STAGE_ID || "";
 // "Access Notes / Gate Code" custom field (LARGE_TEXT) — safe free-text.
@@ -19,6 +22,14 @@ const CF_ACCESS_NOTES = "sL97gzPiCMVzGZ58Cgns";
 const AUDIT_CALENDAR_ID = process.env.GHL_AUDIT_CALENDAR_ID || "tA6NtDSKU60mNlSNXLS9";
 const SLOT_MINUTES = 45;
 const TZ = "America/Los_Angeles";
+
+// Abuse watch on the one public write path into the CRM. Over FLAG_AFTER
+// submits from an IP in 10 minutes the lead still saves but arrives tagged
+// `needs-review`; over BLOCK_AFTER nothing is written at all.
+// ponytail: per-instance memory, so a flood spread across serverless instances
+// still leaks through. Enough to catch a script hammering the form — move the
+// counter to Vercel KV if it ever needs to be airtight.
+const recordSubmit = createWindow();
 
 const ghlHeaders = {
   Authorization: `Bearer ${GHL_API_KEY}`,
@@ -76,6 +87,20 @@ export async function submitAssessmentForm(
   data: AssessmentFormData
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    const ip =
+      (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    const { count, flagged, blocked } = recordSubmit(ip);
+    if (blocked) {
+      console.error(`[abuse] assessment submit BLOCKED — ${count} from ${ip} in 10 min`);
+      return {
+        success: false,
+        error: "Too many requests from this connection. Please call us at (503) 704-3755.",
+      };
+    }
+    if (flagged) {
+      console.warn(`[abuse] assessment submit #${count} from ${ip} in 10 min — tagging needs-review`);
+    }
+
     if (!GHL_API_KEY) {
       console.error("Missing GHL_API_KEY");
       throw new Error("Missing GHL_API_KEY");
@@ -117,6 +142,7 @@ export async function submitAssessmentForm(
         "property-audit",
         "website-assessment",
         isCommercial ? "lead-com" : "lead-res",
+        ...(flagged ? ["needs-review"] : []),
       ],
       customFields,
     };
