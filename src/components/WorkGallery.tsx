@@ -80,7 +80,7 @@ export function WorkGallery() {
 
       <div
         ref={track}
-        className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-5 pb-4 sm:px-6 lg:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-4 pl-[max(1.25rem,calc((100vw-80rem)/2+2rem))] pr-5 scroll-pl-[max(1.25rem,calc((100vw-80rem)/2+2rem))] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         aria-label="Photos of recent jobs"
       >
         {SHOTS.map((s, i) => (
