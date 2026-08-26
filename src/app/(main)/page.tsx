@@ -4,6 +4,7 @@ import { DualFunnel } from "@/components/DualFunnel";
 import { Methods } from "@/components/Methods";
 import { ProcessSection } from "@/components/ProcessSection";
 import { BeforeAfter } from "@/components/BeforeAfter";
+import { WorkGallery } from "@/components/WorkGallery";
 import { Promise as PromiseSection } from "@/components/Promise";
 import { FAQ } from "@/components/FAQ";
 import { FAQS } from "@/lib/faqs";
@@ -33,6 +34,7 @@ export default function HomePage() {
       <Methods />
       <ProcessSection />
       <BeforeAfter />
+      <WorkGallery />
       <PromiseSection />
       <FAQ />
       <FinalCTA />
