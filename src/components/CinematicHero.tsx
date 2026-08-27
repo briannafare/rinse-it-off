@@ -3,7 +3,7 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { Phone, ArrowRight } from "lucide-react";
 
-/** Full-bleed cinematic hero — the ad-campaign "wow" shot. Dark image band is
+/** Full-bleed hero — real job footage, not a staged shot. Dark image band is
  *  punctuation; the body below is light clean-water. Headline states the true
  *  differentiator (method-matching). CTA is the free assessment — no invented
  *  offers. Legibility scrims keep the copy readable over the photo. */
@@ -28,14 +28,31 @@ export function CinematicHero() {
 
   return (
     <section className="relative min-h-[100svh] w-full overflow-hidden bg-[#0C1215]">
-      <Image
-        src="/brand/photos/hero-woman.webp"
-        alt="A Rinse It Off technician pressure-washing a building exterior"
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-center"
-      />
+      {/* Real job footage: hot-water surface cleaning at a Portland-area clubhouse.
+          Poster is the first frame, so reduced-motion / slow connections still
+          get a real photo of the work rather than a blank band. */}
+      {reduce ? (
+        <Image
+          src="/brand/photos/hero-steam-poster.webp"
+          alt="A Rinse It Off technician guiding a surface cleaner through steam on a clubhouse walkway"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+      ) : (
+        <video
+          className="absolute inset-0 h-full w-full object-cover object-center"
+          src="/brand/video/hero-steam.mp4"
+          poster="/brand/photos/hero-steam-poster.webp"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-label="A Rinse It Off technician guiding a surface cleaner through steam on a clubhouse walkway"
+        />
+      )}
       {/* legibility scrims — dark left for copy, soft top/bottom */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/5" aria-hidden />
       <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/30" aria-hidden />
