@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -102,6 +103,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="bg-white text-text-primary font-body antialiased overflow-x-hidden">
         {children}
+        {/* GHL chat widget — carrier-required SMS opt-in surface for A2P 10DLC */}
+        <Script
+          src="https://widgets.leadconnectorhq.com/loader.js"
+          data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+          data-widget-id="6a32ee4e81870ee2fd443c44"
+          data-source="WEB_USER"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
