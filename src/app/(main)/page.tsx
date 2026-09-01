@@ -10,6 +10,7 @@ import { FAQ } from "@/components/FAQ";
 import { FAQS } from "@/lib/faqs";
 import { FinalCTA } from "@/components/FinalCTA";
 import { StickyMobileBar } from "@/components/StickyMobileBar";
+import Script from "next/script";
 
 const faqSchema = {
   "@context": "https://schema.org",
@@ -39,6 +40,16 @@ export default function HomePage() {
       <FAQ />
       <FinalCTA />
       <StickyMobileBar />
+      {/* GHL chat widget — the A2P-registered SMS opt-in surface. Homepage ONLY:
+          carriers require it to be the sole phone-collecting form on any page it
+          appears on, and /assessment and /quote both collect phone numbers. */}
+      <Script
+        src="https://widgets.leadconnectorhq.com/loader.js"
+        data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+        data-widget-id="6a32ee4e81870ee2fd443c44"
+        data-source="WEB_USER"
+        strategy="afterInteractive"
+      />
     </>
   );
 }
