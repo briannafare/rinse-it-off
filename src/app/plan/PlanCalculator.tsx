@@ -261,7 +261,7 @@ export default function PlanCalculator({ src }: { src: string }) {
   const [roof, setRoof] = useState<RoofType>("composition");
   const [driveway, setDriveway] = useState<DrivewaySize>("typical");
   const [access, setAccess] = useState<Access>("easy");
-  const [exactText, setExactText] = useState<Record<keyof ExactInputs, string>>({ roofSf: "", drivewaySf: "", walkwaySf: "", gutterLf: "", wallHeightFt: "", largeWindows: "", frenchWindows: "" });
+  const [exactText, setExactText] = useState<Record<keyof ExactInputs, string>>({ roofSf: "", drivewaySf: "", walkwaySf: "", gutterLf: "", largeWindows: "", frenchWindows: "" });
   const setExact = (k: keyof ExactInputs, v: string) => setExactText((p) => ({ ...p, [k]: v.replace(/[^0-9]/g, "").slice(0, 6) }));
   // An expander stays open while it holds a number (so coming back to this
   // step shows what was typed). Closing it means "use the generic choice":
@@ -579,12 +579,6 @@ export default function PlanCalculator({ src }: { src: string }) {
                         </button>
                       ))}
                     </div>
-                    <details className="more" {...moreProps("walls", ["wallHeightFt"])}>
-                      <summary>Enter wall height<span className="opt">· optional</span></summary>
-                      <div className="row">
-                        <div><label htmlFor="wallHeightFt">Wall height, ft</label><input id="wallHeightFt" type="text" inputMode="numeric" value={exactText.wallHeightFt} onChange={(e) => setExact("wallHeightFt", e.target.value)} /></div>
-                      </div>
-                    </details>
                   </div>
 
                   <button type="submit" className="btn btn-ink" disabled={!house}>
@@ -602,7 +596,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                   <p className="summary">
                     {house.livingSqft.toLocaleString()} sq ft · {house.stories === 3 ? "3+ stories" : house.stories === 2 ? "2 stories" : "1 story"} · {house.windows} windows · {house.roof === "shake-steep" ? "wood shake or steep" : house.roof === "metal-tile" ? "metal or tile" : "composition"} roof · {house.driveway === "large" ? "large" : house.driveway === "small" ? "small" : "typical"} driveway · {house.access === "gated-tight" ? "gated or tight" : house.access === "steep-ladder" ? "steep" : "easy"} access
                     {Object.keys(exact).length > 0 && (
-                      <> · you gave: {[exact.roofSf && `roof ${exact.roofSf.toLocaleString()} sq ft`, exact.drivewaySf && `driveway ${exact.drivewaySf.toLocaleString()} sq ft`, exact.walkwaySf && `walkways ${exact.walkwaySf.toLocaleString()} sq ft`, exact.gutterLf && `gutters ${exact.gutterLf.toLocaleString()} ft`, exact.wallHeightFt && `walls ${exact.wallHeightFt} ft`, exact.largeWindows && `${exact.largeWindows} large windows`, exact.frenchWindows && `${exact.frenchWindows} French windows`].filter(Boolean).join(", ")}</>
+                      <> · you gave: {[exact.roofSf && `roof ${exact.roofSf.toLocaleString()} sq ft`, exact.drivewaySf && `driveway ${exact.drivewaySf.toLocaleString()} sq ft`, exact.walkwaySf && `walkways ${exact.walkwaySf.toLocaleString()} sq ft`, exact.gutterLf && `gutters ${exact.gutterLf.toLocaleString()} ft`, exact.largeWindows && `${exact.largeWindows} large windows`, exact.frenchWindows && `${exact.frenchWindows} French windows`].filter(Boolean).join(", ")}</>
                     )}
                     {" "}<button type="button" className="linkish" onClick={() => go(0)}>Edit</button>
                   </p>

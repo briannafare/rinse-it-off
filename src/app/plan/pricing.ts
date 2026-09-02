@@ -21,11 +21,10 @@ export interface ExactInputs {
   drivewaySf?: number;
   walkwaySf?: number;
   gutterLf?: number;
-  wallHeightFt?: number;
   largeWindows?: number; // large or picture windows, $36 a visit each
   frenchWindows?: number; // French or multi-pane, $23 a visit each
 }
-export const EXACT_KEYS: (keyof ExactInputs)[] = ["roofSf", "drivewaySf", "walkwaySf", "gutterLf", "wallHeightFt", "largeWindows", "frenchWindows"];
+export const EXACT_KEYS: (keyof ExactInputs)[] = ["roofSf", "drivewaySf", "walkwaySf", "gutterLf", "largeWindows", "frenchWindows"];
 
 export interface HouseInputs {
   address: string;
@@ -245,14 +244,11 @@ export function priceHouse(h: HouseInputs): PriceResult {
   });
 
   // Siding soft wash (spring): wall area from the perimeter and the wall height.
-  const sidingSf = ex.wallHeightFt ? 4 * Math.sqrt(scope.footprintSf) * ex.wallHeightFt * SIDING_NET : scope.sidingSf;
   lines.push({
     key: "siding",
     label: "Siding soft wash, spring",
-    detail: ex.wallHeightFt
-      ? `Your wall height: ${ex.wallHeightFt} ft, about ${about(sidingSf, 50).toLocaleString()} sq ft of siding`
-      : `${storyWord(h.stories)}, about ${about(scope.sidingSf, 50).toLocaleString()} sq ft of siding`,
-    amount: Math.max(sidingSf * RATE.sidingSf * SIDING_FACTOR, SIDING_MIN[h.stories]),
+    detail: `${storyWord(h.stories)}, about ${about(scope.sidingSf, 50).toLocaleString()} sq ft of siding`,
+    amount: Math.max(scope.sidingSf * RATE.sidingSf * SIDING_FACTOR, SIDING_MIN[h.stories]),
   });
 
   // Roof soft wash (spring), more for wood shake or a steep pitch.
