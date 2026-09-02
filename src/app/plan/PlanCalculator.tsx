@@ -47,7 +47,11 @@ const DS = `
   body { font-family: var(--font-body); color: var(--text-primary); background: var(--surface); }
   ::selection { background: rgba(77,255,166,0.25); }
 
-  .plan { font-family: var(--font-body); color: var(--text-primary); background: var(--surface); min-height: 100vh; }
+  .plan { font-family: var(--font-body); color: var(--text-primary); background: var(--surface); min-height: 100vh; width: 100%; max-width: 100vw; overflow-x: hidden; }
+  .plan * { min-width: 0; }
+  .plan img, .plan input, .plan select, .plan button { max-width: 100%; }
+  .plan-wrap, .plan-card { width: 100%; }
+  .plan h1, .plan h2, .plan p, .plan .price-for, .plan .choice { overflow-wrap: anywhere; }
   .plan a:focus-visible, .plan button:focus-visible, .plan input:focus-visible, .plan select:focus-visible {
     outline: 2px solid var(--blue); outline-offset: 2px;
   }
@@ -264,9 +268,9 @@ export default function PlanCalculator({ src }: { src: string }) {
           <div className="plan-hero">
             <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
               <h1>
-                Your house has <span className="accent">a number.</span>
+                Your monthly price, <span className="accent">custom to your house.</span>
               </h1>
-              <p>Tell us about the house and we&apos;ll show you the monthly price for a full year of exterior care, with the windows cleaned four times a year included.</p>
+              <p>Answer a few questions about the house and we&apos;ll show you the price for a full year of exterior care, with the outside of every window cleaned four times a year included.</p>
             </div>
           </div>
 
