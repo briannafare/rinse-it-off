@@ -109,6 +109,7 @@ const DS = `
   details.more summary::-webkit-details-marker { display: none; }
   details.more summary::before { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); transition: transform 0.2s; margin-left: 2px; }
   details.more[open] summary::before { transform: rotate(45deg); }
+  details.more summary .opt { font-weight: 400; color: var(--text-muted); }
   details.more .row { display: grid; gap: 8px; margin-top: 6px; }
   details.more .row.two { grid-template-columns: 1fr 1fr; }
   details.more label { font-size: 0.8125rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; }
@@ -502,7 +503,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                     <input id="windows" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="14" value={windows} onChange={(e) => setWindows(e.target.value.replace(/[^0-9]/g, ""))} required />
                     <div className="help">Count what you can see from outside.</div>
                     <details className="more" {...moreProps("windows", ["largeWindows", "frenchWindows"])}>
-                      <summary>Add details</summary>
+                      <summary>Add details<span className="opt">· optional</span></summary>
                       <div className="row two">
                         <div><label htmlFor="largeWindows">Large or picture windows</label><input id="largeWindows" type="text" inputMode="numeric" value={exactText.largeWindows} onChange={(e) => setExact("largeWindows", e.target.value)} /></div>
                         <div><label htmlFor="frenchWindows">French or multi-pane</label><input id="frenchWindows" type="text" inputMode="numeric" value={exactText.frenchWindows} onChange={(e) => setExact("frenchWindows", e.target.value)} /></div>
@@ -524,7 +525,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                       ))}
                     </div>
                     <details className="more" {...moreProps("roof", ["roofSf"])}>
-                      <summary>Enter roof size</summary>
+                      <summary>Enter roof size<span className="opt">· optional</span></summary>
                       <div className="row">
                         <div><label htmlFor="roofSf">Roof, sq ft</label><input id="roofSf" type="text" inputMode="numeric" value={exactText.roofSf} onChange={(e) => setExact("roofSf", e.target.value)} /></div>
                       </div>
@@ -546,7 +547,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                       ))}
                     </div>
                     <details className="more" {...moreProps("driveway", ["drivewaySf", "walkwaySf"])}>
-                      <summary>Enter dimensions</summary>
+                      <summary>Enter dimensions<span className="opt">· optional</span></summary>
                       <div className="row two">
                         <div><label htmlFor="drivewaySf">Driveway, sq ft</label><input id="drivewaySf" type="text" inputMode="numeric" value={exactText.drivewaySf} onChange={(e) => setExact("drivewaySf", e.target.value)} /></div>
                         <div><label htmlFor="walkwaySf">Walkways, sq ft</label><input id="walkwaySf" type="text" inputMode="numeric" value={exactText.walkwaySf} onChange={(e) => setExact("walkwaySf", e.target.value)} /></div>
@@ -557,7 +558,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                   <div className="field">
                     <div className="q">Gutters</div>
                     <details className="more" style={{ marginTop: 0 }} {...moreProps("gutters", ["gutterLf"])}>
-                      <summary>Enter linear feet</summary>
+                      <summary>Enter linear feet<span className="opt">· optional</span></summary>
                       <div className="row">
                         <div><label htmlFor="gutterLf">Gutters, linear ft</label><input id="gutterLf" type="text" inputMode="numeric" value={exactText.gutterLf} onChange={(e) => setExact("gutterLf", e.target.value)} /></div>
                       </div>
@@ -579,7 +580,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                       ))}
                     </div>
                     <details className="more" {...moreProps("walls", ["wallHeightFt"])}>
-                      <summary>Enter wall height</summary>
+                      <summary>Enter wall height<span className="opt">· optional</span></summary>
                       <div className="row">
                         <div><label htmlFor="wallHeightFt">Wall height, ft</label><input id="wallHeightFt" type="text" inputMode="numeric" value={exactText.wallHeightFt} onChange={(e) => setExact("wallHeightFt", e.target.value)} /></div>
                       </div>
