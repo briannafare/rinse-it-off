@@ -8,11 +8,11 @@ const base: HouseInputs = { address: "test", livingSqft: 1800, stories: 1, windo
 const r2 = (n: number) => Math.round(n * 100) / 100;
 
 const cases: { name: string; input: HouseInputs; expect: { coreAnnual: number; memberMonthly: number; prepaidAnnual: number; windowsAnnualValue: number; savedVsAlaCarte: number } }[] = [
-  { name: "A basic 3-bed, 1 story, 12 windows", input: base, expect: { coreAnnual: 3152, memberMonthly: 211, prepaidAnnual: 2364, windowsAnnualValue: 2000, savedVsAlaCarte: 2620 } },
-  { name: "3,100 sf, 3 stories, 40 windows", input: { ...base, livingSqft: 3100, stories: 3, windows: 40 }, expect: { coreAnnual: 5000, memberMonthly: 334, prepaidAnnual: 3750, windowsAnnualValue: 3200, savedVsAlaCarte: 4192 } },
-  { name: "4,500 sf, 3 stories, 60 windows", input: { ...base, livingSqft: 4500, stories: 3, windows: 60 }, expect: { coreAnnual: 5084, memberMonthly: 339, prepaidAnnual: 3813, windowsAnnualValue: 4080, savedVsAlaCarte: 5096 } },
-  { name: "2,600 sf, 2 stories, shake roof, large drive, gated", input: { ...base, livingSqft: 2600, stories: 2, windows: 20, roof: "shake-steep", driveway: "large", access: "gated-tight" }, expect: { coreAnnual: 4174.2, memberMonthly: 279, prepaidAnnual: 3131, windowsAnnualValue: 2000, savedVsAlaCarte: 2826 } },
-  { name: "900 sf (floored at 1,200), small drive, steep access", input: { ...base, livingSqft: 900, windows: 6, driveway: "small", access: "steep-ladder" }, expect: { coreAnnual: 3206.2, memberMonthly: 214, prepaidAnnual: 2405, windowsAnnualValue: 2000, savedVsAlaCarte: 2638 } },
+  { name: "A basic 3-bed, 1 story, 12 windows", input: base, expect: { coreAnnual: 2952, memberMonthly: 197, prepaidAnnual: 2214, windowsAnnualValue: 2000, savedVsAlaCarte: 3260 } },
+  { name: "3,100 sf, 3 stories, 40 windows", input: { ...base, livingSqft: 3100, stories: 3, windows: 40 }, expect: { coreAnnual: 4600, memberMonthly: 307, prepaidAnnual: 3450, windowsAnnualValue: 3200, savedVsAlaCarte: 6356 } },
+  { name: "4,500 sf, 3 stories, 60 windows", input: { ...base, livingSqft: 4500, stories: 3, windows: 60 }, expect: { coreAnnual: 4684, memberMonthly: 313, prepaidAnnual: 3513, windowsAnnualValue: 4080, savedVsAlaCarte: 8368 } },
+  { name: "2,600 sf, 2 stories, shake roof, large drive, gated", input: { ...base, livingSqft: 2600, stories: 2, windows: 20, roof: "shake-steep", driveway: "large", access: "gated-tight" }, expect: { coreAnnual: 4012.2, memberMonthly: 268, prepaidAnnual: 3010, windowsAnnualValue: 2000, savedVsAlaCarte: 3916 } },
+  { name: "900 sf (floored at 1,200), small drive, steep access", input: { ...base, livingSqft: 900, windows: 6, driveway: "small", access: "steep-ladder" }, expect: { coreAnnual: 2976.2, memberMonthly: 199, prepaidAnnual: 2233, windowsAnnualValue: 2000, savedVsAlaCarte: 2924 } },
 ];
 
 for (const c of cases) {

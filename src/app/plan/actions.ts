@@ -23,6 +23,19 @@ const GHL_SENDER_USER_ID = process.env.GHL_SENDER_USER_ID || "ZsKRE5X4jKKVTElNy1
 // emails resolve to (verified 2026-09-01: links.rinseitoff.com/l/... 302s to
 // links.rinseitoff.com/invoice/<id>). link.msgsndr.com/invoice/<id> also works.
 const INVOICE_LINK_BASE = process.env.GHL_INVOICE_LINK_BASE || "https://links.rinseitoff.com/invoice";
+// Reusable GHL payment link "Membership deposit" ($99 one-time, product
+// 6a9794a8973de9c5b84c02fa / price 6a9794a8023939c7eaf5b92b), created via the
+// internal API 2026-09-02. The customer pays inside the Reserve step; GHL
+// records the transaction on the contact and sends its own receipt.
+const DEPOSIT_LINK_ID = process.env.GHL_DEPOSIT_LINK_ID || "6a979615d6768df05444945b";
+const DEPOSIT_LINK_BASE = process.env.GHL_PAYMENT_LINK_BASE || "https://links.rinseitoff.com/payment-link";
+
+// Nothing customer-facing goes out from a preview. PLAN_DRY_RUN=false is the
+// only way to send for real, and production defaults to live.
+const DRY_RUN = process.env.PLAN_DRY_RUN ? process.env.PLAN_DRY_RUN !== "false" : process.env.VERCEL_ENV !== "production";
+function dryLog(what: string, payload: unknown) {
+  console.log(`[plan dry-run] would ${what}: ${JSON.stringify(payload).slice(0, 600)}`);
+}
 
 // Same abuse watch as the assessment form (per-instance sliding window).
 const recordSubmit = createWindow();
@@ -154,6 +167,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       `  Site access modifier: x${price.accessMultiplier}`,
       `  Seasonal à la carte annual: $${price.coreAnnual.toFixed(2)}`,
       `  Windows value (free): $${price.windowsAnnualValue} (${WINDOW_VISITS_PER_YEAR} visits)`,
+      `  Screens value (free while off, customer removes/reinstalls): $${price.screensAnnualValue}`,
       `  Value received: $${price.valueReceived.toFixed(2)}`,
       "",
       "Price",
@@ -312,6 +326,12 @@ export async function createDepositInvoice(input: DepositInput): Promise<{ ok: b
     const now = new Date();
     const due = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
+    if (DRY_RUN) {
+      dryLog("create + sms-send a $" + DEPOSIT_USD + " deposit invoice and email the pay link", { contactId: input.contactId, name, email, address });
+      await addTags(input.contactId, ["membership-deposit-sent"]);
+      return { ok: true, url: `${INVOICE_LINK_BASE}/dry-run` };
+    }
+
     const res = await fetch(`${GHL_API_BASE}/invoices/`, {
       method: "POST",
       headers: ghlHeaders,
@@ -424,6 +444,12 @@ export async function bookFirstVisit(input: BookVisitInput): Promise<{ ok: boole
     const endISO = new Date(start.getTime() + SLOT_MINUTES * 60000).toISOString();
     const name = String(input.name || "").trim().slice(0, 120);
 
+    if (DRY_RUN) {
+      dryLog("book a first visit on the assessment calendar", { contactId: input.contactId, name, startISO: input.startISO, endISO });
+      await addTags(input.contactId, ["membership-visit-booked"]);
+      return { ok: true };
+    }
+
     const res = await fetch(`${GHL_API_BASE}/calendars/events/appointments`, {
       method: "POST",
       headers: { ...ghlHeaders, Version: "2021-04-15" },
@@ -446,5 +472,51 @@ export async function bookFirstVisit(input: BookVisitInput): Promise<{ ok: boole
   } catch (e) {
     console.error("bookFirstVisit error:", e);
     return soft;
+  }
+}
+
+/** The checkout URL for the Reserve step, prefilled where GHL honours it.
+ *  Nothing is sent: the customer pays right there and GHL emails its receipt. */
+export async function depositCheckout(input: DepositInput): Promise<{ ok: boolean; url?: string; error?: string }> {
+  try {
+    if (!looksLikeGhlId(input.contactId)) return { ok: false, error: "We lost track of your details. Go back one step and try again." };
+    const q = new URLSearchParams();
+    if (input.email) q.set("email", String(input.email).slice(0, 160));
+    if (input.name) q.set("name", String(input.name).slice(0, 120));
+    const phone = e164(String(input.phone || ""));
+    if (phone) q.set("phone", phone);
+    const url = `${DEPOSIT_LINK_BASE}/${DEPOSIT_LINK_ID}?${q.toString()}`;
+    if (DRY_RUN) dryLog("show the deposit checkout (no send)", { contactId: input.contactId, url });
+    await addTags(input.contactId, ["membership-deposit-sent"]);
+    return { ok: true, url };
+  } catch (e) {
+    console.error("depositCheckout error:", e);
+    return { ok: false, error: "We couldn't open the deposit checkout just now." };
+  }
+}
+
+/** After the customer pays inside the Reserve step: look for a successful
+ *  $DEPOSIT_USD transaction on the contact and tag membership-deposit-paid. */
+export async function confirmDeposit(contactId: string): Promise<{ paid: boolean; error?: string }> {
+  try {
+    if (!GHL_API_KEY || !GHL_LOCATION_ID || !looksLikeGhlId(contactId)) return { paid: false };
+    const res = await fetch(`${GHL_API_BASE}/payments/transactions?altId=${GHL_LOCATION_ID}&altType=location&contactId=${contactId}&limit=20`, {
+      headers: ghlHeaders,
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      console.error("GHL transactions lookup failed:", res.status, await res.text());
+      return { paid: false, error: "We couldn't check the payment just now." };
+    }
+    const data = (await res.json()) as { data?: { amount?: number; status?: string; createdAt?: string }[] };
+    const recent = Date.now() - 24 * 60 * 60 * 1000;
+    const hit = (data.data || []).find((t) => Number(t.amount) >= DEPOSIT_USD && /succeeded|paid|success/i.test(String(t.status)) && (!t.createdAt || new Date(t.createdAt).getTime() > recent));
+    if (!hit) return { paid: false };
+    await addTags(contactId, ["membership-deposit-paid"]);
+    await addNote(contactId, `Membership deposit paid: $${hit.amount} (${hit.status}) via the plan page checkout.`);
+    return { paid: true };
+  } catch (e) {
+    console.error("confirmDeposit error:", e);
+    return { paid: false, error: "We couldn't check the payment just now." };
   }
 }

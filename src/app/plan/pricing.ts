@@ -38,6 +38,9 @@ export const RATE = {
 //    that comes to more. Four visits a year. ──────────────────────────────────
 export const WINDOW_VISITS_PER_YEAR = 4;
 export const WINDOW_VISIT_MIN = 500; // real standalone per-trip minimum
+// Screens are cleaned free too, while they are off. The customer removes and
+// reinstalls them; Rinse never touches a screen on the frame. Engine rate:
+export const SCREEN_RATE = 14; // per screen, per visit
 // Tiered window pricing, per visit: the first 30 at $22, 31 to 50 at $14,
 // 51 and up at $8. `upTo: null` means everything past the previous band.
 export const WINDOW_TIERS: { upTo: number | null; rate: number }[] = [
@@ -147,12 +150,12 @@ export const SIDING_MIN: Record<Stories, number> = { 1: 600, 2: 850, 3: 1200 };
 export const ROOF_MIN: Record<Stories, number> = { 1: 500, 2: 700, 3: 950 };
 export const GUTTER_VISIT_MIN: Record<Stories, number> = { 1: 500, 2: 650, 3: 850 };
 export const DRIVEWAY_MIN: Record<DrivewaySize, number> = { small: 500, typical: 600, large: 750 };
-export const WINTER_MIN: Record<Stories, number> = { 1: 500, 2: 500, 3: 600 };
+export const WINTER_MIN: Record<Stories, number> = { 1: 300, 2: 350, 3: 400 };
 
 // Height, charged where it happens: a per-visit access charge on every
 // visit of the year (4 seasonal + 4 window).
 export const VISITS_PER_YEAR = 8;
-export const ACCESS_PER_VISIT: Record<Stories, number> = { 1: 0, 2: 25, 3: 100 };
+export const ACCESS_PER_VISIT: Record<Stories, number> = { 1: 0, 2: 25, 3: 75 };
 
 // ── Membership discounts and floor ──────────────────────────────────────────
 export const MEMBER_MONTHLY_DISCOUNT = 0.2; // 12 months, billed monthly
@@ -186,7 +189,8 @@ export interface PriceResult {
   coreAnnual: number; // seasonal work booked one at a time, per year, after access
   windowsPerVisitValue: number; // what one standalone window visit would cost
   windowsAnnualValue: number; // × WINDOW_VISITS_PER_YEAR, free with the membership
-  valueReceived: number; // coreAnnual + windowsAnnualValue
+  screensAnnualValue: number; // SCREEN_RATE × windows × visits, free while they are off
+  valueReceived: number; // coreAnnual + windowsAnnualValue + screensAnnualValue
   memberMonthly: number; // whole dollars, rounded up, floored at MONTHLY_FLOOR
   memberAnnual: number; // memberMonthly × 12 (what the CRM opportunity is worth)
   prepaidAnnual: number; // whole dollars, rounded up
@@ -266,7 +270,8 @@ export function priceHouse(h: HouseInputs): PriceResult {
   const windows = Math.max(0, Math.floor(h.windows || 0));
   const windowsPerVisitValue = windowVisitValue(windows);
   const windowsAnnualValue = windowsPerVisitValue * WINDOW_VISITS_PER_YEAR;
-  const valueReceived = coreAnnual + windowsAnnualValue;
+  const screensAnnualValue = SCREEN_RATE * windows * WINDOW_VISITS_PER_YEAR;
+  const valueReceived = coreAnnual + windowsAnnualValue + screensAnnualValue;
 
   const memberMonthly = Math.max(MONTHLY_FLOOR, Math.ceil((coreAnnual * (1 - MEMBER_MONTHLY_DISCOUNT)) / 12));
   const memberAnnual = memberMonthly * 12;
@@ -281,6 +286,7 @@ export function priceHouse(h: HouseInputs): PriceResult {
     coreAnnual,
     windowsPerVisitValue,
     windowsAnnualValue,
+    screensAnnualValue,
     valueReceived,
     memberMonthly,
     memberAnnual,

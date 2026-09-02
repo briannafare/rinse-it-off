@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { bookFirstVisit, createDepositInvoice, submitPlanQuote } from "./actions";
+import { bookFirstVisit, confirmDeposit, depositCheckout, submitPlanQuote } from "./actions";
 import { getFreeSlots } from "../assessment/actions";
 import {
   ADD_ONS,
@@ -185,6 +185,7 @@ const DS = `
   .reserve p { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px; }
   .reserve .ok { background: var(--mint); color: var(--ink); border-radius: var(--r-md); padding: 12px 14px; font-size: 0.9375rem; line-height: 1.5; }
   .reserve a.btn { text-decoration: none; }
+  .checkout { width: 100%; height: 720px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
   .days { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin: 0 -4px; padding-left: 4px; padding-right: 4px; scrollbar-width: none; }
   .days::-webkit-scrollbar { display: none; }
   .day { flex: 0 0 auto; min-width: 64px; min-height: 60px; border: 2px solid var(--border); border-radius: var(--r-md); background: var(--surface); font-family: var(--font-body); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 6px; }
@@ -256,6 +257,9 @@ export default function PlanCalculator({ src }: { src: string }) {
   const [depositUrl, setDepositUrl] = useState("");
   const [depositBusy, setDepositBusy] = useState(false);
   const [depositErr, setDepositErr] = useState("");
+  const [depositPaid, setDepositPaid] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const [checkNote, setCheckNote] = useState("");
   const [slotMap, setSlotMap] = useState<Record<string, string[]>>({});
   const [slotsLoaded, setSlotsLoaded] = useState(false);
   const [dayKey, setDayKey] = useState("");
@@ -332,10 +336,24 @@ export default function PlanCalculator({ src }: { src: string }) {
     if (!saved?.contactId || !house) return;
     setDepositErr("");
     setDepositBusy(true);
-    const r = await createDepositInvoice({ contactId: saved.contactId, address: house.address, name: contact.name, email: contact.email, phone: contact.phone });
+    const r = await depositCheckout({ contactId: saved.contactId, address: house.address, name: contact.name, email: contact.email, phone: contact.phone });
     setDepositBusy(false);
     if (r.ok && r.url) setDepositUrl(r.url);
-    else setDepositErr(r.error || "We couldn't open the deposit page just now.");
+    else setDepositErr(r.error || "We couldn't open the deposit checkout just now.");
+  };
+
+  // After they pay inside the frame: look for the transaction, a few tries.
+  const checkPaid = async () => {
+    if (!saved?.contactId) return;
+    setChecking(true);
+    setCheckNote("");
+    for (let i = 0; i < 3; i++) {
+      const r = await confirmDeposit(saved.contactId);
+      if (r.paid) { setDepositPaid(true); setChecking(false); return; }
+      await new Promise((res) => setTimeout(res, 3000));
+    }
+    setChecking(false);
+    setCheckNote("We don't see the payment yet. If you paid, give it a minute and tap again. If not, the checkout is still open above.");
   };
 
   const pickSlot = async (iso: string) => {
@@ -367,7 +385,7 @@ export default function PlanCalculator({ src }: { src: string }) {
             <div className="mark">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
             </div>
-            <h2>{depositUrl ? "One step from locked." : "Your price is reserved."}</h2>
+            <h2>{depositPaid ? "Your price is locked." : "Your price is reserved."}</h2>
             <div className="price-big" style={{ justifyContent: "center" }}>
               <span className="num">${fmt(billing === "annual" ? price.prepaidMonthlyEquivalent : price.memberMonthly)}</span>
               <span className="per">/mo</span>
@@ -375,13 +393,13 @@ export default function PlanCalculator({ src }: { src: string }) {
             <p style={{ marginBottom: 16 }}>{priceLine} for {house.address}. {savedLine}.</p>
             {!saved.saved ? (
               <p>Our system had trouble saving your details just now. Call or text us and we&apos;ll take the deposit by hand.</p>
-            ) : depositUrl ? (
-              <p>Your price locks for the full 12 months when the ${DEPOSIT_USD} deposit clears. The deposit page is in your email, and it comes off your first month.</p>
+            ) : depositPaid ? (
+              <p>Your ${DEPOSIT_USD} deposit is in and comes off your first month. The receipt is on its way to {contact.email}.</p>
             ) : (
               <p>We&apos;ll text you within one business day to take the ${DEPOSIT_USD} deposit and set your first visit. The price locks when the deposit clears.</p>
             )}
             {saved.saved && bookedISO && <p>Your first visit is booked for {slotDate(bookedISO)} at {slotTime(bookedISO)}. We&apos;ll text you a reminder the day before.</p>}
-            {saved.saved && depositUrl && !bookedISO && <p>We&apos;ll text you within one business day to set your first visit.</p>}
+            {saved.saved && depositPaid && !bookedISO && <p>We&apos;ll text you within one business day to set your first visit.</p>}
             <div className="tel">
               <div className="k">Questions? Call or text</div>
               <a href="tel:+15037043755">(503) 704-3755</a>
@@ -411,7 +429,7 @@ export default function PlanCalculator({ src }: { src: string }) {
               </div>
               {step >= 1 && price && (
                 <div className="strip">
-                  You save ${fmt(price.savedVsAlaCarte)} this year<span>·</span>${fmt(price.windowsAnnualValue)} of windows free
+                  You save ${fmt(price.savedVsAlaCarte)} this year<span>·</span>${fmt(price.windowsAnnualValue + price.screensAnnualValue)} of windows and screens free
                 </div>
               )}
 
@@ -541,7 +559,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                   <p className="fine" style={{ marginBottom: 14 }}>This is your starting price. Our first visit confirms it, and unusual height or access can add to it.</p>
 
                   <div className="saves">
-                    <div className="big">${fmt(price.savedVsAlaCarte)} this year, including ${fmt(price.windowsAnnualValue)} of window cleaning free.</div>
+                    <div className="big">${fmt(price.savedVsAlaCarte)} this year, including ${fmt(price.windowsAnnualValue + price.screensAnnualValue)} of window and screen cleaning free.</div>
                     <div className="more">Prepay the year: save another <strong>${fmt(price.prepaySavesMore)}</strong>, <strong>${fmt(price.prepaidMonthlyEquivalent)} a month</strong>.</div>
                   </div>
 
@@ -552,6 +570,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                       <li>Gutters <span>fall</span></li>
                       <li>Walkways and steps <span>winter</span></li>
                       <li>Exterior windows, free <span>{WINDOW_VISITS_PER_YEAR} times a year</span></li>
+                      <li>Window screens, free, if you remove and reinstall them</li>
                     </ul>
                   </div>
 
@@ -581,6 +600,10 @@ export default function PlanCalculator({ src }: { src: string }) {
                       <div className="math-line">
                         <span className="l">Exterior windows<span className="d">{house.windows} windows · ${fmt(price.windowsPerVisitValue)} a visit · {WINDOW_VISITS_PER_YEAR} visits a year</span></span>
                         <span className="a wrap"><span className="strike">${fmt(price.windowsAnnualValue)}</span><span className="free">Free with the membership</span></span>
+                      </div>
+                      <div className="math-line">
+                        <span className="l">Window screens<span className="d">Cleaned free while they&apos;re off · you take them down and put them back</span></span>
+                        <span className="a wrap"><span className="strike">${fmt(price.screensAnnualValue)}</span><span className="free">Free with the membership</span></span>
                       </div>
                       <div className="math-line total">
                         <span className="l">Your membership year</span>
@@ -687,10 +710,16 @@ export default function PlanCalculator({ src }: { src: string }) {
                   <div className="reserve">
                     <h3>Lock in your price</h3>
                     <p>The ${DEPOSIT_USD} deposit locks your price and your spot on the route, and it comes off your first month.</p>
-                    {depositUrl ? (
+                    {depositPaid ? (
+                      <div className="ok">Deposit received. Your price is locked for the full term, and the receipt is on its way to {contact.email}.</div>
+                    ) : depositUrl ? (
                       <>
-                        <a className="btn btn-ink" href={depositUrl} target="_blank" rel="noopener noreferrer">Open the ${DEPOSIT_USD} deposit page</a>
-                        <p className="fine" style={{ marginTop: 10, marginBottom: 0 }}>It&apos;s in your email too. Your price locks when it clears.</p>
+                        <iframe className="checkout" src={depositUrl} title="Pay the deposit" allow="payment" />
+                        <div style={{ display: "grid", gap: 8, marginTop: 12 }}>
+                          <button type="button" className="btn btn-ink" onClick={checkPaid} disabled={checking}>{checking ? "Checking" : "I paid, lock it in"}</button>
+                          <a className="btn btn-ghost" href={depositUrl} target="_blank" rel="noopener noreferrer">Checkout not loading? Open it in a new tab</a>
+                        </div>
+                        {checkNote && <p className="fine" style={{ marginTop: 10, marginBottom: 0 }}>{checkNote}</p>}
                       </>
                     ) : (
                       <button type="button" className="btn btn-ink" onClick={startDeposit} disabled={depositBusy}>
@@ -732,10 +761,10 @@ export default function PlanCalculator({ src }: { src: string }) {
                     )}
                   </div>
 
-                  <button type="button" className={`btn ${depositUrl ? "btn-ink" : "btn-ghost"}`} onClick={finish}>
-                    {depositUrl ? "All set" : "Text me instead"}
+                  <button type="button" className={`btn ${depositPaid ? "btn-ink" : "btn-ghost"}`} onClick={finish}>
+                    {depositPaid ? "All set" : "Text me instead"}
                   </button>
-                  {!depositUrl && <p className="fine" style={{ textAlign: "center", marginTop: 8 }}>We&apos;ll text you to take the deposit and set your first visit. The price isn&apos;t locked until then.</p>}
+                  {!depositPaid && <p className="fine" style={{ textAlign: "center", marginTop: 8 }}>We&apos;ll text you to take the deposit and set your first visit. The price isn&apos;t locked until then.</p>}
                 </div>
               )}
             </div>
