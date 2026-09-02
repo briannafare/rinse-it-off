@@ -349,9 +349,9 @@ export interface AddOn {
 export const ADD_ONS: AddOn[] = [
   { key: "deck", group: "Around the house", label: "Deck or patio soft wash", list: { amount: 0.6, unit: "sq ft" } },
   { key: "fence", group: "Around the house", label: "Fence cleaning", list: { amount: 3.6, unit: "linear ft" } },
-  { key: "gutter-whitening", group: "Around the house", label: "Gutter whitening (the black streaks on the outside)", note: "Priced at your first visit" },
-  { key: "moss", group: "Around the house", label: "Moss treatment on walkways and walls", note: "Priced at your first visit, on top of the surface" },
-  { key: "lights", group: "Around the house", label: "Ask me about custom holiday lights", note: "Custom quoted, we'll bring it up at your first visit", interestOnly: true },
+  { key: "gutter-whitening", group: "Around the house", label: "Gutter whitening", note: "Priced at your first visit" },
+  { key: "moss", group: "Around the house", label: "Moss treatment, walkways and walls", note: "Priced at your first visit, on top of the surface" },
+  { key: "lights", group: "Around the house", label: "Custom holiday lights (ask me)", note: "Custom quoted, we'll bring it up at your first visit", interestOnly: true },
   { key: "grease", group: "Concrete and stone", label: "Grease and oil stain removal", list: { amount: 150, unit: "spot" } },
   { key: "garage", group: "Concrete and stone", label: "Garage floor degrease", list: { amount: 0.45, unit: "sq ft" } },
   { key: "retaining", group: "Concrete and stone", label: "Retaining walls", list: { amount: 0.48, unit: "sq ft" } },
@@ -359,7 +359,7 @@ export const ADD_ONS: AddOn[] = [
   { key: "graffiti", group: "Concrete and stone", label: "Graffiti removal", list: { amount: 3.6, unit: "sq ft" } },
   { key: "tracks", group: "Glass and roofline", label: "Window tracks and sills", list: { amount: 3.5, unit: "window" }, perWindow: true },
   { key: "skylights", group: "Glass and roofline", label: "Skylights, exterior", list: { amount: 15, unit: "each" } },
-  { key: "storm", group: "Glass and roofline", label: "Storm door and storm window glass", list: { amount: 8, unit: "door" } },
+  { key: "storm", group: "Glass and roofline", label: "Storm door and window glass", list: { amount: 8, unit: "door" } },
   { key: "wells", group: "Glass and roofline", label: "Basement window wells", list: { amount: 8, unit: "well" } },
   { key: "solar", group: "Glass and roofline", label: "Solar panel wash", list: { amount: 12, unit: "panel" } },
 ];

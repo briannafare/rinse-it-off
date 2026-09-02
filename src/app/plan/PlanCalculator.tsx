@@ -5,7 +5,6 @@ import { getFreeSlots } from "../assessment/actions";
 import {
   ADD_ONS,
   ADD_ON_GROUPS,
-  addOnKnownTotal,
   DEPOSIT_USD,
   MEMBER_MONTHLY_DISCOUNT,
   MEMBER_PREPAID_DISCOUNT,
@@ -16,7 +15,6 @@ import {
   WINDOW_VISITS_PER_YEAR,
   prepaidTermTotal,
   type TermYears,
-  addOnPrices,
   priceHouse,
   suggestedAddOns,
   type Access,
@@ -188,8 +186,17 @@ const DS = `
   .addon .box { margin-top: 2px; }
   .addon .body { flex: 1; }
   .addon .title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .addon-group { margin-bottom: 18px; }
-  .addon-group .q { font-size: 0.9375rem; font-weight: 500; color: var(--text-primary); margin-bottom: 8px; }
+  .addon-group { margin-bottom: 16px; }
+  .addon-group .grp { font-size: 0.8125rem; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; }
+  .checklist { display: grid; grid-template-columns: 1fr; gap: 4px; }
+  @media (min-width: 560px) { .checklist { grid-template-columns: 1fr 1fr; column-gap: 12px; } }
+  .checklist .row { min-height: 44px; padding: 8px 10px; border: 1px solid transparent; border-radius: var(--r-sm); background: transparent; color: var(--ink); font-family: var(--font-body); font-size: 0.9375rem; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 10px; line-height: 1.3; }
+  .checklist .row:hover { background: var(--surface-alt); }
+  .checklist .row.on { background: var(--blue-wash); border-color: var(--blue); }
+  .checklist .row .box { width: 18px; height: 18px; border-radius: 4px; border: 2px solid var(--border); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+  .checklist .row.on .box { border-color: var(--blue); background: var(--blue); }
+  .checklist .row .name { flex: 1; }
+  .checklist .row .pop { font-size: 0.75rem; font-weight: 500; color: var(--ink); background: var(--mint); border-radius: var(--r-sm); padding: 2px 7px; line-height: 1.4; flex-shrink: 0; }
   .addon .pop { font-size: 0.75rem; font-weight: 500; color: var(--ink); background: var(--mint); border-radius: var(--r-sm); padding: 2px 7px; line-height: 1.4; }
   .addon .was { text-decoration: line-through; color: var(--text-muted); margin-right: 6px; }
   .addon .now { color: var(--ink); font-weight: 500; }
@@ -694,28 +701,20 @@ export default function PlanCalculator({ src }: { src: string }) {
               {step === 2 && price && (
                 <div>
                   <h2>Anything else while we&apos;re there?</h2>
-                  <p className="lead">Members save 10% on every add-on because the crew is already there.</p>
+                  <p className="lead">Pick anything you&apos;d like priced in your estimate. Members save 10% on add-ons.</p>
 
                   {ADD_ON_GROUPS.map((g) => (
                     <div key={g} className="addon-group">
-                      <div className="q">{g}</div>
-                      <div className="choices" role="group" aria-label={g}>
+                      <div className="grp">{g}</div>
+                      <div className="checklist" role="group" aria-label={g}>
                         {ADD_ONS.filter((a) => a.group === g).map((a) => {
                           const on = addOns.includes(a.key);
-                          const pr = addOnPrices(a);
-                          const known = house ? addOnKnownTotal(a, house) : null;
                           const pop = suggested.includes(a.key);
                           return (
-                            <button key={a.key} type="button" className={`choice addon ${on ? "on" : ""}`} onClick={() => toggleAddOn(a.key)} aria-pressed={on}>
+                            <button key={a.key} type="button" className={`row ${on ? "on" : ""}`} onClick={() => toggleAddOn(a.key)} aria-pressed={on}>
                               <span className="box">{on && <Check />}</span>
-                              <span className="body">
-                                <span className="title">{a.label}{pop && <span className="pop">Popular</span>}</span>
-                                <span className="sub">
-                                  {pr ? (
-                                    <><span className="was">{pr.list}</span><span className="now">{pr.member}</span> {pr.unit}{known !== null && house ? `, ${house.windows} windows = $${fmt(known)}` : ", measured at your first visit"}{a.note ? `. ${a.note}` : ""}</>
-                                  ) : a.note}
-                                </span>
-                              </span>
+                              <span className="name">{a.label}</span>
+                              {pop && <span className="pop">Popular</span>}
                             </button>
                           );
                         })}
@@ -723,13 +722,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                     </div>
                   ))}
 
-                  {chosen.length > 0 && (
-                    <div className="running">
-                      <strong>Added to your quote:</strong>{" "}
-                      {chosen.map((a) => { const pr = addOnPrices(a); const known = house ? addOnKnownTotal(a, house) : null; return known !== null ? `${a.label} ($${fmt(known)})` : pr ? `${a.label} (${pr.member} ${pr.unit})` : a.label; }).join(", ")}.
-                      {(() => { const sum = chosen.reduce((t, a) => t + (house ? addOnKnownTotal(a, house) ?? 0 : 0), 0); return sum > 0 ? ` $${fmt(sum)} so far, the rest measured at your first visit.` : " Measured and priced at your first visit."; })()}
-                    </div>
-                  )}
+                  {chosen.length > 0 && <p className="fine" style={{ marginTop: 4 }}>We&apos;ll price these in your estimate.</p>}
 
                   <div style={{ display: "grid", gap: 8, marginTop: 24 }}>
                     <button type="button" className="btn btn-ink" onClick={() => go(3)}>{addOns.length ? "Next, claim my price" : "Skip this, claim my price"}</button>
