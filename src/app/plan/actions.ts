@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
-import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, prepaidTermTotal, priceHouse, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
+import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, depositSchedule, effectivePrice, prepaidTermTotal, priceHouse, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -67,6 +67,7 @@ export interface PlanQuoteData {
   bestDay: string;
   billing?: "monthly" | "annual";
   term?: 1 | 2 | 3; // years the price is locked for
+  springGutters?: boolean; // membership upgrade: second gutter cleaning in spring
   src: string; // from ?src= on the URL, carried through the form
 }
 
@@ -153,9 +154,11 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     const bestDay = String(data.bestDay || "").trim().slice(0, 40);
     const billing = data.billing === "annual" ? "annual" : "monthly";
     const term: TermYears = data.term === 2 ? 2 : data.term === 3 ? 3 : 1;
-    const termTotal = prepaidTermTotal(price.coreAnnual, term);
+    const springGutters = !!data.springGutters;
+    const eff = effectivePrice(price, springGutters);
+    const termTotal = prepaidTermTotal(price.coreAnnual, term) + (springGutters ? (eff.prepaid - price.prepaidAnnual) * term : 0);
     // Contract value: the prepaid total for the term, or the monthly year times the term.
-    const yearValue = billing === "annual" ? (term > 1 ? termTotal : price.prepaidAnnual) : price.memberAnnual * term;
+    const yearValue = billing === "annual" ? (term > 1 ? termTotal : eff.prepaid) : eff.annual * term;
     const chosenAddOns = ADD_ONS.filter((a) => (data.addOns || []).includes(a.key));
 
     const nameParts = name.split(" ");
@@ -163,7 +166,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     const lastName = nameParts.slice(1).join(" ") || "";
 
     const source = src === "web" ? "Website · plan calculator" : `Postcard · ${src}`;
-    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : [])];
+    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : [])];
 
     // The full calculator, as a note a human can read in the contact record.
     const noteLines: string[] = [
@@ -192,6 +195,9 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       "Price",
       `  Membership, billed monthly: $${price.memberMonthly}/mo ($${price.memberAnnual}/yr)`,
       `  Prepaid year: $${price.prepaidAnnual} ($${price.prepaidMonthlyEquivalent}/mo equivalent)`,
+      `  Spring gutters upgrade: ${springGutters ? `YES, +$${eff.upgradeMonthly}/mo (gutters line $${eff.upgradeValue.toFixed(0)} x 0.80 / 12), effective $${eff.monthly}/mo, $${eff.annual}/yr, prepaid $${eff.prepaid}` : "no"}`,
+      `  Deposit schedule (monthly): ${depositSchedule(eff, "monthly")}`,
+      `  Deposit schedule (annual): ${depositSchedule(eff, "annual")}`,
       `  Billing chosen: ${billing}`,
       `  Term: ${term} year${term > 1 ? "s" : ""} (price locked, same monthly rate)${billing === "annual" && term > 1 ? `, prepaid full term $${termTotal} (${Math.round(MULTI_YEAR_PREPAID_DISCOUNT * 100)}% off seasonal)` : ""}`,
       `  Contract value: $${yearValue}`,

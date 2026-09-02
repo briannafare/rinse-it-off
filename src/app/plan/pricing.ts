@@ -424,3 +424,31 @@ export function addOnEstimate(a: AddOn, answer: AddOnAnswer | undefined, price: 
   if (a.key === "moss") return `${a.label}${surfaces}: ${given !== undefined ? `about ${given} sq ft, ` : ""}priced at site visit on top of the surface rate`;
   return `${a.label}: priced at site visit`;
 }
+
+// ── Membership upgrade: a second gutter cleaning in spring (Oregon
+//    recommends two a year). Same 20% member discount, done on the spring
+//    visit so there is no extra trip. ─────────────────────────────────────────
+export interface Effective {
+  monthly: number; // per month, billed monthly
+  annual: number; // monthly × 12
+  prepaid: number; // paid up front
+  prepaidMonthly: number; // prepaid ÷ 12, rounded up
+  prepaySaves: number; // annual − prepaid
+  upgradeMonthly: number; // what the spring gutters add per month
+  upgradeValue: number; // the gutters line, à la carte
+}
+export function effectivePrice(p: PriceResult, springGutters: boolean): Effective {
+  const gutters = p.lines.find((l) => l.key === "gutters")?.amount ?? 0;
+  const upgradeMonthly = Math.ceil((gutters * (1 - MEMBER_MONTHLY_DISCOUNT)) / 12);
+  const addMonthly = springGutters ? upgradeMonthly : 0;
+  const monthly = p.memberMonthly + addMonthly;
+  const annual = monthly * 12;
+  const prepaid = p.prepaidAnnual + (springGutters ? Math.ceil(upgradeMonthly * 12 * (1 - PREPAID_UNDER_MONTHLY)) : 0);
+  return { monthly, annual, prepaid, prepaidMonthly: Math.ceil(prepaid / 12), prepaySaves: annual - prepaid, upgradeMonthly, upgradeValue: gutters };
+}
+
+/** The $99 comes off the membership total. */
+export function depositSchedule(e: Effective, billing: "monthly" | "annual"): string {
+  if (billing === "annual") return `$${DEPOSIT_USD} today, then $${(e.prepaid - DEPOSIT_USD).toLocaleString()} at signing`;
+  return `$${DEPOSIT_USD} today, then $${Math.ceil((e.annual - DEPOSIT_USD) / 12).toLocaleString()} a month for 12 months`;
+}

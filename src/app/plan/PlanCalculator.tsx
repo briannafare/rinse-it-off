@@ -12,6 +12,8 @@ import {
   MULTI_YEAR_PREPAID_DISCOUNT,
   PREPAID_UNDER_MONTHLY,
   TERM_OPTIONS,
+  depositSchedule,
+  effectivePrice,
   WINDOW_VISITS_PER_YEAR,
   prepaidTermTotal,
   type TermYears,
@@ -164,6 +166,14 @@ const DS = `
   .save-block .k { font-size: 0.9375rem; font-weight: 500; }
   .save-block .v { font-family: var(--font-display); font-weight: 500; font-size: 2rem; letter-spacing: -0.02em; line-height: 1; margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
   .save-block .s { font-size: 0.9375rem; line-height: 1.4; }
+  .upgrade { width: 100%; display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 12px 14px; border: 2px solid var(--border); border-radius: var(--r-lg); background: var(--surface); text-align: left; cursor: pointer; font-family: var(--font-body); }
+  .upgrade.on { border-color: var(--blue); background: var(--blue-wash); }
+  .upgrade .box { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--border); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+  .upgrade.on .box { border-color: var(--blue); background: var(--blue); }
+  .upgrade .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .upgrade .t { font-size: 0.9375rem; font-weight: 500; color: var(--ink); }
+  .upgrade .sub { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.4; }
+  .upgrade .amt { font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--ink); white-space: nowrap; }
   .scarcity { background: var(--surface-alt); border-radius: var(--r-lg); padding: 14px 16px; margin-top: 18px; font-size: 0.9375rem; line-height: 1.55; color: var(--text-primary); text-wrap: pretty; }
   .guarantee { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.5; margin-top: 12px; text-wrap: pretty; }
   .price-big { display: flex; align-items: baseline; gap: 6px; margin: 4px 0 6px; }
@@ -241,13 +251,16 @@ const DS = `
   .reserve .ok { background: var(--mint); color: var(--ink); border-radius: var(--r-md); padding: 12px 14px; font-size: 0.9375rem; line-height: 1.5; }
   .reserve a.btn { text-decoration: none; }
   .checkout { width: 100%; height: 720px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
-  .days { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin: 0 -4px; padding-left: 4px; padding-right: 4px; scrollbar-width: none; }
-  .days::-webkit-scrollbar { display: none; }
-  .day { flex: 0 0 auto; min-width: 64px; min-height: 60px; border: 2px solid var(--border); border-radius: var(--r-md); background: var(--surface); font-family: var(--font-body); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 6px; }
-  .day .dow { font-size: 0.75rem; color: var(--text-muted); }
-  .day .dom { font-family: var(--font-display); font-weight: 600; font-size: 1.125rem; color: var(--ink); }
-  .day.on { border-color: var(--blue); background: var(--blue-wash); }
-  .day:disabled { opacity: 0.35; cursor: not-allowed; }
+  .cal { border: 2px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
+  .cal-head { display: flex; align-items: center; justify-content: space-between; background: var(--ink); color: #fff; padding: 10px 12px; font-family: var(--font-display); font-weight: 600; font-size: 0.9375rem; }
+  .cal-head button { background: none; border: none; color: rgba(255,255,255,0.8); font-size: 22px; line-height: 1; padding: 0 10px; cursor: pointer; min-height: 32px; }
+  .cal-head button:disabled { color: rgba(255,255,255,0.25); cursor: not-allowed; }
+  .cal-dow { display: grid; grid-template-columns: repeat(7, 1fr); background: var(--surface-alt); border-bottom: 1px solid var(--border-light); }
+  .cal-dow span { text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); padding: 6px 0; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; padding: 6px; background: var(--surface-alt); }
+  .cal-day { aspect-ratio: 1; border: 2px solid transparent; border-radius: var(--r-sm); background: var(--surface); color: var(--border); font-family: var(--font-body); font-size: 0.9375rem; cursor: not-allowed; }
+  .cal-day.open { color: var(--ink); font-weight: 600; cursor: pointer; border-color: var(--blue-wash); background: var(--blue-wash); }
+  .cal-day.sel { background: var(--ink); color: var(--blue); border-color: var(--blue); }
   .times { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
   .time { min-height: 44px; padding: 8px 14px; border: 2px solid var(--border); border-radius: var(--r-sm); background: var(--surface); font-family: var(--font-body); font-size: 0.9375rem; color: var(--ink); cursor: pointer; }
   .time.on { border-color: var(--blue); background: var(--ink); color: var(--blue); }
@@ -275,11 +288,18 @@ const PCT = (d: number) => `${Math.round(d * 100)}%`;
 const TZ = "America/Los_Angeles";
 const slotTime = (iso: string) => new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: TZ });
 const slotDate = (iso: string) => new Date(iso).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: TZ });
-const dayParts = (key: string) => {
-  const d = new Date(`${key}T12:00:00`);
-  return { dow: d.toLocaleDateString("en-US", { weekday: "short" }), dom: d.getDate() };
-};
 const DAYS = ["No preference", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const DOW = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+function calDays(year: number, month: number): (number | null)[] {
+  const first = new Date(year, month, 1).getDay();
+  const n = new Date(year, month + 1, 0).getDate();
+  const cells: (number | null)[] = [];
+  for (let i = 0; i < first; i++) cells.push(null);
+  for (let d = 1; d <= n; d++) cells.push(d);
+  return cells;
+}
+const dateKey = (y: number, m: number, d: number) => `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 
 const fmt = (n: number) => n.toLocaleString("en-US", { maximumFractionDigits: 0 });
 
@@ -328,6 +348,11 @@ export default function PlanCalculator({ src }: { src: string }) {
   const [addOns, setAddOns] = useState<string[]>([]);
   const [contact, setContact] = useState({ name: "", phone: "", email: "", bestDay: DAYS[0] });
   const [billing, setBilling] = useState<Billing>("monthly");
+  const [springGutters, setSpringGutters] = useState(false);
+  const today = new Date();
+  const [calY, setCalY] = useState(today.getFullYear());
+  const [calM, setCalM] = useState(today.getMonth());
+  const [pickedISO, setPickedISO] = useState("");
   const [term, setTerm] = useState<TermYears>(1);
   const [sending, setSending] = useState(false);
   const [saved, setSaved] = useState<{ saved: boolean; contactId?: string } | null>(null);
@@ -378,6 +403,7 @@ export default function PlanCalculator({ src }: { src: string }) {
       bestDay: contact.bestDay === DAYS[0] ? "" : contact.bestDay,
       billing,
       term,
+      springGutters,
       src,
     });
     setSending(false);
@@ -393,6 +419,8 @@ export default function PlanCalculator({ src }: { src: string }) {
   const chosen = ADD_ONS.filter((a) => addOns.includes(a.key));
   // What the customer pays under the billing they picked, as a short phrase.
   const termLine = term > 1 ? `, price locked for ${term} years` : "";
+  const eff = price ? effectivePrice(price, springGutters) : null;
+  const schedule = eff ? depositSchedule(eff, billing) : "";
   // Value stack rows: the four seasons carry the access charges so the rows
   // add up to the seasonal à la carte total, then windows and screens.
   const stack = useMemo(() => {
@@ -408,28 +436,35 @@ export default function PlanCalculator({ src }: { src: string }) {
       { label: `Windows, ${WINDOW_VISITS_PER_YEAR} visits`, sub: "exterior, every window", value: price.windowsAnnualValue, free: true },
       { label: `Screens, ${WINDOW_VISITS_PER_YEAR} visits`, sub: "you remove and reinstall", value: price.screensAnnualValue, free: true },
     ];
-    const yourPrice = billing === "annual" ? price.prepaidAnnual : price.memberAnnual;
-    return { rows, total: price.valueReceived, yourPrice, save: Math.max(0, Math.round(price.valueReceived - yourPrice)) };
-  }, [price, billing]);
-  const priceLine = price
+    const e = effectivePrice(price, springGutters);
+    if (springGutters) rows.splice(3, 0, { label: "Spring gutters, second cleaning", value: e.upgradeValue });
+    const baseYourPrice = billing === "annual" ? price.prepaidAnnual : price.memberAnnual;
+    const yourPrice = billing === "annual" ? e.prepaid : e.annual;
+    const total = price.valueReceived + (springGutters ? e.upgradeValue : 0);
+    return { rows, total, yourPrice, save: Math.max(0, Math.round(price.valueReceived - baseYourPrice)), upgradeMonthly: e.upgradeMonthly };
+  }, [price, billing, springGutters]);
+  const priceLine = eff
     ? billing === "annual"
-      ? `$${fmt(price.prepaidMonthlyEquivalent)} a month on a 12-month membership, paid $${fmt(price.prepaidAnnual)} up front${termLine}`
-      : `$${fmt(price.memberMonthly)} a month on a 12-month membership, billed monthly${termLine}`
+      ? `$${fmt(eff.prepaidMonthly)} a month on a 12-month membership, paid $${fmt(eff.prepaid)} up front${termLine}`
+      : `$${fmt(eff.monthly)} a month on a 12-month membership, billed monthly${termLine}`
     : "";
-  const savedLine = price ? `You save $${fmt(price.savedVsAlaCarte + (billing === "annual" ? price.prepaySavesMore : 0))} this year` : "";
+  const savedLine = price && eff ? `You save $${fmt(price.savedVsAlaCarte + (billing === "annual" ? eff.prepaySaves : 0))} this year` : "";
   const suggested = useMemo(() => (house ? suggestedAddOns(house) : []), [house]);
 
   // Real availability for the next 14 days, fetched once the Reserve step opens.
   useEffect(() => {
     if (step !== 4 || slotsLoaded) return;
     const now = Date.now();
-    getFreeSlots(now, now + 14 * 24 * 60 * 60 * 1000)
+    getFreeSlots(now, now + 62 * 24 * 60 * 60 * 1000)
       .then((r) => setSlotMap(r.days))
       .catch(() => setSlotMap({}))
       .finally(() => setSlotsLoaded(true));
   }, [step, slotsLoaded]);
 
   const dayKeys = Object.keys(slotMap).filter((k) => slotMap[k].length > 0).sort();
+  const monthsAhead = (calY - today.getFullYear()) * 12 + (calM - today.getMonth());
+  const prevMonth = () => { if (calM === 0) { setCalY(calY - 1); setCalM(11); } else setCalM(calM - 1); setDayKey(""); setPickedISO(""); };
+  const nextMonth = () => { if (calM === 11) { setCalY(calY + 1); setCalM(0); } else setCalM(calM + 1); setDayKey(""); setPickedISO(""); };
 
   const startDeposit = async () => {
     if (!saved?.contactId || !house) return;
@@ -484,18 +519,18 @@ export default function PlanCalculator({ src }: { src: string }) {
             <div className="mark">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
             </div>
-            <h2>{depositPaid ? "Your price is locked." : "Your price is reserved."}</h2>
+            <h2>{depositPaid ? "Your price is reserved." : "Almost there."}</h2>
             <div className="price-big" style={{ justifyContent: "center" }}>
               <span className="num">${fmt(billing === "annual" ? price.prepaidMonthlyEquivalent : price.memberMonthly)}</span>
               <span className="per">/mo</span>
             </div>
-            <p style={{ marginBottom: 16 }}>{priceLine} for {house.address}. {savedLine}.</p>
+            <p style={{ marginBottom: 16 }}>{priceLine} for {house.address}. {schedule}. {savedLine}.</p>
             {!saved.saved ? (
               <p>Our system had trouble saving your details just now. Call or text us and we&apos;ll take the deposit by hand.</p>
             ) : depositPaid ? (
-              <p>Your ${DEPOSIT_USD} deposit is in and comes off your first month. The receipt is on its way to {contact.email}.</p>
+              <p>Next we&apos;ll text you the membership agreement and auto-pay setup, and that locks it in. The deposit receipt is on its way to {contact.email}.</p>
             ) : (
-              <p>We&apos;ll text you within one business day to take the ${DEPOSIT_USD} deposit and set your first visit. The price locks when the deposit clears.</p>
+              <p>We&apos;ll text you to take the deposit and set your first visit.</p>
             )}
             {saved.saved && bookedISO && <p>Your first visit is booked for {slotDate(bookedISO)} at {slotTime(bookedISO)}. We&apos;ll text you a reminder the day before.</p>}
             {saved.saved && depositPaid && !bookedISO && <p>We&apos;ll text you within one business day to set your first visit.</p>}
@@ -676,10 +711,10 @@ export default function PlanCalculator({ src }: { src: string }) {
 
                   <div className="offer">
                     <div className="price-big">
-                      <span className="num">${fmt(billing === "annual" ? price.prepaidMonthlyEquivalent : price.memberMonthly)}</span>
+                      <span className="num">${fmt(billing === "annual" ? eff!.prepaidMonthly : eff!.monthly)}</span>
                       <span className="per">/mo</span>
                     </div>
-                    <p className="bill">{billing === "annual" ? <>${fmt(price.prepaidAnnual)} once a year. You save ${fmt(price.prepaySavesMore)} vs monthly.</> : <>Billed monthly. 12-month membership.</>}</p>
+                    <p className="bill">{billing === "annual" ? <>${fmt(eff!.prepaid)} once a year. You save ${fmt(eff!.prepaySaves)} vs monthly.</> : <>Billed monthly. 12-month membership.</>}</p>
                     <p className="fine" style={{ marginBottom: 0 }}>This is your starting price. Our first visit confirms it, and unusual height or access can add to it.</p>
                   </div>
 
@@ -717,13 +752,22 @@ export default function PlanCalculator({ src }: { src: string }) {
                     </div>
                   </div>
 
+                  <button type="button" className={`upgrade ${springGutters ? "on" : ""}`} onClick={() => setSpringGutters((v) => !v)} aria-pressed={springGutters}>
+                    <span className="box">{springGutters && <Check />}</span>
+                    <span className="body">
+                      <span className="t">Add a second gutter cleaning in spring</span>
+                      <span className="sub">Recommended in Oregon · done on the spring visit, no extra trip</span>
+                    </span>
+                    <span className="amt">+${fmt(stack.upgradeMonthly)}/mo</span>
+                  </button>
+
                   <div className="scarcity">
                     We take {MEMBERSHIPS_PER_YEAR} new memberships a year in the Portland metro. Every one is four visits we have to keep, so once your neighborhood&apos;s route fills, it&apos;s full until next year.
                   </div>
                   <p className="guarantee">Before-and-after photos every visit. Anything not right, we re-rinse it free within 48 hours.</p>
 
                   <div style={{ display: "grid", gap: 8, marginTop: 20 }}>
-                    <button type="button" className="btn btn-ink" onClick={() => go(2)}>{billing === "annual" ? "Claim the annual price" : `Claim $${fmt(price.memberMonthly)}/mo`}</button>
+                    <button type="button" className="btn btn-ink" onClick={() => go(2)}>{billing === "annual" ? "Claim the annual price" : `Claim $${fmt(eff!.monthly)}/mo`}</button>
                     <button type="button" className="btn btn-ghost" onClick={() => go(0)}>Change something about the house</button>
                   </div>
                 </div>
@@ -788,7 +832,7 @@ export default function PlanCalculator({ src }: { src: string }) {
               {step === 3 && price && house && (
                 <form onSubmit={handleSubmit}>
                   <h2>Reserve your price.</h2>
-                  <p className="lead">Tell us who you are and we&apos;ll reserve {priceLine} for {house.address}{chosen.length ? `, plus ${chosen.length} add-on${chosen.length === 1 ? "" : "s"}` : ""}. {savedLine}.</p>
+                  <p className="lead">Tell us who you are and we&apos;ll reserve {priceLine} for {house.address}{chosen.length ? `, plus ${chosen.length} add-on${chosen.length === 1 ? "" : "s"}` : ""}. {schedule}. {savedLine}.</p>
 
                   <input type="hidden" name="src" value={src} readOnly />
 
@@ -816,7 +860,7 @@ export default function PlanCalculator({ src }: { src: string }) {
 
                   <p className="fine" style={{ marginBottom: 12 }}>This is your starting price. Our first visit confirms it, and unusual height or access can add to it.</p>
                   <button type="submit" className="btn btn-ink" disabled={sending || !contact.name || !contact.phone || !contact.email}>
-                    {sending ? "Reserving it" : "Reserve my price and free windows"}
+                    {sending ? "Reserving it" : "Reserve this price"}
                   </button>
                   <p className="consent">
                     By submitting, you agree to receive calls and texts about your quote and visits from Rinse It Off. Msg &amp; data rates may apply, frequency varies. Reply STOP to opt out, HELP for help. See our{" "}
@@ -828,27 +872,29 @@ export default function PlanCalculator({ src }: { src: string }) {
 
               {step === 4 && price && house && saved && (
                 <div>
-                  <h2>Your price is reserved, not locked yet.</h2>
-                  <p className="lead">{priceLine} for {house.address}. {savedLine}. It locks for the full 12 months once your ${DEPOSIT_USD} deposit clears.</p>
+                  <h2>Reserve your price.</h2>
+                  <p className="lead">{priceLine} for {house.address}. {schedule}. The deposit reserves your price and comes off your membership total.</p>
 
                   <div className="reserve">
-                    <h3>Lock in your price</h3>
-                    <p>The ${DEPOSIT_USD} deposit locks your price and your spot on the route, and it comes off your first month.</p>
+                    <h3>Reserve your price</h3>
                     {depositPaid ? (
-                      <div className="ok">Deposit received. Your price is locked for the full term, and the receipt is on its way to {contact.email}.</div>
+                      <div className="ok">Your price is reserved. Next we&apos;ll text you the membership agreement and auto-pay setup, and that locks it in.</div>
                     ) : depositUrl ? (
                       <>
                         <iframe className="checkout" src={depositUrl} title="Pay the deposit" allow="payment" />
                         <div style={{ display: "grid", gap: 8, marginTop: 12 }}>
-                          <button type="button" className="btn btn-ink" onClick={checkPaid} disabled={checking}>{checking ? "Checking" : "I paid, lock it in"}</button>
+                          <button type="button" className="btn btn-ink" onClick={checkPaid} disabled={checking}>{checking ? "Checking" : "I paid"}</button>
                           <a className="btn btn-ghost" href={depositUrl} target="_blank" rel="noopener noreferrer">Checkout not loading? Open it in a new tab</a>
                         </div>
                         {checkNote && <p className="fine" style={{ marginTop: 10, marginBottom: 0 }}>{checkNote}</p>}
                       </>
                     ) : (
-                      <button type="button" className="btn btn-ink" onClick={startDeposit} disabled={depositBusy}>
-                        {depositBusy ? "Setting it up" : `Lock in your price with a $${DEPOSIT_USD} deposit`}
-                      </button>
+                      <>
+                        <p>{schedule}.</p>
+                        <button type="button" className="btn btn-ink" onClick={startDeposit} disabled={depositBusy}>
+                          {depositBusy ? "Setting it up" : `Reserve your price with a $${DEPOSIT_USD} deposit`}
+                        </button>
+                      </>
                     )}
                     {depositErr && <div className="error" style={{ marginTop: 12, marginBottom: 0 }}>{depositErr}</div>}
                   </div>
@@ -858,26 +904,41 @@ export default function PlanCalculator({ src }: { src: string }) {
                     {bookedISO ? (
                       <div className="ok">Booked: {slotDate(bookedISO)} at {slotTime(bookedISO)}.</div>
                     ) : !slotsLoaded ? (
-                      <p style={{ marginBottom: 0 }}>Checking the next two weeks.</p>
+                      <p style={{ marginBottom: 0 }}>Checking the calendar.</p>
                     ) : dayKeys.length === 0 ? (
-                      <p style={{ marginBottom: 0 }}>Nothing open in the next two weeks. We&apos;ll text you with the first opening.</p>
+                      <p style={{ marginBottom: 0 }}>Nothing open in the next two months. We&apos;ll text you with the first opening.</p>
                     ) : (
                       <>
-                        <p>Real openings for the next two weeks. Tap a day, then a time.</p>
-                        <div className="days">
-                          {dayKeys.map((k) => { const d = dayParts(k); return (
-                            <button key={k} type="button" className={`day ${dayKey === k ? "on" : ""}`} onClick={() => setDayKey(k)} aria-pressed={dayKey === k}>
-                              <span className="dow">{d.dow}</span><span className="dom">{d.dom}</span>
-                            </button>
-                          ); })}
+                        <div className="cal">
+                          <div className="cal-head">
+                            <button type="button" onClick={prevMonth} disabled={calY === today.getFullYear() && calM === today.getMonth()} aria-label="Previous month">‹</button>
+                            <span>{MONTHS[calM]} {calY}</span>
+                            <button type="button" onClick={nextMonth} disabled={monthsAhead >= 2} aria-label="Next month">›</button>
+                          </div>
+                          <div className="cal-dow">{DOW.map((d) => <span key={d}>{d}</span>)}</div>
+                          <div className="cal-grid">
+                            {calDays(calY, calM).map((d, i) => {
+                              if (d === null) return <span key={"e" + i} />;
+                              const key = dateKey(calY, calM, d);
+                              const open = (slotMap[key]?.length ?? 0) > 0;
+                              const sel = dayKey === key;
+                              return (
+                                <button key={key} type="button" className={`cal-day ${open ? "open" : ""} ${sel ? "sel" : ""}`} disabled={!open} onClick={() => { setDayKey(key); setPickedISO(""); }} aria-pressed={sel}>{d}</button>
+                              );
+                            })}
+                          </div>
                         </div>
                         {dayKey && (
                           <div className="times">
                             {(slotMap[dayKey] || []).map((iso) => (
-                              <button key={iso} type="button" className={`time ${booking === iso ? "on" : ""}`} disabled={!!booking} onClick={() => pickSlot(iso)}>
-                                {booking === iso ? "Booking" : slotTime(iso)}
-                              </button>
+                              <button key={iso} type="button" className={`time ${pickedISO === iso ? "on" : ""}`} onClick={() => setPickedISO(iso)} aria-pressed={pickedISO === iso}>{slotTime(iso)}</button>
                             ))}
+                          </div>
+                        )}
+                        {pickedISO && (
+                          <div style={{ marginTop: 12 }}>
+                            <p style={{ marginBottom: 8 }}><strong style={{ color: "var(--ink)", fontWeight: 500 }}>{slotDate(pickedISO)} at {slotTime(pickedISO)}</strong></p>
+                            <button type="button" className="btn btn-ink" onClick={() => pickSlot(pickedISO)} disabled={!!booking}>{booking ? "Booking" : "Confirm this visit"}</button>
                           </div>
                         )}
                         {bookErr && <div className="error" style={{ marginTop: 12, marginBottom: 0 }}>{bookErr}</div>}
@@ -888,7 +949,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                   <button type="button" className={`btn ${depositPaid ? "btn-ink" : "btn-ghost"}`} onClick={finish}>
                     {depositPaid ? "All set" : "Text me instead"}
                   </button>
-                  {!depositPaid && <p className="fine" style={{ textAlign: "center", marginTop: 8 }}>We&apos;ll text you to take the deposit and set your first visit. The price isn&apos;t locked until then.</p>}
+                  {!depositPaid && <p className="fine" style={{ textAlign: "center", marginTop: 8 }}>We&apos;ll text you to take the deposit and set your first visit.</p>}
                 </div>
               )}
             </div>
