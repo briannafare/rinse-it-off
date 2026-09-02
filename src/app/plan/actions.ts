@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
-import { ADD_ONS, DEPOSIT_USD, addOnPriceLabel, priceHouse, type HouseInputs } from "./pricing";
+import { ADD_ONS, DEPOSIT_USD, WINDOW_VISITS_PER_YEAR, addOnPriceLabel, priceHouse, type HouseInputs } from "./pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -51,6 +51,7 @@ export interface PlanQuoteData {
   phone: string;
   email: string;
   bestDay: string;
+  billing?: "monthly" | "annual";
   src: string; // from ?src= on the URL, carried through the form
 }
 
@@ -118,6 +119,8 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     const phone = String(data.phone || "").trim().slice(0, 40);
     const email = String(data.email || "").trim().slice(0, 160);
     const bestDay = String(data.bestDay || "").trim().slice(0, 40);
+    const billing = data.billing === "annual" ? "annual" : "monthly";
+    const yearValue = billing === "annual" ? price.prepaidAnnual : price.memberAnnual;
     const chosenAddOns = ADD_ONS.filter((a) => (data.addOns || []).includes(a.key));
 
     const nameParts = name.split(" ");
@@ -125,7 +128,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     const lastName = nameParts.slice(1).join(" ") || "";
 
     const source = src === "web" ? "Website · plan calculator" : `Postcard · ${src}`;
-    const tags = ["plan-quote", "lead-res", `src-${src}`, ...(flagged ? ["needs-review"] : [])];
+    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, ...(flagged ? ["needs-review"] : [])];
 
     // The full calculator, as a note a human can read in the contact record.
     const noteLines: string[] = [
@@ -134,22 +137,26 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       "",
       "House",
       `  Address: ${house.address || "not given"}`,
-      `  Living area: ${house.livingSqft.toLocaleString()} sq ft (tier ${price.tier.code}, ${price.tier.label})`,
+      `  Living area: ${house.livingSqft.toLocaleString()} sq ft`,
       `  Stories: ${house.stories === 3 ? "3+" : house.stories}`,
-      `  Exterior windows: ${house.windows} (${price.windowsIncluded} in plan${price.windowsExtra ? `, ${price.windowsExtra} extra` : ""})`,
+      `  Exterior windows: ${house.windows} (free with the membership, valued at $${price.windowsPerVisitValue} a visit)`,
       `  Roof: ${house.roof}`,
       `  Driveway and walkways: ${house.driveway}`,
       `  Access: ${house.access}`,
       "",
-      "Lines (à la carte per year)",
+      "Core lines (booked one at a time, per year)",
       ...price.lines.map((l) => `  ${l.label}: $${l.amount.toFixed(2)}  (${l.detail})`),
       `  Subtotal: $${price.subtotal.toFixed(2)}`,
       `  Access modifier: x${price.accessMultiplier}`,
-      `  À la carte annual: $${price.alaCarteAnnual.toFixed(2)}`,
+      `  Core à la carte annual: $${price.coreAnnual.toFixed(2)}`,
+      `  Windows value (free): $${price.windowsAnnualValue} (${WINDOW_VISITS_PER_YEAR} visits)`,
+      `  Value received: $${price.valueReceived.toFixed(2)}`,
       "",
       "Price",
       `  Membership, billed monthly: $${price.memberMonthly}/mo ($${price.memberAnnual}/yr)`,
       `  Prepaid year: $${price.prepaidAnnual} ($${price.prepaidMonthlyEquivalent}/mo equivalent)`,
+      `  Billing chosen: ${billing}`,
+      `  Saved vs one at a time: $${price.savedVsAlaCarte}`,
       "",
       `Add-ons asked about (member price, quantities measured at first visit)`,
       ...(chosenAddOns.length ? chosenAddOns.map((a) => `  ${a.label}: ${addOnPriceLabel(a)}`) : ["  none"]),
@@ -199,7 +206,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
             name: `Yearly membership · ${house.address || name}`,
             status: "open",
             source,
-            monetaryValue: price.memberAnnual,
+            monetaryValue: yearValue,
           }),
         });
         if (!oppRes.ok) {
@@ -210,7 +217,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
             const upd = await fetch(`${GHL_API_BASE}/opportunities/${existingId}`, {
               method: "PUT",
               headers: ghlHeaders,
-              body: JSON.stringify({ name: `Yearly membership · ${house.address || name}`, monetaryValue: price.memberAnnual, source }),
+              body: JSON.stringify({ name: `Yearly membership · ${house.address || name}`, monetaryValue: yearValue, source }),
             });
             if (!upd.ok) console.error("GHL opportunity update failed:", upd.status, await upd.text());
           } else {
@@ -279,8 +286,8 @@ export interface DepositInput {
 /** Creates a GHL invoice for the deposit, emails it to the customer, and
  *  returns the public payment page. Payment itself happens on GHL's page, so
  *  we have no in-request way to know it was paid: the contact is tagged
- *  `deposit-sent` here, and `deposit-paid` is left for a GHL workflow on the
- *  invoice-paid trigger. */
+ *  `membership-deposit-sent` here, and `membership-deposit-paid` is left for a
+ *  GHL workflow on the invoice-paid trigger. */
 export async function createDepositInvoice(input: DepositInput): Promise<{ ok: boolean; url?: string; error?: string }> {
   const soft = { ok: false, error: "We couldn't open the deposit page just now. We'll text you a link instead." };
   try {
@@ -348,7 +355,7 @@ export async function createDepositInvoice(input: DepositInput): Promise<{ ok: b
       }
     }
 
-    await addTags(input.contactId, ["deposit-sent"]);
+    await addTags(input.contactId, ["membership-deposit-sent"]);
     await addNote(input.contactId, `Deposit invoice created: $${DEPOSIT_USD}, invoice ${invoiceId}\n${url}`);
     return { ok: true, url };
   } catch (e) {
@@ -396,7 +403,7 @@ export async function bookFirstVisit(input: BookVisitInput): Promise<{ ok: boole
       console.error("GHL appointment creation failed:", res.status, await res.text());
       return soft;
     }
-    await addTags(input.contactId, ["visit-booked"]);
+    await addTags(input.contactId, ["membership-visit-booked"]);
     return { ok: true };
   } catch (e) {
     console.error("bookFirstVisit error:", e);

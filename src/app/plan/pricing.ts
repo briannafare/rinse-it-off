@@ -2,7 +2,10 @@
  *
  *  Pure functions, no I/O. Imported by the client component (live price) and
  *  the server action (recomputed server-side so the CRM never trusts the
- *  browser's number). Ground truth for every constant:
+ *  browser's number). Same inputs always give the same output; see
+ *  pricing.test.ts, which runs before every build.
+ *
+ *  Ground truth for the rates and scope anchors:
  *  ~/brain/notes/rinse-it-off-membership-pricing-engine.md
  */
 
@@ -23,42 +26,100 @@ export interface HouseInputs {
 
 // ── Per-unit rates (already carry target margin, never discount below) ──────
 export const RATE = {
-  windowEach: 22, // per exterior window, per visit
+  windowEach: 22, // per exterior window, per visit (used for the free-windows VALUE only)
   concreteSf: 0.36, // driveway + walkways, also the winter walkway pass
   sidingSf: 0.31,
   roofSf: 0.5,
   gutterLf: { 1: 1.25, 2: 1.75, 3: 2.25 } as Record<Stories, number>,
 } as const;
 
+// ── Windows are FREE with the membership. Their value is what a standalone
+//    visit costs: Rinse's real per-trip minimum, or the per-window rate if
+//    that comes to more. Four visits a year. ──────────────────────────────────
 export const WINDOW_VISITS_PER_YEAR = 4;
+export const WINDOW_VISIT_MIN = 500; // real standalone per-trip minimum
 
-// ── Home tiers by living area. Scope CEILINGS per visit, not estimates. ─────
-export type TierCode = "A" | "B" | "C";
-export interface Tier {
-  code: TierCode;
-  label: string;
-  maxLivingSqft: number; // Infinity for the top tier
-  windowsPerVisit: number;
+// ── Scope from the house's shape, not a size bucket ─────────────────────────
+//    footprint = living sq ft ÷ stories. Roof and gutters follow the footprint
+//    (a 3-story house has a small roof; the stories multiplier and the gutter
+//    floor carry the height cost). Siding follows living area. Driveway and
+//    winter walkway follow living area between the engine's anchors. The
+//    constants below are least-squares fits so a 2-story house at 2,000 /
+//    3,200 / 4,500 sq ft lands on the engine's tier A / B / C scope numbers:
+//      roof    320 + 0.88 × footprint  -> 1,200 / 1,728 / 2,300  (engine 1,200 / 1,700 / 2,300)
+//      siding  540 + 0.48 × living     -> 1,500 / 2,076 / 2,700  (engine 1,500 / 2,000 / 2,700)
+//      gutters 4 × sqrt(footprint) × 1.06 -> 134 / 170 / 201 ft  (engine 120 / 160 / 220)
+export const ROOF_BASE_SF = 320; // eaves and overhang that every roof has
+export const ROOF_PITCH = 0.88; // roof sq ft per sq ft of footprint beyond that
+export const SIDING_BASE_SF = 540;
+export const SIDING_K = 0.48; // siding sq ft per sq ft of living area beyond that
+export const GUTTER_K = 1.06; // gutter ft per ft of a square footprint's perimeter
+export const SCOPE_FLOOR_SQFT = 1200; // nothing prices below a 1,200 sq ft house
+export const SCOPE_CEIL_SQFT = 12000;
+
+// Driveway and winter walkway anchors (engine tiers), interpolated on living area.
+export interface FlatAnchor { livingSqft: number; drivewaySf: number; winterWalkwaySf: number }
+export const FLAT_ANCHORS: FlatAnchor[] = [
+  { livingSqft: 2000, drivewaySf: 1000, winterWalkwaySf: 300 },
+  { livingSqft: 3200, drivewaySf: 1400, winterWalkwaySf: 400 },
+  { livingSqft: 4500, drivewaySf: 1900, winterWalkwaySf: 500 },
+];
+
+export interface Scope {
+  livingSqft: number;
+  footprintSf: number;
   drivewaySf: number;
   sidingSf: number;
   roofSf: number;
   gutterLf: number;
   winterWalkwaySf: number;
 }
-export const TIERS: Tier[] = [
-  { code: "A", label: "Cozy", maxLivingSqft: 2000, windowsPerVisit: 12, drivewaySf: 1000, sidingSf: 1500, roofSf: 1200, gutterLf: 120, winterWalkwaySf: 300 },
-  { code: "B", label: "Standard", maxLivingSqft: 3200, windowsPerVisit: 20, drivewaySf: 1400, sidingSf: 2000, roofSf: 1700, gutterLf: 160, winterWalkwaySf: 400 },
-  { code: "C", label: "Estate", maxLivingSqft: Infinity, windowsPerVisit: 30, drivewaySf: 1900, sidingSf: 2700, roofSf: 2300, gutterLf: 220, winterWalkwaySf: 500 },
-];
+
+function interpFlat(sqft: number, key: "drivewaySf" | "winterWalkwaySf"): number {
+  const first = FLAT_ANCHORS[0];
+  const last = FLAT_ANCHORS[FLAT_ANCHORS.length - 1];
+  if (sqft <= first.livingSqft) return (first[key] * sqft) / first.livingSqft;
+  if (sqft >= last.livingSqft) return (last[key] * sqft) / last.livingSqft;
+  for (let i = 0; i < FLAT_ANCHORS.length - 1; i++) {
+    const lo = FLAT_ANCHORS[i];
+    const hi = FLAT_ANCHORS[i + 1];
+    if (sqft >= lo.livingSqft && sqft <= hi.livingSqft) {
+      const t = (sqft - lo.livingSqft) / (hi.livingSqft - lo.livingSqft);
+      return lo[key] + (hi[key] - lo[key]) * t;
+    }
+  }
+  return last[key];
+}
+
+/** Scope quantities for a living area and story count. Deterministic. */
+export function scopeFor(livingSqftRaw: number, stories: Stories): Scope {
+  const livingSqft = Math.min(SCOPE_CEIL_SQFT, Math.max(SCOPE_FLOOR_SQFT, livingSqftRaw || 0));
+  const footprintSf = livingSqft / stories;
+  return {
+    livingSqft,
+    footprintSf,
+    drivewaySf: interpFlat(livingSqft, "drivewaySf"),
+    sidingSf: SIDING_BASE_SF + SIDING_K * livingSqft,
+    roofSf: ROOF_BASE_SF + ROOF_PITCH * footprintSf,
+    gutterLf: 4 * Math.sqrt(footprintSf) * GUTTER_K,
+    winterWalkwaySf: interpFlat(livingSqft, "winterWalkwaySf"),
+  };
+}
 
 // ── Complexity modifiers. These are the ONLY adjustments to the engine. ─────
 export const MODIFIER = {
   roofShakeOrSteep: 1.25, // roof line only
   drivewaySmall: 0.8, // driveway line only
   drivewayLarge: 1.25, // driveway line only
-  accessGatedTight: 1.08, // whole à la carte total
-  accessSteepLadder: 1.15, // whole à la carte total
+  accessGatedTight: 1.08, // whole core total
+  accessSteepLadder: 1.15, // whole core total
 } as const;
+
+// Gutter per-visit floor by stories: fuel, equipment and time on a tall house.
+export const GUTTER_VISIT_MIN: Record<Stories, number> = { 1: 250, 2: 350, 3: 500 };
+
+// Roof and siding lines on a 3+ story house (1 and 2 stories = 1.0).
+export const STORY_MULT: Record<Stories, number> = { 1: 1, 2: 1, 3: 1.15 };
 
 // ── Membership discounts and floor ──────────────────────────────────────────
 export const MEMBER_MONTHLY_DISCOUNT = 0.2; // 12 months, billed monthly
@@ -66,56 +127,54 @@ export const MEMBER_PREPAID_DISCOUNT = 0.25; // 12 months, paid up front
 export const MONTHLY_FLOOR = 189; // postcard's "from $189" for a basic 3-bedroom
 export const ADDON_MEMBER_DISCOUNT = 0.1; // add-on menu = list × 0.90 for members
 export const DEPOSIT_USD = 99; // route-slot deposit, applied to the first month. Bri can change this.
-export const WINDOWS_VALUE_LABEL = "$1,500+"; // what four standalone window visits cost (postcard claim)
-
-export function tierFor(livingSqft: number): Tier {
-  return TIERS.find((t) => livingSqft <= t.maxLivingSqft) ?? TIERS[TIERS.length - 1];
-}
 
 export interface PriceLine {
   key: string;
   label: string;
-  detail: string; // how the number was reached, plain words
+  detail: string; // how the number was reached, plain words, no unit rates
   amount: number; // dollars per year, unrounded
 }
 
 export interface PriceResult {
-  tier: Tier;
-  lines: PriceLine[];
+  scope: Scope;
+  lines: PriceLine[]; // the priced (core) lines
   subtotal: number; // sum of lines before the access modifier
   accessMultiplier: number;
-  alaCarteAnnual: number; // after access modifier
+  coreAnnual: number; // core services booked one at a time, per year
+  windowsPerVisitValue: number; // what one standalone window visit would cost
+  windowsAnnualValue: number; // × WINDOW_VISITS_PER_YEAR, free with the membership
+  valueReceived: number; // coreAnnual + windowsAnnualValue
   memberMonthly: number; // whole dollars, rounded up, floored at MONTHLY_FLOOR
   memberAnnual: number; // memberMonthly × 12 (what the CRM opportunity is worth)
   prepaidAnnual: number; // whole dollars, rounded up
   prepaidMonthlyEquivalent: number; // whole dollars, rounded up
-  windowsIncluded: number;
-  windowsExtra: number;
-  savedVsAlaCarte: number; // à la carte annual minus the membership year, whole dollars
-  prepaySavesMore: number; // membership year minus the prepaid year, whole dollars
+  savedVsAlaCarte: number; // valueReceived minus the membership year
+  prepaySavesMore: number; // membership year minus the prepaid year
 }
 
-const money = (n: number) => `$${n.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
+const about = (n: number, step: number) => Math.round(n / step) * step;
+const storyWord = (s: Stories) => (s === 3 ? "3 stories" : s === 2 ? "2 stories" : "1 story");
 
 export function priceHouse(h: HouseInputs): PriceResult {
-  const tier = tierFor(h.livingSqft);
+  const scope = scopeFor(h.livingSqft, h.stories);
   const lines: PriceLine[] = [];
+  const storyMult = STORY_MULT[h.stories];
 
   // Driveway and walkways (summer), scaled by the size the customer picked.
   const drivewayMult = h.driveway === "small" ? MODIFIER.drivewaySmall : h.driveway === "large" ? MODIFIER.drivewayLarge : 1;
   lines.push({
     key: "driveway",
     label: "Driveway and walkways, summer",
-    detail: `${tier.drivewaySf.toLocaleString()} sq ft at $${RATE.concreteSf.toFixed(2)}${drivewayMult !== 1 ? `, ${h.driveway === "small" ? "20% less for a small driveway" : "25% more for a large or long one"}` : ""}`,
-    amount: tier.drivewaySf * RATE.concreteSf * drivewayMult,
+    detail: `${h.driveway === "small" ? "Small" : h.driveway === "large" ? "Large or long" : "Typical"}, about ${about(scope.drivewaySf * drivewayMult, 50).toLocaleString()} sq ft`,
+    amount: scope.drivewaySf * RATE.concreteSf * drivewayMult,
   });
 
   // Siding soft wash (spring)
   lines.push({
     key: "siding",
     label: "Siding soft wash, spring",
-    detail: `${tier.sidingSf.toLocaleString()} sq ft at $${RATE.sidingSf.toFixed(2)}`,
-    amount: tier.sidingSf * RATE.sidingSf,
+    detail: `${storyWord(h.stories)}, about ${about(scope.sidingSf, 50).toLocaleString()} sq ft of siding`,
+    amount: scope.sidingSf * RATE.sidingSf * storyMult,
   });
 
   // Roof soft wash (spring), more for wood shake or a steep pitch.
@@ -123,69 +182,60 @@ export function priceHouse(h: HouseInputs): PriceResult {
   lines.push({
     key: "roof",
     label: "Roof soft wash, spring",
-    detail: `${tier.roofSf.toLocaleString()} sq ft at $${RATE.roofSf.toFixed(2)}${roofMult !== 1 ? ", 25% more for wood shake or a steep pitch" : ""}`,
-    amount: tier.roofSf * RATE.roofSf * roofMult,
+    detail: `${h.roof === "shake-steep" ? "Wood shake or steep pitch" : h.roof === "metal-tile" ? "Metal or tile" : "Composition shingle"}, about ${about(scope.roofSf, 50).toLocaleString()} sq ft of roof`,
+    amount: scope.roofSf * RATE.roofSf * roofMult * storyMult,
   });
 
-  // Gutters (fall). Rate steps up with stories; a steep roof uses the top rate.
+  // Gutters (fall). Rate steps up with stories; a steep roof uses the top
+  // rate; a per-visit floor covers the time a tall house takes.
   const gutterStories: Stories = h.roof === "shake-steep" ? 3 : h.stories;
-  const gutterRate = RATE.gutterLf[gutterStories];
+  const gutterByFeet = scope.gutterLf * RATE.gutterLf[gutterStories];
+  const gutterFloor = GUTTER_VISIT_MIN[h.stories];
+  const gutterFloored = gutterByFeet < gutterFloor;
   lines.push({
     key: "gutters",
     label: "Gutters and downspouts, fall",
-    detail: `${tier.gutterLf} linear ft at $${gutterRate.toFixed(2)} (${gutterStories === 3 ? "3 stories or steep" : `${gutterStories} ${gutterStories === 1 ? "story" : "stories"}`})`,
-    amount: tier.gutterLf * gutterRate,
+    detail: `${storyWord(h.stories)}, about ${about(scope.gutterLf, 5)} ft${gutterFloored ? `, ${h.stories}-story minimum` : ""}`,
+    amount: Math.max(gutterByFeet, gutterFloor),
   });
 
-  // Winter walkway and entry pass, at the concrete rate.
+  // Winter walkway and entry pass.
   lines.push({
     key: "winter",
     label: "Walkways, steps and entry, winter",
-    detail: `${tier.winterWalkwaySf} sq ft at $${RATE.concreteSf.toFixed(2)}`,
-    amount: tier.winterWalkwaySf * RATE.concreteSf,
+    detail: `Front walk, steps and entry, about ${about(scope.winterWalkwaySf, 10)} sq ft`,
+    amount: scope.winterWalkwaySf * RATE.concreteSf,
   });
-
-  // Exterior windows, four visits a year. The tier includes a cap; extras are
-  // billed at the same rate.
-  const windowsIncluded = Math.min(Math.max(0, h.windows), tier.windowsPerVisit);
-  const windowsExtra = Math.max(0, h.windows - tier.windowsPerVisit);
-  lines.push({
-    key: "windows",
-    label: `Exterior windows, ${WINDOW_VISITS_PER_YEAR} times a year`,
-    detail: `${windowsIncluded} windows at $${RATE.windowEach} each, ${WINDOW_VISITS_PER_YEAR} visits`,
-    amount: windowsIncluded * RATE.windowEach * WINDOW_VISITS_PER_YEAR,
-  });
-  if (windowsExtra > 0) {
-    lines.push({
-      key: "windows-extra",
-      label: "Extra windows past the plan's count",
-      detail: `${windowsExtra} more at $${RATE.windowEach} each, ${WINDOW_VISITS_PER_YEAR} visits`,
-      amount: windowsExtra * RATE.windowEach * WINDOW_VISITS_PER_YEAR,
-    });
-  }
 
   const subtotal = lines.reduce((s, l) => s + l.amount, 0);
   const accessMultiplier = h.access === "gated-tight" ? MODIFIER.accessGatedTight : h.access === "steep-ladder" ? MODIFIER.accessSteepLadder : 1;
-  const alaCarteAnnual = subtotal * accessMultiplier;
+  const coreAnnual = subtotal * accessMultiplier;
 
-  const memberMonthly = Math.max(MONTHLY_FLOOR, Math.ceil((alaCarteAnnual * (1 - MEMBER_MONTHLY_DISCOUNT)) / 12));
+  // Windows: free with the membership, valued at what a standalone visit costs.
+  const windows = Math.max(0, Math.floor(h.windows || 0));
+  const windowsPerVisitValue = Math.max(WINDOW_VISIT_MIN, windows * RATE.windowEach);
+  const windowsAnnualValue = windowsPerVisitValue * WINDOW_VISITS_PER_YEAR;
+  const valueReceived = coreAnnual + windowsAnnualValue;
+
+  const memberMonthly = Math.max(MONTHLY_FLOOR, Math.ceil((coreAnnual * (1 - MEMBER_MONTHLY_DISCOUNT)) / 12));
   const memberAnnual = memberMonthly * 12;
-  const prepaidAnnual = Math.ceil(alaCarteAnnual * (1 - MEMBER_PREPAID_DISCOUNT));
+  const prepaidAnnual = Math.ceil(coreAnnual * (1 - MEMBER_PREPAID_DISCOUNT));
   const prepaidMonthlyEquivalent = Math.ceil(prepaidAnnual / 12);
 
   return {
-    tier,
+    scope,
     lines,
     subtotal,
     accessMultiplier,
-    alaCarteAnnual,
+    coreAnnual,
+    windowsPerVisitValue,
+    windowsAnnualValue,
+    valueReceived,
     memberMonthly,
     memberAnnual,
     prepaidAnnual,
     prepaidMonthlyEquivalent,
-    windowsIncluded,
-    windowsExtra,
-    savedVsAlaCarte: Math.max(0, Math.round(alaCarteAnnual - memberAnnual)),
+    savedVsAlaCarte: Math.max(0, Math.round(valueReceived - memberAnnual)),
     prepaySavesMore: Math.max(0, memberAnnual - prepaidAnnual),
   };
 }
@@ -235,12 +285,6 @@ export function suggestedAddOns(h: HouseInputs, month = new Date().getMonth()): 
 }
 
 export function addOnPriceLabel(a: AddOn): string {
-  if (a.list) {
-    const m = memberAddOnPrice(a.list.amount);
-    const shown = m < 1 ? `$${m.toFixed(2)}` : `$${m.toFixed(2).replace(/\.00$/, "")}`;
-    return `From ${shown} ${unitWord(a.list.unit)}, priced at your first visit`;
-  }
+  if (a.list) return `From ${dollars(memberAddOnPrice(a.list.amount))} ${unitWord(a.list.unit)}, priced at your first visit`;
   return a.fromNote ?? "Priced at your first visit";
 }
-
-export { money };

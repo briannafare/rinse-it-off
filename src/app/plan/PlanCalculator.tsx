@@ -5,7 +5,9 @@ import { getFreeSlots } from "../assessment/actions";
 import {
   ADD_ONS,
   DEPOSIT_USD,
-  WINDOWS_VALUE_LABEL,
+  MEMBER_MONTHLY_DISCOUNT,
+  MEMBER_PREPAID_DISCOUNT,
+  WINDOW_VISITS_PER_YEAR,
   addOnPrices,
   priceHouse,
   suggestedAddOns,
@@ -80,6 +82,8 @@ const DS = `
 
   .plan h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 4.5vw, 1.875rem); letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); margin-bottom: 8px; text-wrap: balance; }
   .plan .lead { font-size: 1rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 24px; text-wrap: pretty; }
+  .plan .summary { font-size: 0.875rem; line-height: 1.6; color: var(--text-muted); margin: -2px 0 14px; text-wrap: pretty; }
+  .plan .linkish { background: none; border: none; padding: 0; font: inherit; color: var(--blue-deep); text-decoration: underline; cursor: pointer; min-height: 0; }
 
   .field { margin-bottom: 22px; }
   .field label, .field .q { display: block; font-size: 0.9375rem; font-weight: 500; color: var(--text-primary); margin-bottom: 8px; }
@@ -120,8 +124,16 @@ const DS = `
   .price-for { font-size: 1rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; }
   .price-for strong { color: var(--ink); font-weight: 500; }
 
-  .saves { background: var(--mint); color: var(--ink); border-radius: var(--r-lg); padding: 18px 20px; margin: 4px 0 14px; }
-  .saves .big { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.25rem, 5vw, 1.5rem); letter-spacing: -0.02em; line-height: 1.2; text-wrap: balance; }
+  .strip { background: var(--mint); color: var(--ink); border-radius: var(--r-md); padding: 10px 14px; margin: -12px 0 22px; font-size: 0.875rem; line-height: 1.5; font-weight: 500; text-wrap: pretty; }
+  .strip span { font-weight: 400; opacity: 0.75; margin: 0 6px; }
+
+  .toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--surface-alt); border-radius: var(--r-md); padding: 4px; margin: 4px 0 16px; }
+  .toggle button { min-height: 48px; border: none; border-radius: 9px; background: transparent; font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .toggle button.on { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-soft); }
+  .toggle .tag { font-family: var(--font-body); font-size: 0.75rem; font-weight: 500; color: var(--ink); background: var(--mint); border-radius: var(--r-sm); padding: 2px 7px; }
+
+  .saves { background: var(--mint); color: var(--ink); border-radius: var(--r-lg); padding: 22px 22px; margin: 4px 0 14px; }
+  .saves .big { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 6vw, 1.875rem); letter-spacing: -0.02em; line-height: 1.15; text-wrap: balance; }
   .saves .more { font-size: 0.9375rem; line-height: 1.5; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(12,18,21,0.18); color: var(--ink); }
   .saves .more strong { font-weight: 500; }
 
@@ -143,6 +155,9 @@ const DS = `
   .math-line .d { display: block; font-size: 0.8125rem; color: var(--text-muted); margin-top: 2px; }
   .math-line .a { font-variant-numeric: tabular-nums; color: var(--text-primary); white-space: nowrap; }
   .math-line.total { border-top: 2px solid var(--border); font-weight: 500; }
+  .math-line.mint .a, .math-line.mint .l { color: #0a7a4b; }
+  .math-line .strike { text-decoration: line-through; color: var(--text-muted); font-weight: 400; margin-right: 8px; }
+  .math-line .free { display: inline-block; background: var(--mint); color: var(--ink); border-radius: var(--r-sm); padding: 2px 8px; font-size: 0.8125rem; font-weight: 500; }
 
   .addon { align-items: flex-start; }
   .addon .box { margin-top: 2px; }
@@ -188,6 +203,8 @@ const DS = `
 `;
 
 const STEP_NAMES = ["House", "Price", "Add-ons", "Claim", "Reserve"];
+type Billing = "monthly" | "annual";
+const PCT = (d: number) => `${Math.round(d * 100)}%`;
 const TZ = "America/Los_Angeles";
 const slotTime = (iso: string) => new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: TZ });
 const slotDate = (iso: string) => new Date(iso).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: TZ });
@@ -198,7 +215,6 @@ const dayParts = (key: string) => {
 const DAYS = ["No preference", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 const fmt = (n: number) => n.toLocaleString("en-US", { maximumFractionDigits: 0 });
-const fmtCents = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 function Check() {
   return (
@@ -219,6 +235,7 @@ export default function PlanCalculator({ src }: { src: string }) {
   const [access, setAccess] = useState<Access>("easy");
   const [addOns, setAddOns] = useState<string[]>([]);
   const [contact, setContact] = useState({ name: "", phone: "", email: "", bestDay: DAYS[0] });
+  const [billing, setBilling] = useState<Billing>("monthly");
   const [sending, setSending] = useState(false);
   const [saved, setSaved] = useState<{ saved: boolean; contactId?: string } | null>(null);
   const [done, setDone] = useState(false);
@@ -262,6 +279,7 @@ export default function PlanCalculator({ src }: { src: string }) {
       phone: contact.phone,
       email: contact.email,
       bestDay: contact.bestDay === DAYS[0] ? "" : contact.bestDay,
+      billing,
       src,
     });
     setSending(false);
@@ -275,6 +293,13 @@ export default function PlanCalculator({ src }: { src: string }) {
   };
 
   const chosen = ADD_ONS.filter((a) => addOns.includes(a.key));
+  // What the customer pays under the billing they picked, as a short phrase.
+  const priceLine = price
+    ? billing === "annual"
+      ? `$${fmt(price.prepaidMonthlyEquivalent)} a month, billed $${fmt(price.prepaidAnnual)} once a year`
+      : `$${fmt(price.memberMonthly)} a month, billed monthly`
+    : "";
+  const savedLine = price ? `You save $${fmt(price.savedVsAlaCarte + (billing === "annual" ? price.prepaySavesMore : 0))} this year` : "";
   const suggested = useMemo(() => (house ? suggestedAddOns(house) : []), [house]);
 
   // Real availability for the next 14 days, fetched once the Reserve step opens.
@@ -330,10 +355,10 @@ export default function PlanCalculator({ src }: { src: string }) {
             </div>
             <h2>Your price is locked.</h2>
             <div className="price-big" style={{ justifyContent: "center" }}>
-              <span className="num">${fmt(price.memberMonthly)}</span>
-              <span className="per">a month</span>
+              <span className="num">${fmt(billing === "annual" ? price.prepaidMonthlyEquivalent : price.memberMonthly)}</span>
+              <span className="per">/mo</span>
             </div>
-            <p style={{ marginBottom: 16 }}>for {house.address}</p>
+            <p style={{ marginBottom: 16 }}>{billing === "annual" ? `billed $${fmt(price.prepaidAnnual)} once a year` : "billed monthly"} for {house.address}. {savedLine}.</p>
             {!saved.saved ? (
               <p>Our system had trouble saving your details just now. Call or text us and we&apos;ll lock it in by hand.</p>
             ) : bookedISO ? (
@@ -369,6 +394,11 @@ export default function PlanCalculator({ src }: { src: string }) {
                   </div>
                 ))}
               </div>
+              {step >= 1 && price && (
+                <div className="strip">
+                  You save ${fmt(price.savedVsAlaCarte)} this year<span>·</span>${fmt(price.windowsAnnualValue)} of window cleaning free<span>·</span>prepay and save ${fmt(price.prepaySavesMore)} more
+                </div>
+              )}
 
               {step === 0 && (
                 <form onSubmit={(e) => { e.preventDefault(); if (house) go(1); }}>
@@ -465,14 +495,26 @@ export default function PlanCalculator({ src }: { src: string }) {
               {step === 1 && price && house && (
                 <div>
                   <h2>Here&apos;s your number.</h2>
-                  <div className="price-big">
-                    <span className="num">${fmt(price.memberMonthly)}</span>
-                    <span className="per">a month</span>
+                  <p className="summary">
+                    {house.livingSqft.toLocaleString()} sq ft · {house.stories === 3 ? "3+ stories" : house.stories === 2 ? "2 stories" : "1 story"} · {house.windows} windows · {house.roof === "shake-steep" ? "wood shake or steep" : house.roof === "metal-tile" ? "metal or tile" : "composition"} roof · {house.driveway === "large" ? "large" : house.driveway === "small" ? "small" : "typical"} driveway · {house.access === "gated-tight" ? "gated or tight" : house.access === "steep-ladder" ? "steep" : "easy"} access
+                    {" "}<button type="button" className="linkish" onClick={() => go(0)}>Edit</button>
+                  </p>
+                  <div className="toggle" role="group" aria-label="Billing">
+                    <button type="button" className={billing === "monthly" ? "on" : ""} onClick={() => setBilling("monthly")} aria-pressed={billing === "monthly"}>Monthly</button>
+                    <button type="button" className={billing === "annual" ? "on" : ""} onClick={() => setBilling("annual")} aria-pressed={billing === "annual"}>Annual <span className="tag">save {PCT(MEMBER_PREPAID_DISCOUNT)}</span></button>
                   </div>
-                  <p className="price-for">for <strong>{house.address}</strong>, billed monthly on a 12-month membership.</p>
+                  <div className="price-big">
+                    <span className="num">${fmt(billing === "annual" ? price.prepaidMonthlyEquivalent : price.memberMonthly)}</span>
+                    <span className="per">/mo</span>
+                  </div>
+                  <p className="price-for">
+                    {billing === "annual"
+                      ? <>billed ${fmt(price.prepaidAnnual)} once a year, save ${fmt(price.prepaySavesMore)}. For <strong>{house.address}</strong>.</>
+                      : <>billed monthly on a 12-month membership. For <strong>{house.address}</strong>.</>}
+                  </p>
 
                   <div className="saves">
-                    <div className="big">${fmt(price.savedVsAlaCarte)} saved this year vs booking each visit, and {WINDOWS_VALUE_LABEL} of window cleaning free on top.</div>
+                    <div className="big">${fmt(price.savedVsAlaCarte)} saved this year, including ${fmt(price.windowsAnnualValue)} of window cleaning free.</div>
                     <div className="more">Prepay the year: save another <strong>${fmt(price.prepaySavesMore)}</strong>, <strong>${fmt(price.prepaidMonthlyEquivalent)} a month</strong>.</div>
                   </div>
 
@@ -482,7 +524,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                       <li>Driveway and walkways <span>summer</span></li>
                       <li>Gutters <span>fall</span></li>
                       <li>Walkways and steps <span>winter</span></li>
-                      <li>Exterior windows <span>4 times a year</span></li>
+                      <li>Exterior windows, free <span>{WINDOW_VISITS_PER_YEAR} times a year</span></li>
                     </ul>
                   </div>
 
@@ -494,22 +536,34 @@ export default function PlanCalculator({ src }: { src: string }) {
                       {price.lines.map((l) => (
                         <div className="math-line" key={l.key}>
                           <span className="l">{l.label}<span className="d">{l.detail}</span></span>
-                          <span className="a">${fmtCents(l.amount)}</span>
+                          <span className="a">${fmt(l.amount)}</span>
                         </div>
                       ))}
                       {price.accessMultiplier !== 1 && (
                         <div className="math-line">
-                          <span className="l">{house.access === "gated-tight" ? "Gated or tight side yards" : "Steep lot or hard ladder access"}<span className="d">{house.access === "gated-tight" ? "8%" : "15%"} on the whole year</span></span>
-                          <span className="a">${fmtCents(price.alaCarteAnnual - price.subtotal)}</span>
+                          <span className="l">{house.access === "gated-tight" ? "Gated or tight side yards" : "Steep lot or hard ladder access"}<span className="d">Extra time to get around the house</span></span>
+                          <span className="a">${fmt(price.coreAnnual - price.subtotal)}</span>
                         </div>
                       )}
                       <div className="math-line total">
-                        <span className="l">Booked one at a time, per year</span>
-                        <span className="a">${fmtCents(price.alaCarteAnnual)}</span>
+                        <span className="l">Booked one at a time</span>
+                        <span className="a">${fmt(price.coreAnnual)}</span>
+                      </div>
+                      <div className="math-line mint">
+                        <span className="l">Member price, {PCT(MEMBER_MONTHLY_DISCOUNT)} off{price.memberAnnual > Math.ceil(price.coreAnnual * (1 - MEMBER_MONTHLY_DISCOUNT)) && <span className="d">Our smallest plan is $189 a month</span>}</span>
+                        <span className="a">{price.coreAnnual - price.memberAnnual > 0 ? `-$${fmt(price.coreAnnual - price.memberAnnual)}` : "$0"}</span>
+                      </div>
+                      <div className="math-line">
+                        <span className="l">Exterior windows, {WINDOW_VISITS_PER_YEAR} visits a year<span className="d">{house.windows} windows</span></span>
+                        <span className="a"><span className="strike">${fmt(price.windowsAnnualValue)}</span><span className="free">Free with the membership</span></span>
                       </div>
                       <div className="math-line total">
-                        <span className="l">As a member, 20% off<span className="d">{price.memberMonthly * 12 > Math.ceil(price.alaCarteAnnual * 0.8) ? "Our smallest plan starts at $189 a month" : "Rounded up to the dollar"}</span></span>
-                        <span className="a">${fmt(price.memberMonthly)} a month</span>
+                        <span className="l">Your membership year</span>
+                        <span className="a">${fmt(price.memberAnnual)}</span>
+                      </div>
+                      <div className="math-line total">
+                        <span className="l">Prepay and save {PCT(MEMBER_PREPAID_DISCOUNT)}</span>
+                        <span className="a">${fmt(price.prepaidAnnual)}</span>
                       </div>
                     </div>
                   </details>
@@ -562,7 +616,7 @@ export default function PlanCalculator({ src }: { src: string }) {
               {step === 3 && price && house && (
                 <form onSubmit={handleSubmit}>
                   <h2>Claim your price.</h2>
-                  <p className="lead">Tell us who you are and we&apos;ll hold ${fmt(price.memberMonthly)} a month for {house.address}{chosen.length ? `, plus ${chosen.length} add-on${chosen.length === 1 ? "" : "s"}` : ""}.</p>
+                  <p className="lead">Tell us who you are and we&apos;ll hold {priceLine} for {house.address}{chosen.length ? `, plus ${chosen.length} add-on${chosen.length === 1 ? "" : "s"}` : ""}. {savedLine}.</p>
 
                   <input type="hidden" name="src" value={src} readOnly />
 
@@ -602,7 +656,7 @@ export default function PlanCalculator({ src }: { src: string }) {
               {step === 4 && price && house && saved && (
                 <div>
                   <h2>Your price is locked.</h2>
-                  <p className="lead">${fmt(price.memberMonthly)} a month for {house.address}. Two optional things before we text you.</p>
+                  <p className="lead">{priceLine} for {house.address}. {savedLine}. Two optional things before we text you.</p>
 
                   <div className="reserve">
                     <h3>Reserve your route slot</h3>
