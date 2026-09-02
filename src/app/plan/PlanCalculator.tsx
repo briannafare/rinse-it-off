@@ -541,7 +541,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                   <p className="fine" style={{ marginBottom: 14 }}>This is your starting price. Our first visit confirms it, and unusual height or access can add to it.</p>
 
                   <div className="saves">
-                    <div className="big">${fmt(price.savedVsAlaCarte)} saved this year, including ${fmt(price.windowsAnnualValue)} of window cleaning free.</div>
+                    <div className="big">${fmt(price.savedVsAlaCarte)} this year, including ${fmt(price.windowsAnnualValue)} of window cleaning free.</div>
                     <div className="more">Prepay the year: save another <strong>${fmt(price.prepaySavesMore)}</strong>, <strong>${fmt(price.prepaidMonthlyEquivalent)} a month</strong>.</div>
                   </div>
 
@@ -564,20 +564,14 @@ export default function PlanCalculator({ src }: { src: string }) {
                           <span className="a">${fmt(l.amount)}</span>
                         </div>
                       ))}
-                      {price.storyMultiplier !== 1 && (
-                        <div className="math-line">
-                          <span className="l">{house.stories === 3 ? "3 stories" : "2 stories"}<span className="d">Ladder and lift time on a taller house</span></span>
-                          <span className="a">${fmt(price.subtotal * (price.storyMultiplier - 1))}</span>
-                        </div>
-                      )}
                       {price.accessMultiplier !== 1 && (
                         <div className="math-line">
-                          <span className="l">{house.access === "gated-tight" ? "Gated or tight side yards" : "Steep lot or hard ladder access"}<span className="d">Extra time to get around the house</span></span>
-                          <span className="a">${fmt(price.coreAnnual - price.subtotal * price.storyMultiplier)}</span>
+                          <span className="l">{house.access === "gated-tight" ? "Gated or tight side yards" : "Steep lot or hard ladder access"}<span className="d">Extra time on every visit</span></span>
+                          <span className="a">${fmt(price.coreAnnual - price.coreAnnual / price.accessMultiplier)}</span>
                         </div>
                       )}
                       <div className="math-line total">
-                        <span className="l">Booked one at a time</span>
+                        <span className="l">Seasonal work, booked one at a time</span>
                         <span className="a">${fmt(price.coreAnnual)}</span>
                       </div>
                       <div className="math-line mint">

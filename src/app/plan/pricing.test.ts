@@ -8,11 +8,11 @@ const base: HouseInputs = { address: "test", livingSqft: 1800, stories: 1, windo
 const r2 = (n: number) => Math.round(n * 100) / 100;
 
 const cases: { name: string; input: HouseInputs; expect: { coreAnnual: number; memberMonthly: number; prepaidAnnual: number; windowsAnnualValue: number; savedVsAlaCarte: number } }[] = [
-  { name: "A basic 3-bed, 1 story, 12 windows", input: base, expect: { coreAnnual: 2058.44, memberMonthly: 189, prepaidAnnual: 1544, windowsAnnualValue: 2000, savedVsAlaCarte: 1790 } },
-  { name: "3,100 sf, 3 stories, 40 windows", input: { ...base, livingSqft: 3100, stories: 3, windows: 40 }, expect: { coreAnnual: 3410.57, memberMonthly: 228, prepaidAnnual: 2558, windowsAnnualValue: 3200, savedVsAlaCarte: 3875 } },
-  { name: "4,500 sf, 3 stories, 60 windows", input: { ...base, livingSqft: 4500, stories: 3, windows: 60 }, expect: { coreAnnual: 4280.85, memberMonthly: 286, prepaidAnnual: 3211, windowsAnnualValue: 4080, savedVsAlaCarte: 4929 } },
-  { name: "2,600 sf, 2 stories, shake roof, large drive, gated", input: { ...base, livingSqft: 2600, stories: 2, windows: 20, roof: "shake-steep", driveway: "large", access: "gated-tight" }, expect: { coreAnnual: 3011.91, memberMonthly: 201, prepaidAnnual: 2259, windowsAnnualValue: 2000, savedVsAlaCarte: 2600 } },
-  { name: "900 sf (floored at 1,200), small drive, steep access", input: { ...base, livingSqft: 900, windows: 6, driveway: "small", access: "steep-ladder" }, expect: { coreAnnual: 1749.79, memberMonthly: 189, prepaidAnnual: 1313, windowsAnnualValue: 2000, savedVsAlaCarte: 1482 } },
+  { name: "A basic 3-bed, 1 story, 12 windows", input: base, expect: { coreAnnual: 3152, memberMonthly: 211, prepaidAnnual: 2364, windowsAnnualValue: 2000, savedVsAlaCarte: 2620 } },
+  { name: "3,100 sf, 3 stories, 40 windows", input: { ...base, livingSqft: 3100, stories: 3, windows: 40 }, expect: { coreAnnual: 5000, memberMonthly: 334, prepaidAnnual: 3750, windowsAnnualValue: 3200, savedVsAlaCarte: 4192 } },
+  { name: "4,500 sf, 3 stories, 60 windows", input: { ...base, livingSqft: 4500, stories: 3, windows: 60 }, expect: { coreAnnual: 5084, memberMonthly: 339, prepaidAnnual: 3813, windowsAnnualValue: 4080, savedVsAlaCarte: 5096 } },
+  { name: "2,600 sf, 2 stories, shake roof, large drive, gated", input: { ...base, livingSqft: 2600, stories: 2, windows: 20, roof: "shake-steep", driveway: "large", access: "gated-tight" }, expect: { coreAnnual: 4174.2, memberMonthly: 279, prepaidAnnual: 3131, windowsAnnualValue: 2000, savedVsAlaCarte: 2826 } },
+  { name: "900 sf (floored at 1,200), small drive, steep access", input: { ...base, livingSqft: 900, windows: 6, driveway: "small", access: "steep-ladder" }, expect: { coreAnnual: 3206.2, memberMonthly: 214, prepaidAnnual: 2405, windowsAnnualValue: 2000, savedVsAlaCarte: 2638 } },
 ];
 
 for (const c of cases) {
@@ -31,5 +31,5 @@ for (const sf of [1999, 2000, 2001, 3199, 3200, 3201, 4499, 4500, 4501]) {
   }
 }
 assert.equal(Math.round(scopeFor(2000, 2).roofSf), 1200);
-assert.equal(Math.round(scopeFor(4500, 2).sidingSf), 2700);
+assert.equal(Math.round(scopeFor(2000, 2).sidingSf), 1667);
 console.log(`pricing.test.ts: ${cases.length} vectors and the no-cliff sweep passed`);
