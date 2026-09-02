@@ -21,6 +21,7 @@ import {
   suggestedAddOns,
   type Access,
   type DrivewaySize,
+  type ExactInputs,
   type HouseInputs,
   type RoofType,
   type Stories,
@@ -103,6 +104,15 @@ const DS = `
   }
   .field input:focus, .field select:focus { border-color: var(--blue); outline: none; }
   .field select { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234B5C6B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+  details.more { margin-top: 8px; }
+  details.more summary { list-style: none; cursor: pointer; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; min-height: 40px; }
+  details.more summary::-webkit-details-marker { display: none; }
+  details.more summary::before { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); transition: transform 0.2s; margin-left: 2px; }
+  details.more[open] summary::before { transform: rotate(45deg); }
+  details.more .row { display: grid; gap: 8px; margin-top: 6px; }
+  details.more .row.two { grid-template-columns: 1fr 1fr; }
+  details.more label { font-size: 0.8125rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; }
+  details.more input { min-height: 46px; font-size: 1rem; }
   .unit-wrap { position: relative; }
   .unit-wrap .unit { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 0.9375rem; color: var(--text-muted); pointer-events: none; }
 
@@ -250,6 +260,17 @@ export default function PlanCalculator({ src }: { src: string }) {
   const [roof, setRoof] = useState<RoofType>("composition");
   const [driveway, setDriveway] = useState<DrivewaySize>("typical");
   const [access, setAccess] = useState<Access>("easy");
+  const [exactText, setExactText] = useState<Record<keyof ExactInputs, string>>({ roofSf: "", drivewaySf: "", walkwaySf: "", gutterLf: "", wallHeightFt: "", largeWindows: "", frenchWindows: "" });
+  const setExact = (k: keyof ExactInputs, v: string) => setExactText((p) => ({ ...p, [k]: v.replace(/[^0-9]/g, "").slice(0, 6) }));
+  // Closing an expander means "use the generic choice": its numbers are cleared.
+  const clearOnClose = (keys: (keyof ExactInputs)[]) => (e: React.SyntheticEvent<HTMLDetailsElement>) => {
+    if (!e.currentTarget.open) setExactText((p) => { const n = { ...p }; keys.forEach((k) => { n[k] = ""; }); return n; });
+  };
+  const exact = useMemo(() => {
+    const out: ExactInputs = {};
+    (Object.keys(exactText) as (keyof ExactInputs)[]).forEach((k) => { const n = parseInt(exactText[k], 10); if (n > 0) out[k] = n; });
+    return out;
+  }, [exactText]);
   const [addOns, setAddOns] = useState<string[]>([]);
   const [contact, setContact] = useState({ name: "", phone: "", email: "", bestDay: DAYS[0] });
   const [billing, setBilling] = useState<Billing>("monthly");
@@ -276,8 +297,8 @@ export default function PlanCalculator({ src }: { src: string }) {
     const s = parseInt(sqft, 10);
     const w = parseInt(windows, 10);
     if (!address.trim() || !(s > 0) || !stories || !(w >= 0) || windows === "") return null;
-    return { address: address.trim(), livingSqft: s, stories, windows: w, roof, driveway, access };
-  }, [address, sqft, stories, windows, roof, driveway, access]);
+    return { address: address.trim(), livingSqft: s, stories, windows: w, roof, driveway, access, exact };
+  }, [address, sqft, stories, windows, roof, driveway, access, exact]);
 
   const price = useMemo(() => (house ? priceHouse(house) : null), [house]);
 
@@ -472,6 +493,13 @@ export default function PlanCalculator({ src }: { src: string }) {
                     <label htmlFor="windows">Exterior windows</label>
                     <input id="windows" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="14" value={windows} onChange={(e) => setWindows(e.target.value.replace(/[^0-9]/g, ""))} required />
                     <div className="help">Count what you can see from outside.</div>
+                    <details className="more" onToggle={clearOnClose(["largeWindows", "frenchWindows"])}>
+                      <summary>Add details</summary>
+                      <div className="row two">
+                        <div><label htmlFor="largeWindows">Large or picture windows</label><input id="largeWindows" type="text" inputMode="numeric" value={exactText.largeWindows} onChange={(e) => setExact("largeWindows", e.target.value)} /></div>
+                        <div><label htmlFor="frenchWindows">French or multi-pane</label><input id="frenchWindows" type="text" inputMode="numeric" value={exactText.frenchWindows} onChange={(e) => setExact("frenchWindows", e.target.value)} /></div>
+                      </div>
+                    </details>
                   </div>
 
                   <div className="field">
@@ -487,6 +515,12 @@ export default function PlanCalculator({ src }: { src: string }) {
                         </button>
                       ))}
                     </div>
+                    <details className="more" onToggle={clearOnClose(["roofSf"])}>
+                      <summary>Enter roof size</summary>
+                      <div className="row">
+                        <div><label htmlFor="roofSf">Roof, sq ft</label><input id="roofSf" type="text" inputMode="numeric" value={exactText.roofSf} onChange={(e) => setExact("roofSf", e.target.value)} /></div>
+                      </div>
+                    </details>
                   </div>
 
                   <div className="field">
@@ -503,6 +537,23 @@ export default function PlanCalculator({ src }: { src: string }) {
                         </button>
                       ))}
                     </div>
+                    <details className="more" onToggle={clearOnClose(["drivewaySf", "walkwaySf"])}>
+                      <summary>Enter dimensions</summary>
+                      <div className="row two">
+                        <div><label htmlFor="drivewaySf">Driveway, sq ft</label><input id="drivewaySf" type="text" inputMode="numeric" value={exactText.drivewaySf} onChange={(e) => setExact("drivewaySf", e.target.value)} /></div>
+                        <div><label htmlFor="walkwaySf">Walkways, sq ft</label><input id="walkwaySf" type="text" inputMode="numeric" value={exactText.walkwaySf} onChange={(e) => setExact("walkwaySf", e.target.value)} /></div>
+                      </div>
+                    </details>
+                  </div>
+
+                  <div className="field">
+                    <div className="q">Gutters</div>
+                    <details className="more" style={{ marginTop: 0 }} onToggle={clearOnClose(["gutterLf"])}>
+                      <summary>Enter linear feet</summary>
+                      <div className="row">
+                        <div><label htmlFor="gutterLf">Gutters, linear ft</label><input id="gutterLf" type="text" inputMode="numeric" value={exactText.gutterLf} onChange={(e) => setExact("gutterLf", e.target.value)} /></div>
+                      </div>
+                    </details>
                   </div>
 
                   <div className="field">
@@ -519,6 +570,12 @@ export default function PlanCalculator({ src }: { src: string }) {
                         </button>
                       ))}
                     </div>
+                    <details className="more" onToggle={clearOnClose(["wallHeightFt"])}>
+                      <summary>Enter wall height</summary>
+                      <div className="row">
+                        <div><label htmlFor="wallHeightFt">Wall height, ft</label><input id="wallHeightFt" type="text" inputMode="numeric" value={exactText.wallHeightFt} onChange={(e) => setExact("wallHeightFt", e.target.value)} /></div>
+                      </div>
+                    </details>
                   </div>
 
                   <button type="submit" className="btn btn-ink" disabled={!house}>
@@ -535,6 +592,9 @@ export default function PlanCalculator({ src }: { src: string }) {
                   <h2>Here&apos;s your number.</h2>
                   <p className="summary">
                     {house.livingSqft.toLocaleString()} sq ft · {house.stories === 3 ? "3+ stories" : house.stories === 2 ? "2 stories" : "1 story"} · {house.windows} windows · {house.roof === "shake-steep" ? "wood shake or steep" : house.roof === "metal-tile" ? "metal or tile" : "composition"} roof · {house.driveway === "large" ? "large" : house.driveway === "small" ? "small" : "typical"} driveway · {house.access === "gated-tight" ? "gated or tight" : house.access === "steep-ladder" ? "steep" : "easy"} access
+                    {Object.keys(exact).length > 0 && (
+                      <> · you gave: {[exact.roofSf && `roof ${exact.roofSf.toLocaleString()} sq ft`, exact.drivewaySf && `driveway ${exact.drivewaySf.toLocaleString()} sq ft`, exact.walkwaySf && `walkways ${exact.walkwaySf.toLocaleString()} sq ft`, exact.gutterLf && `gutters ${exact.gutterLf.toLocaleString()} ft`, exact.wallHeightFt && `walls ${exact.wallHeightFt} ft`, exact.largeWindows && `${exact.largeWindows} large windows`, exact.frenchWindows && `${exact.frenchWindows} French windows`].filter(Boolean).join(", ")}</>
+                    )}
                     {" "}<button type="button" className="linkish" onClick={() => go(0)}>Edit</button>
                   </p>
                   <div className="toggle" role="group" aria-label="Billing">

@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
-import { ADD_ONS, DEPOSIT_USD, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnPriceLabel, prepaidTermTotal, priceHouse, type HouseInputs, type TermYears } from "./pricing";
+import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnPriceLabel, prepaidTermTotal, priceHouse, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -91,6 +91,11 @@ function cleanHouse(h: HouseInputs): HouseInputs {
   const roof = h.roof === "shake-steep" || h.roof === "metal-tile" ? h.roof : "composition";
   const driveway = h.driveway === "small" || h.driveway === "large" ? h.driveway : "typical";
   const access = h.access === "gated-tight" || h.access === "steep-ladder" ? h.access : "easy";
+  const exact: ExactInputs = {};
+  for (const k of EXACT_KEYS) {
+    const v = num((h.exact || {})[k], 100000);
+    if (v > 0) exact[k] = v;
+  }
   return {
     address: String(h.address || "").trim().slice(0, 200),
     livingSqft: num(h.livingSqft, 50000),
@@ -99,6 +104,7 @@ function cleanHouse(h: HouseInputs): HouseInputs {
     roof,
     driveway,
     access,
+    exact,
   };
 }
 
@@ -160,6 +166,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       `  Roof: ${house.roof}`,
       `  Driveway and walkways: ${house.driveway}`,
       `  Access: ${house.access}`,
+      `  Measurements given: ${Object.keys(house.exact || {}).length ? EXACT_KEYS.filter((k) => house.exact?.[k]).map((k) => `${k}=${house.exact?.[k]}`).join(", ") : "none"}`,
       "",
       "Lines (booked one at a time, per year)",
       ...price.lines.map((l) => `  ${l.label}: $${l.amount.toFixed(2)}  (${l.detail})`),

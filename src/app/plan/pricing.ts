@@ -14,6 +14,19 @@ export type RoofType = "composition" | "shake-steep" | "metal-tile";
 export type DrivewaySize = "small" | "typical" | "large";
 export type Access = "easy" | "gated-tight" | "steep-ladder";
 
+/** Optional exact measurements. Any one given replaces the estimate for its
+ *  line (quantity × rate, still subject to the per-job minimum). */
+export interface ExactInputs {
+  roofSf?: number;
+  drivewaySf?: number;
+  walkwaySf?: number;
+  gutterLf?: number;
+  wallHeightFt?: number;
+  largeWindows?: number; // large or picture windows, $36 a visit each
+  frenchWindows?: number; // French or multi-pane, $23 a visit each
+}
+export const EXACT_KEYS: (keyof ExactInputs)[] = ["roofSf", "drivewaySf", "walkwaySf", "gutterLf", "wallHeightFt", "largeWindows", "frenchWindows"];
+
 export interface HouseInputs {
   address: string;
   livingSqft: number;
@@ -22,6 +35,7 @@ export interface HouseInputs {
   roof: RoofType;
   driveway: DrivewaySize;
   access: Access;
+  exact?: ExactInputs;
 }
 
 // ── Per-unit rates (already carry target margin, never discount below) ──────
@@ -41,6 +55,8 @@ export const WINDOW_VISIT_MIN = 500; // real standalone per-trip minimum
 // Screens are cleaned free too, while they are off. The customer removes and
 // reinstalls them; Rinse never touches a screen on the frame. Engine rate:
 export const SCREEN_RATE = 9; // per screen, per visit
+export const LARGE_WINDOW_RATE = 36; // large or picture window, per visit
+export const FRENCH_WINDOW_RATE = 23; // French or multi-pane window, per visit
 // Tiered window pricing, per visit: the first 30 at $22, 31 to 50 at $14,
 // 51 and up at $8. `upTo: null` means everything past the previous band.
 export const WINDOW_TIERS: { upTo: number | null; rate: number }[] = [
@@ -49,17 +65,24 @@ export const WINDOW_TIERS: { upTo: number | null; rate: number }[] = [
   { upTo: null, rate: 8 },
 ];
 
-/** What one standalone window visit costs for a given count. */
-export function windowVisitValue(windows: number): number {
+/** What one standalone window visit costs for a given count. Large and
+ *  French windows, when the customer counts them, come out of the tiered
+ *  count and are priced at their own rates. */
+export function windowVisitValue(windows: number, large = 0, french = 0): number {
+  const special = Math.min(windows, Math.max(0, large) + Math.max(0, french));
+  const largeN = Math.min(Math.max(0, large), special);
+  const frenchN = special - largeN;
+  const regular = windows - special;
   let placed = 0;
   let total = 0;
   for (const band of WINDOW_TIERS) {
     const capacity = band.upTo === null ? Infinity : band.upTo - placed;
-    const count = Math.max(0, Math.min(windows - placed, capacity));
+    const count = Math.max(0, Math.min(regular - placed, capacity));
     total += count * band.rate;
     placed += count;
-    if (placed >= windows) break;
+    if (placed >= regular) break;
   }
+  total += largeN * LARGE_WINDOW_RATE + frenchN * FRENCH_WINDOW_RATE;
   return Math.max(WINDOW_VISIT_MIN, total);
 }
 
@@ -209,39 +232,50 @@ export function priceHouse(h: HouseInputs): PriceResult {
   const lines: PriceLine[] = [];
 
   // Driveway and walkways (summer), scaled by the size the customer picked.
+  const ex = h.exact || {};
   const drivewayMult = h.driveway === "small" ? MODIFIER.drivewaySmall : h.driveway === "large" ? MODIFIER.drivewayLarge : 1;
+  const exactConcrete = (ex.drivewaySf || 0) + (ex.walkwaySf || 0);
   lines.push({
     key: "driveway",
     label: "Driveway and walkways, summer",
-    detail: `${h.driveway === "small" ? "Small" : h.driveway === "large" ? "Large or long" : "Typical"}, about ${about(scope.drivewaySf * drivewayMult, 50).toLocaleString()} sq ft`,
-    amount: Math.max(scope.drivewaySf * RATE.concreteSf * drivewayMult, DRIVEWAY_MIN[h.driveway]),
+    detail: exactConcrete > 0
+      ? `Your measurement: ${exactConcrete.toLocaleString()} sq ft`
+      : `${h.driveway === "small" ? "Small" : h.driveway === "large" ? "Large or long" : "Typical"}, about ${about(scope.drivewaySf * drivewayMult, 50).toLocaleString()} sq ft`,
+    amount: Math.max(exactConcrete > 0 ? exactConcrete * RATE.concreteSf : scope.drivewaySf * RATE.concreteSf * drivewayMult, DRIVEWAY_MIN[h.driveway]),
   });
 
   // Siding soft wash (spring): wall area from the perimeter and the wall height.
+  const sidingSf = ex.wallHeightFt ? 4 * Math.sqrt(scope.footprintSf) * ex.wallHeightFt * SIDING_NET : scope.sidingSf;
   lines.push({
     key: "siding",
     label: "Siding soft wash, spring",
-    detail: `${storyWord(h.stories)}, about ${about(scope.sidingSf, 50).toLocaleString()} sq ft of siding`,
-    amount: Math.max(scope.sidingSf * RATE.sidingSf * SIDING_FACTOR, SIDING_MIN[h.stories]),
+    detail: ex.wallHeightFt
+      ? `Your wall height: ${ex.wallHeightFt} ft, about ${about(sidingSf, 50).toLocaleString()} sq ft of siding`
+      : `${storyWord(h.stories)}, about ${about(scope.sidingSf, 50).toLocaleString()} sq ft of siding`,
+    amount: Math.max(sidingSf * RATE.sidingSf * SIDING_FACTOR, SIDING_MIN[h.stories]),
   });
 
   // Roof soft wash (spring), more for wood shake or a steep pitch.
   const roofMult = h.roof === "shake-steep" ? MODIFIER.roofShakeOrSteep : 1;
+  const roofSf = ex.roofSf || scope.roofSf;
   lines.push({
     key: "roof",
     label: "Roof soft wash, spring",
-    detail: `${h.roof === "shake-steep" ? "Wood shake or steep pitch" : h.roof === "metal-tile" ? "Metal or tile" : "Composition shingle"}, about ${about(scope.roofSf, 50).toLocaleString()} sq ft of roof`,
-    amount: Math.max(scope.roofSf * RATE.roofSf * roofMult, ROOF_MIN[h.stories]),
+    detail: ex.roofSf
+      ? `Your measurement: ${ex.roofSf.toLocaleString()} sq ft`
+      : `${h.roof === "shake-steep" ? "Wood shake or steep pitch" : h.roof === "metal-tile" ? "Metal or tile" : "Composition shingle"}, about ${about(scope.roofSf, 50).toLocaleString()} sq ft of roof`,
+    amount: Math.max(roofSf * RATE.roofSf * roofMult, ROOF_MIN[h.stories]),
   });
 
   // Gutters (fall). Rate steps up with stories; a steep roof uses the top rate.
   const gutterStories: Stories = h.roof === "shake-steep" ? 3 : h.stories;
-  const gutterByFeet = scope.gutterLf * RATE.gutterLf[gutterStories];
+  const gutterLf = ex.gutterLf || scope.gutterLf;
+  const gutterByFeet = gutterLf * RATE.gutterLf[gutterStories];
   const gutterFloor = GUTTER_VISIT_MIN[h.stories];
   lines.push({
     key: "gutters",
     label: "Gutters and downspouts, fall",
-    detail: `${storyWord(h.stories)}, about ${about(scope.gutterLf, 5)} ft${gutterByFeet < gutterFloor ? `, ${h.stories}-story minimum` : ""}`,
+    detail: `${ex.gutterLf ? `Your measurement: ${ex.gutterLf.toLocaleString()} ft` : `${storyWord(h.stories)}, about ${about(scope.gutterLf, 5)} ft`}${gutterByFeet < gutterFloor ? `, ${h.stories}-story minimum` : ""}`,
     amount: Math.max(gutterByFeet, gutterFloor),
   });
 
@@ -270,7 +304,7 @@ export function priceHouse(h: HouseInputs): PriceResult {
 
   // Windows: free with the membership, valued at what a standalone visit costs.
   const windows = Math.max(0, Math.floor(h.windows || 0));
-  const windowsPerVisitValue = windowVisitValue(windows);
+  const windowsPerVisitValue = windowVisitValue(windows, ex.largeWindows || 0, ex.frenchWindows || 0);
   const windowsAnnualValue = windowsPerVisitValue * WINDOW_VISITS_PER_YEAR;
   const screensAnnualValue = SCREEN_RATE * windows * WINDOW_VISITS_PER_YEAR;
   const valueReceived = coreAnnual + windowsAnnualValue + screensAnnualValue;
