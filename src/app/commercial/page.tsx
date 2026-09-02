@@ -81,16 +81,6 @@ const TRUST: { icon: typeof ShieldCheck; title: string; body: string }[] = [
   },
 ];
 
-/** Small square-dot eyebrow, matching the Methods section header. */
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="flex items-center gap-2 text-sm font-medium text-[#0C1215]">
-      <span className="inline-block h-2 w-2 rounded-[3px] bg-[#62C4EB]" aria-hidden />
-      {children}
-    </p>
-  );
-}
-
 export default function CommercialPage() {
   return (
     <>
@@ -164,9 +154,8 @@ export default function CommercialPage() {
         <section className="bg-white py-16 md:py-24">
           <div className="container-site grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <div>
-              <Eyebrow>Start here</Eyebrow>
               <h2
-                className="mt-3 text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
+                className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 The free 21-point property audit.
@@ -231,9 +220,8 @@ export default function CommercialPage() {
         <section id="services" className="bg-[#F4F7F8] py-16 md:py-24">
           <div className="container-site">
             <header className="max-w-2xl">
-              <Eyebrow>The method-matching difference</Eyebrow>
               <h2
-                className="mt-3 text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
+                className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 The right method for every commercial surface.
@@ -246,7 +234,7 @@ export default function CommercialPage() {
             </header>
 
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 md:mt-14">
-              {COMMERCIAL_METHODS.map((m, i) => (
+              {COMMERCIAL_METHODS.map((m) => (
                 <article
                   key={m.key}
                   className="group overflow-hidden rounded-2xl bg-white ring-1 ring-[#E4ECF1] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
@@ -259,14 +247,11 @@ export default function CommercialPage() {
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                     />
-                    <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-2.5 py-1 text-xs font-semibold text-[#0C1215] backdrop-blur-sm">
+                    <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-3 py-1.5 text-sm font-semibold text-[#0C1215] backdrop-blur-sm">
                       {m.method}
                     </span>
                   </div>
                   <div className="p-6">
-                    <span className="text-xs font-semibold tracking-[0.08em] text-[#8C9AA5]">
-                      Method {String(i + 1).padStart(2, "0")}
-                    </span>
                     <h3
                       className="mt-1 text-lg font-semibold text-[#0C1215]"
                       style={{ fontFamily: "var(--font-display)" }}
@@ -299,9 +284,8 @@ export default function CommercialPage() {
         <section className="bg-white py-16 md:py-24">
           <div className="container-site">
             <header className="max-w-2xl">
-              <Eyebrow>Who we work with</Eyebrow>
               <h2
-                className="mt-3 text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
+                className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 Built for the people who answer for the property.
@@ -343,9 +327,8 @@ export default function CommercialPage() {
 
           <div className="container-site relative">
             <div className="max-w-2xl">
-              <Eyebrow>What every account gets</Eyebrow>
               <h2
-                className="mt-3 text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
+                className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 No surprises, no padding, no fine print.

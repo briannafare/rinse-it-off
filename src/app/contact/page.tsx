@@ -16,7 +16,7 @@ const PHONE_TEL = "tel:+15037043755";
 const cardBase =
   "block rounded-2xl bg-white p-6 ring-1 ring-[#E4ECF1] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none";
 const cardLink = `group ${cardBase} hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none`;
-const label = "text-[11px] font-semibold uppercase tracking-[0.08em] text-[#8C9AA5]";
+const label = "text-sm font-semibold text-[#5A6B78]";
 
 export default function ContactPage() {
   return (
@@ -26,12 +26,8 @@ export default function ContactPage() {
         {/* Dark band = punctuation; the body below is light clean-water. */}
         <section className="relative overflow-hidden bg-[#0C1215] pt-28 pb-14 md:pt-32 md:pb-20">
           <div className="container-site">
-            <p className="flex items-center gap-2 text-sm font-medium text-white/85">
-              <span className="inline-block h-2 w-2 rounded-[3px] bg-[#62C4EB]" aria-hidden />
-              Talk to a real person
-            </p>
             <h1
-              className="mt-3 max-w-3xl text-[clamp(2rem,5vw,3.6rem)] leading-[1.02] tracking-[-0.03em] text-white"
+              className="max-w-3xl text-[clamp(2rem,5vw,3.6rem)] leading-[1.02] tracking-[-0.03em] text-white"
               style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
             >
               Get in touch

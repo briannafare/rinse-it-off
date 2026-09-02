@@ -66,7 +66,7 @@ export function ProcessSection() {
               className="aspect-[4/3] w-full object-cover"
               aria-label="Rotary surface cleaner removing grime in a single pass"
             />
-            <span className="absolute bottom-4 left-4 rounded-lg bg-black/50 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
+            <span className="absolute bottom-4 left-4 rounded-lg bg-black/50 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
               Actual RIO job footage
             </span>
           </div>

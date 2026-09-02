@@ -74,7 +74,7 @@ export function Footer() {
 
           {/* Residential services */}
           <div>
-            <h4 className="text-[11px] font-display font-bold uppercase tracking-wider text-white/55 mb-4">Residential</h4>
+            <h4 className="text-sm font-display font-bold uppercase tracking-wider text-white/70 mb-4">Residential</h4>
             <nav className="space-y-1">
               {residentialServices.map((s) => (
                 <a key={s.label} href={`/services/${s.slug}`} className={linkClass}>
@@ -86,7 +86,7 @@ export function Footer() {
 
           {/* Commercial services */}
           <div>
-            <h4 className="text-[11px] font-display font-bold uppercase tracking-wider text-white/55 mb-4">Commercial</h4>
+            <h4 className="text-sm font-display font-bold uppercase tracking-wider text-white/70 mb-4">Commercial</h4>
             <nav className="space-y-1">
               {commercialServices.map((s) => (
                 <a key={s.label} href={`/services/${s.slug}`} className={linkClass}>
@@ -98,7 +98,7 @@ export function Footer() {
 
           {/* Company + CTA */}
           <div>
-            <h4 className="text-[11px] font-display font-bold uppercase tracking-wider text-white/55 mb-4">Company</h4>
+            <h4 className="text-sm font-display font-bold uppercase tracking-wider text-white/70 mb-4">Company</h4>
             <nav className="space-y-1 mb-6">
               {companyLinks.map((l) => (
                 <a key={l.label} href={l.href} className={linkClass}>
@@ -121,21 +121,21 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
-          <p className="text-[11px] text-white/55">&copy; {new Date().getFullYear()} Fresh Rinse, LLC dba Rinse It Off &middot; 6465 SW Ventura Place, Tigard, OR 97223</p>
+          <p className="text-sm text-white/65">&copy; {new Date().getFullYear()} Fresh Rinse, LLC dba Rinse It Off &middot; 6465 SW Ventura Place, Tigard, OR 97223</p>
           <div className="flex items-center gap-4">
             <a
               href="/terms"
-              className="rounded-sm text-[11px] text-white/55 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+              className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
             >
               Terms
             </a>
             <a
               href="/privacy"
-              className="rounded-sm text-[11px] text-white/55 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+              className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
             >
               Privacy
             </a>
-            <p className="text-[11px] text-white/55">
+            <p className="text-sm text-white/65">
               Built by{" "}
               <a
                 href="https://eighty5labs.com"

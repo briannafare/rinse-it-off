@@ -154,10 +154,6 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
       <section className="bg-white py-16 md:py-24">
         <div className="container-site grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="flex items-center gap-2 text-sm font-medium text-[#0C1215]">
-              <span className="inline-block h-2 w-2 rounded-[3px] bg-[#62C4EB]" aria-hidden />
-              The method — {service.method}
-            </p>
             <h2
               className="mt-3 text-[clamp(1.8rem,4vw,2.75rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
               style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
@@ -264,10 +260,6 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
       <section className="bg-white py-16 md:py-24">
         <div className="container-site grid gap-12 lg:grid-cols-5 lg:gap-16">
           <div className="lg:col-span-2">
-            <p className="flex items-center gap-2 text-sm font-medium text-[#0C1215]">
-              <span className="inline-block h-2 w-2 rounded-[3px] bg-[#62C4EB]" aria-hidden />
-              Questions
-            </p>
             <h2
               className="mt-3 text-[clamp(1.7rem,3.5vw,2.5rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
               style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}

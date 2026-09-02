@@ -25,9 +25,6 @@ export function ServiceFAQ({ items }: { items: FAQItem[] }) {
               className="group flex min-h-11 w-full items-center justify-between px-6 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#62C4EB]"
             >
               <div className="flex items-center gap-4 pr-4">
-                <span className="flex-shrink-0 font-mono text-xs text-text-muted">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
                 <span className="font-display text-sm font-semibold text-text-primary transition-colors group-hover:text-brand-black motion-reduce:transition-none md:text-base">
                   {faq.q}
                 </span>

@@ -109,10 +109,6 @@ export default function AreasIndexPage() {
         <section className="bg-[#F4F7F8] py-16 md:py-24">
           <div className="container-site">
             <header className="max-w-2xl">
-              <p className="flex items-center gap-2 text-sm font-medium text-[#0C1215]">
-                <span className="inline-block h-2 w-2 rounded-[3px] bg-[#62C4EB]" aria-hidden />
-                Cities we serve
-              </p>
               <h2
                 className="mt-3 text-[clamp(1.7rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
@@ -136,10 +132,6 @@ export default function AreasIndexPage() {
         <section className="bg-white py-16 md:py-24">
           <div className="container-site">
             <header className="max-w-2xl">
-              <p className="flex items-center gap-2 text-sm font-medium text-[#0C1215]">
-                <span className="inline-block h-2 w-2 rounded-[3px] bg-[#62C4EB]" aria-hidden />
-                Portland neighborhoods
-              </p>
               <h2
                 className="mt-3 text-[clamp(1.7rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}

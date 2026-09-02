@@ -43,7 +43,6 @@ export function FAQ() {
                       className="flex items-center justify-between w-full min-h-11 py-5 px-6 text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#62C4EB]"
                     >
                       <div className="flex items-center gap-4 pr-4">
-                        <span className="font-mono text-xs text-text-muted flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
                         <span className="font-display font-semibold text-sm md:text-base text-text-primary group-hover:text-brand-black transition-colors motion-reduce:transition-none">{faq.q}</span>
                       </div>
                       <span className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-colors duration-300 motion-reduce:transition-none ${isOpen ? "bg-[#62C4EB] text-white" : "border border-border text-text-muted"}`}>

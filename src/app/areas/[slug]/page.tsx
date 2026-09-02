@@ -263,10 +263,6 @@ export default async function AreaPage({
         {/* ── Localized intro — the substantive, area-specific body ────────── */}
         <section className="bg-white py-16 md:py-24">
           <div className="container-site max-w-3xl">
-            <p className="flex items-center gap-2 text-sm font-medium text-[#0C1215]">
-              <span className="inline-block h-2 w-2 rounded-[3px] bg-[#62C4EB]" aria-hidden />
-              Exterior cleaning in {area.name}
-            </p>
             <h2
               className="mt-3 text-[clamp(1.7rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-[#0C1215]"
               style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
@@ -330,14 +326,11 @@ export default async function AreaPage({
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                     />
-                    <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-2.5 py-1 text-xs font-semibold text-[#0C1215] backdrop-blur-sm">
+                    <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-3 py-1.5 text-sm font-semibold text-[#0C1215] backdrop-blur-sm">
                       {m.method}
                     </span>
                   </div>
                   <div className="p-6">
-                    <span className="text-xs font-semibold tracking-[0.08em] text-[#8C9AA5]">
-                      Method {String(i + 1).padStart(2, "0")}
-                    </span>
                     <h3 className="mt-1 text-lg font-semibold text-[#0C1215]" style={{ fontFamily: "var(--font-display)" }}>
                       {m.surface}
                     </h3>
@@ -361,16 +354,12 @@ export default async function AreaPage({
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   className="object-cover"
                 />
-                <span className="absolute bottom-4 left-4 rounded-lg bg-black/55 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                <span className="absolute bottom-4 left-4 rounded-lg bg-black/55 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
                   Real RIO job · before / after in one frame
                 </span>
               </div>
             </figure>
             <div className="order-1 lg:order-2">
-              <p className="flex items-center gap-2 text-sm font-medium text-[#0C1215]">
-                <span className="inline-block h-2 w-2 rounded-[3px] bg-[#62C4EB]" aria-hidden />
-                The line isn&apos;t an effect
-              </p>
               <h2
                 className="mt-3 text-[clamp(1.6rem,3.4vw,2.4rem)] leading-[1.1] tracking-[-0.02em] text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}

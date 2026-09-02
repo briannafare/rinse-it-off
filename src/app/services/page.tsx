@@ -20,10 +20,6 @@ export default function ServicesIndexPage() {
       {/* ── Header band ─────────────────────────────────────────────── */}
       <section className="bg-[#0C1215] pt-28 pb-16 md:pt-36 md:pb-24">
         <div className="container-site">
-          <p className="flex items-center gap-2 text-sm font-medium text-white/80">
-            <span className="inline-block h-2 w-2 rounded-[3px] bg-[#62C4EB]" aria-hidden />
-            The method-matching system
-          </p>
           <h1
             className="mt-4 max-w-3xl text-[clamp(2.2rem,5.5vw,4rem)] leading-[1.02] tracking-[-0.03em] text-white"
             style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
@@ -73,14 +69,11 @@ export default function ServicesIndexPage() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                   />
-                  <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-2.5 py-1 text-xs font-semibold text-[#0C1215] backdrop-blur-sm">
+                  <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-3 py-1.5 text-sm font-semibold text-[#0C1215] backdrop-blur-sm">
                     {s.method}
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col p-6">
-                  <span className="text-xs font-semibold tracking-[0.08em] text-[#8C9AA5]">
-                    Method {String(i + 1).padStart(2, "0")}
-                  </span>
                   <h2
                     className="mt-1 text-lg font-semibold text-[#0C1215]"
                     style={{ fontFamily: "var(--font-display)" }}

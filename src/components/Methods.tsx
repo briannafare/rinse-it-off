@@ -12,12 +12,8 @@ export function Methods() {
     <section id="services" className="bg-[#F4F7F8] py-16 md:py-24">
       <div className="container-site">
         <header className="max-w-2xl">
-          <p className="flex items-center gap-2 text-sm font-medium text-[#0C1215]">
-            <span className="inline-block h-2 w-2 rounded-[3px] bg-[#62C4EB]" aria-hidden />
-            The method-matching difference
-          </p>
           <h2
-            className="mt-3 text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
+            className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
           >
             Six methods, matched to what you actually have.
@@ -30,7 +26,7 @@ export function Methods() {
         </header>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 md:mt-14">
-          {METHODS.map((m, i) => (
+          {METHODS.map((m) => (
             <article
               key={m.key}
               className="group overflow-hidden rounded-2xl bg-white ring-1 ring-[#E4ECF1] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
@@ -43,21 +39,18 @@ export function Methods() {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
-                <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-2.5 py-1 text-xs font-semibold text-[#0C1215] backdrop-blur-sm">
+                <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-3 py-1.5 text-sm font-semibold text-[#0C1215] backdrop-blur-sm">
                   {m.method}
                 </span>
               </div>
               <div className="p-6">
-                <span className="text-xs font-semibold tracking-[0.08em] text-[#8C9AA5]">
-                  Method {String(i + 1).padStart(2, "0")}
-                </span>
                 <h3
-                  className="mt-1 text-lg font-semibold text-[#0C1215]"
+                  className="text-lg font-semibold text-[#0C1215]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {m.surface}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#4B5C6B]">{m.what}</p>
+                <p className="mt-2 text-[15px] leading-relaxed text-[#4B5C6B]">{m.what}</p>
               </div>
             </article>
           ))}
