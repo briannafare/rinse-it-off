@@ -454,9 +454,11 @@ export default function PlanCalculator({ src }: { src: string }) {
   // Real availability for the next 14 days, fetched once the Reserve step opens.
   useEffect(() => {
     if (step !== 4 || slotsLoaded) return;
+    // GHL caps a free-slots query at 31 days, so two windows cover ~60 days.
     const now = Date.now();
-    getFreeSlots(now, now + 62 * 24 * 60 * 60 * 1000)
-      .then((r) => setSlotMap(r.days))
+    const day = 24 * 60 * 60 * 1000;
+    Promise.all([getFreeSlots(now, now + 31 * day), getFreeSlots(now + 31 * day, now + 62 * day)])
+      .then(([a, b]) => setSlotMap({ ...a.days, ...b.days }))
       .catch(() => setSlotMap({}))
       .finally(() => setSlotsLoaded(true));
   }, [step, slotsLoaded]);
