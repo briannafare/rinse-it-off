@@ -156,11 +156,13 @@ const DS = `
   .stack-row .a { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--text-primary); }
   .stack-row .a.strike { text-decoration: line-through; color: var(--text-muted); }
   .stack-row .free { font-size: 0.75rem; font-weight: 500; color: var(--ink); border: 1px solid var(--ink); border-radius: var(--r-sm); padding: 0 7px; line-height: 1.5; }
-  .stack-total { border-top: 2px solid var(--ink); margin-top: 4px; padding-top: 8px; }
-  .stack-total .t { display: flex; justify-content: space-between; padding: 5px 0; font-size: 1rem; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .stack-total { border-top: 1px solid var(--border); margin-top: 4px; padding-top: 8px; }
+  .stack-total .t { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; font-size: 0.9375rem; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+  .stack-total .t.yours { border-top: 2px solid var(--ink); margin-top: 6px; padding-top: 12px; color: var(--ink); font-weight: 600; font-size: 1rem; }
+  .stack-total .t.yours .amt { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.125rem, 9vw, 2.5rem); letter-spacing: -0.03em; line-height: 1; }
   .save-block { background: var(--mint); color: var(--ink); border-radius: var(--r-lg); padding: 18px 20px 16px; margin-top: 10px; text-align: center; }
   .save-block .k { font-size: 0.9375rem; font-weight: 500; }
-  .save-block .v { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.75rem, 12vw, 3.5rem); letter-spacing: -0.03em; line-height: 1; margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
+  .save-block .v { font-family: var(--font-display); font-weight: 500; font-size: 2rem; letter-spacing: -0.02em; line-height: 1; margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
   .save-block .s { font-size: 0.9375rem; line-height: 1.4; }
   .scarcity { background: var(--surface-alt); border-radius: var(--r-lg); padding: 14px 16px; margin-top: 18px; font-size: 0.9375rem; line-height: 1.55; color: var(--text-primary); text-wrap: pretty; }
   .guarantee { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.5; margin-top: 12px; text-wrap: pretty; }
@@ -706,7 +708,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                     ))}
                     <div className="stack-total">
                       <div className="t"><span>Total value</span><span>${fmt(stack.total)}</span></div>
-                      <div className="t"><span>Your price</span><span>${fmt(stack.yourPrice)}</span></div>
+                      <div className="t yours"><span>Your price{billing === "annual" ? ", paid up front" : ", billed monthly"}</span><span className="amt">${fmt(stack.yourPrice)}</span></div>
                     </div>
                     <div className="save-block">
                       <div className="k">You save</div>
@@ -714,24 +716,6 @@ export default function PlanCalculator({ src }: { src: string }) {
                       <div className="s">including ${fmt(price.windowsAnnualValue + price.screensAnnualValue)} of windows and screens, free</div>
                     </div>
                   </div>
-
-                  <details className="math">
-                    <summary>How we got this number</summary>
-                    <div style={{ marginTop: 6 }}>
-                      {price.lines.map((l) => (
-                        <div className="math-line" key={l.key}>
-                          <span className="l">{l.label}<span className="d">{l.detail}</span></span>
-                          <span className="a">${fmt(l.amount)}</span>
-                        </div>
-                      ))}
-                      {price.accessMultiplier !== 1 && (
-                        <div className="math-line">
-                          <span className="l">{house.access === "gated-tight" ? "Gated or tight side yards" : "Steep lot or hard ladder access"}<span className="d">Extra time on every visit</span></span>
-                          <span className="a">${fmt(price.coreAnnual - price.coreAnnual / price.accessMultiplier)}</span>
-                        </div>
-                      )}
-                    </div>
-                  </details>
 
                   <div className="scarcity">
                     We take {MEMBERSHIPS_PER_YEAR} new memberships a year in the Portland metro. Every one is four visits we have to keep, so once your neighborhood&apos;s route fills, it&apos;s full until next year.
