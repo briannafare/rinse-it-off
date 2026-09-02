@@ -145,6 +145,16 @@ export const STORY_MULT: Record<Stories, number> = { 1: 1, 2: 1.1, 3: 1.35 };
 // ── Membership discounts and floor ──────────────────────────────────────────
 export const MEMBER_MONTHLY_DISCOUNT = 0.2; // 12 months, billed monthly
 export const MEMBER_PREPAID_DISCOUNT = 0.25; // 12 months, paid up front
+// Multi-year is a PRICE LOCK, not a discount: 2 or 3 years at the same monthly
+// rate. The one exception is prepaying the whole term up front.
+export type TermYears = 1 | 2 | 3;
+export const TERM_OPTIONS: TermYears[] = [1, 2, 3];
+export const MULTI_YEAR_PREPAID_DISCOUNT = 0.28; // whole term paid up front, 2 or 3 years
+/** Total for prepaying the full term. One year uses the normal prepaid rate. */
+export function prepaidTermTotal(coreAnnual: number, years: TermYears): number {
+  const discount = years > 1 ? MULTI_YEAR_PREPAID_DISCOUNT : MEMBER_PREPAID_DISCOUNT;
+  return Math.ceil(coreAnnual * years * (1 - discount));
+}
 export const MONTHLY_FLOOR = 189; // postcard's "from $189" for a basic 3-bedroom
 export const ADDON_MEMBER_DISCOUNT = 0.1; // add-on menu = list × 0.90 for members
 export const DEPOSIT_USD = 99; // route-slot deposit, applied to the first month. Bri can change this.

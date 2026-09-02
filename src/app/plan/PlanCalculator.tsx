@@ -8,7 +8,11 @@ import {
   MEMBER_MONTHLY_DISCOUNT,
   MEMBER_PREPAID_DISCOUNT,
   MONTHLY_FLOOR,
+  MULTI_YEAR_PREPAID_DISCOUNT,
+  TERM_OPTIONS,
   WINDOW_VISITS_PER_YEAR,
+  prepaidTermTotal,
+  type TermYears,
   addOnPrices,
   priceHouse,
   suggestedAddOns,
@@ -159,6 +163,12 @@ const DS = `
   .math-line.mint .a, .math-line.mint .l { color: #0a7a4b; }
   .math-line .strike { text-decoration: line-through; color: var(--text-muted); font-weight: 400; margin-right: 8px; }
   .math-line .free { display: inline-block; background: var(--mint); color: var(--ink); border-radius: var(--r-sm); padding: 2px 8px; font-size: 0.8125rem; font-weight: 500; }
+  .math-line .a.wrap { white-space: normal; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; max-width: 46%; }
+  .math-line .a.wrap .strike { margin-right: 0; }
+  .term { margin: -6px 0 18px; }
+  .term .q { font-size: 0.9375rem; font-weight: 500; color: var(--text-primary); margin-bottom: 8px; text-wrap: pretty; }
+  .term .choice.center { min-height: 44px; font-size: 0.9375rem; }
+  .term-note { font-size: 0.9375rem; color: var(--text-secondary); margin-top: 10px; line-height: 1.5; }
 
   .addon { align-items: flex-start; }
   .addon .box { margin-top: 2px; }
@@ -237,6 +247,7 @@ export default function PlanCalculator({ src }: { src: string }) {
   const [addOns, setAddOns] = useState<string[]>([]);
   const [contact, setContact] = useState({ name: "", phone: "", email: "", bestDay: DAYS[0] });
   const [billing, setBilling] = useState<Billing>("monthly");
+  const [term, setTerm] = useState<TermYears>(1);
   const [sending, setSending] = useState(false);
   const [saved, setSaved] = useState<{ saved: boolean; contactId?: string } | null>(null);
   const [done, setDone] = useState(false);
@@ -281,6 +292,7 @@ export default function PlanCalculator({ src }: { src: string }) {
       email: contact.email,
       bestDay: contact.bestDay === DAYS[0] ? "" : contact.bestDay,
       billing,
+      term,
       src,
     });
     setSending(false);
@@ -295,10 +307,11 @@ export default function PlanCalculator({ src }: { src: string }) {
 
   const chosen = ADD_ONS.filter((a) => addOns.includes(a.key));
   // What the customer pays under the billing they picked, as a short phrase.
+  const termLine = term > 1 ? `, price locked for ${term} years` : "";
   const priceLine = price
     ? billing === "annual"
-      ? `$${fmt(price.prepaidMonthlyEquivalent)} a month on a 12-month membership, paid $${fmt(price.prepaidAnnual)} up front`
-      : `$${fmt(price.memberMonthly)} a month on a 12-month membership, billed monthly`
+      ? `$${fmt(price.prepaidMonthlyEquivalent)} a month on a 12-month membership, paid $${fmt(price.prepaidAnnual)} up front${termLine}`
+      : `$${fmt(price.memberMonthly)} a month on a 12-month membership, billed monthly${termLine}`
     : "";
   const savedLine = price ? `You save $${fmt(price.savedVsAlaCarte + (billing === "annual" ? price.prepaySavesMore : 0))} this year` : "";
   const suggested = useMemo(() => (house ? suggestedAddOns(house) : []), [house]);
@@ -359,7 +372,7 @@ export default function PlanCalculator({ src }: { src: string }) {
               <span className="num">${fmt(billing === "annual" ? price.prepaidMonthlyEquivalent : price.memberMonthly)}</span>
               <span className="per">/mo</span>
             </div>
-            <p style={{ marginBottom: 16 }}>{billing === "annual" ? `billed $${fmt(price.prepaidAnnual)} once a year` : "billed monthly"} for {house.address}. {savedLine}.</p>
+            <p style={{ marginBottom: 16 }}>{priceLine} for {house.address}. {savedLine}.</p>
             {!saved.saved ? (
               <p>Our system had trouble saving your details just now. Call or text us and we&apos;ll take the deposit by hand.</p>
             ) : depositUrl ? (
@@ -398,7 +411,7 @@ export default function PlanCalculator({ src }: { src: string }) {
               </div>
               {step >= 1 && price && (
                 <div className="strip">
-                  You save ${fmt(price.savedVsAlaCarte)} this year<span>·</span>${fmt(price.windowsAnnualValue)} of window cleaning free<span>·</span>prepay and save ${fmt(price.prepaySavesMore)} more
+                  You save ${fmt(price.savedVsAlaCarte)} this year<span>·</span>${fmt(price.windowsAnnualValue)} of windows free
                 </div>
               )}
 
@@ -505,6 +518,17 @@ export default function PlanCalculator({ src }: { src: string }) {
                     <button type="button" className={billing === "monthly" ? "on" : ""} onClick={() => setBilling("monthly")} aria-pressed={billing === "monthly"}>Monthly</button>
                     <button type="button" className={billing === "annual" ? "on" : ""} onClick={() => setBilling("annual")} aria-pressed={billing === "annual"}>Annual <span className="tag">save {PCT(MEMBER_PREPAID_DISCOUNT)}</span></button>
                   </div>
+                  <div className="term">
+                    <div className="q">Lock in extra years at today&apos;s price. It can&apos;t go up on you.</div>
+                    <div className="choices cols-3" role="group" aria-label="Lock your price">
+                      {TERM_OPTIONS.map((y) => (
+                        <button key={y} type="button" className={`choice center ${term === y ? "on" : ""}`} onClick={() => setTerm(y)} aria-pressed={term === y}>{y} {y === 1 ? "year" : "years"}</button>
+                      ))}
+                    </div>
+                    {billing === "annual" && term > 1 && (
+                      <p className="term-note">Prepay the full term and save {PCT(MULTI_YEAR_PREPAID_DISCOUNT)}: ${fmt(prepaidTermTotal(price.coreAnnual, term))} for {term} years.</p>
+                    )}
+                  </div>
                   <div className="price-big">
                     <span className="num">${fmt(billing === "annual" ? price.prepaidMonthlyEquivalent : price.memberMonthly)}</span>
                     <span className="per">/mo</span>
@@ -562,7 +586,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                       </div>
                       <div className="math-line">
                         <span className="l">Exterior windows<span className="d">{house.windows} windows · ${fmt(price.windowsPerVisitValue)} a visit · {WINDOW_VISITS_PER_YEAR} visits a year</span></span>
-                        <span className="a"><span className="strike">${fmt(price.windowsAnnualValue)}</span><span className="free">Free with the membership</span></span>
+                        <span className="a wrap"><span className="strike">${fmt(price.windowsAnnualValue)}</span><span className="free">Free with the membership</span></span>
                       </div>
                       <div className="math-line total">
                         <span className="l">Your membership year</span>

@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
-import { ADD_ONS, DEPOSIT_USD, WINDOW_VISITS_PER_YEAR, addOnPriceLabel, priceHouse, type HouseInputs } from "./pricing";
+import { ADD_ONS, DEPOSIT_USD, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnPriceLabel, prepaidTermTotal, priceHouse, type HouseInputs, type TermYears } from "./pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -52,6 +52,7 @@ export interface PlanQuoteData {
   email: string;
   bestDay: string;
   billing?: "monthly" | "annual";
+  term?: 1 | 2 | 3; // years the price is locked for
   src: string; // from ?src= on the URL, carried through the form
 }
 
@@ -120,7 +121,10 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     const email = String(data.email || "").trim().slice(0, 160);
     const bestDay = String(data.bestDay || "").trim().slice(0, 40);
     const billing = data.billing === "annual" ? "annual" : "monthly";
-    const yearValue = billing === "annual" ? price.prepaidAnnual : price.memberAnnual;
+    const term: TermYears = data.term === 2 ? 2 : data.term === 3 ? 3 : 1;
+    const termTotal = prepaidTermTotal(price.coreAnnual, term);
+    // Contract value: the prepaid total for the term, or the monthly year times the term.
+    const yearValue = billing === "annual" ? (term > 1 ? termTotal : price.prepaidAnnual) : price.memberAnnual * term;
     const chosenAddOns = ADD_ONS.filter((a) => (data.addOns || []).includes(a.key));
 
     const nameParts = name.split(" ");
@@ -128,7 +132,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     const lastName = nameParts.slice(1).join(" ") || "";
 
     const source = src === "web" ? "Website · plan calculator" : `Postcard · ${src}`;
-    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, ...(flagged ? ["needs-review"] : [])];
+    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(flagged ? ["needs-review"] : [])];
 
     // The full calculator, as a note a human can read in the contact record.
     const noteLines: string[] = [
@@ -156,6 +160,8 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       `  Membership, billed monthly: $${price.memberMonthly}/mo ($${price.memberAnnual}/yr)`,
       `  Prepaid year: $${price.prepaidAnnual} ($${price.prepaidMonthlyEquivalent}/mo equivalent)`,
       `  Billing chosen: ${billing}`,
+      `  Term: ${term} year${term > 1 ? "s" : ""} (price locked, same monthly rate)${billing === "annual" && term > 1 ? `, prepaid full term $${termTotal} (${Math.round(MULTI_YEAR_PREPAID_DISCOUNT * 100)}% off)` : ""}`,
+      `  Contract value: $${yearValue}`,
       `  Saved vs one at a time: $${price.savedVsAlaCarte}`,
       "",
       `Add-ons asked about (member price, quantities measured at first visit)`,
@@ -366,9 +372,9 @@ export async function createDepositInvoice(input: DepositInput): Promise<{ ok: b
       const html = [
         `<p>Hi ${first},</p>`,
         `<p>Here's the deposit page for your yearly membership${address ? ` at ${address}` : ""}:<br><a href="${url}">${url}</a></p>`,
-        `<p>It's $${DEPOSIT_USD}. It holds your spot on the route and comes off your first month, so you're not paying anything extra. If you change your mind before the first visit, we refund it.</p>`,
+        `<p>It's $${DEPOSIT_USD}, it locks your price, and it comes off your first month.</p>`,
         `<p>Once it's in, we'll text you to set up your first visit. Reply to this email if anything looks off.</p>`,
-        `<p>Rinse It Off<br>(503) 704-3755</p>`,
+        `<p>Rinse It Off · rinseitoff.com · hello@rinseitoff.com</p>`,
       ].join("\n");
       try {
         const mailRes = await fetch(`${GHL_API_BASE}/conversations/messages`, {
