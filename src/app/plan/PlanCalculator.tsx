@@ -9,6 +9,7 @@ import {
   MEMBER_PREPAID_DISCOUNT,
   MONTHLY_FLOOR,
   MULTI_YEAR_PREPAID_DISCOUNT,
+  PREPAID_UNDER_MONTHLY,
   TERM_OPTIONS,
   WINDOW_VISITS_PER_YEAR,
   prepaidTermTotal,
@@ -534,7 +535,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                   </p>
                   <div className="toggle" role="group" aria-label="Billing">
                     <button type="button" className={billing === "monthly" ? "on" : ""} onClick={() => setBilling("monthly")} aria-pressed={billing === "monthly"}>Monthly</button>
-                    <button type="button" className={billing === "annual" ? "on" : ""} onClick={() => setBilling("annual")} aria-pressed={billing === "annual"}>Annual <span className="tag">save {PCT(MEMBER_PREPAID_DISCOUNT)}</span></button>
+                    <button type="button" className={billing === "annual" ? "on" : ""} onClick={() => setBilling("annual")} aria-pressed={billing === "annual"}>Annual <span className="tag">save {PCT(PREPAID_UNDER_MONTHLY)}</span></button>
                   </div>
                   <div className="term">
                     <div className="q">Lock in extra years at today&apos;s price. It can&apos;t go up on you.</div>
@@ -544,7 +545,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                       ))}
                     </div>
                     {billing === "annual" && term > 1 && (
-                      <p className="term-note">Prepay the full term and save {PCT(MULTI_YEAR_PREPAID_DISCOUNT)}: ${fmt(prepaidTermTotal(price.coreAnnual, term))} for {term} years.</p>
+                      <p className="term-note">Prepay the full term and save {PCT(MULTI_YEAR_PREPAID_DISCOUNT)} off booking each visit: ${fmt(prepaidTermTotal(price.coreAnnual, term))} for {term} years.</p>
                     )}
                   </div>
                   <div className="price-big">
@@ -553,14 +554,14 @@ export default function PlanCalculator({ src }: { src: string }) {
                   </div>
                   <p className="price-for">
                     {billing === "annual"
-                      ? <>12-month membership paid up front, ${fmt(price.prepaidAnnual)} for the year, save ${fmt(price.prepaySavesMore)}. For <strong>{house.address}</strong>.</>
+                      ? <>12-month membership paid up front, ${fmt(price.prepaidAnnual)} for the year, {PCT(PREPAID_UNDER_MONTHLY)} under the monthly price. For <strong>{house.address}</strong>.</>
                       : <>12-month membership, billed monthly. For <strong>{house.address}</strong>.</>}
                   </p>
                   <p className="fine" style={{ marginBottom: 14 }}>This is your starting price. Our first visit confirms it, and unusual height or access can add to it.</p>
 
                   <div className="saves">
                     <div className="big">${fmt(price.savedVsAlaCarte)} this year, including ${fmt(price.windowsAnnualValue + price.screensAnnualValue)} of window and screen cleaning free.</div>
-                    <div className="more">Prepay the year: save another <strong>${fmt(price.prepaySavesMore)}</strong>, <strong>${fmt(price.prepaidMonthlyEquivalent)} a month</strong>.</div>
+                    <div className="more">Prepay the year and save {PCT(PREPAID_UNDER_MONTHLY)}: <strong>${fmt(price.prepaySavesMore)}</strong> less, <strong>${fmt(price.prepaidMonthlyEquivalent)} a month</strong>.</div>
                   </div>
 
                   <div className="covers">
@@ -610,7 +611,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                         <span className="a">${fmt(price.memberAnnual)}</span>
                       </div>
                       <div className="math-line total">
-                        <span className="l">Prepay and save {PCT(MEMBER_PREPAID_DISCOUNT)}</span>
+                        <span className="l">Prepay the year and save {PCT(PREPAID_UNDER_MONTHLY)}</span>
                         <span className="a">${fmt(price.prepaidAnnual)}</span>
                       </div>
                     </div>

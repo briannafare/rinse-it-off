@@ -174,7 +174,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       `  Membership, billed monthly: $${price.memberMonthly}/mo ($${price.memberAnnual}/yr)`,
       `  Prepaid year: $${price.prepaidAnnual} ($${price.prepaidMonthlyEquivalent}/mo equivalent)`,
       `  Billing chosen: ${billing}`,
-      `  Term: ${term} year${term > 1 ? "s" : ""} (price locked, same monthly rate)${billing === "annual" && term > 1 ? `, prepaid full term $${termTotal} (${Math.round(MULTI_YEAR_PREPAID_DISCOUNT * 100)}% off)` : ""}`,
+      `  Term: ${term} year${term > 1 ? "s" : ""} (price locked, same monthly rate)${billing === "annual" && term > 1 ? `, prepaid full term $${termTotal} (${Math.round(MULTI_YEAR_PREPAID_DISCOUNT * 100)}% off seasonal)` : ""}`,
       `  Contract value: $${yearValue}`,
       `  Saved vs one at a time: $${price.savedVsAlaCarte}`,
       "",

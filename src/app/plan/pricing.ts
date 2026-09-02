@@ -40,7 +40,7 @@ export const WINDOW_VISITS_PER_YEAR = 4;
 export const WINDOW_VISIT_MIN = 500; // real standalone per-trip minimum
 // Screens are cleaned free too, while they are off. The customer removes and
 // reinstalls them; Rinse never touches a screen on the frame. Engine rate:
-export const SCREEN_RATE = 14; // per screen, per visit
+export const SCREEN_RATE = 9; // per screen, per visit
 // Tiered window pricing, per visit: the first 30 at $22, 31 to 50 at $14,
 // 51 and up at $8. `upTo: null` means everything past the previous band.
 export const WINDOW_TIERS: { upTo: number | null; rate: number }[] = [
@@ -146,7 +146,8 @@ export const MODIFIER = {
 //    seasonal line = max(quantity × rate × modifiers, minimum). ─────────────
 //    Rinse's standalone per-trip minimum is $500, so no seasonal line is ever
 //    under that, and taller houses go up from there.
-export const SIDING_MIN: Record<Stories, number> = { 1: 600, 2: 850, 3: 1200 };
+export const SIDING_FACTOR = 0.8; // house wash priced 20% under the engine's siding rate
+export const SIDING_MIN: Record<Stories, number> = { 1: 480, 2: 680, 3: 960 };
 export const ROOF_MIN: Record<Stories, number> = { 1: 500, 2: 700, 3: 950 };
 export const GUTTER_VISIT_MIN: Record<Stories, number> = { 1: 500, 2: 650, 3: 850 };
 export const DRIVEWAY_MIN: Record<DrivewaySize, number> = { small: 500, typical: 600, large: 750 };
@@ -159,12 +160,13 @@ export const ACCESS_PER_VISIT: Record<Stories, number> = { 1: 0, 2: 25, 3: 75 };
 
 // ── Membership discounts and floor ──────────────────────────────────────────
 export const MEMBER_MONTHLY_DISCOUNT = 0.2; // 12 months, billed monthly
-export const MEMBER_PREPAID_DISCOUNT = 0.25; // 12 months, paid up front
+export const MEMBER_PREPAID_DISCOUNT = 0.28; // 12 months, paid up front: a full 10% under the monthly year (0.72 / 0.80)
+export const PREPAID_UNDER_MONTHLY = 0.1; // what the customer sees: prepay and save 10%
 // Multi-year is a PRICE LOCK, not a discount: 2 or 3 years at the same monthly
 // rate. The one exception is prepaying the whole term up front.
 export type TermYears = 1 | 2 | 3;
 export const TERM_OPTIONS: TermYears[] = [1, 2, 3];
-export const MULTI_YEAR_PREPAID_DISCOUNT = 0.28; // whole term paid up front, 2 or 3 years
+export const MULTI_YEAR_PREPAID_DISCOUNT = 0.3; // whole term paid up front, 2 or 3 years (beats the 1-year prepay)
 /** Total for prepaying the full term. One year uses the normal prepaid rate. */
 export function prepaidTermTotal(coreAnnual: number, years: TermYears): number {
   const discount = years > 1 ? MULTI_YEAR_PREPAID_DISCOUNT : MEMBER_PREPAID_DISCOUNT;
@@ -220,7 +222,7 @@ export function priceHouse(h: HouseInputs): PriceResult {
     key: "siding",
     label: "Siding soft wash, spring",
     detail: `${storyWord(h.stories)}, about ${about(scope.sidingSf, 50).toLocaleString()} sq ft of siding`,
-    amount: Math.max(scope.sidingSf * RATE.sidingSf, SIDING_MIN[h.stories]),
+    amount: Math.max(scope.sidingSf * RATE.sidingSf * SIDING_FACTOR, SIDING_MIN[h.stories]),
   });
 
   // Roof soft wash (spring), more for wood shake or a steep pitch.
