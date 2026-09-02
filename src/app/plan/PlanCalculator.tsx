@@ -297,8 +297,8 @@ export default function PlanCalculator({ src }: { src: string }) {
   // What the customer pays under the billing they picked, as a short phrase.
   const priceLine = price
     ? billing === "annual"
-      ? `$${fmt(price.prepaidMonthlyEquivalent)} a month, billed $${fmt(price.prepaidAnnual)} once a year`
-      : `$${fmt(price.memberMonthly)} a month, billed monthly`
+      ? `$${fmt(price.prepaidMonthlyEquivalent)} a month on a 12-month membership, paid $${fmt(price.prepaidAnnual)} up front`
+      : `$${fmt(price.memberMonthly)} a month on a 12-month membership, billed monthly`
     : "";
   const savedLine = price ? `You save $${fmt(price.savedVsAlaCarte + (billing === "annual" ? price.prepaySavesMore : 0))} this year` : "";
   const suggested = useMemo(() => (house ? suggestedAddOns(house) : []), [house]);
@@ -354,20 +354,21 @@ export default function PlanCalculator({ src }: { src: string }) {
             <div className="mark">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
             </div>
-            <h2>Your price is locked.</h2>
+            <h2>{depositUrl ? "One step from locked." : "Your price is reserved."}</h2>
             <div className="price-big" style={{ justifyContent: "center" }}>
               <span className="num">${fmt(billing === "annual" ? price.prepaidMonthlyEquivalent : price.memberMonthly)}</span>
               <span className="per">/mo</span>
             </div>
             <p style={{ marginBottom: 16 }}>{billing === "annual" ? `billed $${fmt(price.prepaidAnnual)} once a year` : "billed monthly"} for {house.address}. {savedLine}.</p>
             {!saved.saved ? (
-              <p>Our system had trouble saving your details just now. Call or text us and we&apos;ll lock it in by hand.</p>
-            ) : bookedISO ? (
-              <p>Your first visit is booked for {slotDate(bookedISO)} at {slotTime(bookedISO)}. We&apos;ll text you a reminder the day before.</p>
+              <p>Our system had trouble saving your details just now. Call or text us and we&apos;ll take the deposit by hand.</p>
+            ) : depositUrl ? (
+              <p>Your price locks for the full 12 months when the ${DEPOSIT_USD} deposit clears. The deposit page is in your email, and it comes off your first month.</p>
             ) : (
-              <p>We&apos;ll text you within one business day to set your first visit.</p>
+              <p>We&apos;ll text you within one business day to take the ${DEPOSIT_USD} deposit and set your first visit. The price locks when the deposit clears.</p>
             )}
-            {depositUrl && <p>Your ${DEPOSIT_USD} deposit page is in your email too, and it comes off your first month.</p>}
+            {saved.saved && bookedISO && <p>Your first visit is booked for {slotDate(bookedISO)} at {slotTime(bookedISO)}. We&apos;ll text you a reminder the day before.</p>}
+            {saved.saved && depositUrl && !bookedISO && <p>We&apos;ll text you within one business day to set your first visit.</p>}
             <div className="tel">
               <div className="k">Questions? Call or text</div>
               <a href="tel:+15037043755">(503) 704-3755</a>
@@ -510,8 +511,8 @@ export default function PlanCalculator({ src }: { src: string }) {
                   </div>
                   <p className="price-for">
                     {billing === "annual"
-                      ? <>billed ${fmt(price.prepaidAnnual)} once a year, save ${fmt(price.prepaySavesMore)}. For <strong>{house.address}</strong>.</>
-                      : <>billed monthly on a 12-month membership. For <strong>{house.address}</strong>.</>}
+                      ? <>12-month membership paid up front, ${fmt(price.prepaidAnnual)} for the year, save ${fmt(price.prepaySavesMore)}. For <strong>{house.address}</strong>.</>
+                      : <>12-month membership, billed monthly. For <strong>{house.address}</strong>.</>}
                   </p>
                   <p className="fine" style={{ marginBottom: 14 }}>This is your starting price. Our first visit confirms it, and unusual height or access can add to it.</p>
 
@@ -621,8 +622,8 @@ export default function PlanCalculator({ src }: { src: string }) {
 
               {step === 3 && price && house && (
                 <form onSubmit={handleSubmit}>
-                  <h2>Claim your price.</h2>
-                  <p className="lead">Tell us who you are and we&apos;ll hold {priceLine} for {house.address}{chosen.length ? `, plus ${chosen.length} add-on${chosen.length === 1 ? "" : "s"}` : ""}. {savedLine}.</p>
+                  <h2>Reserve your price.</h2>
+                  <p className="lead">Tell us who you are and we&apos;ll reserve {priceLine} for {house.address}{chosen.length ? `, plus ${chosen.length} add-on${chosen.length === 1 ? "" : "s"}` : ""}. {savedLine}.</p>
 
                   <input type="hidden" name="src" value={src} readOnly />
 
@@ -650,7 +651,7 @@ export default function PlanCalculator({ src }: { src: string }) {
 
                   <p className="fine" style={{ marginBottom: 12 }}>This is your starting price. Our first visit confirms it, and unusual height or access can add to it.</p>
                   <button type="submit" className="btn btn-ink" disabled={sending || !contact.name || !contact.phone || !contact.email}>
-                    {sending ? "Locking it in" : "Lock in my price and free windows"}
+                    {sending ? "Reserving it" : "Reserve my price and free windows"}
                   </button>
                   <p className="consent">
                     By submitting, you agree to receive calls and texts about your quote and visits from Rinse It Off. Msg &amp; data rates may apply, frequency varies. Reply STOP to opt out, HELP for help. See our{" "}
@@ -662,27 +663,27 @@ export default function PlanCalculator({ src }: { src: string }) {
 
               {step === 4 && price && house && saved && (
                 <div>
-                  <h2>Your price is locked.</h2>
-                  <p className="lead">{priceLine} for {house.address}. {savedLine}. Two optional things before we text you.</p>
+                  <h2>Your price is reserved, not locked yet.</h2>
+                  <p className="lead">{priceLine} for {house.address}. {savedLine}. It locks for the full 12 months once your ${DEPOSIT_USD} deposit clears.</p>
 
                   <div className="reserve">
-                    <h3>Reserve your route slot</h3>
-                    <p>A ${DEPOSIT_USD} deposit holds your spot on the route and comes off your first month.</p>
+                    <h3>Lock in your price</h3>
+                    <p>The ${DEPOSIT_USD} deposit locks your price and your spot on the route, and it comes off your first month.</p>
                     {depositUrl ? (
                       <>
                         <a className="btn btn-ink" href={depositUrl} target="_blank" rel="noopener noreferrer">Open the ${DEPOSIT_USD} deposit page</a>
-                        <p className="fine" style={{ marginTop: 10, marginBottom: 0 }}>It&apos;s in your email too. Pay it whenever you&apos;re ready.</p>
+                        <p className="fine" style={{ marginTop: 10, marginBottom: 0 }}>It&apos;s in your email too. Your price locks when it clears.</p>
                       </>
                     ) : (
                       <button type="button" className="btn btn-ink" onClick={startDeposit} disabled={depositBusy}>
-                        {depositBusy ? "Setting it up" : `Reserve my route slot: $${DEPOSIT_USD} deposit`}
+                        {depositBusy ? "Setting it up" : `Lock in your price with a $${DEPOSIT_USD} deposit`}
                       </button>
                     )}
                     {depositErr && <div className="error" style={{ marginTop: 12, marginBottom: 0 }}>{depositErr}</div>}
                   </div>
 
                   <div className="reserve">
-                    <h3>Pick your first visit</h3>
+                    <h3>Pick your first visit (optional)</h3>
                     {bookedISO ? (
                       <div className="ok">Booked: {slotDate(bookedISO)} at {slotTime(bookedISO)}.</div>
                     ) : !slotsLoaded ? (
@@ -713,9 +714,10 @@ export default function PlanCalculator({ src }: { src: string }) {
                     )}
                   </div>
 
-                  <button type="button" className={`btn ${depositUrl || bookedISO ? "btn-ink" : "btn-ghost"}`} onClick={finish}>
-                    {depositUrl || bookedISO ? "All set" : "Skip for now, text me"}
+                  <button type="button" className={`btn ${depositUrl ? "btn-ink" : "btn-ghost"}`} onClick={finish}>
+                    {depositUrl ? "All set" : "Text me instead"}
                   </button>
+                  {!depositUrl && <p className="fine" style={{ textAlign: "center", marginTop: 8 }}>We&apos;ll text you to take the deposit and set your first visit. The price isn&apos;t locked until then.</p>}
                 </div>
               )}
             </div>
