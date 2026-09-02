@@ -65,6 +65,8 @@ export const MEMBER_MONTHLY_DISCOUNT = 0.2; // 12 months, billed monthly
 export const MEMBER_PREPAID_DISCOUNT = 0.25; // 12 months, paid up front
 export const MONTHLY_FLOOR = 189; // postcard's "from $189" for a basic 3-bedroom
 export const ADDON_MEMBER_DISCOUNT = 0.1; // add-on menu = list × 0.90 for members
+export const DEPOSIT_USD = 99; // route-slot deposit, applied to the first month. Bri can change this.
+export const WINDOWS_VALUE_LABEL = "$1,500+"; // what four standalone window visits cost (postcard claim)
 
 export function tierFor(livingSqft: number): Tier {
   return TIERS.find((t) => livingSqft <= t.maxLivingSqft) ?? TIERS[TIERS.length - 1];
@@ -89,6 +91,8 @@ export interface PriceResult {
   prepaidMonthlyEquivalent: number; // whole dollars, rounded up
   windowsIncluded: number;
   windowsExtra: number;
+  savedVsAlaCarte: number; // à la carte annual minus the membership year, whole dollars
+  prepaySavesMore: number; // membership year minus the prepaid year, whole dollars
 }
 
 const money = (n: number) => `$${n.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
@@ -181,6 +185,8 @@ export function priceHouse(h: HouseInputs): PriceResult {
     prepaidMonthlyEquivalent,
     windowsIncluded,
     windowsExtra,
+    savedVsAlaCarte: Math.max(0, Math.round(alaCarteAnnual - memberAnnual)),
+    prepaySavesMore: Math.max(0, memberAnnual - prepaidAnnual),
   };
 }
 
@@ -207,11 +213,32 @@ export function memberAddOnPrice(list: number): number {
   return Math.round(list * (1 - ADDON_MEMBER_DISCOUNT) * 100) / 100;
 }
 
+const unitWord = (unit: string) => (unit === "each" ? "each" : `per ${unit}`);
+const dollars = (n: number) => (n < 1 ? `$${n.toFixed(2)}` : `$${n.toFixed(2).replace(/\.00$/, "")}`);
+
+/** List price and member price as display strings, for the struck-through pair. */
+export function addOnPrices(a: AddOn): { list: string; member: string; unit: string } | null {
+  if (!a.list) return null;
+  return { list: dollars(a.list.amount), member: dollars(memberAddOnPrice(a.list.amount)), unit: unitWord(a.list.unit) };
+}
+
+/** Two suggestions from the house and the calendar. Lights from September
+ *  through January, deck the rest of the year; skylights for 2+ stories;
+ *  garage floor for a large driveway. */
+export function suggestedAddOns(h: HouseInputs, month = new Date().getMonth()): string[] {
+  const lightsSeason = month >= 8 || month === 0;
+  const picks: string[] = [lightsSeason ? "lights" : "deck"];
+  if (h.stories >= 2) picks.push("skylights");
+  else if (h.driveway === "large") picks.push("garage");
+  else picks.push(lightsSeason ? "deck" : "fence");
+  return picks.slice(0, 2);
+}
+
 export function addOnPriceLabel(a: AddOn): string {
   if (a.list) {
     const m = memberAddOnPrice(a.list.amount);
     const shown = m < 1 ? `$${m.toFixed(2)}` : `$${m.toFixed(2).replace(/\.00$/, "")}`;
-    return `From ${shown} ${a.list.unit === "each" ? "each" : `per ${a.list.unit}`}, priced at your first visit`;
+    return `From ${shown} ${unitWord(a.list.unit)}, priced at your first visit`;
   }
   return a.fromNote ?? "Priced at your first visit";
 }

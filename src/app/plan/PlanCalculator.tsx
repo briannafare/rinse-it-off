@@ -1,11 +1,14 @@
 "use client";
-import { useMemo, useState } from "react";
-import { submitPlanQuote } from "./actions";
+import { useEffect, useMemo, useState } from "react";
+import { bookFirstVisit, createDepositInvoice, submitPlanQuote } from "./actions";
+import { getFreeSlots } from "../assessment/actions";
 import {
   ADD_ONS,
-  WINDOW_VISITS_PER_YEAR,
-  addOnPriceLabel,
+  DEPOSIT_USD,
+  WINDOWS_VALUE_LABEL,
+  addOnPrices,
   priceHouse,
+  suggestedAddOns,
   type Access,
   type DrivewaySize,
   type HouseInputs,
@@ -68,7 +71,7 @@ const DS = `
   .plan-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r-2xl); padding: clamp(22px, 5vw, 40px); box-shadow: var(--shadow-soft); }
 
   /* Step counter: the one place a small label is allowed. */
-  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 28px; }
+  .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 28px; }
   .steps .seg { height: 4px; border-radius: 2px; background: var(--border); transition: background 0.3s var(--ease-out-expo); }
   .steps .seg.on { background: var(--blue); }
   .steps .seg.past { background: var(--ink); }
@@ -117,14 +120,16 @@ const DS = `
   .price-for { font-size: 1rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; }
   .price-for strong { color: var(--ink); font-weight: 500; }
 
-  .covers { background: var(--surface-alt); border-radius: var(--r-lg); padding: 18px 20px; margin-bottom: 18px; }
-  .covers p { font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
-  .covers p + p { margin-top: 10px; }
-  .covers strong { color: var(--ink); font-weight: 500; }
+  .saves { background: var(--mint); color: var(--ink); border-radius: var(--r-lg); padding: 18px 20px; margin: 4px 0 14px; }
+  .saves .big { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.25rem, 5vw, 1.5rem); letter-spacing: -0.02em; line-height: 1.2; text-wrap: balance; }
+  .saves .more { font-size: 0.9375rem; line-height: 1.5; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(12,18,21,0.18); color: var(--ink); }
+  .saves .more strong { font-weight: 500; }
 
-  .prepay { border: 2px solid var(--blue); background: var(--blue-wash); border-radius: var(--r-lg); padding: 16px 20px; margin-bottom: 18px; }
-  .prepay .big { font-family: var(--font-display); font-weight: 500; font-size: 1.25rem; letter-spacing: -0.01em; color: var(--ink); }
-  .prepay p { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.5; margin-top: 4px; }
+  .covers { background: var(--surface-alt); border-radius: var(--r-lg); padding: 14px 18px; margin-bottom: 14px; }
+  .covers ul { list-style: none; display: grid; gap: 6px; }
+  .covers li { font-size: 0.9375rem; line-height: 1.45; color: var(--text-primary); display: flex; gap: 10px; align-items: baseline; }
+  .covers li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; transform: translateY(-2px); }
+  .covers li span { color: var(--text-muted); }
 
   .fine { font-size: 0.875rem; line-height: 1.55; color: var(--text-muted); text-wrap: pretty; }
 
@@ -141,6 +146,29 @@ const DS = `
 
   .addon { align-items: flex-start; }
   .addon .box { margin-top: 2px; }
+  .addon .body { flex: 1; }
+  .addon .title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .addon .pop { font-size: 0.75rem; font-weight: 500; color: var(--ink); background: var(--mint); border-radius: var(--r-sm); padding: 2px 7px; line-height: 1.4; }
+  .addon .was { text-decoration: line-through; color: var(--text-muted); margin-right: 6px; }
+  .addon .now { color: var(--ink); font-weight: 500; }
+  .running { background: var(--blue-wash); border: 2px solid var(--blue); border-radius: var(--r-lg); padding: 12px 16px; margin-top: 14px; font-size: 0.9375rem; line-height: 1.5; color: var(--text-primary); }
+  .running strong { font-weight: 500; }
+
+  .reserve { border: 2px solid var(--border); border-radius: var(--r-lg); padding: 18px; margin-bottom: 14px; }
+  .reserve h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.125rem; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 6px; }
+  .reserve p { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px; }
+  .reserve .ok { background: var(--mint); color: var(--ink); border-radius: var(--r-md); padding: 12px 14px; font-size: 0.9375rem; line-height: 1.5; }
+  .reserve a.btn { text-decoration: none; }
+  .days { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin: 0 -4px; padding-left: 4px; padding-right: 4px; scrollbar-width: none; }
+  .days::-webkit-scrollbar { display: none; }
+  .day { flex: 0 0 auto; min-width: 64px; min-height: 60px; border: 2px solid var(--border); border-radius: var(--r-md); background: var(--surface); font-family: var(--font-body); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 6px; }
+  .day .dow { font-size: 0.75rem; color: var(--text-muted); }
+  .day .dom { font-family: var(--font-display); font-weight: 600; font-size: 1.125rem; color: var(--ink); }
+  .day.on { border-color: var(--blue); background: var(--blue-wash); }
+  .day:disabled { opacity: 0.35; cursor: not-allowed; }
+  .times { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .time { min-height: 44px; padding: 8px 14px; border: 2px solid var(--border); border-radius: var(--r-sm); background: var(--surface); font-family: var(--font-body); font-size: 0.9375rem; color: var(--ink); cursor: pointer; }
+  .time.on { border-color: var(--blue); background: var(--ink); color: var(--blue); }
 
   .error { background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--r-sm); padding: 12px 16px; margin-bottom: 16px; font-size: 0.875rem; color: #b91c1c; line-height: 1.5; }
 
@@ -159,7 +187,14 @@ const DS = `
   @media (prefers-reduced-motion: reduce) { .plan * { transition: none !important; } }
 `;
 
-const STEP_NAMES = ["House", "Price", "Add-ons", "Claim"];
+const STEP_NAMES = ["House", "Price", "Add-ons", "Claim", "Reserve"];
+const TZ = "America/Los_Angeles";
+const slotTime = (iso: string) => new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: TZ });
+const slotDate = (iso: string) => new Date(iso).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: TZ });
+const dayParts = (key: string) => {
+  const d = new Date(`${key}T12:00:00`);
+  return { dow: d.toLocaleDateString("en-US", { weekday: "short" }), dom: d.getDate() };
+};
 const DAYS = ["No preference", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 const fmt = (n: number) => n.toLocaleString("en-US", { maximumFractionDigits: 0 });
@@ -185,8 +220,19 @@ export default function PlanCalculator({ src }: { src: string }) {
   const [addOns, setAddOns] = useState<string[]>([]);
   const [contact, setContact] = useState({ name: "", phone: "", email: "", bestDay: DAYS[0] });
   const [sending, setSending] = useState(false);
-  const [done, setDone] = useState<{ saved: boolean } | null>(null);
+  const [saved, setSaved] = useState<{ saved: boolean; contactId?: string } | null>(null);
+  const [done, setDone] = useState(false);
   const [error, setError] = useState("");
+  // Step 5: deposit + first visit (both optional).
+  const [depositUrl, setDepositUrl] = useState("");
+  const [depositBusy, setDepositBusy] = useState(false);
+  const [depositErr, setDepositErr] = useState("");
+  const [slotMap, setSlotMap] = useState<Record<string, string[]>>({});
+  const [slotsLoaded, setSlotsLoaded] = useState(false);
+  const [dayKey, setDayKey] = useState("");
+  const [booking, setBooking] = useState("");
+  const [bookedISO, setBookedISO] = useState("");
+  const [bookErr, setBookErr] = useState("");
 
   const house: HouseInputs | null = useMemo(() => {
     const s = parseInt(sqft, 10);
@@ -220,14 +266,50 @@ export default function PlanCalculator({ src }: { src: string }) {
     });
     setSending(false);
     if (result.success) {
-      setDone({ saved: result.saved });
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      setSaved({ saved: result.saved, contactId: result.contactId });
+      if (result.saved && result.contactId) go(4);
+      else { setDone(true); window.scrollTo({ top: 0, behavior: "smooth" }); }
     } else {
       setError(result.error || "Something went wrong. Give it another try, or call or text (503) 704-3755.");
     }
   };
 
   const chosen = ADD_ONS.filter((a) => addOns.includes(a.key));
+  const suggested = useMemo(() => (house ? suggestedAddOns(house) : []), [house]);
+
+  // Real availability for the next 14 days, fetched once the Reserve step opens.
+  useEffect(() => {
+    if (step !== 4 || slotsLoaded) return;
+    const now = Date.now();
+    getFreeSlots(now, now + 14 * 24 * 60 * 60 * 1000)
+      .then((r) => setSlotMap(r.days))
+      .catch(() => setSlotMap({}))
+      .finally(() => setSlotsLoaded(true));
+  }, [step, slotsLoaded]);
+
+  const dayKeys = Object.keys(slotMap).filter((k) => slotMap[k].length > 0).sort();
+
+  const startDeposit = async () => {
+    if (!saved?.contactId || !house) return;
+    setDepositErr("");
+    setDepositBusy(true);
+    const r = await createDepositInvoice({ contactId: saved.contactId, address: house.address, name: contact.name, email: contact.email, phone: contact.phone });
+    setDepositBusy(false);
+    if (r.ok && r.url) setDepositUrl(r.url);
+    else setDepositErr(r.error || "We couldn't open the deposit page just now.");
+  };
+
+  const pickSlot = async (iso: string) => {
+    if (!saved?.contactId) return;
+    setBookErr("");
+    setBooking(iso);
+    const r = await bookFirstVisit({ contactId: saved.contactId, name: contact.name, startISO: iso });
+    setBooking("");
+    if (r.ok) setBookedISO(iso);
+    else setBookErr(r.error || "That time didn't go through.");
+  };
+
+  const finish = () => { setDone(true); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
   return (
     <div className="plan">
@@ -240,7 +322,7 @@ export default function PlanCalculator({ src }: { src: string }) {
         <a className="phone" href="tel:+15037043755">(503) 704-3755</a>
       </header>
 
-      {done && price && house ? (
+      {done && price && house && saved ? (
         <div className="plan-wrap">
           <div className="plan-card done">
             <div className="mark">
@@ -252,11 +334,14 @@ export default function PlanCalculator({ src }: { src: string }) {
               <span className="per">a month</span>
             </div>
             <p style={{ marginBottom: 16 }}>for {house.address}</p>
-            {done.saved ? (
-              <p>We&apos;ll text you within one business day to set your first visit.</p>
+            {!saved.saved ? (
+              <p>Our system had trouble saving your details just now. Call or text us and we&apos;ll lock it in by hand.</p>
+            ) : bookedISO ? (
+              <p>Your first visit is booked for {slotDate(bookedISO)} at {slotTime(bookedISO)}. We&apos;ll text you a reminder the day before.</p>
             ) : (
-              <p>Our system had trouble saving your details just now. Call or text us and we&apos;ll lock it in by hand, or try again in a few minutes.</p>
+              <p>We&apos;ll text you within one business day to set your first visit.</p>
             )}
+            {depositUrl && <p>Your ${DEPOSIT_USD} deposit page is in your email too, and it comes off your first month.</p>}
             <div className="tel">
               <div className="k">Questions? Call or text</div>
               <a href="tel:+15037043755">(503) 704-3755</a>
@@ -270,13 +355,13 @@ export default function PlanCalculator({ src }: { src: string }) {
               <h1>
                 Your monthly price, <span className="accent">custom to your house.</span>
               </h1>
-              <p>Answer a few questions about the house and we&apos;ll show you the price for a full year of exterior care, with the outside of every window cleaned four times a year included.</p>
+              <p>Answer a few questions and we&apos;ll show you the price for a year of exterior care, windows included.</p>
             </div>
           </div>
 
           <div className="plan-wrap">
             <div className="plan-card">
-              <div className="steps" aria-label={`Step ${step + 1} of 4`}>
+              <div className="steps" aria-label={`Step ${step + 1} of 5`}>
                 {STEP_NAMES.map((n, i) => (
                   <div key={n}>
                     <div className={`seg ${i === step ? "on" : i < step ? "past" : ""}`} />
@@ -288,7 +373,7 @@ export default function PlanCalculator({ src }: { src: string }) {
               {step === 0 && (
                 <form onSubmit={(e) => { e.preventDefault(); if (house) go(1); }}>
                   <h2>First, the house.</h2>
-                  <p className="lead">Rough numbers are fine. We confirm everything at the first visit.</p>
+                  <p className="lead">Rough numbers are fine.</p>
 
                   <div className="field">
                     <label htmlFor="address">Street address</label>
@@ -301,7 +386,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                       <input id="sqft" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="1,800" value={sqft} onChange={(e) => setSqft(e.target.value.replace(/[^0-9]/g, ""))} required />
                       <span className="unit">sq ft</span>
                     </div>
-                    <div className="help">Not sure? A basic 3-bedroom is usually 1,500 to 2,000.</div>
+                    <div className="help">A basic 3-bedroom is usually 1,500 to 2,000.</div>
                   </div>
 
                   <div className="field">
@@ -318,7 +403,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                   <div className="field">
                     <label htmlFor="windows">Exterior windows</label>
                     <input id="windows" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="14" value={windows} onChange={(e) => setWindows(e.target.value.replace(/[^0-9]/g, ""))} required />
-                    <div className="help">Count what you can see from outside. Close is good enough.</div>
+                    <div className="help">Count what you can see from outside.</div>
                   </div>
 
                   <div className="field">
@@ -372,7 +457,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                     Show my price
                   </button>
                   {!house && (
-                    <p className="fine" style={{ textAlign: "center", marginTop: 10 }}>Fill in the address, square footage, stories and window count to see it.</p>
+                    <p className="fine" style={{ textAlign: "center", marginTop: 10 }}>Address, square footage, stories and windows first.</p>
                   )}
                 </form>
               )}
@@ -384,20 +469,24 @@ export default function PlanCalculator({ src }: { src: string }) {
                     <span className="num">${fmt(price.memberMonthly)}</span>
                     <span className="per">a month</span>
                   </div>
-                  <p className="price-for">for your home at <strong>{house.address}</strong>, on a 12-month membership billed monthly.</p>
+                  <p className="price-for">for <strong>{house.address}</strong>, billed monthly on a 12-month membership.</p>
+
+                  <div className="saves">
+                    <div className="big">${fmt(price.savedVsAlaCarte)} saved this year vs booking each visit, and {WINDOWS_VALUE_LABEL} of window cleaning free on top.</div>
+                    <div className="more">Prepay the year: save another <strong>${fmt(price.prepaySavesMore)}</strong>, <strong>${fmt(price.prepaidMonthlyEquivalent)} a month</strong>.</div>
+                  </div>
 
                   <div className="covers">
-                    <p>
-                      That covers the <strong>roof and siding in spring</strong>, the <strong>driveway and walkways in summer</strong>, the <strong>gutters in fall</strong>, the <strong>walkways, steps and entry in winter</strong>, and your <strong>exterior windows cleaned {WINDOW_VISITS_PER_YEAR} times a year</strong>. Each season we reach out and you pick the day.
-                    </p>
+                    <ul>
+                      <li>Roof and siding <span>spring</span></li>
+                      <li>Driveway and walkways <span>summer</span></li>
+                      <li>Gutters <span>fall</span></li>
+                      <li>Walkways and steps <span>winter</span></li>
+                      <li>Exterior windows <span>4 times a year</span></li>
+                    </ul>
                   </div>
 
-                  <div className="prepay">
-                    <div className="big">Prepay the year and pay ${fmt(price.prepaidAnnual)} instead.</div>
-                    <p>That works out to ${fmt(price.prepaidMonthlyEquivalent)} a month.</p>
-                  </div>
-
-                  <p className="fine">This is an estimate. We confirm the price at your first visit, and it only changes if the home turns out to be a good deal bigger than you described.</p>
+                  <p className="fine">We confirm the price at your first visit.</p>
 
                   <details className="math">
                     <summary>How we got this number</summary>
@@ -435,19 +524,33 @@ export default function PlanCalculator({ src }: { src: string }) {
               {step === 2 && price && (
                 <div>
                   <h2>Anything else while we&apos;re there?</h2>
-                  <p className="lead">Members get 10% off everything on this list. Tick what you want and we&apos;ll measure and price it at your first visit, then add it to your quote.</p>
+                  <p className="lead">Members save 10% on every add-on because the crew is already there.</p>
 
                   <div className="choices" role="group" aria-label="Add-ons">
                     {ADD_ONS.map((a) => {
                       const on = addOns.includes(a.key);
+                      const pr = addOnPrices(a);
+                      const pop = suggested.includes(a.key);
                       return (
                         <button key={a.key} type="button" className={`choice addon ${on ? "on" : ""}`} onClick={() => toggleAddOn(a.key)} aria-pressed={on}>
                           <span className="box">{on && <Check />}</span>
-                          <span>{a.label}<span className="sub">{addOnPriceLabel(a)}</span></span>
+                          <span className="body">
+                            <span className="title">{a.label}{pop && <span className="pop">Popular</span>}</span>
+                            <span className="sub">
+                              {pr ? (<><span className="was">{pr.list}</span><span className="now">{pr.member}</span> {pr.unit}, measured on site</>) : a.fromNote}
+                            </span>
+                          </span>
                         </button>
                       );
                     })}
                   </div>
+
+                  {chosen.length > 0 && (
+                    <div className="running">
+                      <strong>Added to your quote:</strong>{" "}
+                      {chosen.map((a) => { const pr = addOnPrices(a); return pr ? `${a.label} (${pr.member} ${pr.unit})` : a.key === "lights" ? `${a.label} (from $599)` : a.label; }).join(", ")}. Final numbers at your first visit.
+                    </div>
+                  )}
 
                   <div style={{ display: "grid", gap: 8, marginTop: 24 }}>
                     <button type="button" className="btn btn-ink" onClick={() => go(3)}>{addOns.length ? "Next, claim my price" : "Skip this, claim my price"}</button>
@@ -459,10 +562,7 @@ export default function PlanCalculator({ src }: { src: string }) {
               {step === 3 && price && house && (
                 <form onSubmit={handleSubmit}>
                   <h2>Claim your price.</h2>
-                  <p className="lead">
-                    ${fmt(price.memberMonthly)} a month for {house.address}
-                    {chosen.length ? `, plus ${chosen.length === 1 ? "one add-on" : `${chosen.length} add-ons`} priced on site` : ""}. Tell us who you are and we&apos;ll hold it.
-                  </p>
+                  <p className="lead">Tell us who you are and we&apos;ll hold ${fmt(price.memberMonthly)} a month for {house.address}{chosen.length ? `, plus ${chosen.length} add-on${chosen.length === 1 ? "" : "s"}` : ""}.</p>
 
                   <input type="hidden" name="src" value={src} readOnly />
 
@@ -497,6 +597,65 @@ export default function PlanCalculator({ src }: { src: string }) {
                   </p>
                   <button type="button" className="btn btn-ghost" onClick={() => go(2)} style={{ marginTop: 4 }}>Back</button>
                 </form>
+              )}
+
+              {step === 4 && price && house && saved && (
+                <div>
+                  <h2>Your price is locked.</h2>
+                  <p className="lead">${fmt(price.memberMonthly)} a month for {house.address}. Two optional things before we text you.</p>
+
+                  <div className="reserve">
+                    <h3>Reserve your route slot</h3>
+                    <p>A ${DEPOSIT_USD} deposit holds your spot on the route and comes off your first month.</p>
+                    {depositUrl ? (
+                      <>
+                        <a className="btn btn-ink" href={depositUrl} target="_blank" rel="noopener noreferrer">Open the ${DEPOSIT_USD} deposit page</a>
+                        <p className="fine" style={{ marginTop: 10, marginBottom: 0 }}>It&apos;s in your email too. Pay it whenever you&apos;re ready.</p>
+                      </>
+                    ) : (
+                      <button type="button" className="btn btn-ink" onClick={startDeposit} disabled={depositBusy}>
+                        {depositBusy ? "Setting it up" : `Reserve my route slot: $${DEPOSIT_USD} deposit`}
+                      </button>
+                    )}
+                    {depositErr && <div className="error" style={{ marginTop: 12, marginBottom: 0 }}>{depositErr}</div>}
+                  </div>
+
+                  <div className="reserve">
+                    <h3>Pick your first visit</h3>
+                    {bookedISO ? (
+                      <div className="ok">Booked: {slotDate(bookedISO)} at {slotTime(bookedISO)}.</div>
+                    ) : !slotsLoaded ? (
+                      <p style={{ marginBottom: 0 }}>Checking the next two weeks.</p>
+                    ) : dayKeys.length === 0 ? (
+                      <p style={{ marginBottom: 0 }}>Nothing open in the next two weeks. We&apos;ll text you with the first opening.</p>
+                    ) : (
+                      <>
+                        <p>Real openings for the next two weeks. Tap a day, then a time.</p>
+                        <div className="days">
+                          {dayKeys.map((k) => { const d = dayParts(k); return (
+                            <button key={k} type="button" className={`day ${dayKey === k ? "on" : ""}`} onClick={() => setDayKey(k)} aria-pressed={dayKey === k}>
+                              <span className="dow">{d.dow}</span><span className="dom">{d.dom}</span>
+                            </button>
+                          ); })}
+                        </div>
+                        {dayKey && (
+                          <div className="times">
+                            {(slotMap[dayKey] || []).map((iso) => (
+                              <button key={iso} type="button" className={`time ${booking === iso ? "on" : ""}`} disabled={!!booking} onClick={() => pickSlot(iso)}>
+                                {booking === iso ? "Booking" : slotTime(iso)}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                        {bookErr && <div className="error" style={{ marginTop: 12, marginBottom: 0 }}>{bookErr}</div>}
+                      </>
+                    )}
+                  </div>
+
+                  <button type="button" className={`btn ${depositUrl || bookedISO ? "btn-ink" : "btn-ghost"}`} onClick={finish}>
+                    {depositUrl || bookedISO ? "All set" : "Skip for now, text me"}
+                  </button>
+                </div>
               )}
             </div>
           </div>
