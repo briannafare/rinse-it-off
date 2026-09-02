@@ -147,7 +147,9 @@ const DS = `
   .stack { margin: 18px 0 6px; }
   .stack h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.125rem; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 6px; }
   .stack-row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--border-light); font-size: 0.9375rem; }
-  .stack-row .l { color: var(--text-primary); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .stack-row .l { color: var(--text-primary); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .stack-row .l .t { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .stack-row .l .sub { font-size: 0.8125rem; color: var(--text-muted); }
   .stack-row .a { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--text-primary); }
   .stack-row .a.strike { text-decoration: line-through; color: var(--text-muted); }
   .stack-row .free { font-size: 0.75rem; font-weight: 500; color: var(--ink); border: 1px solid var(--ink); border-radius: var(--r-sm); padding: 0 7px; line-height: 1.5; }
@@ -376,13 +378,13 @@ export default function PlanCalculator({ src }: { src: string }) {
     const amt = (k: string) => price.lines.find((l) => l.key === k)?.amount ?? 0;
     const storyShare = amt("story-access") / 4;
     const season = (keys: string[]) => (keys.reduce((t, k) => t + amt(k), 0) + storyShare) * price.accessMultiplier;
-    const rows = [
+    const rows: { label: string; sub?: string; value: number; free?: boolean }[] = [
       { label: "Spring roof and siding", value: season(["roof", "siding"]) },
       { label: "Summer driveway and walkways", value: season(["driveway"]) },
       { label: "Fall gutters and downspouts", value: season(["gutters"]) },
       { label: "Winter walkways and entry", value: season(["winter"]) },
-      { label: `Exterior windows, ${WINDOW_VISITS_PER_YEAR} visits`, value: price.windowsAnnualValue, free: true },
-      { label: `Screens, ${WINDOW_VISITS_PER_YEAR} visits, you remove and reinstall`, value: price.screensAnnualValue, free: true },
+      { label: `Windows, ${WINDOW_VISITS_PER_YEAR} visits`, sub: "exterior, every window", value: price.windowsAnnualValue, free: true },
+      { label: `Screens, ${WINDOW_VISITS_PER_YEAR} visits`, sub: "you remove and reinstall", value: price.screensAnnualValue, free: true },
     ];
     const yourPrice = billing === "annual" ? price.prepaidAnnual : price.memberAnnual;
     return { rows, total: price.valueReceived, yourPrice, save: Math.max(0, Math.round(price.valueReceived - yourPrice)) };
@@ -670,7 +672,10 @@ export default function PlanCalculator({ src }: { src: string }) {
                     <h3>What you get</h3>
                     {stack.rows.map((r) => (
                       <div className="stack-row" key={r.label}>
-                        <span className="l">{r.label}{r.free && <span className="free">Free</span>}</span>
+                        <span className="l">
+                          <span className="t">{r.label}{r.free && <span className="free">Free</span>}</span>
+                          {r.sub && <span className="sub">{r.sub}</span>}
+                        </span>
                         <span className={`a ${r.free ? "strike" : ""}`}>${fmt(r.value)}</span>
                       </div>
                     ))}
