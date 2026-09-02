@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { submitAssessmentForm } from "@/app/assessment/actions";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -73,6 +74,7 @@ export default function FlyerPage() {
   // Submit state
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
 
   const services = propertyType === "commercial" ? COMMERCIAL_SERVICES : propertyType === "residential" ? RESIDENTIAL_SERVICES : [];
   const days = calDays(calYear, calMonth);
@@ -102,8 +104,30 @@ export default function FlyerPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSending(true);
-    await new Promise((r) => setTimeout(r, 1000));
+    setError("");
+    // Same server action as /assessment — one write path into GHL, so both forms
+    // create the contact, opportunity and note identically.
+    const res = await submitAssessmentForm({
+      propertyType: propertyType || "residential",
+      services: selectedServices,
+      name: form.name,
+      phone: form.phone,
+      email: form.email,
+      address: form.address,
+      message: form.message,
+      source: "Flyer QR — Property Audit",
+      ...(selectedDay
+        ? {
+            appointmentDate: formatDate(calYear, calMonth, selectedDay),
+            appointmentTime: selectedTime,
+          }
+        : {}),
+    });
     setSending(false);
+    if (!res.success) {
+      setError(res.error || "Something went wrong. Please call us at (503) 704-3755.");
+      return;
+    }
     setSent(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -431,6 +455,11 @@ export default function FlyerPage() {
                   >
                     {sending ? "Sending your request…" : apptLabel ? "Book My Assessment →" : "Get My Free Quote →"}
                   </button>
+                  {error && (
+                    <p className="mt-3 text-center text-sm font-medium text-[#DC4B2A]" role="alert">
+                      {error}
+                    </p>
+                  )}
                   <p className="text-text-muted text-xs text-center mt-3">
                     No spam. No sales pressure. We&apos;ll respond within a few hours.
                   </p>
