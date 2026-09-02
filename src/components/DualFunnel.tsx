@@ -3,23 +3,26 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { useStaggerReveal } from "@/lib/gsap";
 
-/** Two doors, both photographic — show the customer their world. */
+/** Two doors, equal weight. A homeowner and a property manager should each see
+ *  themselves in one of these within a second of scrolling. Both photos are real
+ *  RIO jobs — no stock, no AI. Keep them balanced: if one side ever gets the
+ *  better photo or the longer pitch, the site tilts and the other audience leaves. */
 const FUNNELS = [
   {
-    title: "My home",
-    body: "Siding, roof, gutters, driveway, deck. We assess on-site and hand you a firm quote the same day — no runaround.",
-    cta: "Start my quote",
+    title: "For my home",
+    body: "Driveway, siding, roof, gutters, deck. We walk it with you, then hand you a firm price the same day, itemized so you can take part of it or all of it.",
+    cta: "Get my home quote",
     href: "/assessment?type=residential",
-    img: "/brand/photos/hero-woman.webp",
-    alt: "A homeowner outside her freshly rinsed home",
+    img: "/brand/photos/work/driveway-after.webp",
+    alt: "A residential driveway in the trees, washed clean",
   },
   {
-    title: "My property portfolio",
-    body: "Offices, HOAs, retail, multifamily. Start with a free photo-documented 21-point audit — the report that makes you look good to ownership.",
-    cta: "Book a free property audit",
+    title: "For my property",
+    body: "Storefronts, offices, HOAs, multifamily, clubhouses. Start with the free 21-point audit and you get photos of every problem area, which is the part ownership actually reads.",
+    cta: "Book a property audit",
     href: "/assessment?type=commercial",
-    img: "/brand/photos/building-wash.webp",
-    alt: "A commercial building exterior being soft-washed clean",
+    img: "/brand/photos/work/clubhouse-entry.webp",
+    alt: "A clubhouse entry with the concrete freshly cleaned",
   },
 ];
 
@@ -42,7 +45,7 @@ export function DualFunnel() {
               sizes="(min-width: 768px) 50vw, 100vw"
               className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/5 transition-opacity duration-500 group-hover:opacity-90 motion-reduce:transition-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/15 transition-opacity duration-500 group-hover:opacity-90 motion-reduce:transition-none" />
             <div className="relative">
               <h2
                 className="text-3xl font-medium text-white md:text-4xl"

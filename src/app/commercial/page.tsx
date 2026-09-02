@@ -20,16 +20,16 @@ import { METHODS, type Method } from "@/lib/methods";
 export const metadata: Metadata = {
   title: "Commercial & Property Manager Exterior Cleaning",
   description:
-    "Rinse It Off cleans commercial properties across the Portland metro — parking lots, trash pads, storefronts, and building facades. Start with a free 21-point property audit and a firm, itemized quote the same day we walk your property. Insured, with recurring maintenance plans.",
+    "Rinse It Off cleans commercial properties across the Portland metro — parking lots, trash pads, storefronts, siding and roofs. Start with a free 21-point property audit and a firm, itemized quote the same day we walk your property. Insured, with recurring maintenance plans.",
 };
 
 const PHONE_DISPLAY = "(503) 704-3755";
 const PHONE_TEL = "tel:+15037043755";
 const ASSESS_HREF = "/assessment?type=commercial";
 
-/** Commercial surfaces first: lead with lots, trash pads, facades and storefronts.
+/** Commercial surfaces first: lead with lots, trash pads, siding and storefronts.
  *  Copy is reused verbatim from the shared method-matching data (training material). */
-const COMMERCIAL_METHODS: Method[] = ["flatwork", "grease", "facade", "glass", "masonry", "roof"]
+const COMMERCIAL_METHODS: Method[] = ["flatwork", "grease", "siding", "glass", "masonry", "roof"]
   .map((k) => METHODS.find((m) => m.key === k))
   .filter((m): m is Method => m !== undefined);
 
@@ -99,8 +99,8 @@ export default function CommercialPage() {
         {/* ── HERO — cinematic commercial band (static, matches CinematicHero at rest) ── */}
         <section className="relative min-h-[100svh] w-full overflow-hidden bg-[#0C1215]">
           <Image
-            src="/brand/photos/building-wash.webp"
-            alt="A technician in a raised boom-lift basket soft-washing a multi-story commercial building facade"
+            src="/brand/photos/work/lot-steam-wide.webp"
+            alt="A Rinse It Off technician surface cleaning a commercial parking lot on an overcast morning"
             fill
             priority
             sizes="100vw"
@@ -125,7 +125,7 @@ export default function CommercialPage() {
               </h1>
 
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/85">
-                From parking lots and trash pads to storefronts and multi-story facades, we assess
+                From parking lots and trash pads to storefronts, siding and roofs, we assess
                 your property first — then match the right{" "}
                 <span className="text-white">pressure, temperature, and chemistry</span> to each
                 surface. It starts with a free 21-point property audit.
@@ -239,7 +239,7 @@ export default function CommercialPage() {
                 The right method for every commercial surface.
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-[#4B5C6B]">
-                Pressure is a tool, not a default. Lots, trash pads, facades, storefronts, masonry and
+                Pressure is a tool, not a default. Lots, trash pads, siding, storefronts, masonry and
                 roofs &mdash; each gets the method its material calls for, so it comes clean without
                 being worn down.
               </p>
@@ -376,8 +376,8 @@ export default function CommercialPage() {
         <section className="relative overflow-hidden">
           <div className="relative h-[70vh] min-h-[480px]">
             <Image
-              src="/brand/photos/surface-cleaning.webp"
-              alt="A commercial parking lot being surface-cleaned in an even, stripe-free pass"
+              src="/brand/photos/work/lot-steam-wide.webp"
+              alt="A commercial parking lot being surface-cleaned on an overcast morning"
               fill
               sizes="100vw"
               className="object-cover"

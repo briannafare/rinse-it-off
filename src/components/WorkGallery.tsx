@@ -7,8 +7,8 @@ import { useEffect, useRef } from "react";
  *  ponytail: no carousel lib; CSS scroll-snap + scrollBy is the whole engine. */
 const SHOTS = [
   { src: "surface-cleaner-steam", alt: "Technician guiding a surface cleaner through a cloud of steam on a clubhouse walkway", caption: "Hot-water surface cleaning, clubhouse walkway." },
-  { src: "driveway-before", alt: "Residential driveway covered in moss and grit in front of a cedar garage", caption: "Residential driveway — before." },
-  { src: "driveway-after", alt: "The same driveway rinsed clean and dark with water, looking down toward the street", caption: "Same driveway, after the wash." },
+  { src: "driveway-before", alt: "Residential driveway covered in moss and grit in front of a cedar garage", caption: "Moss and grit on a driveway apron, before we started." },
+  { src: "driveway-after", alt: "A residential driveway in the trees, washed clean and still wet", caption: "A driveway under the firs, finished." },
   { src: "clubhouse-entry", alt: "Clubhouse porte-cochère with freshly cleaned concrete and a hose still on the ground", caption: "Clubhouse entry, concrete just finished." },
   { src: "lot-steam-wide", alt: "Wide view of a parking lot with a technician surface cleaning under low clouds", caption: "Parking lot, early morning pass." },
   { src: "proshop-driveway", alt: "Curving driveway past a pro shop with the cleaned section still wet", caption: "Cart path and driveway by the pro shop." },
@@ -58,7 +58,8 @@ export function WorkGallery() {
             Straight off the truck.
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-[#4B5C6B]">
-            Phone photos from real jobs around the Portland metro — driveways, clubhouses, parking lots, event grounds.
+            Phone photos from real jobs around the Portland metro. Driveways and homes,
+            clubhouses, parking lots and event grounds.
           </p>
         </header>
         <div className="hidden shrink-0 gap-2 md:flex">

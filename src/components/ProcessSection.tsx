@@ -7,23 +7,23 @@ import { useScrollReveal, useStaggerReveal } from "@/lib/gsap";
 const STEPS = [
   {
     n: "01",
-    title: "We audit your property — free, 21 points",
-    body: "We assess every surface on-site — home, storefront, or facility — and hand you a firm, itemized quote the same day.",
+    title: "We walk it with you, free",
+    body: "We look at every surface on site, whether that's a house, a storefront or a whole facility, and you get a firm itemized quote the same day. It's 21 points and it costs nothing.",
   },
   {
     n: "02",
     title: "Reserve your slot, lock your price",
-    body: "Accept the quote and pick your day. Your price is locked, and a small deposit simply holds the date — nothing else charges yet.",
+    body: "Accept the quote and pick your day. Your price is locked, and a small deposit holds the date. Nothing else charges yet.",
   },
   {
     n: "03",
     title: "We clean. You walk it.",
-    body: "Method matched to every surface, residential or commercial. When we're done, you inspect the work before anything else happens.",
+    body: "Every surface gets the method it needs, at your house or at your building. When we're done you walk the job with us before anything else happens.",
   },
   {
     n: "04",
     title: "Pay the rest only when it's right",
-    body: "Balance settles after your walkthrough. Not happy with something? Our Clean Water Promise — we re-rinse anything you're not happy with, free, within 48 hours.",
+    body: "The balance settles after that walkthrough. If something isn't right, the Clean Water Promise covers it and we come back to re-rinse it free within 48 hours.",
   },
 ];
 
@@ -57,7 +57,7 @@ export function ProcessSection() {
           <div className="relative overflow-hidden rounded-3xl border border-[#E4ECF1] shadow-[0_30px_60px_-30px_rgba(20,45,60,0.3)]">
             <video
               src="/brand/video/surface-cleaning.mp4"
-              poster="/brand/photos/surface-cleaning.webp"
+              poster="/brand/photos/work/surface-cleaning-poster.webp"
               autoPlay={!reduceMotion}
               muted
               loop={!reduceMotion}

@@ -168,31 +168,31 @@ const EXTRA: Record<string, Omit<Service, keyof Method>> = {
     ],
   },
 
-  facade: {
-    slug: "building-facade-washing",
-    h1: "Building facade washing",
+  siding: {
+    slug: "house-washing",
+    h1: "House washing",
     intro:
-      "Multi-storey exteriors combine two problems: delicate, varied cladding and height you can't reach from a ladder. We solve both with boom-lift access and soft-wash chemistry — bringing the right cleaners safely to every floor and reading each surface as we go, from EIFS and stucco to metal panel and glass.",
+      "Siding doesn't get dirty the way concrete does. What builds up on lap siding, stucco and painted trim is a thin green film of algae and mildew that the north side of a Portland house grows all winter. High pressure would drive water behind the boards and strip paint, so we do the opposite: low pressure, the right cleaning solution, and enough dwell time for it to release on its own.",
     whenYouNeedIt:
-      "Streaked upper storeys, algae creeping up a north wall, or a building exterior that hasn't been touched since it was built. When the work is above ladder height and the cladding is mixed, high-reach soft wash is the safe, method-matched answer.",
+      "Green or grey film on the shaded walls, dark streaks under the gutters, cobwebs in every eave, or siding that looks tired next to the neighbours. If you're about to list the house or repaint it, this is the step that comes first.",
     bullets: [
-      "Boom-lift access brings the right method safely to every storey",
-      "Soft-wash chemistry matched to mixed cladding — EIFS, stucco, metal, glass",
-      "Multi-story offices, retail, industrial and HOA/multi-unit buildings",
-      "Recurring exterior programs keep large facades consistently clean",
+      "Low-pressure soft wash on lap siding, stucco, painted trim and soffits",
+      "Cleaning solution matched to the surface, then a full rinse so nothing is left behind",
+      "Plants and landscaping wet down before and rinsed after",
+      "Works the same on a single-storey house and a low-rise building",
     ],
     faqs: [
       {
-        q: "How do you reach the upper floors safely?",
-        a: "Boom-lift access, not ladders — it's safer for the crew and lets us apply an even, controlled soft wash across the whole facade instead of missing spots between ladder sets.",
+        q: "Will pressure washing damage my siding or paint?",
+        a: "It would, which is why we don't pressure wash siding. A house wash is a low-pressure application of a cleaning solution that does the work chemically, then a gentle rinse. Sound paint and properly installed siding come through it fine.",
       },
       {
-        q: "Is soft washing safe for stucco, EIFS and painted panels?",
-        a: "Yes — that's exactly why we soft wash facades. Low pressure plus matched chemistry lifts algae and grime without forcing water behind the cladding or stripping finishes.",
+        q: "What about my plants?",
+        a: "We soak the beds and shrubs with plain water before we start and rinse them again after. Wet foliage doesn't absorb the solution, and the rinse dilutes anything that reaches the soil.",
       },
       {
-        q: "Do you handle large multi-building or HOA properties?",
-        a: "Yes. Multi-building complexes, HOA communities and larger commercial sites are core work for us across the Portland metro and Willamette Valley — we scope access and scheduling to fit the property.",
+        q: "How high can you reach?",
+        a: "We work from the ground, which covers single and two-storey homes and low-rise buildings. If your property is taller than that, call us and we'll tell you honestly whether it's a job for us.",
       },
     ],
   },

@@ -10,7 +10,7 @@ const SHOTS = [
   {
     src: "/brand/photos/before-after-concrete.webp",
     alt: "Sidewalk half black with grime, half freshly cleaned, the surface cleaner still in frame",
-    caption: "Same sidewalk, one pass — the machine is still in the shot.",
+    caption: "One pass of the surface cleaner, with the machine still in frame."
   },
   {
     src: "/brand/photos/walkway-split.webp",
@@ -20,7 +20,7 @@ const SHOTS = [
   {
     src: "/brand/photos/walkway-cleaner.webp",
     alt: "A curb and sidewalk showing the clean line where washing stopped",
-    caption: "Curb line — grime on the left, finished work on the right.",
+    caption: "Grime on the left, finished work on the right."
   },
 ];
 
@@ -66,8 +66,8 @@ export function BeforeAfter() {
           The moment dirt lets go.
         </h2>
         <p className="mt-3 max-w-xl text-[#4B5C6B]">
-          No staging, no stock photography. Each shot is a real Portland-metro
-          job with the before and after in the same frame.
+          No staging and no stock photos. Each of these is a real Portland-metro job,
+          shot mid-pass, so the before and the after sit in the same frame.
         </p>
 
         {/* NOTE / TODO (needs Bri): this is a STATIC side-by-side evidence grid.

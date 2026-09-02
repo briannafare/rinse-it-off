@@ -56,8 +56,8 @@ export default function AreasIndexPage() {
         {/* Hero — dark image band */}
         <section className="relative w-full overflow-hidden bg-[#0C1215]">
           <Image
-            src="/brand/photos/building-wash.webp"
-            alt="A Rinse It Off technician soft-washing a multi-story building exterior"
+            src="/brand/photos/work/surface-cleaner-steam.webp"
+            alt="A Rinse It Off technician running a surface cleaner across a walkway, steam rising"
             fill
             priority
             sizes="100vw"

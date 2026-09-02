@@ -20,11 +20,12 @@ export function Methods() {
             className="mt-3 text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
           >
-            One company. Six methods. The right one for every surface.
+            Six methods, matched to what you actually have.
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-[#4B5C6B]">
-            Pressure is a tool, not a default. We assess your property first, then match the
-            method to each surface — so it comes clean without being blasted.
+            Pressure is a tool, not a default. A mossy roof and a greasy trash pad need
+            opposite things, so we look first and then pick the method. Your driveway and a
+            client&apos;s parking lot get the same machine and the same care.
           </p>
         </header>
 

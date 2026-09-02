@@ -14,10 +14,10 @@ const PHONE_TEL = "tel:+15037043755";
 
 // ── Local imagery only (all present in /public/brand/photos) ─────────────────
 const HERO_PHOTOS = [
-  { src: "/brand/photos/hero-woman.webp", alt: "A Rinse It Off technician rinsing the exterior of a home" },
-  { src: "/brand/photos/building-wash.webp", alt: "A technician in a raised boom-lift basket soft-washing a multi-story building facade" },
+  { src: "/brand/photos/house-softwash.webp", alt: "A technician soft-washing the siding of a Pacific Northwest home from the ground" },
+  { src: "/brand/photos/work/clubhouse-entry.webp", alt: "A clubhouse entry with the concrete freshly cleaned" },
   { src: "/brand/photos/roof-softwash.webp", alt: "A technician on a moss-covered shingle roof applying white soft-wash foam" },
-  { src: "/brand/photos/surface-cleaning.webp", alt: "Overhead view of a technician running a surface cleaner across a lot, cutting a clean arc" },
+  { src: "/brand/photos/walkway-split.webp", alt: "A walkway mid-clean, the finished half bright against the dark, dirty half" },
   { src: "/brand/photos/masonry-coldwater.webp", alt: "A technician rinsing dirt off a red-brick wall with a wide fan of water" },
   { src: "/brand/photos/window-purewater.webp", alt: "A technician cleaning a tall glass storefront with a water-fed pole" },
 ] as const;
@@ -464,8 +464,8 @@ export default async function AreaPage({
         <section className="relative overflow-hidden">
           <div className="relative h-[62vh] min-h-[440px]">
             <Image
-              src="/brand/photos/surface-cleaning.webp"
-              alt="A concrete surface being rinsed clean, restored from gray to bright"
+              src="/brand/photos/patio-umbrellas.webp"
+              alt="A clean aggregate concrete patio with tables and umbrellas after a wash"
               fill
               sizes="100vw"
               className="object-cover"

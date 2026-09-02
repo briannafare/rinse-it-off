@@ -2,14 +2,18 @@
 import Image from "next/image";
 import { Phone } from "lucide-react";
 
-/** The closer: show them the after — a surface restored from gray to bright. */
+/** The closer. Show a finished job and say plainly what happens next.
+ *  The old version ran "This surface was gray last week. Yours is next." over an
+ *  AI shot of a still-gray parking lot: the promise read as a threat and the photo
+ *  contradicted it. Real photo of a real finished patio, and copy that names the
+ *  next step instead of reaching for a line. */
 export function FinalCTA() {
   return (
     <section className="relative overflow-hidden">
       <div className="relative h-[70vh] min-h-[480px]">
         <Image
-          src="/brand/photos/surface-cleaning.webp"
-          alt="A concrete surface being rinsed clean, restored from gray to bright"
+          src="/brand/photos/patio-umbrellas.webp"
+          alt="A clean aggregate concrete patio with tables and umbrellas after a wash"
           fill
           sizes="100vw"
           className="object-cover"
@@ -21,15 +25,15 @@ export function FinalCTA() {
             className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            This surface was gray last week.
+            Free walkthrough.
             <br />
-            <span style={{ color: "#62C4EB" }}>Yours is next.</span>
+            <span style={{ color: "#62C4EB" }}>Firm price the same day.</span>
           </h2>
           <p className="mt-4 max-w-lg text-lg text-white/85">
-            Book your free 21-point property audit and get a firm, itemized
-            quote the same day we walk your property — home or business. Backed
-            by our Clean Water Promise: we re-rinse anything you&rsquo;re not
-            happy with, free, within 48 hours.
+            We walk the property with you, note every surface that needs work, and
+            leave you an itemized price you can take all of or part of. Same
+            walkthrough whether it&rsquo;s your house or your building. If something we
+            clean isn&rsquo;t right, we come back and re-rinse it free within 48 hours.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-6">
             <a
@@ -43,7 +47,7 @@ export function FinalCTA() {
               className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
             >
               <Phone className="h-4 w-4" aria-hidden />
-              (503) 704-3755 — talk to the team
+              (503) 704-3755
             </a>
           </div>
         </div>

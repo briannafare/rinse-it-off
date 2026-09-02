@@ -18,13 +18,13 @@ const POINTS: {
     icon: BadgeCheck,
     stat: null,
     title: "Method-matched, always",
-    body: "Soft wash on siding and roofs, hot water on concrete. Pressure is a tool, not a default.",
+    body: "Soft wash on siding and roofs, hot water on concrete, pure water on glass. We pick by surface, not by habit.",
   },
   {
     icon: ShieldCheck,
     stat: null,
     title: "Licensed & insured",
-    body: "We carry full liability insurance, so your home or building is covered before we ever start. Proof of coverage is ready for homeowners and property managers whenever you ask.",
+    body: "We carry full liability insurance, so your home or your building is covered before we start. Ask and we'll send the certificate the same day.",
   },
 ];
 

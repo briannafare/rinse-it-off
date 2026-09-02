@@ -8,13 +8,13 @@ const linkClass =
 // (single source of truth: src/lib/services.ts → SERVICE_SLUGS).
 const residentialServices = [
   { label: "Roof Soft Wash", slug: "roof-soft-wash" },
-  { label: "House & Siding Wash", slug: "building-facade-washing" },
+  { label: "House & Siding Wash", slug: "house-washing" },
   { label: "Driveways & Patios", slug: "concrete-surface-cleaning" },
   { label: "Windows & Glass", slug: "pure-water-window-cleaning" },
 ];
 
 const commercialServices = [
-  { label: "Building Washing", slug: "building-facade-washing" },
+  { label: "Siding & Exterior Walls", slug: "house-washing" },
   { label: "Storefront Glass", slug: "pure-water-window-cleaning" },
   { label: "Hot-Water Degreasing", slug: "hot-water-degreasing" },
   { label: "Brick & Masonry", slug: "brick-masonry-washing" },
