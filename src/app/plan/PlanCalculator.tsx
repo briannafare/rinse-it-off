@@ -161,7 +161,9 @@ const DS = `
   .stack-total { border-top: 1px solid var(--border); margin-top: 4px; padding-top: 8px; }
   .stack-total .t { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; font-size: 0.9375rem; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
   .stack-total .t.yours { border-top: 2px solid var(--ink); margin-top: 6px; padding-top: 12px; color: var(--ink); font-weight: 600; font-size: 1rem; }
-  .stack-total .t.yours .amt { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.125rem, 9vw, 2.5rem); letter-spacing: -0.03em; line-height: 1; }
+  .stack-total .t.yours .pay { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .stack-total .t.yours .amt { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.875rem, 8vw, 2.25rem); letter-spacing: -0.03em; line-height: 1; white-space: nowrap; }
+  .stack-total .t.yours .eq { font-family: var(--font-body); font-weight: 400; font-size: 0.8125rem; color: var(--text-muted); white-space: nowrap; }
   .save-block { background: var(--mint); color: var(--ink); border-radius: var(--r-lg); padding: 18px 20px 16px; margin-top: 10px; text-align: center; }
   .save-block .k { font-size: 0.9375rem; font-weight: 500; }
   .save-block .v { font-family: var(--font-display); font-weight: 500; font-size: 2rem; letter-spacing: -0.02em; line-height: 1; margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
@@ -248,6 +250,9 @@ const DS = `
   .reserve { border: 2px solid var(--border); border-radius: var(--r-lg); padding: 18px; margin-bottom: 14px; }
   .reserve h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.125rem; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 6px; }
   .reserve p { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px; }
+  .reserve.gated { border-style: dashed; }
+  .reserve.gated h3, .reserve.gated p { color: var(--text-muted); }
+  .btn.dev { border: 1px dashed var(--text-muted); font-size: 0.8125rem; min-height: 36px; margin-top: 8px; }
   .reserve .ok { background: var(--mint); color: var(--ink); border-radius: var(--r-md); padding: 12px 14px; font-size: 0.9375rem; line-height: 1.5; }
   .reserve a.btn { text-decoration: none; }
   .checkout { width: 100%; height: 720px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
@@ -311,7 +316,7 @@ function Check() {
   );
 }
 
-export default function PlanCalculator({ src }: { src: string }) {
+export default function PlanCalculator({ src, dryRun = false }: { src: string; dryRun?: boolean }) {
   const [step, setStep] = useState(0);
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
@@ -745,7 +750,13 @@ export default function PlanCalculator({ src }: { src: string }) {
                     ))}
                     <div className="stack-total">
                       <div className="t"><span>Total value</span><span>${fmt(stack.total)}</span></div>
-                      <div className="t yours"><span>Your price{billing === "annual" ? ", paid up front" : ", billed monthly"}</span><span className="amt">${fmt(stack.yourPrice)}</span></div>
+                      <div className="t yours">
+                        <span>Your price</span>
+                        <span className="pay">
+                          <span className="amt">{billing === "annual" ? `$${fmt(eff!.prepaid)} a year` : `$${fmt(eff!.monthly)}/mo`}</span>
+                          <span className="eq">{billing === "annual" ? `$${fmt(eff!.prepaidMonthly)}/mo equivalent` : `$${fmt(eff!.annual)} a year`}</span>
+                        </span>
+                      </div>
                     </div>
                     <div className="save-block">
                       <div className="k">You save</div>
@@ -900,11 +911,16 @@ export default function PlanCalculator({ src }: { src: string }) {
                       </>
                     )}
                     {depositErr && <div className="error" style={{ marginTop: 12, marginBottom: 0 }}>{depositErr}</div>}
+                    {dryRun && !depositPaid && (
+                      <button type="button" className="btn btn-ghost dev" onClick={() => setDepositPaid(true)}>Dev only: simulate paid</button>
+                    )}
                   </div>
 
-                  <div className="reserve">
+                  <div className={`reserve ${depositPaid ? "" : "gated"}`}>
                     <h3>Pick your first visit (optional)</h3>
-                    {bookedISO ? (
+                    {!depositPaid ? (
+                      <p style={{ marginBottom: 0 }}>Pay the ${DEPOSIT_USD} deposit to pick your first visit.</p>
+                    ) : bookedISO ? (
                       <div className="ok">Booked: {slotDate(bookedISO)} at {slotTime(bookedISO)}.</div>
                     ) : !slotsLoaded ? (
                       <p style={{ marginBottom: 0 }}>Checking the calendar.</p>

@@ -19,5 +19,6 @@ export default async function PlanPage({
   const params = await searchParams;
   const raw = Array.isArray(params.src) ? params.src[0] : params.src;
   const src = (raw || "").toLowerCase().trim();
-  return <PlanCalculator src={/^[a-z0-9-]{1,40}$/.test(src) ? src : "web"} />;
+  const dryRun = process.env.PLAN_DRY_RUN ? process.env.PLAN_DRY_RUN !== "false" : process.env.VERCEL_ENV !== "production";
+  return <PlanCalculator src={/^[a-z0-9-]{1,40}$/.test(src) ? src : "web"} dryRun={dryRun} />;
 }
