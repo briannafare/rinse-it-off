@@ -7,7 +7,7 @@ import {
   ADD_ON_GROUPS,
   DEPOSIT_USD,
   MEMBER_MONTHLY_DISCOUNT,
-  MEMBER_PREPAID_DISCOUNT,
+  MEMBERSHIPS_PER_YEAR,
   MONTHLY_FLOOR,
   MULTI_YEAR_PREPAID_DISCOUNT,
   PREPAID_UNDER_MONTHLY,
@@ -90,6 +90,7 @@ const DS = `
   .plan h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 4.5vw, 1.875rem); letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); margin-bottom: 8px; text-wrap: balance; }
   .plan .lead { font-size: 1rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 24px; text-wrap: pretty; }
   .plan .summary { font-size: 0.875rem; line-height: 1.6; color: var(--text-muted); margin: -2px 0 14px; text-wrap: pretty; }
+  .plan .summary strong { color: var(--text-primary); font-weight: 500; }
   .plan .linkish { background: none; border: none; padding: 0; font: inherit; color: var(--blue-deep); text-decoration: underline; cursor: pointer; min-height: 0; }
 
   .field { margin-bottom: 22px; }
@@ -135,6 +136,29 @@ const DS = `
   .btn-ghost { background: transparent; color: var(--text-secondary); font-family: var(--font-body); font-weight: 500; font-size: 0.9375rem; min-height: 44px; }
   .btn-ghost:hover { color: var(--ink); }
 
+  .offer { border: 2px solid var(--ink); border-radius: var(--r-lg); padding: 18px 20px 16px; margin-bottom: 12px; }
+  .offer .price-big { margin: 0 0 4px; }
+  .offer .bill { font-size: 1rem; color: var(--text-primary); line-height: 1.5; margin-bottom: 8px; }
+  .lock { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .lock-label { font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); white-space: nowrap; }
+  .lock-choices { display: flex; gap: 6px; flex: 1; }
+  .lock-choices button { flex: 1; min-height: 40px; border: 2px solid var(--border); border-radius: var(--r-sm); background: var(--surface); font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; color: var(--ink); cursor: pointer; }
+  .lock-choices button.on { border-color: var(--blue); background: var(--blue-wash); }
+  .stack { margin: 18px 0 6px; }
+  .stack h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.125rem; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 6px; }
+  .stack-row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--border-light); font-size: 0.9375rem; }
+  .stack-row .l { color: var(--text-primary); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .stack-row .a { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--text-primary); }
+  .stack-row .a.strike { text-decoration: line-through; color: var(--text-muted); }
+  .stack-row .free { font-size: 0.75rem; font-weight: 500; color: var(--ink); border: 1px solid var(--ink); border-radius: var(--r-sm); padding: 0 7px; line-height: 1.5; }
+  .stack-total { border-top: 2px solid var(--ink); margin-top: 4px; padding-top: 8px; }
+  .stack-total .t { display: flex; justify-content: space-between; padding: 5px 0; font-size: 1rem; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .save-block { background: var(--mint); color: var(--ink); border-radius: var(--r-lg); padding: 18px 20px 16px; margin-top: 10px; text-align: center; }
+  .save-block .k { font-size: 0.9375rem; font-weight: 500; }
+  .save-block .v { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.75rem, 12vw, 3.5rem); letter-spacing: -0.03em; line-height: 1; margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
+  .save-block .s { font-size: 0.9375rem; line-height: 1.4; }
+  .scarcity { background: var(--surface-alt); border-radius: var(--r-lg); padding: 14px 16px; margin-top: 18px; font-size: 0.9375rem; line-height: 1.55; color: var(--text-primary); text-wrap: pretty; }
+  .guarantee { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.5; margin-top: 12px; text-wrap: pretty; }
   .price-big { display: flex; align-items: baseline; gap: 6px; margin: 4px 0 6px; }
   .price-big .num { font-family: var(--font-display); font-weight: 400; font-size: clamp(4rem, 18vw, 6rem); letter-spacing: -0.04em; line-height: 0.95; color: var(--ink); font-variant-numeric: tabular-nums; }
   .price-big .per { font-family: var(--font-body); font-size: 1.125rem; color: var(--text-secondary); }
@@ -149,16 +173,7 @@ const DS = `
   .toggle button.on { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-soft); }
   .toggle .tag { font-family: var(--font-body); font-size: 0.75rem; font-weight: 500; color: var(--ink); background: var(--mint); border-radius: var(--r-sm); padding: 2px 7px; }
 
-  .saves { background: var(--mint); color: var(--ink); border-radius: var(--r-lg); padding: 22px 22px; margin: 4px 0 14px; }
-  .saves .big { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 6vw, 1.875rem); letter-spacing: -0.02em; line-height: 1.15; text-wrap: balance; }
-  .saves .more { font-size: 0.9375rem; line-height: 1.5; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(12,18,21,0.18); color: var(--ink); }
-  .saves .more strong { font-weight: 500; }
 
-  .covers { background: var(--surface-alt); border-radius: var(--r-lg); padding: 14px 18px; margin-bottom: 14px; }
-  .covers ul { list-style: none; display: grid; gap: 6px; }
-  .covers li { font-size: 0.9375rem; line-height: 1.45; color: var(--text-primary); display: flex; gap: 10px; align-items: baseline; }
-  .covers li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; transform: translateY(-2px); }
-  .covers li span { color: var(--text-muted); }
 
   .fine { font-size: 0.875rem; line-height: 1.55; color: var(--text-muted); text-wrap: pretty; }
 
@@ -354,6 +369,24 @@ export default function PlanCalculator({ src }: { src: string }) {
   const chosen = ADD_ONS.filter((a) => addOns.includes(a.key));
   // What the customer pays under the billing they picked, as a short phrase.
   const termLine = term > 1 ? `, price locked for ${term} years` : "";
+  // Value stack rows: the four seasons carry the access charges so the rows
+  // add up to the seasonal à la carte total, then windows and screens.
+  const stack = useMemo(() => {
+    if (!price) return null;
+    const amt = (k: string) => price.lines.find((l) => l.key === k)?.amount ?? 0;
+    const storyShare = amt("story-access") / 4;
+    const season = (keys: string[]) => (keys.reduce((t, k) => t + amt(k), 0) + storyShare) * price.accessMultiplier;
+    const rows = [
+      { label: "Spring roof and siding", value: season(["roof", "siding"]) },
+      { label: "Summer driveway and walkways", value: season(["driveway"]) },
+      { label: "Fall gutters and downspouts", value: season(["gutters"]) },
+      { label: "Winter walkways and entry", value: season(["winter"]) },
+      { label: `Exterior windows, ${WINDOW_VISITS_PER_YEAR} visits`, value: price.windowsAnnualValue, free: true },
+      { label: `Screens, ${WINDOW_VISITS_PER_YEAR} visits, you remove and reinstall`, value: price.screensAnnualValue, free: true },
+    ];
+    const yourPrice = billing === "annual" ? price.prepaidAnnual : price.memberAnnual;
+    return { rows, total: price.valueReceived, yourPrice, save: Math.max(0, Math.round(price.valueReceived - yourPrice)) };
+  }, [price, billing]);
   const priceLine = price
     ? billing === "annual"
       ? `$${fmt(price.prepaidMonthlyEquivalent)} a month on a 12-month membership, paid $${fmt(price.prepaidAnnual)} up front${termLine}`
@@ -469,7 +502,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                   </div>
                 ))}
               </div>
-              {step >= 1 && price && (
+              {step >= 2 && price && (
                 <div className="strip">
                   You save ${fmt(price.savedVsAlaCarte)} this year<span>·</span>${fmt(price.windowsAnnualValue + price.screensAnnualValue)} of windows and screens free
                 </div>
@@ -597,56 +630,59 @@ export default function PlanCalculator({ src }: { src: string }) {
                 </form>
               )}
 
-              {step === 1 && price && house && (
+              {step === 1 && price && house && stack && (
                 <div>
-                  <h2>Here&apos;s your number.</h2>
                   <p className="summary">
-                    {house.livingSqft.toLocaleString()} sq ft · {house.stories === 3 ? "3+ stories" : house.stories === 2 ? "2 stories" : "1 story"} · {house.windows} windows · {house.roof === "shake-steep" ? "wood shake or steep" : house.roof === "metal-tile" ? "metal or tile" : "composition"} roof · {house.driveway === "large" ? "large" : house.driveway === "small" ? "small" : "typical"} driveway · {house.access === "gated-tight" ? "gated or tight" : house.access === "steep-ladder" ? "steep" : "easy"} access
+                    <strong>{house.address}</strong> · {house.livingSqft.toLocaleString()} sq ft · {house.stories === 3 ? "3 stories" : house.stories === 2 ? "2 stories" : "1 story"} · {house.windows} windows · {house.roof === "shake-steep" ? "wood shake or steep" : house.roof === "metal-tile" ? "metal or tile" : "composition"} roof · {house.driveway === "large" ? "large" : house.driveway === "small" ? "small" : "typical"} driveway · {house.access === "gated-tight" ? "gated or tight" : house.access === "steep-ladder" ? "steep" : "easy"} access
                     {Object.keys(exact).length > 0 && (
                       <> · you gave: {[exact.roofSf && `roof ${exact.roofSf.toLocaleString()} sq ft`, exact.drivewaySf && `driveway ${exact.drivewaySf.toLocaleString()} sq ft`, exact.walkwaySf && `walkways ${exact.walkwaySf.toLocaleString()} sq ft`, exact.gutterLf && `gutters ${exact.gutterLf.toLocaleString()} ft`, exact.largeWindows && `${exact.largeWindows} large windows`, exact.frenchWindows && `${exact.frenchWindows} French windows`].filter(Boolean).join(", ")}</>
                     )}
                     {" "}<button type="button" className="linkish" onClick={() => go(0)}>Edit</button>
                   </p>
+
                   <div className="toggle" role="group" aria-label="Billing">
                     <button type="button" className={billing === "monthly" ? "on" : ""} onClick={() => setBilling("monthly")} aria-pressed={billing === "monthly"}>Monthly</button>
                     <button type="button" className={billing === "annual" ? "on" : ""} onClick={() => setBilling("annual")} aria-pressed={billing === "annual"}>Annual <span className="tag">save {PCT(PREPAID_UNDER_MONTHLY)}</span></button>
                   </div>
-                  <div className="term">
-                    <div className="q">Lock in extra years at today&apos;s price. It can&apos;t go up on you.</div>
-                    <div className="choices cols-3" role="group" aria-label="Lock your price">
+
+                  <div className="offer">
+                    <div className="price-big">
+                      <span className="num">${fmt(billing === "annual" ? price.prepaidMonthlyEquivalent : price.memberMonthly)}</span>
+                      <span className="per">/mo</span>
+                    </div>
+                    <p className="bill">{billing === "annual" ? <>${fmt(price.prepaidAnnual)} once a year. You save ${fmt(price.prepaySavesMore)} vs monthly.</> : <>Billed monthly. 12-month membership.</>}</p>
+                    <p className="fine" style={{ marginBottom: 0 }}>This is your starting price. Our first visit confirms it, and unusual height or access can add to it.</p>
+                  </div>
+
+                  <div className="lock">
+                    <span className="lock-label">Lock your price</span>
+                    <div className="lock-choices" role="group" aria-label="Lock your price">
                       {TERM_OPTIONS.map((y) => (
-                        <button key={y} type="button" className={`choice center ${term === y ? "on" : ""}`} onClick={() => setTerm(y)} aria-pressed={term === y}>{y} {y === 1 ? "year" : "years"}</button>
+                        <button key={y} type="button" className={term === y ? "on" : ""} onClick={() => setTerm(y)} aria-pressed={term === y}>{y} {y === 1 ? "year" : "years"}</button>
                       ))}
                     </div>
-                    {billing === "annual" && term > 1 && (
-                      <p className="term-note">Prepay the full term and save {PCT(MULTI_YEAR_PREPAID_DISCOUNT)} off booking each visit: ${fmt(prepaidTermTotal(price.coreAnnual, term))} for {term} years.</p>
-                    )}
                   </div>
-                  <div className="price-big">
-                    <span className="num">${fmt(billing === "annual" ? price.prepaidMonthlyEquivalent : price.memberMonthly)}</span>
-                    <span className="per">/mo</span>
-                  </div>
-                  <p className="price-for">
-                    {billing === "annual"
-                      ? <>12-month membership paid up front, ${fmt(price.prepaidAnnual)} for the year, {PCT(PREPAID_UNDER_MONTHLY)} under the monthly price. For <strong>{house.address}</strong>.</>
-                      : <>12-month membership, billed monthly. For <strong>{house.address}</strong>.</>}
-                  </p>
-                  <p className="fine" style={{ marginBottom: 14 }}>This is your starting price. Our first visit confirms it, and unusual height or access can add to it.</p>
+                  {billing === "annual" && term > 1 && (
+                    <p className="term-note">Prepay the full term and save {PCT(MULTI_YEAR_PREPAID_DISCOUNT)} off booking each visit: ${fmt(prepaidTermTotal(price.coreAnnual, term))} for {term} years.</p>
+                  )}
 
-                  <div className="saves">
-                    <div className="big">${fmt(price.savedVsAlaCarte)} this year, including ${fmt(price.windowsAnnualValue + price.screensAnnualValue)} of window and screen cleaning free.</div>
-                    <div className="more">Prepay the year and save {PCT(PREPAID_UNDER_MONTHLY)}: <strong>${fmt(price.prepaySavesMore)}</strong> less, <strong>${fmt(price.prepaidMonthlyEquivalent)} a month</strong>.</div>
-                  </div>
-
-                  <div className="covers">
-                    <ul>
-                      <li>Roof and siding <span>spring</span></li>
-                      <li>Driveway and walkways <span>summer</span></li>
-                      <li>Gutters <span>fall</span></li>
-                      <li>Walkways and steps <span>winter</span></li>
-                      <li>Exterior windows, free <span>{WINDOW_VISITS_PER_YEAR} times a year</span></li>
-                      <li>Window screens, free, if you remove and reinstall them</li>
-                    </ul>
+                  <div className="stack">
+                    <h3>What you get</h3>
+                    {stack.rows.map((r) => (
+                      <div className="stack-row" key={r.label}>
+                        <span className="l">{r.label}{r.free && <span className="free">Free</span>}</span>
+                        <span className={`a ${r.free ? "strike" : ""}`}>${fmt(r.value)}</span>
+                      </div>
+                    ))}
+                    <div className="stack-total">
+                      <div className="t"><span>Total value</span><span>${fmt(stack.total)}</span></div>
+                      <div className="t"><span>Your price</span><span>${fmt(stack.yourPrice)}</span></div>
+                    </div>
+                    <div className="save-block">
+                      <div className="k">You save</div>
+                      <div className="v">${fmt(stack.save)}</div>
+                      <div className="s">including ${fmt(price.windowsAnnualValue + price.screensAnnualValue)} of windows and screens, free</div>
+                    </div>
                   </div>
 
                   <details className="math">
@@ -664,35 +700,16 @@ export default function PlanCalculator({ src }: { src: string }) {
                           <span className="a">${fmt(price.coreAnnual - price.coreAnnual / price.accessMultiplier)}</span>
                         </div>
                       )}
-                      <div className="math-line total">
-                        <span className="l">Seasonal work, booked one at a time</span>
-                        <span className="a">${fmt(price.coreAnnual)}</span>
-                      </div>
-                      <div className="math-line mint">
-                        <span className="l">Member price, {PCT(MEMBER_MONTHLY_DISCOUNT)} off{price.memberMonthly === MONTHLY_FLOOR && (price.coreAnnual * (1 - MEMBER_MONTHLY_DISCOUNT)) / 12 < MONTHLY_FLOOR && <span className="d">Our smallest plan is ${MONTHLY_FLOOR} a month</span>}</span>
-                        <span className="a">{price.coreAnnual - price.memberAnnual > 0 ? `-$${fmt(price.coreAnnual - price.memberAnnual)}` : "$0"}</span>
-                      </div>
-                      <div className="math-line">
-                        <span className="l">Exterior windows<span className="d">{house.windows} windows · ${fmt(price.windowsPerVisitValue)} a visit · {WINDOW_VISITS_PER_YEAR} visits a year</span></span>
-                        <span className="a wrap"><span className="strike">${fmt(price.windowsAnnualValue)}</span><span className="free">Free with the membership</span></span>
-                      </div>
-                      <div className="math-line">
-                        <span className="l">Window screens<span className="d">Cleaned free while they&apos;re off · you take them down and put them back</span></span>
-                        <span className="a wrap"><span className="strike">${fmt(price.screensAnnualValue)}</span><span className="free">Free with the membership</span></span>
-                      </div>
-                      <div className="math-line total">
-                        <span className="l">Your membership year</span>
-                        <span className="a">${fmt(price.memberAnnual)}</span>
-                      </div>
-                      <div className="math-line total">
-                        <span className="l">Prepay the year and save {PCT(PREPAID_UNDER_MONTHLY)}</span>
-                        <span className="a">${fmt(price.prepaidAnnual)}</span>
-                      </div>
                     </div>
                   </details>
 
+                  <div className="scarcity">
+                    We take {MEMBERSHIPS_PER_YEAR} new memberships a year in the Portland metro. Every one is four visits we have to keep, so once your neighborhood&apos;s route fills, it&apos;s full until next year.
+                  </div>
+                  <p className="guarantee">Before-and-after photos every visit. Anything not right, we re-rinse it free within 48 hours.</p>
+
                   <div style={{ display: "grid", gap: 8, marginTop: 20 }}>
-                    <button type="button" className="btn btn-ink" onClick={() => go(2)}>Next, add-ons</button>
+                    <button type="button" className="btn btn-ink" onClick={() => go(2)}>{billing === "annual" ? "Claim the annual price" : `Claim $${fmt(price.memberMonthly)}/mo`}</button>
                     <button type="button" className="btn btn-ghost" onClick={() => go(0)}>Change something about the house</button>
                   </div>
                 </div>

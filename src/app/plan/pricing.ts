@@ -197,6 +197,7 @@ export function prepaidTermTotal(coreAnnual: number, years: TermYears): number {
 export const MONTHLY_FLOOR = 189; // postcard's "from $189" for a basic 3-bedroom
 export const ADDON_MEMBER_DISCOUNT = 0.1; // add-on menu = list × 0.90 for members
 export const DEPOSIT_USD = 99; // route-slot deposit, applied to the first month. Bri can change this.
+export const MEMBERSHIPS_PER_YEAR = 150; // new memberships taken per year in the Portland metro (same SLOTS as the postcard). Bri sets the real number.
 
 export interface PriceLine {
   key: string;
