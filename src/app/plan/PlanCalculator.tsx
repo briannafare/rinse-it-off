@@ -875,7 +875,7 @@ export default function PlanCalculator({ src }: { src: string }) {
               {step === 4 && price && house && saved && (
                 <div>
                   <h2>Reserve your price.</h2>
-                  <p className="lead">{priceLine} for {house.address}. {schedule}. The deposit reserves your price and comes off your membership total.</p>
+                  <p className="lead">${fmt(billing === "annual" ? eff!.prepaidMonthly : eff!.monthly)} a month on a 12-month membership for {house.addressParts ? `${house.addressParts.street}, ${house.addressParts.city}` : house.address}.</p>
 
                   <div className="reserve">
                     <h3>Reserve your price</h3>
@@ -896,6 +896,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                         <button type="button" className="btn btn-ink" onClick={startDeposit} disabled={depositBusy}>
                           {depositBusy ? "Setting it up" : `Reserve your price with a $${DEPOSIT_USD} deposit`}
                         </button>
+                        <p className="fine" style={{ marginTop: 10, marginBottom: 0 }}>The deposit reserves your price and comes off your membership total.</p>
                       </>
                     )}
                     {depositErr && <div className="error" style={{ marginTop: 12, marginBottom: 0 }}>{depositErr}</div>}
