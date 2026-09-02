@@ -9,10 +9,13 @@ const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
 const GHL_API_BASE = "https://services.leadconnectorhq.com";
 const GHL_VERSION = "2021-07-28";
 
-// "Residential Pressure Washing Pipeline". Env-set in Vercel and .env.local;
-// if either is missing the opportunity step is skipped, not fatal.
-const RESIDENTIAL_PIPELINE_ID = process.env.GHL_RESIDENTIAL_PIPELINE_ID || "";
-const RESIDENTIAL_STAGE_ID = process.env.GHL_RESIDENTIAL_STAGE_ID || "";
+// "Yearly Membership" pipeline (created via the GHL internal API 2026-09-02):
+// Quote -> Reserved (deposit paid) -> Agreement sent -> Locked (auto-pay active)
+// -> First visit booked -> Active member -> Cancelled. The site owns the first
+// two moves; the draft GHL workflows own the rest.
+const MEMBERSHIP_PIPELINE_ID = process.env.GHL_MEMBERSHIP_PIPELINE_ID || "gEExm2BmYLfzSJGvboJl";
+const MEMBERSHIP_STAGE_QUOTE_ID = process.env.GHL_MEMBERSHIP_STAGE_QUOTE_ID || "c2e5d071-0b8b-4dba-8940-8edbeb35dbe3";
+const MEMBERSHIP_STAGE_RESERVED_ID = process.env.GHL_MEMBERSHIP_STAGE_RESERVED_ID || "01971855-317c-419c-8e8e-af0f034aabd8";
 
 // Property Assessment calendar (same one the /assessment form books), 45-min slots.
 const AUDIT_CALENDAR_ID = process.env.GHL_AUDIT_CALENDAR_ID || "tA6NtDSKU60mNlSNXLS9";
@@ -228,6 +231,19 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
         country: "US",
         source,
         tags,
+        // Membership custom fields (created 2026-09-02). Notes never merge into
+        // GHL emails or documents; these do, so the team notification and the
+        // membership agreement read them.
+        customFields: [
+          { key: "membership_monthly_price", field_value: eff.monthly },
+          { key: "membership_year_total", field_value: eff.annual },
+          { key: "membership_prepaid_total", field_value: eff.prepaid },
+          { key: "membership_monthly_after_deposit", field_value: Math.ceil((eff.annual - DEPOSIT_USD) / 12) },
+          { key: "membership_billing", field_value: billing },
+          { key: "membership_term_years", field_value: term },
+          { key: "membership_start_month", field_value: new Date().toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "America/Los_Angeles" }) },
+          { key: "membership_addons_requested", field_value: chosenAddOns.length ? chosenAddOns.map((a) => a.label).join(", ") : "none" },
+        ],
       }),
     });
     if (!contactRes.ok) {
@@ -241,16 +257,17 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       return fallback;
     }
 
-    // 2) Opportunity in the Residential pipeline, worth the membership year.
-    if (RESIDENTIAL_PIPELINE_ID && RESIDENTIAL_STAGE_ID) {
+    // 2) Opportunity in the Yearly Membership pipeline at "Quote", worth the
+    //    membership year. A repeat visitor keeps their card (and its stage).
+    if (MEMBERSHIP_PIPELINE_ID && MEMBERSHIP_STAGE_QUOTE_ID) {
       try {
         const oppRes = await fetch(`${GHL_API_BASE}/opportunities/`, {
           method: "POST",
           headers: ghlHeaders,
           body: JSON.stringify({
-            pipelineId: RESIDENTIAL_PIPELINE_ID,
+            pipelineId: MEMBERSHIP_PIPELINE_ID,
             locationId: GHL_LOCATION_ID,
-            pipelineStageId: RESIDENTIAL_STAGE_ID,
+            pipelineStageId: MEMBERSHIP_STAGE_QUOTE_ID,
             contactId,
             name: `Yearly membership · ${house.address || name}`,
             status: "open",
@@ -277,7 +294,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
         console.error("GHL opportunity error:", e);
       }
     } else {
-      console.warn("Residential opportunity skipped: GHL_RESIDENTIAL_PIPELINE_ID/STAGE_ID not set.");
+      console.warn("Membership opportunity skipped: GHL_MEMBERSHIP_PIPELINE_ID/GHL_MEMBERSHIP_STAGE_QUOTE_ID not set.");
     }
 
     // 3) The structured note (fail-soft).
@@ -321,6 +338,31 @@ async function addNote(contactId: string, body: string) {
     });
   } catch (e) {
     console.error("GHL note error:", e);
+  }
+}
+
+/** Moves the contact's Yearly Membership card to a stage. Fail-soft: the
+ *  draft GHL "deposit paid" workflow makes the same move when it is published. */
+async function moveMembershipOpportunity(contactId: string, stageId: string) {
+  if (!MEMBERSHIP_PIPELINE_ID || !stageId) return;
+  try {
+    const q = new URLSearchParams({ location_id: GHL_LOCATION_ID || "", contact_id: contactId, pipeline_id: MEMBERSHIP_PIPELINE_ID, limit: "5" });
+    const res = await fetch(`${GHL_API_BASE}/opportunities/search?${q}`, { headers: ghlHeaders, cache: "no-store" });
+    if (!res.ok) {
+      console.error("GHL opportunity search failed:", res.status, await res.text());
+      return;
+    }
+    const data = (await res.json()) as { opportunities?: { id: string; pipelineId?: string; pipelineStageId?: string }[] };
+    const opp = (data.opportunities || []).find((o) => o.pipelineId === MEMBERSHIP_PIPELINE_ID);
+    if (!opp || opp.pipelineStageId === stageId) return;
+    const upd = await fetch(`${GHL_API_BASE}/opportunities/${opp.id}`, {
+      method: "PUT",
+      headers: ghlHeaders,
+      body: JSON.stringify({ pipelineStageId: stageId }),
+    });
+    if (!upd.ok) console.error("GHL opportunity stage move failed:", upd.status, await upd.text());
+  } catch (e) {
+    console.error("GHL opportunity stage move error:", e);
   }
 }
 
@@ -543,6 +585,8 @@ export async function confirmDeposit(contactId: string): Promise<{ paid: boolean
     if (!hit) return { paid: false };
     await addTags(contactId, ["membership-deposit-paid"]);
     await addNote(contactId, `Membership deposit paid: $${hit.amount} (${hit.status}) via the plan page checkout.`);
+    // Deposit paid = price RESERVED. Locked comes later (agreement signed + auto-pay).
+    await moveMembershipOpportunity(contactId, MEMBERSHIP_STAGE_RESERVED_ID);
     return { paid: true };
   } catch (e) {
     console.error("confirmDeposit error:", e);
