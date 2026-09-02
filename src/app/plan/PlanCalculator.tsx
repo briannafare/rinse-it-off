@@ -262,10 +262,18 @@ export default function PlanCalculator({ src }: { src: string }) {
   const [access, setAccess] = useState<Access>("easy");
   const [exactText, setExactText] = useState<Record<keyof ExactInputs, string>>({ roofSf: "", drivewaySf: "", walkwaySf: "", gutterLf: "", wallHeightFt: "", largeWindows: "", frenchWindows: "" });
   const setExact = (k: keyof ExactInputs, v: string) => setExactText((p) => ({ ...p, [k]: v.replace(/[^0-9]/g, "").slice(0, 6) }));
-  // Closing an expander means "use the generic choice": its numbers are cleared.
-  const clearOnClose = (keys: (keyof ExactInputs)[]) => (e: React.SyntheticEvent<HTMLDetailsElement>) => {
-    if (!e.currentTarget.open) setExactText((p) => { const n = { ...p }; keys.forEach((k) => { n[k] = ""; }); return n; });
-  };
+  // An expander stays open while it holds a number (so coming back to this
+  // step shows what was typed). Closing it means "use the generic choice":
+  // its numbers are cleared.
+  const [openMore, setOpenMore] = useState<Record<string, boolean>>({});
+  const moreProps = (name: string, keys: (keyof ExactInputs)[]) => ({
+    open: !!openMore[name] || keys.some((k) => exactText[k] !== ""),
+    onToggle: (e: React.SyntheticEvent<HTMLDetailsElement>) => {
+      const isOpen = e.currentTarget.open;
+      setOpenMore((p) => ({ ...p, [name]: isOpen }));
+      if (!isOpen) setExactText((p) => { const n = { ...p }; keys.forEach((k) => { n[k] = ""; }); return n; });
+    },
+  });
   const exact = useMemo(() => {
     const out: ExactInputs = {};
     (Object.keys(exactText) as (keyof ExactInputs)[]).forEach((k) => { const n = parseInt(exactText[k], 10); if (n > 0) out[k] = n; });
@@ -493,7 +501,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                     <label htmlFor="windows">Exterior windows</label>
                     <input id="windows" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="14" value={windows} onChange={(e) => setWindows(e.target.value.replace(/[^0-9]/g, ""))} required />
                     <div className="help">Count what you can see from outside.</div>
-                    <details className="more" onToggle={clearOnClose(["largeWindows", "frenchWindows"])}>
+                    <details className="more" {...moreProps("windows", ["largeWindows", "frenchWindows"])}>
                       <summary>Add details</summary>
                       <div className="row two">
                         <div><label htmlFor="largeWindows">Large or picture windows</label><input id="largeWindows" type="text" inputMode="numeric" value={exactText.largeWindows} onChange={(e) => setExact("largeWindows", e.target.value)} /></div>
@@ -515,7 +523,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                         </button>
                       ))}
                     </div>
-                    <details className="more" onToggle={clearOnClose(["roofSf"])}>
+                    <details className="more" {...moreProps("roof", ["roofSf"])}>
                       <summary>Enter roof size</summary>
                       <div className="row">
                         <div><label htmlFor="roofSf">Roof, sq ft</label><input id="roofSf" type="text" inputMode="numeric" value={exactText.roofSf} onChange={(e) => setExact("roofSf", e.target.value)} /></div>
@@ -537,7 +545,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                         </button>
                       ))}
                     </div>
-                    <details className="more" onToggle={clearOnClose(["drivewaySf", "walkwaySf"])}>
+                    <details className="more" {...moreProps("driveway", ["drivewaySf", "walkwaySf"])}>
                       <summary>Enter dimensions</summary>
                       <div className="row two">
                         <div><label htmlFor="drivewaySf">Driveway, sq ft</label><input id="drivewaySf" type="text" inputMode="numeric" value={exactText.drivewaySf} onChange={(e) => setExact("drivewaySf", e.target.value)} /></div>
@@ -548,7 +556,7 @@ export default function PlanCalculator({ src }: { src: string }) {
 
                   <div className="field">
                     <div className="q">Gutters</div>
-                    <details className="more" style={{ marginTop: 0 }} onToggle={clearOnClose(["gutterLf"])}>
+                    <details className="more" style={{ marginTop: 0 }} {...moreProps("gutters", ["gutterLf"])}>
                       <summary>Enter linear feet</summary>
                       <div className="row">
                         <div><label htmlFor="gutterLf">Gutters, linear ft</label><input id="gutterLf" type="text" inputMode="numeric" value={exactText.gutterLf} onChange={(e) => setExact("gutterLf", e.target.value)} /></div>
@@ -570,7 +578,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                         </button>
                       ))}
                     </div>
-                    <details className="more" onToggle={clearOnClose(["wallHeightFt"])}>
+                    <details className="more" {...moreProps("walls", ["wallHeightFt"])}>
                       <summary>Enter wall height</summary>
                       <div className="row">
                         <div><label htmlFor="wallHeightFt">Wall height, ft</label><input id="wallHeightFt" type="text" inputMode="numeric" value={exactText.wallHeightFt} onChange={(e) => setExact("wallHeightFt", e.target.value)} /></div>
