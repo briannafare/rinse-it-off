@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
-import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnPriceLabel, prepaidTermTotal, priceHouse, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
+import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, prepaidTermTotal, priceHouse, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -60,6 +60,7 @@ const ghlHeaders = {
 export interface PlanQuoteData {
   house: HouseInputs;
   addOns: string[]; // AddOn keys
+  addOnAnswers?: Record<string, AddOnAnswer>;
   name: string;
   phone: string;
   email: string;
@@ -85,19 +86,30 @@ function cleanSrc(raw: string | undefined | null): string {
   return /^[a-z0-9-]{1,40}$/.test(s) ? s : "web";
 }
 
+function cleanAnswer(a: AddOnAnswer | undefined): AddOnAnswer | undefined {
+  if (!a) return undefined;
+  const qty = Math.min(1000000, Math.max(0, Math.floor(Number(a.qty) || 0)));
+  const surfaces = Array.isArray(a.surfaces) ? a.surfaces.filter((x) => x === "walkways" || x === "walls") : undefined;
+  return { qty: qty > 0 ? qty : undefined, notSure: !!a.notSure, surfaces };
+}
+
 function cleanHouse(h: HouseInputs): HouseInputs {
   const num = (n: unknown, max: number) => Math.min(max, Math.max(0, Math.floor(Number(n) || 0)));
   const stories = h.stories === 2 ? 2 : h.stories === 3 ? 3 : 1;
   const roof = h.roof === "shake-steep" || h.roof === "metal-tile" ? h.roof : "composition";
   const driveway = h.driveway === "small" || h.driveway === "large" ? h.driveway : "typical";
   const access = h.access === "gated-tight" || h.access === "steep-ladder" ? h.access : "easy";
+  const ap = h.addressParts;
+  const clean = (v: unknown, n: number) => String(v || "").trim().slice(0, n);
+  const addressParts: AddressParts | undefined = ap ? { street: clean(ap.street, 120), city: clean(ap.city, 60), state: (clean(ap.state, 2).toUpperCase() || "OR"), zip: clean(ap.zip, 10).replace(/[^0-9-]/g, "") } : undefined;
   const exact: ExactInputs = {};
   for (const k of EXACT_KEYS) {
     const v = num((h.exact || {})[k], 100000);
     if (v > 0) exact[k] = v;
   }
   return {
-    address: String(h.address || "").trim().slice(0, 200),
+    address: addressParts ? [addressParts.street, addressParts.city, `${addressParts.state} ${addressParts.zip}`.trim()].filter(Boolean).join(", ") : String(h.address || "").trim().slice(0, 200),
+    addressParts,
     livingSqft: num(h.livingSqft, 50000),
     stories,
     windows: num(h.windows, 500),
@@ -185,8 +197,8 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       `  Contract value: $${yearValue}`,
       `  Saved vs one at a time: $${price.savedVsAlaCarte}`,
       "",
-      `Add-ons asked about (member price, quantities measured at first visit)`,
-      ...(chosenAddOns.length ? chosenAddOns.map((a) => `  ${a.label}: ${addOnPriceLabel(a, house)}`) : ["  none"]),
+      "Add-ons requested (member totals for the crew; the customer saw no prices)",
+      ...(chosenAddOns.length ? chosenAddOns.map((a) => `  ${addOnEstimate(a, cleanAnswer((data.addOnAnswers || {})[a.key]), price)}`) : ["  none"]),
       "",
       `Best day for visits: ${bestDay || "no preference"}`,
     ];
@@ -203,7 +215,11 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
         name,
         email: email || undefined,
         phone,
-        address1: house.address || undefined,
+        address1: house.addressParts?.street || house.address || undefined,
+        city: house.addressParts?.city || undefined,
+        state: house.addressParts?.state || undefined,
+        postalCode: house.addressParts?.zip || undefined,
+        country: "US",
         source,
         tags,
       }),

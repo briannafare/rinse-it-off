@@ -18,6 +18,7 @@ import {
   priceHouse,
   suggestedAddOns,
   type Access,
+  type AddOnAnswer,
   type DrivewaySize,
   type ExactInputs,
   type HouseInputs,
@@ -113,6 +114,8 @@ const DS = `
   details.more .row.two { grid-template-columns: 1fr 1fr; }
   details.more label { font-size: 0.8125rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; }
   details.more input { min-height: 46px; font-size: 1rem; }
+  .addr-row { display: grid; grid-template-columns: 1fr 56px 96px; gap: 8px; margin-top: 8px; }
+  .addr-row input { text-align: left; }
   .unit-wrap { position: relative; }
   .unit-wrap .unit { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 0.9375rem; color: var(--text-muted); pointer-events: none; }
 
@@ -213,6 +216,16 @@ const DS = `
   .checklist .row .box { width: 18px; height: 18px; border-radius: 4px; border: 2px solid var(--border); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
   .checklist .row.on .box { border-color: var(--blue); background: var(--blue); }
   .checklist .row .name { flex: 1; }
+  .checklist .item { min-width: 0; }
+  .checklist .ask { padding: 2px 10px 10px 38px; display: grid; gap: 8px; }
+  .checklist .ask .muted { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.4; }
+  .checklist .ask-row { display: grid; grid-template-columns: 1fr; gap: 6px; }
+  .checklist .ask-row label { font-size: 0.8125rem; color: var(--text-secondary); font-weight: 500; }
+  .checklist .ask-row input { min-height: 40px; padding: 6px 10px; border: 2px solid var(--border); border-radius: var(--r-sm); font-size: 1rem; font-family: var(--font-body); }
+  .checklist .ask-row input:disabled { background: var(--surface-alt); color: var(--text-muted); }
+  .checklist .surfaces { display: flex; gap: 6px; }
+  .checklist .mini { min-height: 36px; padding: 4px 12px; border: 2px solid var(--border); border-radius: var(--r-sm); background: var(--surface); font-family: var(--font-body); font-size: 0.8125rem; font-weight: 500; color: var(--ink); cursor: pointer; justify-self: start; }
+  .checklist .mini.on { border-color: var(--blue); background: var(--blue-wash); }
   .checklist .row .pop { font-size: 0.75rem; font-weight: 500; color: var(--ink); background: var(--mint); border-radius: var(--r-sm); padding: 2px 7px; line-height: 1.4; flex-shrink: 0; }
   .addon .pop { font-size: 0.75rem; font-weight: 500; color: var(--ink); background: var(--mint); border-radius: var(--r-sm); padding: 2px 7px; line-height: 1.4; }
   .addon .was { text-decoration: line-through; color: var(--text-muted); margin-right: 6px; }
@@ -278,7 +291,13 @@ function Check() {
 
 export default function PlanCalculator({ src }: { src: string }) {
   const [step, setStep] = useState(0);
-  const [address, setAddress] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [stateCode, setStateCode] = useState("OR");
+  const [zip, setZip] = useState("");
+  const address = [street.trim(), city.trim(), `${stateCode.trim().toUpperCase()} ${zip.trim()}`.trim()].filter(Boolean).join(", ");
+  const [answers, setAnswers] = useState<Record<string, AddOnAnswer>>({});
+  const setAnswer = (k: string, patch: Partial<AddOnAnswer>) => setAnswers((p) => ({ ...p, [k]: { ...(p[k] || {}), ...patch } }));
   const [sqft, setSqft] = useState("");
   const [stories, setStories] = useState<Stories | 0>(0);
   const [windows, setWindows] = useState("");
@@ -329,9 +348,9 @@ export default function PlanCalculator({ src }: { src: string }) {
   const house: HouseInputs | null = useMemo(() => {
     const s = parseInt(sqft, 10);
     const w = parseInt(windows, 10);
-    if (!address.trim() || !(s > 0) || !stories || !(w >= 0) || windows === "") return null;
-    return { address: address.trim(), livingSqft: s, stories, windows: w, roof, driveway, access, exact };
-  }, [address, sqft, stories, windows, roof, driveway, access, exact]);
+    if (!street.trim() || !city.trim() || !(s > 0) || !stories || !(w >= 0) || windows === "") return null;
+    return { address, addressParts: { street: street.trim(), city: city.trim(), state: stateCode.trim().toUpperCase() || "OR", zip: zip.trim() }, livingSqft: s, stories, windows: w, roof, driveway, access, exact };
+  }, [address, street, city, stateCode, zip, sqft, stories, windows, roof, driveway, access, exact]);
 
   const price = useMemo(() => (house ? priceHouse(house) : null), [house]);
 
@@ -350,6 +369,7 @@ export default function PlanCalculator({ src }: { src: string }) {
     const result = await submitPlanQuote({
       house,
       addOns,
+      addOnAnswers: answers,
       name: contact.name,
       phone: contact.phone,
       email: contact.email,
@@ -516,8 +536,13 @@ export default function PlanCalculator({ src }: { src: string }) {
                   <p className="lead">Rough numbers are fine.</p>
 
                   <div className="field">
-                    <label htmlFor="address">Street address</label>
-                    <input id="address" type="text" autoComplete="street-address" placeholder="1234 SE Example St, Portland" value={address} onChange={(e) => setAddress(e.target.value)} required />
+                    <label htmlFor="street">Street address</label>
+                    <input id="street" type="text" autoComplete="address-line1" placeholder="1234 SE Example St" value={street} onChange={(e) => setStreet(e.target.value)} required />
+                    <div className="addr-row">
+                      <input id="city" type="text" autoComplete="address-level2" placeholder="City" aria-label="City" value={city} onChange={(e) => setCity(e.target.value)} required />
+                      <input id="state" type="text" autoComplete="address-level1" aria-label="State" value={stateCode} maxLength={2} onChange={(e) => setStateCode(e.target.value.toUpperCase())} />
+                      <input id="zip" type="text" inputMode="numeric" autoComplete="postal-code" placeholder="ZIP" aria-label="ZIP" value={zip} onChange={(e) => setZip(e.target.value.replace(/[^0-9-]/g, "").slice(0, 10))} />
+                    </div>
                   </div>
 
                   <div className="field">
@@ -627,7 +652,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                     Show my price
                   </button>
                   {!house && (
-                    <p className="fine" style={{ textAlign: "center", marginTop: 10 }}>Address, square footage, stories and windows first.</p>
+                    <p className="fine" style={{ textAlign: "center", marginTop: 10 }}>Street, city, square footage, stories and windows first.</p>
                   )}
                 </form>
               )}
@@ -635,7 +660,7 @@ export default function PlanCalculator({ src }: { src: string }) {
               {step === 1 && price && house && stack && (
                 <div>
                   <p className="summary">
-                    <strong>{house.address}</strong> · {house.livingSqft.toLocaleString()} sq ft · {house.stories === 3 ? "3 stories" : house.stories === 2 ? "2 stories" : "1 story"} · {house.windows} windows · {house.roof === "shake-steep" ? "wood shake or steep" : house.roof === "metal-tile" ? "metal or tile" : "composition"} roof · {house.driveway === "large" ? "large" : house.driveway === "small" ? "small" : "typical"} driveway · {house.access === "gated-tight" ? "gated or tight" : house.access === "steep-ladder" ? "steep" : "easy"} access
+                    <strong>{house.addressParts ? `${house.addressParts.street}, ${house.addressParts.city}` : house.address}</strong> · {house.livingSqft.toLocaleString()} sq ft · {house.stories === 3 ? "3 stories" : house.stories === 2 ? "2 stories" : "1 story"} · {house.windows} windows · {house.roof === "shake-steep" ? "wood shake or steep" : house.roof === "metal-tile" ? "metal or tile" : "composition"} roof · {house.driveway === "large" ? "large" : house.driveway === "small" ? "small" : "typical"} driveway · {house.access === "gated-tight" ? "gated or tight" : house.access === "steep-ladder" ? "steep" : "easy"} access
                     {Object.keys(exact).length > 0 && (
                       <> · you gave: {[exact.roofSf && `roof ${exact.roofSf.toLocaleString()} sq ft`, exact.drivewaySf && `driveway ${exact.drivewaySf.toLocaleString()} sq ft`, exact.walkwaySf && `walkways ${exact.walkwaySf.toLocaleString()} sq ft`, exact.gutterLf && `gutters ${exact.gutterLf.toLocaleString()} ft`, exact.largeWindows && `${exact.largeWindows} large windows`, exact.frenchWindows && `${exact.frenchWindows} French windows`].filter(Boolean).join(", ")}</>
                     )}
@@ -732,12 +757,35 @@ export default function PlanCalculator({ src }: { src: string }) {
                         {ADD_ONS.filter((a) => a.group === g).map((a) => {
                           const on = addOns.includes(a.key);
                           const pop = suggested.includes(a.key);
+                          const ans = answers[a.key] || {};
                           return (
-                            <button key={a.key} type="button" className={`row ${on ? "on" : ""}`} onClick={() => toggleAddOn(a.key)} aria-pressed={on}>
-                              <span className="box">{on && <Check />}</span>
-                              <span className="name">{a.label}</span>
-                              {pop && <span className="pop">Popular</span>}
-                            </button>
+                            <div key={a.key} className={`item ${on ? "on" : ""}`}>
+                              <button type="button" className={`row ${on ? "on" : ""}`} onClick={() => toggleAddOn(a.key)} aria-pressed={on}>
+                                <span className="box">{on && <Check />}</span>
+                                <span className="name">{a.label}</span>
+                                {pop && <span className="pop">Popular</span>}
+                              </button>
+                              {on && (a.ask || a.note) && (
+                                <div className="ask">
+                                  {a.note && !a.ask && <span className="muted">{a.note}</span>}
+                                  {a.ask?.kind === "surfaces-sqft" && (
+                                    <div className="surfaces">
+                                      {(["walkways", "walls"] as const).map((sf) => { const sel = (ans.surfaces || []).includes(sf); return (
+                                        <button key={sf} type="button" className={`mini ${sel ? "on" : ""}`} aria-pressed={sel} onClick={() => setAnswer(a.key, { surfaces: sel ? (ans.surfaces || []).filter((x) => x !== sf) : [...(ans.surfaces || []), sf] })}>{sf === "walkways" ? "Walkways" : "Walls"}</button>
+                                      ); })}
+                                    </div>
+                                  )}
+                                  {a.ask && (
+                                    <div className="ask-row">
+                                      <label htmlFor={`ask-${a.key}`}>{a.ask.label}</label>
+                                      <input id={`ask-${a.key}`} type="text" inputMode="numeric" value={ans.notSure ? "" : ans.qty ? String(ans.qty) : ""} disabled={!!ans.notSure} onChange={(e) => setAnswer(a.key, { qty: parseInt(e.target.value.replace(/[^0-9]/g, "").slice(0, 7), 10) || undefined })} />
+                                      <button type="button" className={`mini ${ans.notSure ? "on" : ""}`} aria-pressed={!!ans.notSure} onClick={() => setAnswer(a.key, { notSure: !ans.notSure, qty: undefined })}>Not sure</button>
+                                    </div>
+                                  )}
+                                  {a.ask && a.note && <span className="muted">{a.note}</span>}
+                                </div>
+                              )}
+                            </div>
                           );
                         })}
                       </div>

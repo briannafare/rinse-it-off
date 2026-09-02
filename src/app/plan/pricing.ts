@@ -26,8 +26,11 @@ export interface ExactInputs {
 }
 export const EXACT_KEYS: (keyof ExactInputs)[] = ["roofSf", "drivewaySf", "walkwaySf", "gutterLf", "largeWindows", "frenchWindows"];
 
+export interface AddressParts { street: string; city: string; state: string; zip: string }
+
 export interface HouseInputs {
-  address: string;
+  address: string; // "street, city, ST zip" for display and the CRM
+  addressParts?: AddressParts;
   livingSqft: number;
   stories: Stories;
   windows: number;
@@ -331,79 +334,93 @@ export function priceHouse(h: HouseInputs): PriceResult {
 }
 
 // ── Add-on menu. Member price = list × 0.90. Rates are Rinse's approved
-//    residential table (src/app/quote/prompt.ts). Quantities are measured at
-//    the first visit unless the calculator already knows the count. ─────────
+//    residential table (src/app/quote/prompt.ts). The customer never sees a
+//    price on the add-on step; what they tick and the quantity they give go
+//    to the crew in the opportunity note with the member total. ────────────
 export type AddOnGroup = "Around the house" | "Concrete and stone" | "Glass and roofline";
+export type AskKind = "sqft" | "lf" | "count" | "spots" | "surfaces-sqft";
 export interface AddOn {
   key: string;
   group: AddOnGroup;
   label: string;
   /** List price and its unit, when a rate exists. */
   list?: { amount: number; unit: string };
-  /** The unit is "per window": the calculator multiplies by the window count. */
-  perWindow?: boolean;
-  /** Shown when there is no rate, or as a note under a rate. */
+  /** The one small question shown under the row once it is ticked. */
+  ask?: { kind: AskKind; label: string };
+  /** Shown under the row once it is ticked, when there is nothing to ask. */
   note?: string;
-  /** Records interest only; no price, tagged on the contact. */
-  interestOnly?: boolean;
+  /** Priced as a share of a seasonal line instead of a rate. */
+  pctOf?: { line: "gutters" | "driveway"; pct: number; asMinimum?: boolean };
 }
+export const GUTTER_WHITENING_PCT = 0.5; // of the fall gutters line
+export const GREASE_PCT = 0.25; // of the driveway line, as the per-job minimum for spot removal
 export const ADD_ONS: AddOn[] = [
-  { key: "deck", group: "Around the house", label: "Deck or patio soft wash", list: { amount: 0.6, unit: "sq ft" } },
-  { key: "fence", group: "Around the house", label: "Fence cleaning", list: { amount: 3.6, unit: "linear ft" } },
-  { key: "gutter-whitening", group: "Around the house", label: "Gutter whitening", note: "Priced at your first visit" },
-  { key: "moss", group: "Around the house", label: "Moss treatment, walkways and walls", note: "Priced at your first visit, on top of the surface" },
-  { key: "lights", group: "Around the house", label: "Custom holiday lights (ask me)", note: "Custom quoted, we'll bring it up at your first visit", interestOnly: true },
-  { key: "grease", group: "Concrete and stone", label: "Grease and oil stain removal", list: { amount: 150, unit: "spot" } },
-  { key: "garage", group: "Concrete and stone", label: "Garage floor degrease", list: { amount: 0.45, unit: "sq ft" } },
-  { key: "retaining", group: "Concrete and stone", label: "Retaining walls", list: { amount: 0.48, unit: "sq ft" } },
-  { key: "masonry", group: "Concrete and stone", label: "Brick, block or stone walls", list: { amount: 0.54, unit: "sq ft" }, note: "Algae or efflorescence adds 40%" },
-  { key: "graffiti", group: "Concrete and stone", label: "Graffiti removal", list: { amount: 3.6, unit: "sq ft" } },
-  { key: "tracks", group: "Glass and roofline", label: "Window tracks and sills", list: { amount: 3.5, unit: "window" }, perWindow: true },
-  { key: "skylights", group: "Glass and roofline", label: "Skylights, exterior", list: { amount: 15, unit: "each" } },
-  { key: "storm", group: "Glass and roofline", label: "Storm door and window glass", list: { amount: 8, unit: "door" } },
-  { key: "wells", group: "Glass and roofline", label: "Basement window wells", list: { amount: 8, unit: "well" } },
-  { key: "solar", group: "Glass and roofline", label: "Solar panel wash", list: { amount: 12, unit: "panel" } },
+  { key: "deck", group: "Around the house", label: "Deck or patio soft wash", list: { amount: 0.6, unit: "sq ft" }, ask: { kind: "sqft", label: "About how many sq ft?" } },
+  { key: "fence", group: "Around the house", label: "Fence cleaning", list: { amount: 3.6, unit: "linear ft" }, ask: { kind: "lf", label: "About how many feet of fence?" } },
+  { key: "gutter-whitening", group: "Around the house", label: "Gutter whitening", pctOf: { line: "gutters", pct: GUTTER_WHITENING_PCT }, note: "The black streaks on the outside of the gutters" },
+  { key: "moss", group: "Around the house", label: "Moss treatment, walkways and walls", ask: { kind: "surfaces-sqft", label: "About how many sq ft?" } },
+  { key: "lights", group: "Around the house", label: "Custom holiday lights", note: "Pricing provided after a site visit" },
+  { key: "grease", group: "Concrete and stone", label: "Grease and oil stain removal", list: { amount: 150, unit: "spot" }, pctOf: { line: "driveway", pct: GREASE_PCT, asMinimum: true }, ask: { kind: "spots", label: "How many spots?" } },
+  { key: "garage", group: "Concrete and stone", label: "Garage floor degrease", list: { amount: 0.45, unit: "sq ft" }, ask: { kind: "sqft", label: "About how many sq ft?" } },
+  { key: "retaining", group: "Concrete and stone", label: "Retaining walls", list: { amount: 0.48, unit: "sq ft" }, ask: { kind: "sqft", label: "About how many sq ft?" } },
+  { key: "masonry", group: "Concrete and stone", label: "Brick, block or stone walls", list: { amount: 0.54, unit: "sq ft" }, ask: { kind: "sqft", label: "About how many sq ft?" } },
+  { key: "graffiti", group: "Concrete and stone", label: "Graffiti removal", list: { amount: 3.6, unit: "sq ft" }, ask: { kind: "sqft", label: "About how many sq ft?" } },
+  { key: "skylights", group: "Glass and roofline", label: "Skylights, exterior", list: { amount: 15, unit: "each" }, ask: { kind: "count", label: "How many?" } },
+  { key: "storm", group: "Glass and roofline", label: "Storm door and window glass", list: { amount: 8, unit: "door" }, ask: { kind: "count", label: "How many?" } },
+  { key: "wells", group: "Glass and roofline", label: "Basement window wells", list: { amount: 8, unit: "well" }, ask: { kind: "count", label: "How many?" } },
+  { key: "solar", group: "Glass and roofline", label: "Solar panel wash", list: { amount: 12, unit: "panel" }, ask: { kind: "count", label: "How many panels?" } },
 ];
 export const ADD_ON_GROUPS: AddOnGroup[] = ["Around the house", "Concrete and stone", "Glass and roofline"];
+
+/** What the customer told us about a ticked add-on. */
+export interface AddOnAnswer {
+  qty?: number;
+  notSure?: boolean;
+  surfaces?: string[]; // moss: "walkways", "walls"
+}
 
 export function memberAddOnPrice(list: number): number {
   return Math.round(list * (1 - ADDON_MEMBER_DISCOUNT) * 100) / 100;
 }
 
-const unitWord = (unit: string) => (unit === "each" ? "each" : `per ${unit}`);
-const dollars = (n: number) => (n < 1 ? `$${n.toFixed(2)}` : `$${n.toFixed(2).replace(/\.00$/, "")}`);
-
-/** List price and member price as display strings, for the struck-through pair. */
-export function addOnPrices(a: AddOn): { list: string; member: string; unit: string } | null {
-  if (!a.list) return null;
-  return { list: dollars(a.list.amount), member: dollars(memberAddOnPrice(a.list.amount)), unit: unitWord(a.list.unit) };
-}
-
-/** A computed member total when the calculator knows the quantity (per-window items). */
-export function addOnKnownTotal(a: AddOn, h: HouseInputs): number | null {
-  if (!a.list || !a.perWindow) return null;
-  const n = Math.max(0, Math.floor(h.windows || 0));
-  return Math.round(memberAddOnPrice(a.list.amount) * n * 100) / 100;
-}
-
 /** Two suggestions from the house and the calendar: deck or patio in spring
- *  and summer, tracks and sills for 20+ windows, a grease spot for a large
+ *  and summer, skylights for 2+ stories, a grease spot for a large
  *  driveway, solar the rest of the year. */
 export function suggestedAddOns(h: HouseInputs, month = new Date().getMonth()): string[] {
   const picks: string[] = [];
   if (month >= 2 && month <= 7) picks.push("deck");
-  if (h.windows >= 20) picks.push("tracks");
+  if (h.stories >= 2) picks.push("skylights");
   if (h.driveway === "large") picks.push("grease");
   if (!picks.includes("deck") && picks.length < 2) picks.push("solar");
-  if (picks.length < 2) picks.push("skylights");
+  if (picks.length < 2) picks.push("garage");
   return picks.slice(0, 2);
 }
 
-export function addOnPriceLabel(a: AddOn, h?: HouseInputs): string {
-  if (a.list) {
-    const known = h ? addOnKnownTotal(a, h) : null;
-    if (known !== null) return `${dollars(memberAddOnPrice(a.list.amount))} ${unitWord(a.list.unit)} × ${h!.windows} windows = ${dollars(known)}`;
-    return `${dollars(memberAddOnPrice(a.list.amount))} ${unitWord(a.list.unit)}, measured at your first visit${a.note ? `. ${a.note}` : ""}`;
+/** The crew's line for the note: quantity given, member total where it can
+ *  be computed, "Priced at site visit" where it cannot. Never shown to the
+ *  customer. */
+export function addOnEstimate(a: AddOn, answer: AddOnAnswer | undefined, price: PriceResult): string {
+  const lineAmt = (k: string) => price.lines.find((l) => l.key === k)?.amount ?? 0;
+  const given = answer?.qty && answer.qty > 0 && !answer.notSure ? answer.qty : undefined;
+  const surfaces = answer?.surfaces?.length ? `, ${answer.surfaces.join(" and ")}` : "";
+  const money = (n: number) => `$${(Math.round(n * 100) / 100).toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
+  if (a.pctOf && !a.list) {
+    const total = lineAmt(a.pctOf.line) * a.pctOf.pct * (1 - ADDON_MEMBER_DISCOUNT);
+    return `${a.label}: ${money(total)} member (${Math.round(a.pctOf.pct * 100)}% of the ${a.pctOf.line} line)`;
   }
-  return a.note ?? "Priced at your first visit";
+  if (a.list) {
+    const unit = a.list.unit;
+    if (given !== undefined) {
+      let total = memberAddOnPrice(a.list.amount) * given;
+      let floorNote = "";
+      if (a.pctOf?.asMinimum) {
+        const floor = lineAmt(a.pctOf.line) * a.pctOf.pct * (1 - ADDON_MEMBER_DISCOUNT);
+        if (floor > total) { total = floor; floorNote = ` (job minimum, ${Math.round(a.pctOf.pct * 100)}% of the driveway line)`; }
+      }
+      return `${a.label}: ${given} ${unit}${given === 1 ? "" : unit === "each" ? "" : "s"} × ${money(memberAddOnPrice(a.list.amount))} member = ${money(total)}${floorNote}`;
+    }
+    return `${a.label}: quantity not given, priced at site visit (${money(memberAddOnPrice(a.list.amount))} member per ${unit})`;
+  }
+  if (a.key === "moss") return `${a.label}${surfaces}: ${given !== undefined ? `about ${given} sq ft, ` : ""}priced at site visit on top of the surface rate`;
+  return `${a.label}: priced at site visit`;
 }
