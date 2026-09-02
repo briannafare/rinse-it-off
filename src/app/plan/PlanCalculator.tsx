@@ -171,7 +171,7 @@ const DS = `
   .toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--surface-alt); border-radius: var(--r-md); padding: 4px; margin: 4px 0 16px; }
   .toggle button { min-height: 48px; border: none; border-radius: 9px; background: transparent; font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .toggle button.on { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-soft); }
-  .toggle .tag { font-family: var(--font-body); font-size: 0.75rem; font-weight: 500; color: var(--ink); background: var(--mint); border-radius: var(--r-sm); padding: 2px 7px; }
+  .toggle .tag { font-family: var(--font-body); font-size: 0.75rem; font-weight: 500; color: var(--ink); border: 1px solid var(--ink); border-radius: var(--r-sm); padding: 1px 7px; }
 
 
 
