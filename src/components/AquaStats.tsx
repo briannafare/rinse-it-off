@@ -18,15 +18,22 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduced = useReducedMotion();
-  const [n, setN] = useState(0);
+  // ponytail: null means "not counting" and renders the real number. The roll-up is
+  // an enhancement — when the observer never fires (iOS Safari did exactly this) the
+  // stat still reads 164, never a false 0. Same reason the server HTML is correct.
+  const [n, setN] = useState<number | null>(null);
+  // Only roll up from 0 for a stat the visitor scrolls down to. If it was already
+  // on screen at mount, the final number is the honest thing to show.
+  const startsOffscreen = useRef(false);
 
   useEffect(() => {
-    if (!inView) return;
-    // Respect reduced-motion, and skip trivially small targets so nothing rolls 0->1.
-    if (reduced || target <= 1) {
-      setN(target);
-      return;
-    }
+    const el = ref.current;
+    startsOffscreen.current = !!el && el.getBoundingClientRect().top > window.innerHeight;
+  }, []);
+
+  useEffect(() => {
+    if (!inView || reduced || target <= 1) return;
+    if (!startsOffscreen.current) return;
     const start = performance.now();
     const dur = 1400;
     let raf: number;
@@ -34,6 +41,7 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
       const k = Math.min(1, (t - start) / dur);
       setN(Math.round(target * (1 - Math.pow(1 - k, 3))));
       if (k < 1) raf = requestAnimationFrame(tick);
+      else setN(null); // hand the final value back to the plain render
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
@@ -41,7 +49,7 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
 
   return (
     <span ref={ref} className="tabular-nums">
-      {n}
+      {n ?? target}
       <span className="text-[#62C4EB]">{suffix}</span>
     </span>
   );
