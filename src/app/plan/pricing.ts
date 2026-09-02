@@ -299,24 +299,41 @@ export function priceHouse(h: HouseInputs): PriceResult {
   };
 }
 
-// ── Add-on menu. Member price = list × 0.90. Quantities are measured on site. ─
+// ── Add-on menu. Member price = list × 0.90. Rates are Rinse's approved
+//    residential table (src/app/quote/prompt.ts). Quantities are measured at
+//    the first visit unless the calculator already knows the count. ─────────
+export type AddOnGroup = "Around the house" | "Concrete and stone" | "Glass and roofline";
 export interface AddOn {
   key: string;
+  group: AddOnGroup;
   label: string;
-  /** List price and its unit, when a rate exists. Omitted when it is quoted on site. */
+  /** List price and its unit, when a rate exists. */
   list?: { amount: number; unit: string };
-  /** Shown instead of a computed price when the item has no unit rate. */
-  fromNote?: string;
+  /** The unit is "per window": the calculator multiplies by the window count. */
+  perWindow?: boolean;
+  /** Shown when there is no rate, or as a note under a rate. */
+  note?: string;
+  /** Records interest only; no price, tagged on the contact. */
+  interestOnly?: boolean;
 }
 export const ADD_ONS: AddOn[] = [
-  { key: "deck", label: "Deck soft wash", fromNote: "Priced at your first visit" },
-  { key: "fence", label: "Fence soft wash", fromNote: "Priced at your first visit" },
-  { key: "patio", label: "Patio or extra concrete", list: { amount: 0.36, unit: "sq ft" } },
-  { key: "garage", label: "Garage floor degrease", list: { amount: 0.45, unit: "sq ft" } },
-  { key: "solar", label: "Solar panel wash", list: { amount: 12, unit: "panel" } },
-  { key: "skylights", label: "Skylights", list: { amount: 15, unit: "each" } },
-  { key: "lights", label: "Holiday lights, custom fit to your roofline", fromNote: "From $599 with the membership, priced by roofline and complexity" },
+  { key: "deck", group: "Around the house", label: "Deck or patio soft wash", list: { amount: 0.6, unit: "sq ft" } },
+  { key: "fence", group: "Around the house", label: "Fence cleaning", list: { amount: 3.6, unit: "linear ft" } },
+  { key: "gutter-whitening", group: "Around the house", label: "Gutter whitening (the black streaks on the outside)", note: "Priced at your first visit" },
+  { key: "moss", group: "Around the house", label: "Moss treatment on walkways and walls", note: "Priced at your first visit, on top of the surface" },
+  { key: "lights", group: "Around the house", label: "Ask me about custom holiday lights", note: "Custom quoted, we'll bring it up at your first visit", interestOnly: true },
+  { key: "grease", group: "Concrete and stone", label: "Grease and oil stain removal", list: { amount: 150, unit: "spot" } },
+  { key: "garage", group: "Concrete and stone", label: "Garage floor degrease", list: { amount: 0.45, unit: "sq ft" } },
+  { key: "retaining", group: "Concrete and stone", label: "Retaining walls", list: { amount: 0.48, unit: "sq ft" } },
+  { key: "masonry", group: "Concrete and stone", label: "Brick, block or stone walls", list: { amount: 0.54, unit: "sq ft" }, note: "Algae or efflorescence adds 40%" },
+  { key: "graffiti", group: "Concrete and stone", label: "Graffiti removal", list: { amount: 3.6, unit: "sq ft" } },
+  { key: "tracks", group: "Glass and roofline", label: "Window tracks and sills", list: { amount: 3.5, unit: "window" }, perWindow: true },
+  { key: "skylights", group: "Glass and roofline", label: "Skylights, exterior", list: { amount: 15, unit: "each" } },
+  { key: "storm", group: "Glass and roofline", label: "Storm door and storm window glass", list: { amount: 8, unit: "door" } },
+  { key: "wells", group: "Glass and roofline", label: "Basement window wells", list: { amount: 8, unit: "well" } },
+  { key: "solar", group: "Glass and roofline", label: "Solar panel wash", list: { amount: 12, unit: "panel" } },
 ];
+export const ADD_ON_GROUPS: AddOnGroup[] = ["Around the house", "Concrete and stone", "Glass and roofline"];
 
 export function memberAddOnPrice(list: number): number {
   return Math.round(list * (1 - ADDON_MEMBER_DISCOUNT) * 100) / 100;
@@ -331,19 +348,31 @@ export function addOnPrices(a: AddOn): { list: string; member: string; unit: str
   return { list: dollars(a.list.amount), member: dollars(memberAddOnPrice(a.list.amount)), unit: unitWord(a.list.unit) };
 }
 
-/** Two suggestions from the house and the calendar. Lights from September
- *  through January, deck the rest of the year; skylights for 2+ stories;
- *  garage floor for a large driveway. */
+/** A computed member total when the calculator knows the quantity (per-window items). */
+export function addOnKnownTotal(a: AddOn, h: HouseInputs): number | null {
+  if (!a.list || !a.perWindow) return null;
+  const n = Math.max(0, Math.floor(h.windows || 0));
+  return Math.round(memberAddOnPrice(a.list.amount) * n * 100) / 100;
+}
+
+/** Two suggestions from the house and the calendar: deck or patio in spring
+ *  and summer, tracks and sills for 20+ windows, a grease spot for a large
+ *  driveway, solar the rest of the year. */
 export function suggestedAddOns(h: HouseInputs, month = new Date().getMonth()): string[] {
-  const lightsSeason = month >= 8 || month === 0;
-  const picks: string[] = [lightsSeason ? "lights" : "deck"];
-  if (h.stories >= 2) picks.push("skylights");
-  else if (h.driveway === "large") picks.push("garage");
-  else picks.push(lightsSeason ? "deck" : "fence");
+  const picks: string[] = [];
+  if (month >= 2 && month <= 7) picks.push("deck");
+  if (h.windows >= 20) picks.push("tracks");
+  if (h.driveway === "large") picks.push("grease");
+  if (!picks.includes("deck") && picks.length < 2) picks.push("solar");
+  if (picks.length < 2) picks.push("skylights");
   return picks.slice(0, 2);
 }
 
-export function addOnPriceLabel(a: AddOn): string {
-  if (a.list) return `From ${dollars(memberAddOnPrice(a.list.amount))} ${unitWord(a.list.unit)}, priced at your first visit`;
-  return a.fromNote ?? "Priced at your first visit";
+export function addOnPriceLabel(a: AddOn, h?: HouseInputs): string {
+  if (a.list) {
+    const known = h ? addOnKnownTotal(a, h) : null;
+    if (known !== null) return `${dollars(memberAddOnPrice(a.list.amount))} ${unitWord(a.list.unit)} × ${h!.windows} windows = ${dollars(known)}`;
+    return `${dollars(memberAddOnPrice(a.list.amount))} ${unitWord(a.list.unit)}, measured at your first visit${a.note ? `. ${a.note}` : ""}`;
+  }
+  return a.note ?? "Priced at your first visit";
 }

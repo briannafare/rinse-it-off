@@ -4,6 +4,8 @@ import { bookFirstVisit, confirmDeposit, depositCheckout, submitPlanQuote } from
 import { getFreeSlots } from "../assessment/actions";
 import {
   ADD_ONS,
+  ADD_ON_GROUPS,
+  addOnKnownTotal,
   DEPOSIT_USD,
   MEMBER_MONTHLY_DISCOUNT,
   MEMBER_PREPAID_DISCOUNT,
@@ -175,6 +177,8 @@ const DS = `
   .addon .box { margin-top: 2px; }
   .addon .body { flex: 1; }
   .addon .title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .addon-group { margin-bottom: 18px; }
+  .addon-group .q { font-size: 0.9375rem; font-weight: 500; color: var(--text-primary); margin-bottom: 8px; }
   .addon .pop { font-size: 0.75rem; font-weight: 500; color: var(--ink); background: var(--mint); border-radius: var(--r-sm); padding: 2px 7px; line-height: 1.4; }
   .addon .was { text-decoration: line-through; color: var(--text-muted); margin-right: 6px; }
   .addon .now { color: var(--ink); font-weight: 500; }
@@ -629,29 +633,38 @@ export default function PlanCalculator({ src }: { src: string }) {
                   <h2>Anything else while we&apos;re there?</h2>
                   <p className="lead">Members save 10% on every add-on because the crew is already there.</p>
 
-                  <div className="choices" role="group" aria-label="Add-ons">
-                    {ADD_ONS.map((a) => {
-                      const on = addOns.includes(a.key);
-                      const pr = addOnPrices(a);
-                      const pop = suggested.includes(a.key);
-                      return (
-                        <button key={a.key} type="button" className={`choice addon ${on ? "on" : ""}`} onClick={() => toggleAddOn(a.key)} aria-pressed={on}>
-                          <span className="box">{on && <Check />}</span>
-                          <span className="body">
-                            <span className="title">{a.label}{pop && <span className="pop">Popular</span>}</span>
-                            <span className="sub">
-                              {pr ? (<><span className="was">{pr.list}</span><span className="now">{pr.member}</span> {pr.unit}, measured on site</>) : a.fromNote}
-                            </span>
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
+                  {ADD_ON_GROUPS.map((g) => (
+                    <div key={g} className="addon-group">
+                      <div className="q">{g}</div>
+                      <div className="choices" role="group" aria-label={g}>
+                        {ADD_ONS.filter((a) => a.group === g).map((a) => {
+                          const on = addOns.includes(a.key);
+                          const pr = addOnPrices(a);
+                          const known = house ? addOnKnownTotal(a, house) : null;
+                          const pop = suggested.includes(a.key);
+                          return (
+                            <button key={a.key} type="button" className={`choice addon ${on ? "on" : ""}`} onClick={() => toggleAddOn(a.key)} aria-pressed={on}>
+                              <span className="box">{on && <Check />}</span>
+                              <span className="body">
+                                <span className="title">{a.label}{pop && <span className="pop">Popular</span>}</span>
+                                <span className="sub">
+                                  {pr ? (
+                                    <><span className="was">{pr.list}</span><span className="now">{pr.member}</span> {pr.unit}{known !== null && house ? `, ${house.windows} windows = $${fmt(known)}` : ", measured at your first visit"}{a.note ? `. ${a.note}` : ""}</>
+                                  ) : a.note}
+                                </span>
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
 
                   {chosen.length > 0 && (
                     <div className="running">
                       <strong>Added to your quote:</strong>{" "}
-                      {chosen.map((a) => { const pr = addOnPrices(a); return pr ? `${a.label} (${pr.member} ${pr.unit})` : a.key === "lights" ? `${a.label} (from $599)` : a.label; }).join(", ")}. Final numbers at your first visit.
+                      {chosen.map((a) => { const pr = addOnPrices(a); const known = house ? addOnKnownTotal(a, house) : null; return known !== null ? `${a.label} ($${fmt(known)})` : pr ? `${a.label} (${pr.member} ${pr.unit})` : a.label; }).join(", ")}.
+                      {(() => { const sum = chosen.reduce((t, a) => t + (house ? addOnKnownTotal(a, house) ?? 0 : 0), 0); return sum > 0 ? ` $${fmt(sum)} so far, the rest measured at your first visit.` : " Measured and priced at your first visit."; })()}
                     </div>
                   )}
 

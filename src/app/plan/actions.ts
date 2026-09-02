@@ -145,7 +145,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     const lastName = nameParts.slice(1).join(" ") || "";
 
     const source = src === "web" ? "Website · plan calculator" : `Postcard · ${src}`;
-    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(flagged ? ["needs-review"] : [])];
+    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : [])];
 
     // The full calculator, as a note a human can read in the contact record.
     const noteLines: string[] = [
@@ -179,7 +179,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       `  Saved vs one at a time: $${price.savedVsAlaCarte}`,
       "",
       `Add-ons asked about (member price, quantities measured at first visit)`,
-      ...(chosenAddOns.length ? chosenAddOns.map((a) => `  ${a.label}: ${addOnPriceLabel(a)}`) : ["  none"]),
+      ...(chosenAddOns.length ? chosenAddOns.map((a) => `  ${a.label}: ${addOnPriceLabel(a, house)}`) : ["  none"]),
       "",
       `Best day for visits: ${bestDay || "no preference"}`,
     ];
