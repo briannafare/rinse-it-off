@@ -9,9 +9,9 @@ const r2 = (n: number) => Math.round(n * 100) / 100;
 
 const cases: { name: string; input: HouseInputs; expect: { coreAnnual: number; memberMonthly: number; prepaidAnnual: number; windowsAnnualValue: number; savedVsAlaCarte: number } }[] = [
   { name: "A basic 3-bed, 1 story, 12 windows", input: base, expect: { coreAnnual: 2058.44, memberMonthly: 189, prepaidAnnual: 1544, windowsAnnualValue: 2000, savedVsAlaCarte: 1790 } },
-  { name: "3,100 sf, 3 stories, 40 windows", input: { ...base, livingSqft: 3100, stories: 3, windows: 40 }, expect: { coreAnnual: 2562.85, memberMonthly: 189, prepaidAnnual: 1923, windowsAnnualValue: 3520, savedVsAlaCarte: 3815 } },
-  { name: "4,500 sf, 3 stories, 60 windows", input: { ...base, livingSqft: 4500, stories: 3, windows: 60 }, expect: { coreAnnual: 3269.55, memberMonthly: 218, prepaidAnnual: 2453, windowsAnnualValue: 5280, savedVsAlaCarte: 5934 } },
-  { name: "2,600 sf, 2 stories, shake roof, large drive, gated", input: { ...base, livingSqft: 2600, stories: 2, windows: 20, roof: "shake-steep", driveway: "large", access: "gated-tight" }, expect: { coreAnnual: 2684.1, memberMonthly: 189, prepaidAnnual: 2014, windowsAnnualValue: 2000, savedVsAlaCarte: 2416 } },
+  { name: "3,100 sf, 3 stories, 40 windows", input: { ...base, livingSqft: 3100, stories: 3, windows: 40 }, expect: { coreAnnual: 3410.57, memberMonthly: 228, prepaidAnnual: 2558, windowsAnnualValue: 3200, savedVsAlaCarte: 3875 } },
+  { name: "4,500 sf, 3 stories, 60 windows", input: { ...base, livingSqft: 4500, stories: 3, windows: 60 }, expect: { coreAnnual: 4280.85, memberMonthly: 286, prepaidAnnual: 3211, windowsAnnualValue: 4080, savedVsAlaCarte: 4929 } },
+  { name: "2,600 sf, 2 stories, shake roof, large drive, gated", input: { ...base, livingSqft: 2600, stories: 2, windows: 20, roof: "shake-steep", driveway: "large", access: "gated-tight" }, expect: { coreAnnual: 3011.91, memberMonthly: 201, prepaidAnnual: 2259, windowsAnnualValue: 2000, savedVsAlaCarte: 2600 } },
   { name: "900 sf (floored at 1,200), small drive, steep access", input: { ...base, livingSqft: 900, windows: 6, driveway: "small", access: "steep-ladder" }, expect: { coreAnnual: 1749.79, memberMonthly: 189, prepaidAnnual: 1313, windowsAnnualValue: 2000, savedVsAlaCarte: 1482 } },
 ];
 

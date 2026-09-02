@@ -26,7 +26,7 @@ export interface HouseInputs {
 
 // ── Per-unit rates (already carry target margin, never discount below) ──────
 export const RATE = {
-  windowEach: 22, // per exterior window, per visit (used for the free-windows VALUE only)
+  windowEach: 22, // kept for reference; the window VALUE uses WINDOW_TIERS below
   concreteSf: 0.36, // driveway + walkways, also the winter walkway pass
   sidingSf: 0.31,
   roofSf: 0.5,
@@ -38,6 +38,27 @@ export const RATE = {
 //    that comes to more. Four visits a year. ──────────────────────────────────
 export const WINDOW_VISITS_PER_YEAR = 4;
 export const WINDOW_VISIT_MIN = 500; // real standalone per-trip minimum
+// Tiered window pricing, per visit: the first 30 at $22, 31 to 50 at $14,
+// 51 and up at $8. `upTo: null` means everything past the previous band.
+export const WINDOW_TIERS: { upTo: number | null; rate: number }[] = [
+  { upTo: 30, rate: 22 },
+  { upTo: 50, rate: 14 },
+  { upTo: null, rate: 8 },
+];
+
+/** What one standalone window visit costs for a given count. */
+export function windowVisitValue(windows: number): number {
+  let placed = 0;
+  let total = 0;
+  for (const band of WINDOW_TIERS) {
+    const capacity = band.upTo === null ? Infinity : band.upTo - placed;
+    const count = Math.max(0, Math.min(windows - placed, capacity));
+    total += count * band.rate;
+    placed += count;
+    if (placed >= windows) break;
+  }
+  return Math.max(WINDOW_VISIT_MIN, total);
+}
 
 // ── Scope from the house's shape, not a size bucket ─────────────────────────
 //    footprint = living sq ft ÷ stories. Roof and gutters follow the footprint
@@ -116,10 +137,10 @@ export const MODIFIER = {
 } as const;
 
 // Gutter per-visit floor by stories: fuel, equipment and time on a tall house.
-export const GUTTER_VISIT_MIN: Record<Stories, number> = { 1: 250, 2: 350, 3: 500 };
+export const GUTTER_VISIT_MIN: Record<Stories, number> = { 1: 250, 2: 400, 3: 650 };
 
-// Roof and siding lines on a 3+ story house (1 and 2 stories = 1.0).
-export const STORY_MULT: Record<Stories, number> = { 1: 1, 2: 1, 3: 1.15 };
+// Height multiplier on the WHOLE core (driveway, siding, roof, gutters, winter).
+export const STORY_MULT: Record<Stories, number> = { 1: 1, 2: 1.1, 3: 1.35 };
 
 // ── Membership discounts and floor ──────────────────────────────────────────
 export const MEMBER_MONTHLY_DISCOUNT = 0.2; // 12 months, billed monthly
@@ -138,7 +159,8 @@ export interface PriceLine {
 export interface PriceResult {
   scope: Scope;
   lines: PriceLine[]; // the priced (core) lines
-  subtotal: number; // sum of lines before the access modifier
+  subtotal: number; // sum of lines before the height and access modifiers
+  storyMultiplier: number;
   accessMultiplier: number;
   coreAnnual: number; // core services booked one at a time, per year
   windowsPerVisitValue: number; // what one standalone window visit would cost
@@ -158,7 +180,6 @@ const storyWord = (s: Stories) => (s === 3 ? "3 stories" : s === 2 ? "2 stories"
 export function priceHouse(h: HouseInputs): PriceResult {
   const scope = scopeFor(h.livingSqft, h.stories);
   const lines: PriceLine[] = [];
-  const storyMult = STORY_MULT[h.stories];
 
   // Driveway and walkways (summer), scaled by the size the customer picked.
   const drivewayMult = h.driveway === "small" ? MODIFIER.drivewaySmall : h.driveway === "large" ? MODIFIER.drivewayLarge : 1;
@@ -174,7 +195,7 @@ export function priceHouse(h: HouseInputs): PriceResult {
     key: "siding",
     label: "Siding soft wash, spring",
     detail: `${storyWord(h.stories)}, about ${about(scope.sidingSf, 50).toLocaleString()} sq ft of siding`,
-    amount: scope.sidingSf * RATE.sidingSf * storyMult,
+    amount: scope.sidingSf * RATE.sidingSf,
   });
 
   // Roof soft wash (spring), more for wood shake or a steep pitch.
@@ -183,7 +204,7 @@ export function priceHouse(h: HouseInputs): PriceResult {
     key: "roof",
     label: "Roof soft wash, spring",
     detail: `${h.roof === "shake-steep" ? "Wood shake or steep pitch" : h.roof === "metal-tile" ? "Metal or tile" : "Composition shingle"}, about ${about(scope.roofSf, 50).toLocaleString()} sq ft of roof`,
-    amount: scope.roofSf * RATE.roofSf * roofMult * storyMult,
+    amount: scope.roofSf * RATE.roofSf * roofMult,
   });
 
   // Gutters (fall). Rate steps up with stories; a steep roof uses the top
@@ -208,12 +229,13 @@ export function priceHouse(h: HouseInputs): PriceResult {
   });
 
   const subtotal = lines.reduce((s, l) => s + l.amount, 0);
+  const storyMultiplier = STORY_MULT[h.stories];
   const accessMultiplier = h.access === "gated-tight" ? MODIFIER.accessGatedTight : h.access === "steep-ladder" ? MODIFIER.accessSteepLadder : 1;
-  const coreAnnual = subtotal * accessMultiplier;
+  const coreAnnual = subtotal * storyMultiplier * accessMultiplier;
 
-  // Windows: free with the membership, valued at what a standalone visit costs.
+  // Windows: free with the membership, valued at what a standalone visit costs (tiered).
   const windows = Math.max(0, Math.floor(h.windows || 0));
-  const windowsPerVisitValue = Math.max(WINDOW_VISIT_MIN, windows * RATE.windowEach);
+  const windowsPerVisitValue = windowVisitValue(windows);
   const windowsAnnualValue = windowsPerVisitValue * WINDOW_VISITS_PER_YEAR;
   const valueReceived = coreAnnual + windowsAnnualValue;
 
@@ -226,6 +248,7 @@ export function priceHouse(h: HouseInputs): PriceResult {
     scope,
     lines,
     subtotal,
+    storyMultiplier,
     accessMultiplier,
     coreAnnual,
     windowsPerVisitValue,

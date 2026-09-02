@@ -7,6 +7,7 @@ import {
   DEPOSIT_USD,
   MEMBER_MONTHLY_DISCOUNT,
   MEMBER_PREPAID_DISCOUNT,
+  MONTHLY_FLOOR,
   WINDOW_VISITS_PER_YEAR,
   addOnPrices,
   priceHouse,
@@ -512,6 +513,7 @@ export default function PlanCalculator({ src }: { src: string }) {
                       ? <>billed ${fmt(price.prepaidAnnual)} once a year, save ${fmt(price.prepaySavesMore)}. For <strong>{house.address}</strong>.</>
                       : <>billed monthly on a 12-month membership. For <strong>{house.address}</strong>.</>}
                   </p>
+                  <p className="fine" style={{ marginBottom: 14 }}>This is your starting price. Our first visit confirms it, and unusual height or access can add to it.</p>
 
                   <div className="saves">
                     <div className="big">${fmt(price.savedVsAlaCarte)} saved this year, including ${fmt(price.windowsAnnualValue)} of window cleaning free.</div>
@@ -528,8 +530,6 @@ export default function PlanCalculator({ src }: { src: string }) {
                     </ul>
                   </div>
 
-                  <p className="fine">We confirm the price at your first visit.</p>
-
                   <details className="math">
                     <summary>How we got this number</summary>
                     <div style={{ marginTop: 6 }}>
@@ -539,10 +539,16 @@ export default function PlanCalculator({ src }: { src: string }) {
                           <span className="a">${fmt(l.amount)}</span>
                         </div>
                       ))}
+                      {price.storyMultiplier !== 1 && (
+                        <div className="math-line">
+                          <span className="l">{house.stories === 3 ? "3 stories" : "2 stories"}<span className="d">Ladder and lift time on a taller house</span></span>
+                          <span className="a">${fmt(price.subtotal * (price.storyMultiplier - 1))}</span>
+                        </div>
+                      )}
                       {price.accessMultiplier !== 1 && (
                         <div className="math-line">
                           <span className="l">{house.access === "gated-tight" ? "Gated or tight side yards" : "Steep lot or hard ladder access"}<span className="d">Extra time to get around the house</span></span>
-                          <span className="a">${fmt(price.coreAnnual - price.subtotal)}</span>
+                          <span className="a">${fmt(price.coreAnnual - price.subtotal * price.storyMultiplier)}</span>
                         </div>
                       )}
                       <div className="math-line total">
@@ -550,11 +556,11 @@ export default function PlanCalculator({ src }: { src: string }) {
                         <span className="a">${fmt(price.coreAnnual)}</span>
                       </div>
                       <div className="math-line mint">
-                        <span className="l">Member price, {PCT(MEMBER_MONTHLY_DISCOUNT)} off{price.memberAnnual > Math.ceil(price.coreAnnual * (1 - MEMBER_MONTHLY_DISCOUNT)) && <span className="d">Our smallest plan is $189 a month</span>}</span>
+                        <span className="l">Member price, {PCT(MEMBER_MONTHLY_DISCOUNT)} off{price.memberMonthly === MONTHLY_FLOOR && (price.coreAnnual * (1 - MEMBER_MONTHLY_DISCOUNT)) / 12 < MONTHLY_FLOOR && <span className="d">Our smallest plan is ${MONTHLY_FLOOR} a month</span>}</span>
                         <span className="a">{price.coreAnnual - price.memberAnnual > 0 ? `-$${fmt(price.coreAnnual - price.memberAnnual)}` : "$0"}</span>
                       </div>
                       <div className="math-line">
-                        <span className="l">Exterior windows, {WINDOW_VISITS_PER_YEAR} visits a year<span className="d">{house.windows} windows</span></span>
+                        <span className="l">Exterior windows<span className="d">{house.windows} windows · ${fmt(price.windowsPerVisitValue)} a visit · {WINDOW_VISITS_PER_YEAR} visits a year</span></span>
                         <span className="a"><span className="strike">${fmt(price.windowsAnnualValue)}</span><span className="free">Free with the membership</span></span>
                       </div>
                       <div className="math-line total">
@@ -642,6 +648,7 @@ export default function PlanCalculator({ src }: { src: string }) {
 
                   {error && <div className="error">{error}</div>}
 
+                  <p className="fine" style={{ marginBottom: 12 }}>This is your starting price. Our first visit confirms it, and unusual height or access can add to it.</p>
                   <button type="submit" className="btn btn-ink" disabled={sending || !contact.name || !contact.phone || !contact.email}>
                     {sending ? "Locking it in" : "Lock in my price and free windows"}
                   </button>

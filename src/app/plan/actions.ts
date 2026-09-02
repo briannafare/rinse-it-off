@@ -341,17 +341,49 @@ export async function createDepositInvoice(input: DepositInput): Promise<{ ok: b
     if (!invoiceId) return soft;
     const url = `${INVOICE_LINK_BASE}/${invoiceId}`;
 
-    // Email it too, so the link is in their inbox. Fail-soft: the page link works regardless.
+    // GHL's own invoice email uses the location-wide "Invoice Payment Request"
+    // template, whose copy is the quote tool's 50/50 deposit terms. There is no
+    // per-send override on the send endpoint (probed 2026-09-01: subject/message,
+    // emailSubject/emailMessage, customNotification, templateId, emailTemplateId,
+    // sentTo-to-another-address all ignored or rejected), and a draft invoice
+    // cannot be paid. Sending with action "sms" flips the invoice to sent
+    // (payable) and fires only GHL's short default text ("Rinse It Off sent you
+    // invoice INV-… Invoice Link: …"), never that email. Our own email with the
+    // membership copy goes out through the Conversations API below.
+    try {
+      const sendRes = await fetch(`${GHL_API_BASE}/invoices/${invoiceId}/send`, {
+        method: "POST",
+        headers: ghlHeaders,
+        body: JSON.stringify({ altId: GHL_LOCATION_ID, altType: "location", userId: GHL_SENDER_USER_ID, action: "sms", liveMode: true }),
+      });
+      if (!sendRes.ok) console.error("GHL invoice send (sms) failed:", sendRes.status, await sendRes.text());
+    } catch (e) {
+      console.error("GHL invoice send error:", e);
+    }
+
     if (email) {
+      const first = name.split(" ")[0] || "there";
+      const html = [
+        `<p>Hi ${first},</p>`,
+        `<p>Here's the deposit page for your yearly membership${address ? ` at ${address}` : ""}:<br><a href="${url}">${url}</a></p>`,
+        `<p>It's $${DEPOSIT_USD}. It holds your spot on the route and comes off your first month, so you're not paying anything extra. If you change your mind before the first visit, we refund it.</p>`,
+        `<p>Once it's in, we'll text you to set up your first visit. Reply to this email if anything looks off.</p>`,
+        `<p>Rinse It Off<br>(503) 704-3755</p>`,
+      ].join("\n");
       try {
-        const sendRes = await fetch(`${GHL_API_BASE}/invoices/${invoiceId}/send`, {
+        const mailRes = await fetch(`${GHL_API_BASE}/conversations/messages`, {
           method: "POST",
-          headers: ghlHeaders,
-          body: JSON.stringify({ altId: GHL_LOCATION_ID, altType: "location", userId: GHL_SENDER_USER_ID, action: "email", liveMode: true }),
+          headers: { ...ghlHeaders, Version: "2021-04-15" },
+          body: JSON.stringify({
+            type: "Email",
+            contactId: input.contactId,
+            subject: `Your $${DEPOSIT_USD} deposit for the Rinse It Off yearly membership`,
+            html,
+          }),
         });
-        if (!sendRes.ok) console.error("GHL invoice send failed:", sendRes.status, await sendRes.text());
+        if (!mailRes.ok) console.error("Deposit email failed:", mailRes.status, await mailRes.text());
       } catch (e) {
-        console.error("GHL invoice send error:", e);
+        console.error("Deposit email error:", e);
       }
     }
 
