@@ -247,8 +247,8 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
               The Clean Water Promise
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-[#4B5C6B]">
-              If there&apos;s any spot you&apos;re not happy with, we re-rinse it free within 48
-              hours. No debate, no fine print — we&apos;d rather come back and make it right than
+              If there&apos;s any spot you&apos;re not happy with, tell us within 24 hours of your
+              service and we&apos;ll re-rinse it free within 48. No debate, no fine print — we&apos;d rather come back and make it right than
               leave you looking at a streak.
             </p>
             <p className="mt-4 text-sm font-medium text-[#0C1215]">Insured · Portland metro</p>

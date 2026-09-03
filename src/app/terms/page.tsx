@@ -18,7 +18,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Terms & the Clean Water Promise",
   description:
-    "How Rinse It Off works, in plain English: the free 21-point property audit, a firm itemized quote the same day we walk your property, and the Clean Water Promise to re-rinse anything free within 48 hours.",
+    "How Rinse It Off works, in plain English: the free 21-point property audit, a firm itemized quote the same day we walk your property, and the Clean Water Promise: tell us within 24 hours and we re-rinse it free within 48.",
   alternates: { canonical: "https://rinseitoff.com/terms" },
 };
 
@@ -63,8 +63,8 @@ export default function TermsPage() {
                   The Clean Water Promise
                 </h2>
                 <p className="mt-3 text-base leading-relaxed text-[#4B5C6B]">
-                  If there&apos;s a spot you&apos;re not happy with, tell us and we&apos;ll
-                  re-rinse it free within 48 hours of your service. No debate, no fine
+                  If there&apos;s a spot you&apos;re not happy with, tell us within 24 hours of
+                  your service and we&apos;ll re-rinse it free within 48. No debate, no fine
                   print — we&apos;d rather come back and make it right than leave you
                   looking at a streak.
                 </p>

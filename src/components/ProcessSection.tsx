@@ -23,7 +23,7 @@ const STEPS = [
   {
     n: "04",
     title: "Pay the rest only when it's right",
-    body: "The balance settles after that walkthrough. If something isn't right, the Clean Water Promise covers it and we come back to re-rinse it free within 48 hours.",
+    body: "The balance settles after that walkthrough. If something isn't right, tell us within 24 hours and the Clean Water Promise brings us back to re-rinse it free within 48.",
   },
 ];
 

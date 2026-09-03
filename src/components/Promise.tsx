@@ -12,7 +12,7 @@ const POINTS: {
     icon: Droplets,
     stat: "48h",
     title: "The Clean Water Promise",
-    body: "Any area you're not happy with, we re-rinse it free within 48 hours. No arguing, no fine print.",
+    body: "Tell us within 24 hours of your service and we'll re-rinse anything you're not happy with, free, within 48. No arguing, no fine print.",
   },
   {
     icon: BadgeCheck,

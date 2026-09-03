@@ -33,7 +33,8 @@ export function FinalCTA() {
             We walk the property with you, note every surface that needs work, and
             leave you an itemized price you can take all of or part of. Same
             walkthrough whether it&rsquo;s your house or your building. If something we
-            clean isn&rsquo;t right, we come back and re-rinse it free within 48 hours.
+            clean isn&rsquo;t right, tell us within 24 hours and we&rsquo;ll re-rinse it free
+            within 48.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-6">
             <a

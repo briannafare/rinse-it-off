@@ -9,7 +9,7 @@ type Stat =
 
 const STATS: Stat[] = [
   { value: 164, suffix: "", label: "days of rain a year in Portland", note: "Moss never takes a season off." },
-  { value: 48, suffix: "hr", label: "re-rinse guarantee", note: "Anything you're not happy with, redone free." },
+  { value: 48, suffix: "hr", label: "re-rinse guarantee", note: "Tell us within 24 hours; we redo it free within 48." },
   { value: 21, suffix: "-pt", label: "free property audit", note: "Photo-documented, board-ready." },
   { text: "same-day", label: "quote", note: "A firm number the day we walk your property." },
 ];

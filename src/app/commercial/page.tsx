@@ -378,8 +378,8 @@ export default function CommercialPage() {
               </h2>
               <p className="mt-4 max-w-lg text-lg text-white/85">
                 Book your free 21-point property audit and get a firm, itemized quote the same day we
-                walk your property. Backed by our Clean Water Promise: we re-rinse anything you&rsquo;re
-                not happy with, free, within 48 hours.
+                walk your property. Backed by our Clean Water Promise: tell us within 24 hours and we re-rinse
+                anything you&rsquo;re not happy with, free, within 48.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-6">
                 <a

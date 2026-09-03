@@ -88,8 +88,8 @@ const NEARBY_LINES = [
 ] as const;
 
 const PROMISE_LINES = [
-  "And every job is backed by our Clean Water Promise: if there's any spot you're not happy with, we re-rinse it free within 48 hours.",
-  "Every visit is covered by our Clean Water Promise — anything you're not happy with, we come back and re-rinse it free within 48 hours.",
+  "And every job is backed by our Clean Water Promise: tell us within 24 hours of your service and we re-rinse anything you're not happy with, free, within 48.",
+  "Every visit is covered by our Clean Water Promise — tell us within 24 hours and we come back and re-rinse it free within 48.",
 ] as const;
 
 type IntroCopy = { hero: string; paragraphs: string[] };
@@ -394,8 +394,8 @@ export default async function AreaPage({
                   The Clean Water Promise in {area.name}
                 </h2>
                 <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-[#4B5C6B]">
-                  Any spot you&apos;re not happy with, we re-rinse it free within 48 hours. No debate, no
-                  fine print — the same promise on every home and every building we clean.
+                  Any spot you&apos;re not happy with, tell us within 24 hours and we re-rinse it free
+                  within 48. No debate, no fine print — the same promise on every home and every building we clean.
                 </p>
               </div>
             </div>

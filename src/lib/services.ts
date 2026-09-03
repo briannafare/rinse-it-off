@@ -5,8 +5,8 @@
  *  from the homepage. Everything below the base is page-specific copy.
  *
  *  Claims are locked: free 21-point property audit → firm itemized quote the
- *  same day we walk your property; Clean Water Promise = re-rinse free within
- *  48 hours; ~164 rainy days/yr; Insured (no license number); NO pricing,
+ *  same day we walk your property; Clean Water Promise = tell us within 24
+ *  hours, we re-rinse free within 48; ~164 rainy days/yr; Insured (no license number); NO pricing,
  *  NO reviews. Serves BOTH residential and commercial. */
 import { METHODS, type Method } from "@/lib/methods";
 import type { FAQItem } from "@/lib/faqs";

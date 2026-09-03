@@ -86,7 +86,7 @@ function scoreColorFor(score: number): string {
   return score <= 3 ? "#3AA8D4" : score <= 6 ? "#D97706" : "#DC4B2A";
 }
 
-const SERVICE_NOTES_HTML = `<div style="background:#f9fafb;border-radius:10px;padding:16px;font-size:12px;color:#6b7280;line-height:1.8;margin-bottom:28px;"><strong style="color:#111827;display:block;margin-bottom:6px;">Service Notes</strong>&bull; Pricing estimated from photos &mdash; may vary upon on-site inspection.<br>&bull; 50% deposit required to schedule; balance due upon completion.<br>&bull; Accepted: Cash, Check (Fresh Rinse LLC), Venmo, or Credit Card.<br>&bull; Rinse It Off / Fresh Rinse LLC is fully licensed and insured in Oregon.<br>&bull; Satisfaction guarantee: Contact us within 24 hours of completion.</div>`;
+const SERVICE_NOTES_HTML = `<div style="background:#f9fafb;border-radius:10px;padding:16px;font-size:12px;color:#6b7280;line-height:1.8;margin-bottom:28px;"><strong style="color:#111827;display:block;margin-bottom:6px;">Service Notes</strong>&bull; Pricing estimated from photos &mdash; may vary upon on-site inspection.<br>&bull; 50% deposit required to schedule; balance due upon completion.<br>&bull; Accepted: Cash, Check (Fresh Rinse LLC), Venmo, or Credit Card.<br>&bull; Rinse It Off / Fresh Rinse LLC is fully licensed and insured in Oregon.<br>&bull; Clean Water Promise: tell us within 24 hours of completion and we re-rinse it free within 48.</div>`;
 
 function headerHTML(input: PrintQuoteInput, metaTitle: string, dateLabel: string, date: string): string {
   return `<div class="header">
