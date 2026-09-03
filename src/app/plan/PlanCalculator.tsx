@@ -901,6 +901,12 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                         </div>
                         {checkNote && <p className="fine" style={{ marginTop: 10, marginBottom: 0 }}>{checkNote}</p>}
                       </>
+                    ) : dryRun ? (
+                      <>
+                        <p>{schedule}.</p>
+                        <button type="button" className="btn btn-ink" disabled>Deposit checkout is off on this preview</button>
+                        <p className="fine" style={{ marginTop: 10, marginBottom: 0 }}>Internal review build: no card is taken and nothing is written to the contact. Use &ldquo;Dev only: simulate paid&rdquo; to see the rest of the step.</p>
+                      </>
                     ) : (
                       <>
                         <p>{schedule}.</p>

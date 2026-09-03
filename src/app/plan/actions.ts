@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
+import { depositCheckoutPlan } from "@/lib/deposit-checkout.mjs";
 import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, depositSchedule, effectivePrice, prepaidTermTotal, priceHouse, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
@@ -547,19 +548,23 @@ export async function bookFirstVisit(input: BookVisitInput): Promise<{ ok: boole
 }
 
 /** The checkout URL for the Reserve step, prefilled where GHL honours it.
- *  Nothing is sent: the customer pays right there and GHL emails its receipt. */
+ *  Nothing is sent: the customer pays right there and GHL emails its receipt.
+ *  A dry run returns no URL and writes no tag — see lib/deposit-checkout.mjs. */
 export async function depositCheckout(input: DepositInput): Promise<{ ok: boolean; url?: string; error?: string }> {
   try {
     if (!looksLikeGhlId(input.contactId)) return { ok: false, error: "We lost track of your details. Go back one step and try again." };
-    const q = new URLSearchParams();
-    if (input.email) q.set("email", String(input.email).slice(0, 160));
-    if (input.name) q.set("name", String(input.name).slice(0, 120));
-    const phone = e164(String(input.phone || ""));
-    if (phone) q.set("phone", phone);
-    const url = `${DEPOSIT_LINK_BASE}/${DEPOSIT_LINK_ID}?${q.toString()}`;
-    if (DRY_RUN) dryLog("show the deposit checkout (no send)", { contactId: input.contactId, url });
-    await addTags(input.contactId, ["membership-deposit-sent"]);
-    return { ok: true, url };
+    const plan = depositCheckoutPlan({
+      dryRun: DRY_RUN,
+      base: DEPOSIT_LINK_BASE,
+      id: DEPOSIT_LINK_ID,
+      email: input.email,
+      name: input.name,
+      phone: e164(String(input.phone || "")),
+    });
+    if (DRY_RUN) dryLog("open the live deposit checkout and tag membership-deposit-sent", { contactId: input.contactId });
+    if (!plan.ok) return { ok: false, error: plan.error };
+    if (plan.tag) await addTags(input.contactId, ["membership-deposit-sent"]);
+    return { ok: true, url: plan.url };
   } catch (e) {
     console.error("depositCheckout error:", e);
     return { ok: false, error: "We couldn't open the deposit checkout just now." };
