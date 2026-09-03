@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
+import { testRunPlan } from "@/lib/test-run.mjs";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -127,6 +128,15 @@ export async function submitAssessmentForm(
     }
     if (data.message) notesLines.push(`Notes: ${data.message}`);
 
+    // Same guard as /plan: a test email address is tagged disposable and opens
+    // no pipeline card. dryRun is false here — this form has no preview mode,
+    // so only the address decides.
+    const testRun = testRunPlan({
+      dryRun: false,
+      email: data.email,
+      tags: ["property-audit", "website-assessment", isCommercial ? "lead-com" : "lead-res", ...(flagged ? ["needs-review"] : [])],
+    });
+
     const customFields = data.message
       ? [{ id: CF_ACCESS_NOTES, value: data.message }]
       : [];
@@ -140,12 +150,7 @@ export async function submitAssessmentForm(
       phone: data.phone,
       address1: data.address || undefined,
       source,
-      tags: [
-        "property-audit",
-        "website-assessment",
-        isCommercial ? "lead-com" : "lead-res",
-        ...(flagged ? ["needs-review"] : []),
-      ],
+      tags: testRun.tags,
       customFields,
     };
 
@@ -173,7 +178,9 @@ export async function submitAssessmentForm(
     //    pipeline once it exists (env). Fail-soft: never blocks the lead.
     const pipelineId = isCommercial ? COMMERCIAL_PIPELINE_ID : RESIDENTIAL_PIPELINE_ID;
     const stageId = isCommercial ? COMMERCIAL_STAGE_ID : RESIDENTIAL_STAGE_ID;
-    if (contactId && pipelineId && stageId) {
+    if (contactId && !testRun.createOpportunity) {
+      console.log(`[assessment test-run] ${testRun.reason}: tagging test-run, no opportunity`);
+    } else if (contactId && pipelineId && stageId) {
       try {
         const oppRes = await fetch(`${GHL_API_BASE}/opportunities/`, {
           method: "POST",

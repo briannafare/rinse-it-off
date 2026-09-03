@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
 import { depositCheckoutPlan } from "@/lib/deposit-checkout.mjs";
+import { testRunPlan } from "@/lib/test-run.mjs";
 import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, depositSchedule, effectivePrice, prepaidTermTotal, priceHouse, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
@@ -170,7 +171,12 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     const lastName = nameParts.slice(1).join(" ") || "";
 
     const source = src === "web" ? "Website · plan calculator" : `Postcard · ${src}`;
-    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : [])];
+    const baseTags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : [])];
+    // A dry run or a test email address still writes the contact (the rest of
+    // the flow needs an id) but marks it disposable and opens no pipeline card.
+    const testRun = testRunPlan({ dryRun: DRY_RUN, email, tags: baseTags });
+    const tags = testRun.tags;
+    if (testRun.isTest) console.log(`[plan test-run] ${testRun.reason}: tagging test-run, no opportunity`);
 
     // The full calculator, as a note a human can read in the contact record.
     const noteLines: string[] = [
@@ -260,7 +266,9 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
 
     // 2) Opportunity in the Yearly Membership pipeline at "Quote", worth the
     //    membership year. A repeat visitor keeps their card (and its stage).
-    if (MEMBERSHIP_PIPELINE_ID && MEMBERSHIP_STAGE_QUOTE_ID) {
+    if (!testRun.createOpportunity) {
+      dryLog("open a Yearly Membership opportunity", { contactId, yearValue, reason: testRun.reason });
+    } else if (MEMBERSHIP_PIPELINE_ID && MEMBERSHIP_STAGE_QUOTE_ID) {
       try {
         const oppRes = await fetch(`${GHL_API_BASE}/opportunities/`, {
           method: "POST",

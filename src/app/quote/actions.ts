@@ -6,6 +6,7 @@
  *  Every action re-checks the passcode cookie before touching anything. */
 
 import { cookies } from "next/headers";
+import { testRunPlan } from "@/lib/test-run.mjs";
 import { redirect } from "next/navigation";
 import {
   QUOTE_AUTH_COOKIE,
@@ -156,6 +157,10 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
   const firstName = nameParts[0] || "";
   const lastName = nameParts.slice(1).join(" ") || "";
   const leadTag = isResidential ? "lead-res" : "lead-com";
+  // Same guard as /plan: a test email address is tagged disposable and opens no
+  // pipeline card. dryRun is false — this tool is staff-run, so only the
+  // address decides.
+  const testRun = testRunPlan({ dryRun: false, email: contact.email, tags: ["property-audit", leadTag] });
 
   // 1) Upsert contact — the one hard dependency.
   let contactId = "";
@@ -172,7 +177,7 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
         phone: contact.phone || undefined,
         address1: contact.address || undefined,
         source: "Audit Tool — Quote",
-        tags: ["property-audit", leadTag],
+        tags: testRun.tags,
       }),
     });
     if (!res.ok) {
@@ -198,7 +203,9 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
   //    residential only when the residential pipeline envs exist.
   const pipelineId = isResidential ? RESIDENTIAL_PIPELINE_ID : COMMERCIAL_PIPELINE_ID;
   const stageId = isResidential ? RESIDENTIAL_STAGE_ID : COMMERCIAL_STAGE_ID;
-  if (!pipelineId || !stageId) {
+  if (!testRun.createOpportunity) {
+    result.opportunity = { status: "skip", detail: `Test run (${testRun.reason}) — tagged test-run, no pipeline card` };
+  } else if (!pipelineId || !stageId) {
     result.opportunity = {
       status: "skip",
       detail: "Residential pipeline not configured (GHL_RESIDENTIAL_PIPELINE_ID/STAGE_ID)",
