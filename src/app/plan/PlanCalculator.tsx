@@ -274,6 +274,12 @@ const DS = `
 
   .consent { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; margin-top: 12px; text-align: center; }
   .consent a { color: var(--blue-deep); text-decoration: underline; }
+  /* Deliberately larger and darker than .consent: carriers require the SMS opt-in terms be
+     "clear and conspicuous", and 0.75rem muted grey is neither. */
+  .sms-terms { max-width: 560px; margin: 0 auto; padding: 0 20px 56px; }
+  .sms-terms p { font-size: 0.875rem; line-height: 1.6; color: var(--text-secondary); text-align: center; text-wrap: pretty; }
+  .sms-terms strong { color: var(--text-primary); font-weight: 600; }
+  .sms-terms a { color: var(--blue-deep); text-decoration: underline; }
 
   .done { text-align: center; padding: 8px 0; }
   .done .mark { width: 64px; height: 64px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--ink); }
@@ -981,6 +987,23 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
           </div>
         </>
       )}
+
+      {/* SMS program disclosure. Rendered on EVERY state and OUTSIDE the step wizard on purpose.
+          A2P 10DLC campaign reviews are done by a person (or a crawler) opening this URL and looking
+          for the opt-in terms. The copy inside step 3 is the consent at the point of collection, but
+          it only exists after two screens of client-side state, so it is absent from the page's
+          initial HTML and a reviewer never sees it — which is what got campaigns rejected with
+          30907 "website URL does not match / CTA not verifiable". Do not move this back behind a
+          step, and do not delete it while an A2P campaign points at /plan. */}
+      <div className="sms-terms">
+        <p>
+          <strong>Text messages from Rinse It Off.</strong> When you submit your details on this page you
+          agree to receive calls and texts about your quote and your visits from Rinse It Off
+          (Fresh Rinse, LLC). Message frequency varies. Msg &amp; data rates may apply. Consent is not a
+          condition of purchase. Reply STOP to opt out, HELP for help. See our{" "}
+          <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms</a>.
+        </p>
+      </div>
     </div>
   );
 }
