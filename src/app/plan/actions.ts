@@ -69,6 +69,8 @@ export interface PlanQuoteData {
   phone: string;
   email: string;
   bestDay: string;
+  coDecider?: boolean; // someone else has to feel good about the plan before they join
+  partnerName?: string;
   billing?: "monthly" | "annual";
   term?: 1 | 2 | 3; // years the price is locked for
   springGutters?: boolean; // membership upgrade: second gutter cleaning in spring
@@ -156,6 +158,8 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     const phone = String(data.phone || "").trim().slice(0, 40);
     const email = String(data.email || "").trim().slice(0, 160);
     const bestDay = String(data.bestDay || "").trim().slice(0, 40);
+    const coDecider = !!data.coDecider;
+    const partnerName = String(data.partnerName || "").trim().slice(0, 80);
     const billing = data.billing === "annual" ? "annual" : "monthly";
     const term: TermYears = data.term === 2 ? 2 : data.term === 3 ? 3 : 1;
     const springGutters = !!data.springGutters;
@@ -169,8 +173,10 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     const firstName = nameParts[0] || "";
     const lastName = nameParts.slice(1).join(" ") || "";
 
-    const source = src === "web" ? "Website · plan calculator" : `Postcard · ${src}`;
-    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : [])];
+    // The channel label follows the src prefix so a Meta or referral lead is not filed under "Postcard".
+    const channel = src === "web" ? "Website" : src.startsWith("postcard-") ? "Postcard" : src.startsWith("meta-") ? "Meta" : src.startsWith("referral-") ? "Referral" : "Campaign";
+    const source = src === "web" ? "Website · plan calculator" : `${channel} · ${src}`;
+    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : []), ...(coDecider ? ["co-decider"] : [])];
 
     // The full calculator, as a note a human can read in the contact record.
     const noteLines: string[] = [
@@ -211,6 +217,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       ...(chosenAddOns.length ? chosenAddOns.map((a) => `  ${addOnEstimate(a, cleanAnswer((data.addOnAnswers || {})[a.key]), price)}`) : ["  none"]),
       "",
       `Best day for visits: ${bestDay || "no preference"}`,
+      `Decides with someone else: ${coDecider ? `yes${partnerName ? ` (${partnerName})` : ""}` : "no"}`,
     ];
 
     // 1) Upsert the contact (matches on email/phone so a repeat visitor does
@@ -244,6 +251,15 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
           { key: "membership_term_years", field_value: term },
           { key: "membership_start_month", field_value: new Date().toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "America/Los_Angeles" }) },
           { key: "membership_addons_requested", field_value: chosenAddOns.length ? chosenAddOns.map((a) => a.label).join(", ") : "none" },
+          // The four numbers the decision packet and the text assistant quote back (fields created 2026-09-12).
+          { key: "membership_core_annual", field_value: Math.round(price.coreAnnual) },
+          { key: "membership_window_value", field_value: Math.round(price.windowsAnnualValue) },
+          { key: "membership_savings", field_value: price.savedVsAlaCarte },
+          // Custom copies of two standard fields: only custom fields can sit inside {{#if}} in a GHL message.
+          { key: "membership_first_name", field_value: firstName },
+          { key: "membership_address", field_value: [house.addressParts?.street || house.address, house.addressParts?.city].filter(Boolean).join(", ") },
+          { key: "membership_co_decider", field_value: coDecider ? "Yes" : "No" },
+          { key: "membership_partner_name", field_value: partnerName },
         ],
       }),
     });
