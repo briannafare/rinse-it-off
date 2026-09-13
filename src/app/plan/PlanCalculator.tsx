@@ -357,7 +357,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
     return out;
   }, [exactText]);
   const [addOns, setAddOns] = useState<string[]>([]);
-  const [contact, setContact] = useState({ name: "", phone: "", email: "", bestDay: DAYS[0] });
+  const [contact, setContact] = useState({ name: "", phone: "", email: "", bestDay: DAYS[0], coDecider: false, partnerName: "" });
   const [billing, setBilling] = useState<Billing>("monthly");
   const [springGutters, setSpringGutters] = useState(false);
   const today = new Date();
@@ -412,6 +412,8 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
       phone: contact.phone,
       email: contact.email,
       bestDay: contact.bestDay === DAYS[0] ? "" : contact.bestDay,
+      coDecider: contact.coDecider,
+      partnerName: contact.coDecider ? contact.partnerName : "",
       billing,
       term,
       springGutters,
@@ -873,6 +875,17 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     <select id="bestDay" value={contact.bestDay} onChange={(e) => setContact({ ...contact, bestDay: e.target.value })}>
                       {DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
                     </select>
+                  </div>
+
+                  <div className="field">
+                    <label className="check" htmlFor="coDecider">
+                      <input id="coDecider" type="checkbox" checked={contact.coDecider} onChange={(e) => setContact({ ...contact, coDecider: e.target.checked })} />
+                      {" "}Someone else needs to feel good about this before we join
+                    </label>
+                    {contact.coDecider && (
+                      <input id="partnerName" type="text" placeholder="Their first name (optional)" value={contact.partnerName} onChange={(e) => setContact({ ...contact, partnerName: e.target.value })} style={{ marginTop: 8 }} />
+                    )}
+                    {contact.coDecider && <p className="fine" style={{ marginTop: 6, marginBottom: 0 }}>We&apos;ll send you both the same plan so nobody has to explain it from memory.</p>}
                   </div>
 
                   {error && <div className="error">{error}</div>}
