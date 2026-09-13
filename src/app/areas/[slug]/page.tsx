@@ -9,8 +9,8 @@ import { METHODS } from "@/lib/methods";
 import { AREAS, getAreaBySlug, getNearbyAreas, type Area } from "@/lib/areas";
 
 const BASE_URL = "https://rinseitoff.com";
-const PHONE_DISPLAY = "(503) 704-3755";
-const PHONE_TEL = "tel:+15037043755";
+const PHONE_DISPLAY = "(971) 626-4146";
+const PHONE_TEL = "tel:+19716264146";
 
 // ── Local imagery only (all present in /public/brand/photos) ─────────────────
 const HERO_PHOTOS = [
@@ -164,7 +164,7 @@ export default async function AreaPage({
         name: "Rinse It Off",
         description: `Method-matched exterior cleaning — pressure washing, soft washing, hot-water degreasing, and pure-water window cleaning — for residential and commercial properties in ${area.name}, ${area.type === "city" ? "Oregon" : "Portland OR"}.`,
         url: `${BASE_URL}/areas/${area.slug}`,
-        telephone: "+1-503-704-3755",
+        telephone: "+1-971-626-4146",
         email: "hello@rinseitoff.com",
         image: `${BASE_URL}${hero.src}`,
         address: {

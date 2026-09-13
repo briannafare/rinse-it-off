@@ -23,8 +23,8 @@ export const metadata: Metadata = {
     "Rinse It Off cleans commercial properties across the Portland metro — parking lots, trash pads, storefronts, siding and roofs. Start with a free 21-point property audit and a firm, itemized quote the same day we walk your property. Insured, with recurring maintenance plans.",
 };
 
-const PHONE_DISPLAY = "(503) 704-3755";
-const PHONE_TEL = "tel:+15037043755";
+const PHONE_DISPLAY = "(971) 626-4146";
+const PHONE_TEL = "tel:+19716264146";
 const ASSESS_HREF = "/assessment?type=commercial";
 
 /** Commercial surfaces first: lead with lots, trash pads, siding and storefronts.

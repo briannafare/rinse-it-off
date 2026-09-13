@@ -43,11 +43,11 @@ export function FinalCTA() {
               Get your same-day quote
             </a>
             <a
-              href="tel:+15037043755"
+              href="tel:+19716264146"
               className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
             >
               <Phone className="h-4 w-4" aria-hidden />
-              (503) 704-3755
+              (971) 626-4146
             </a>
           </div>
         </div>

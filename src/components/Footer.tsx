@@ -52,10 +52,10 @@ export function Footer() {
             </p>
             <div className="space-y-1.5">
               <a
-                href="tel:+15037043755"
+                href="tel:+19716264146"
                 className="flex min-h-11 items-center gap-2.5 rounded-sm py-1 text-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
               >
-                <Phone className="w-4 h-4 text-[#62C4EB]" /> (503) 704-3755
+                <Phone className="w-4 h-4 text-[#62C4EB]" /> (971) 626-4146
               </a>
               <a
                 href="mailto:hello@rinseitoff.com"

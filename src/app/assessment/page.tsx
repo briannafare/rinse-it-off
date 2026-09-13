@@ -268,7 +268,7 @@ export default function AssessmentPage() {
           )}
           <div style={{ background: "var(--ink)", borderRadius: "var(--r-lg)", padding: "20px 32px", display: "inline-block" }}>
             <div style={{ fontFamily: "var(--font-body)", color: "rgba(255,255,255,0.55)", fontSize: "0.8125rem", letterSpacing: "0.04em", marginBottom: 6 }}>Questions? Call or text</div>
-            <a href="tel:+15037043755" style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.5rem", color: "var(--blue)", textDecoration: "none", letterSpacing: "-0.02em" }}>(503) 704-3755</a>
+            <a href="tel:+19716264146" style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.5rem", color: "var(--blue)", textDecoration: "none", letterSpacing: "-0.02em" }}>(971) 626-4146</a>
           </div>
         </div>
       </>
@@ -283,8 +283,8 @@ export default function AssessmentPage() {
       {/* Header */}
       <header style={{ background: "var(--ink)", padding: "18px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
         <a href="https://www.rinseitoff.com" style={{ display: "inline-block" }}><img src="/logo-white.png" alt="Rinse It Off" style={{ height: 36, width: "auto" }} onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} /></a>
-        <a href="tel:+15037043755" style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "0.9375rem", color: "var(--blue)", textDecoration: "none", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>
-          (503) 704-3755
+        <a href="tel:+19716264146" style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "0.9375rem", color: "var(--blue)", textDecoration: "none", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>
+          (971) 626-4146
         </a>
       </header>
 

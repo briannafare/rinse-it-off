@@ -22,8 +22,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://rinseitoff.com/terms" },
 };
 
-const PHONE_DISPLAY = "(503) 704-3755";
-const PHONE_TEL = "tel:+15037043755";
+const PHONE_DISPLAY = "(971) 626-4146";
+const PHONE_TEL = "tel:+19716264146";
 
 export default function TermsPage() {
   return (

@@ -143,7 +143,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
         success: false,
         saved: false,
         memberMonthly: price.memberMonthly,
-        error: "Too many requests from this connection. Call or text us at (503) 704-3755 and we'll lock it in by hand.",
+        error: "Too many requests from this connection. Call or text us at (971) 626-4146 and we'll lock it in by hand.",
       };
     }
     if (flagged) {

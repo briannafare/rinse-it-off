@@ -22,8 +22,8 @@ import { Phone, ArrowRight } from "lucide-react";
  *  Nothing may depend on JS to become visible (see src/lib/gsap.ts). */
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const PHONE_DISPLAY = "(503) 704-3755";
-const PHONE_TEL = "tel:+15037043755";
+const PHONE_DISPLAY = "(971) 626-4146";
+const PHONE_TEL = "tel:+19716264146";
 const ROTATE_MS = 9000;
 
 type Slide = {

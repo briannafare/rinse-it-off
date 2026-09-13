@@ -283,7 +283,7 @@ function DashboardView({ modules, completedLessons, onNavigate }: {
         </div>
         <div className="fact-card">
           <div className="fact-card-label">Phone</div>
-          <div className="fact-card-value" style={{ fontSize: 14 }}>(503) 704-3755</div>
+          <div className="fact-card-value" style={{ fontSize: 14 }}>(971) 626-4146</div>
         </div>
       </div>
     </div>

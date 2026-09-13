@@ -6,12 +6,12 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Reach Rinse It Off for residential and commercial exterior cleaning across the Portland metro. Call (503) 704-3755, email hello@rinseitoff.com, or book your free property assessment.",
+    "Reach Rinse It Off for residential and commercial exterior cleaning across the Portland metro. Call (971) 626-4146, email hello@rinseitoff.com, or book your free property assessment.",
   alternates: { canonical: "https://rinseitoff.com/contact" },
 };
 
-const PHONE_DISPLAY = "(503) 704-3755";
-const PHONE_TEL = "tel:+15037043755";
+const PHONE_DISPLAY = "(971) 626-4146";
+const PHONE_TEL = "tel:+19716264146";
 
 const cardBase =
   "block rounded-2xl bg-white p-6 ring-1 ring-[#E4ECF1] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none";

@@ -37,13 +37,13 @@ export function CTA() {
                 <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-brand-peach-warm group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" />
               </a>
 
-              <a href="tel:+15037043755" className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.05] border border-white/[0.08] hover:bg-brand-lavender/[0.06] hover:border-brand-lavender/20 transition-all duration-300">
+              <a href="tel:+19716264146" className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.05] border border-white/[0.08] hover:bg-brand-lavender/[0.06] hover:border-brand-lavender/20 transition-all duration-300">
                 <span className="w-10 h-10 rounded-lg bg-brand-lavender/20 flex items-center justify-center text-brand-lavender-deep flex-shrink-0">
                   <Phone className="w-4 h-4" />
                 </span>
                 <div className="flex-1 min-w-0">
                   <p className="font-display font-bold text-sm text-white">Talk to a Real Person</p>
-                  <p className="text-xs text-white/40">(503) 704-3755</p>
+                  <p className="text-xs text-white/40">(971) 626-4146</p>
                 </div>
                 <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-brand-lavender-deep group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" />
               </a>

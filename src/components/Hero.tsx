@@ -59,9 +59,9 @@ export function Hero() {
               Get a Free Property Assessment
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </a>
-            <a href="tel:+15037043755" className="inline-flex items-center gap-2 text-white/70 font-medium text-sm hover:text-white transition-colors">
+            <a href="tel:+19716264146" className="inline-flex items-center gap-2 text-white/70 font-medium text-sm hover:text-white transition-colors">
               <Phone className="w-4 h-4" />
-              (503) 704-3755
+              (971) 626-4146
             </a>
           </div>
 

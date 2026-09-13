@@ -250,7 +250,7 @@ export const QUICK_REFERENCE = {
   company: {
     name: 'Rinse It Off',
     tagline: 'Your property is an asset — we treat it like one.',
-    phone: '(503) 704-3755',
+    phone: '(971) 626-4146',
     email: 'hello@rinseitoff.com',
     location: 'Tigard, OR 97224',
     ceo: 'Brianna Lindley',

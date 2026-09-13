@@ -1,6 +1,6 @@
 import { Phone, MessageSquare, ArrowRight } from "lucide-react";
 
-const PHONE = "+15037043755";
+const PHONE = "+19716264146";
 
 /** Mobile-only bottom action bar: Call · Text · Free quote. */
 export function StickyMobileBar() {

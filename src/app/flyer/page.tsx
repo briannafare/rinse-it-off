@@ -125,7 +125,7 @@ export default function FlyerPage() {
     });
     setSending(false);
     if (!res.success) {
-      setError(res.error || "Something went wrong. Please call us at (503) 704-3755.");
+      setError(res.error || "Something went wrong. Please call us at (971) 626-4146.");
       return;
     }
     setSent(true);
@@ -179,8 +179,8 @@ export default function FlyerPage() {
             {/* Contact card */}
             <div className="bg-brand-black rounded-2xl px-6 py-5 inline-block">
               <p className="text-white/50 text-xs font-medium mb-1">Questions? Call or text</p>
-              <a href="tel:5037043755" className="text-brand-mint font-display font-bold text-2xl tracking-tight no-underline">
-                (503) 704-3755
+              <a href="tel:9716264146" className="text-brand-mint font-display font-bold text-2xl tracking-tight no-underline">
+                (971) 626-4146
               </a>
             </div>
           </div>
@@ -197,8 +197,8 @@ export default function FlyerPage() {
       <header className="bg-brand-black px-6 py-5">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <Image src="/logo-white.png" alt="Rinse It Off" width={120} height={36} className="h-8 w-auto" />
-          <a href="tel:5037043755" className="text-brand-mint font-display font-semibold text-sm tracking-tight">
-            (503) 704-3755
+          <a href="tel:9716264146" className="text-brand-mint font-display font-semibold text-sm tracking-tight">
+            (971) 626-4146
           </a>
         </div>
       </header>
@@ -487,8 +487,8 @@ export default function FlyerPage() {
           {/* ── Footer note ── */}
           <p className="text-center text-text-muted text-xs mt-6">
             Rinse It Off · Portland, OR ·{" "}
-            <a href="tel:5037043755" className="text-brand-blue hover:text-brand-blue-dark transition-colors">
-              (503) 704-3755
+            <a href="tel:9716264146" className="text-brand-blue hover:text-brand-blue-dark transition-colors">
+              (971) 626-4146
             </a>{" "}
             ·{" "}
             <a href="mailto:hello@rinseitoff.com" className="text-brand-blue hover:text-brand-blue-dark transition-colors">

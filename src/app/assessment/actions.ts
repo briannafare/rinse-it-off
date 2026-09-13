@@ -95,7 +95,7 @@ export async function submitAssessmentForm(
       console.error(`[abuse] assessment submit BLOCKED — ${count} from ${ip} in 10 min`);
       return {
         success: false,
-        error: "Too many requests from this connection. Please call us at (503) 704-3755.",
+        error: "Too many requests from this connection. Please call us at (971) 626-4146.",
       };
     }
     if (flagged) {
@@ -161,7 +161,7 @@ export async function submitAssessmentForm(
       console.error("GHL contact creation failed:", contactRes.status, errBody);
       return {
         success: false,
-        error: "Failed to save your request. Please call us directly at (503) 704-3755.",
+        error: "Failed to save your request. Please call us directly at (971) 626-4146.",
       };
     }
 
@@ -246,6 +246,6 @@ export async function submitAssessmentForm(
     return { success: true };
   } catch (err) {
     console.error("Assessment form submission error:", err);
-    return { success: false, error: "Something went wrong. Please call us at (503) 704-3755." };
+    return { success: false, error: "Something went wrong. Please call us at (971) 626-4146." };
   }
 }

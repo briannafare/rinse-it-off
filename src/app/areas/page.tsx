@@ -7,8 +7,8 @@ import { Footer } from "@/components/Footer";
 import { CITIES, NEIGHBORHOODS } from "@/lib/areas";
 
 const BASE_URL = "https://rinseitoff.com";
-const PHONE_DISPLAY = "(503) 704-3755";
-const PHONE_TEL = "tel:+15037043755";
+const PHONE_DISPLAY = "(971) 626-4146";
+const PHONE_TEL = "tel:+19716264146";
 
 export const metadata: Metadata = {
   title: "Service Areas — Portland Metro Pressure Washing & Exterior Cleaning",

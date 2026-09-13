@@ -22,10 +22,10 @@ export function FAQ() {
               Everything you need to know about residential and commercial exterior cleaning in Portland.
             </p>
             <a
-              href="tel:+15037043755"
+              href="tel:+19716264146"
               className="inline-flex min-h-11 items-center rounded-lg text-sm font-semibold text-text-primary hover:text-text-secondary transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F7F4]"
             >
-              (503) 704-3755 →
+              (971) 626-4146 →
             </a>
           </div>
 

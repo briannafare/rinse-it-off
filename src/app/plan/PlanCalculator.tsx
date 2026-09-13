@@ -450,7 +450,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
       if (result.saved && result.contactId) go(4);
       else { setDone(true); window.scrollTo({ top: 0, behavior: "smooth" }); }
     } else {
-      setError(result.error || "Something went wrong. Give it another try, or call or text (503) 704-3755.");
+      setError(result.error || "Something went wrong. Give it another try, or call or text (971) 626-4146.");
     }
   };
 
@@ -550,7 +550,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
         <a href="https://www.rinseitoff.com" style={{ display: "inline-block" }}>
           <img src="/logo-white.png" alt="Rinse It Off" style={{ height: 36, width: "auto" }} onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
         </a>
-        <a className="phone" href="tel:+15037043755">(503) 704-3755</a>
+        <a className="phone" href="tel:+19716264146">(971) 626-4146</a>
       </header>
 
       {done && price && house && saved ? (
@@ -576,7 +576,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
             {saved.saved && depositPaid && !bookedISO && <p>We&apos;ll text you within one business day to set your first visit.</p>}
             <div className="tel">
               <div className="k">Questions? Call or text</div>
-              <a href="tel:+15037043755">(503) 704-3755</a>
+              <a href="tel:+19716264146">(971) 626-4146</a>
             </div>
             <SafeSender email={contact.email} />
           </div>

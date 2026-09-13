@@ -41,7 +41,7 @@ const jsonLd = {
       name: "Rinse It Off",
       description: "Commercial and residential exterior cleaning services in Portland, Oregon. Specializing in hot water pressure washing, soft washing, building washing, parking lot cleaning, and recurring maintenance programs.",
       url: "https://rinseitoff.com",
-      telephone: "+1-503-704-3755",
+      telephone: "+1-971-626-4146",
       email: "hello@rinseitoff.com",
       address: {
         "@type": "PostalAddress",

@@ -11,8 +11,8 @@ const LINKS = [
   { label: "FAQ", href: "/#faq" },
 ];
 
-const PHONE_DISPLAY = "(503) 704-3755";
-const PHONE_TEL = "tel:+15037043755";
+const PHONE_DISPLAY = "(971) 626-4146";
+const PHONE_TEL = "tel:+19716264146";
 
 /** One nav, two states. Over the hero photo it's wet glass (blur needs the
  *  image behind it); after scroll it settles onto solid white with a hairline.
