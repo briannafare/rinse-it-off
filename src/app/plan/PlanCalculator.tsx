@@ -1,4 +1,5 @@
 "use client";
+import { track as metaTrack } from "@/components/MetaPixel";
 import { useEffect, useMemo, useState } from "react";
 import { bookFirstVisit, confirmDeposit, depositCheckout, submitPlanQuote } from "./actions";
 import { getFreeSlots } from "../assessment/actions";
@@ -447,6 +448,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
     setSending(false);
     if (result.success) {
       setSaved({ saved: result.saved, contactId: result.contactId });
+      if (result.saved) metaTrack("Lead", { content_name: "membership quote", value: result.memberMonthly, currency: "USD" });
       if (result.saved && result.contactId) go(4);
       else { setDone(true); window.scrollTo({ top: 0, behavior: "smooth" }); }
     } else {
@@ -523,7 +525,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
     setCheckNote("");
     for (let i = 0; i < 3; i++) {
       const r = await confirmDeposit(saved.contactId);
-      if (r.paid) { setDepositPaid(true); setChecking(false); return; }
+      if (r.paid) { setDepositPaid(true); setChecking(false); metaTrack("Purchase", { content_name: "membership reservation", value: 99, currency: "USD" }); return; }
       await new Promise((res) => setTimeout(res, 3000));
     }
     setChecking(false);

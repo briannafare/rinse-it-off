@@ -1,3 +1,4 @@
+import MetaPixel from "@/components/MetaPixel";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -103,6 +104,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="bg-white text-text-primary font-body antialiased overflow-x-hidden">
+        <MetaPixel />
         {children}
       </body>
     </html>
