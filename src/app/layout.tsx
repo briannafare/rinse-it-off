@@ -76,6 +76,7 @@ const jsonLd = {
         "Window Washing",
       ],
       priceRange: "$$",
+      sameAs: ["https://www.facebook.com/profile.php?id=61594392927890"],
       openingHoursSpecification: {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],

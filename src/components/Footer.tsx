@@ -124,6 +124,14 @@ export function Footer() {
           <p className="text-sm text-white/65">&copy; {new Date().getFullYear()} Fresh Rinse, LLC dba Rinse It Off &middot; 6645 SW Ventura Place, Tigard, OR 97223</p>
           <div className="flex items-center gap-4">
             <a
+              href="https://www.facebook.com/profile.php?id=61594392927890"
+              target="_blank"
+              rel="noopener"
+              className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB]"
+            >
+              Facebook
+            </a>
+            <a
               href="/terms"
               className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
             >
