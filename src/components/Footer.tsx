@@ -121,7 +121,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
-          <p className="text-sm text-white/65">&copy; {new Date().getFullYear()} Fresh Rinse, LLC dba Rinse It Off &middot; 6465 SW Ventura Place, Tigard, OR 97223</p>
+          <p className="text-sm text-white/65">&copy; {new Date().getFullYear()} Fresh Rinse, LLC dba Rinse It Off &middot; 6645 SW Ventura Place, Tigard, OR 97223</p>
           <div className="flex items-center gap-4">
             <a
               href="/terms"

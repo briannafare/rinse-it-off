@@ -45,7 +45,7 @@ const jsonLd = {
       email: "hello@rinseitoff.com",
       address: {
         "@type": "PostalAddress",
-        streetAddress: "6465 SW Ventura Place",
+        streetAddress: "6645 SW Ventura Place",
         addressLocality: "Tigard",
         postalCode: "97223",
         addressRegion: "OR",
@@ -77,9 +77,9 @@ const jsonLd = {
       priceRange: "$$",
       openingHoursSpecification: {
         "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-        opens: "07:00",
-        closes: "18:00",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        opens: "00:00",
+        closes: "23:59",
       },
     },
     {
