@@ -878,8 +878,8 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                   </div>
 
                   <div className="field">
-                    <label className="check" htmlFor="coDecider">
-                      <input id="coDecider" type="checkbox" checked={contact.coDecider} onChange={(e) => setContact({ ...contact, coDecider: e.target.checked })} />
+                    <label className="check" htmlFor="coDecider" style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+                      <input id="coDecider" type="checkbox" style={{ width: "auto", display: "inline-block", margin: "0 8px 0 0", verticalAlign: "middle" }} checked={contact.coDecider} onChange={(e) => setContact({ ...contact, coDecider: e.target.checked })} />
                       {" "}Someone else needs to feel good about this before we join
                     </label>
                     {contact.coDecider && (
