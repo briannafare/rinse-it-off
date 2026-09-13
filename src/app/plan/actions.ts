@@ -70,6 +70,7 @@ export interface PlanQuoteData {
   email: string;
   bestDay: string;
   coDecider?: boolean; // someone else has to feel good about the plan before they join
+  consent?: boolean; // ticked the "text and email me" box on the claim step
   partnerName?: string;
   billing?: "monthly" | "annual";
   term?: 1 | 2 | 3; // years the price is locked for
@@ -159,6 +160,10 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     const email = String(data.email || "").trim().slice(0, 160);
     const bestDay = String(data.bestDay || "").trim().slice(0, 40);
     const coDecider = !!data.coDecider;
+    if (!data.consent) {
+      return { ...fallback, error: "Tick the box so we can text and email you your plan." };
+    }
+    const consentDate = new Date().toLocaleDateString("en-CA", { timeZone: "America/Los_Angeles" }); // YYYY-MM-DD
     const partnerName = String(data.partnerName || "").trim().slice(0, 80);
     const billing = data.billing === "annual" ? "annual" : "monthly";
     const term: TermYears = data.term === 2 ? 2 : data.term === 3 ? 3 : 1;
@@ -176,7 +181,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     // The channel label follows the src prefix so a Meta or referral lead is not filed under "Postcard".
     const channel = src === "web" ? "Website" : src.startsWith("postcard-") ? "Postcard" : src.startsWith("meta-") ? "Meta" : src.startsWith("referral-") ? "Referral" : "Campaign";
     const source = src === "web" ? "Website · plan calculator" : `${channel} · ${src}`;
-    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : []), ...(coDecider ? ["co-decider"] : [])];
+    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : []), ...(coDecider ? ["co-decider"] : []), "consent-sms-email"];
 
     // The full calculator, as a note a human can read in the contact record.
     const noteLines: string[] = [
@@ -260,6 +265,9 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
           { key: "membership_address", field_value: [house.addressParts?.street || house.address, house.addressParts?.city].filter(Boolean).join(", ") },
           { key: "membership_co_decider", field_value: coDecider ? "Yes" : "No" },
           { key: "membership_partner_name", field_value: partnerName },
+          // Consent record, same two fields the Blitz uses (created 2026-08-13).
+          { key: "consent_written_source", field_value: "rinseitoff.com/plan checkbox: text and email me about my quote and visits" },
+          { key: "consent_written_date", field_value: consentDate },
         ],
       }),
     });
