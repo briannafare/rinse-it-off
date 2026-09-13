@@ -282,6 +282,10 @@ const DS = `
   .sms-terms a { color: var(--blue-deep); text-decoration: underline; }
 
   .done { text-align: center; padding: 8px 0; }
+  .safe { background: var(--surface, #F4F7F8); border: 1px solid var(--line, #D9E1E5); border-radius: var(--r-lg); padding: 18px 20px; margin-top: 24px; text-align: left; }
+  .safe h3 { font-size: 1rem; margin: 0 0 6px; }
+  .safe p { margin: 0 0 12px; font-size: 0.9375rem; line-height: 1.5; }
+  .safe .btn { display: inline-flex; width: auto; }
   .done .mark { width: 64px; height: 64px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--ink); }
   .done h2 { font-size: clamp(1.75rem, 6vw, 2.25rem); margin-bottom: 12px; }
   .done p { font-size: 1.0625rem; line-height: 1.6; color: var(--text-secondary); max-width: 420px; margin: 0 auto; text-wrap: pretty; }
@@ -322,6 +326,26 @@ function Check() {
   );
 }
 
+/** One tap to add the number and address we send from. A web page cannot write to anyone's safe-sender
+ *  list; the .vcf opens the native contact sheet and the homeowner approves it there. The hint line
+ *  is picked from the email domain they just typed. */
+function SafeSender({ email }: { email: string }) {
+  const d = (email.split("@")[1] || "").toLowerCase() + ".";
+  const hint = /^(gmail|googlemail)\./.test(d) ? "On Gmail, you can also drag our first email to Primary."
+    : /^(outlook|hotmail|live|msn)\./.test(d) ? "On Outlook, you can also add us under Settings, Junk email, Safe senders."
+    : /^(yahoo|ymail|rocketmail)\./.test(d) ? "On Yahoo, you can also add us under Settings, Filters."
+    : /^(icloud|me|mac)\./.test(d) ? "In Mail, tap our name at the top of the email, then Add to Contacts."
+    : "Or add us to your address book by hand.";
+  return (
+    <div className="safe">
+      <h3>So our texts and emails reach you</h3>
+      <p>They come from <strong>(971) 626-4146</strong> and <strong>hello@rinseitoff.com</strong>. Add us to your contacts and your plan won&apos;t land in spam or get filtered as an unknown sender.</p>
+      <a className="btn btn-ink" href="/api/vcard" download>Add Rinse It Off to my contacts</a>
+      <p className="fine" style={{ marginTop: 8, marginBottom: 0 }}>{hint}</p>
+    </div>
+  );
+}
+
 export default function PlanCalculator({ src, dryRun = false }: { src: string; dryRun?: boolean }) {
   const [step, setStep] = useState(0);
   const [street, setStreet] = useState("");
@@ -357,7 +381,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
     return out;
   }, [exactText]);
   const [addOns, setAddOns] = useState<string[]>([]);
-  const [contact, setContact] = useState({ name: "", phone: "", email: "", bestDay: DAYS[0], coDecider: false, partnerName: "" });
+  const [contact, setContact] = useState({ name: "", phone: "", email: "", bestDay: DAYS[0], coDecider: false, partnerName: "", consent: false });
   const [billing, setBilling] = useState<Billing>("monthly");
   const [springGutters, setSpringGutters] = useState(false);
   const today = new Date();
@@ -413,6 +437,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
       email: contact.email,
       bestDay: contact.bestDay === DAYS[0] ? "" : contact.bestDay,
       coDecider: contact.coDecider,
+      consent: contact.consent,
       partnerName: contact.coDecider ? contact.partnerName : "",
       billing,
       term,
@@ -553,6 +578,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
               <div className="k">Questions? Call or text</div>
               <a href="tel:+15037043755">(503) 704-3755</a>
             </div>
+            <SafeSender email={contact.email} />
           </div>
         </div>
       ) : (
@@ -891,7 +917,13 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                   {error && <div className="error">{error}</div>}
 
                   <p className="fine" style={{ marginBottom: 12 }}>This is your starting price. Our first visit confirms it, and unusual height or access can add to it.</p>
-                  <button type="submit" className="btn btn-ink" disabled={sending || !contact.name || !contact.phone || !contact.email}>
+                  <div className="field">
+                    <label className="check" htmlFor="consent" style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
+                      <input id="consent" type="checkbox" required checked={contact.consent} onChange={(e) => setContact({ ...contact, consent: e.target.checked })} style={{ width: "auto", display: "inline-block", margin: "4px 0 0 0" }} />
+                      <span>Yes, text and email me about my quote and visits. Your plan, the reservation link and visit reminders all come this way, from (971) 626-4146 and hello@rinseitoff.com.</span>
+                    </label>
+                  </div>
+                  <button type="submit" className="btn btn-ink" disabled={sending || !contact.name || !contact.phone || !contact.email || !contact.consent}>
                     {sending ? "Reserving it" : "Reserve this price"}
                   </button>
                   <p className="consent">
@@ -994,6 +1026,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     {depositPaid ? "All set" : "Text me instead"}
                   </button>
                   {!depositPaid && <p className="fine" style={{ textAlign: "center", marginTop: 8 }}>We&apos;ll text you to take the deposit and set your first visit.</p>}
+                  <SafeSender email={contact.email} />
                 </div>
               )}
             </div>
