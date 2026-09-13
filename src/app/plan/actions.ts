@@ -169,7 +169,9 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     const firstName = nameParts[0] || "";
     const lastName = nameParts.slice(1).join(" ") || "";
 
-    const source = src === "web" ? "Website · plan calculator" : `Postcard · ${src}`;
+    // The channel label follows the src prefix so a Meta or referral lead is not filed under "Postcard".
+    const channel = src === "web" ? "Website" : src.startsWith("postcard-") ? "Postcard" : src.startsWith("meta-") ? "Meta" : src.startsWith("referral-") ? "Referral" : "Campaign";
+    const source = src === "web" ? "Website · plan calculator" : `${channel} · ${src}`;
     const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : [])];
 
     // The full calculator, as a note a human can read in the contact record.
