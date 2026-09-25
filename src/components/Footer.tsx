@@ -25,6 +25,7 @@ const companyLinks = [
   { label: "Commercial", href: "/commercial" },
   { label: "Areas We Serve", href: "/areas" },
   { label: "FAQ", href: "/#faq" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 

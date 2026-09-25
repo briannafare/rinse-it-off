@@ -9,6 +9,7 @@ const LINKS = [
   { label: "Commercial", href: "/commercial" },
   { label: "Proof", href: "/#proof" },
   { label: "FAQ", href: "/#faq" },
+  { label: "Blog", href: "/blog" },
 ];
 
 const PHONE_DISPLAY = "(971) 626-4146";
