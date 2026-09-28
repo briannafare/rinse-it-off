@@ -46,9 +46,8 @@ const jsonLd = {
       email: "hello@rinseitoff.com",
       address: {
         "@type": "PostalAddress",
-        streetAddress: "6645 SW Ventura Place",
+        // ponytail: city only. Service-area business; the street address is the owner's home.
         addressLocality: "Tigard",
-        postalCode: "97223",
         addressRegion: "OR",
         addressCountry: "US",
       },
