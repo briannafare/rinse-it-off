@@ -181,7 +181,8 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     // The channel label follows the src prefix so a Meta or referral lead is not filed under "Postcard".
     const channel = src === "web" ? "Website" : src.startsWith("postcard-") ? "Postcard" : src.startsWith("meta-") ? "Meta" : src.startsWith("referral-") ? "Referral" : "Campaign";
     const source = src === "web" ? "Website · plan calculator" : `${channel} · ${src}`;
-    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : []), ...(coDecider ? ["co-decider"] : []), "consent-sms-email"];
+    // plan-quote is added separately after the upsert (step 1b) so a repeat visitor re-fires the quote workflows.
+    const tags = ["lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : []), ...(coDecider ? ["co-decider"] : []), "consent-sms-email"];
 
     // The full calculator, as a note a human can read in the contact record.
     const noteLines: string[] = [
@@ -280,6 +281,19 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     if (!contactId) {
       console.error("GHL upsert returned no contact id");
       return fallback;
+    }
+
+    // 1b) The team alert, owner, text assistant and follow-up all trigger on plan-quote being ADDED.
+    //     A contact who quoted before already carries it, so re-adding is a no-op and nothing fires
+    //     (Alstun's test, 2026-09-28). Remove it, then add it back.
+    try {
+      const tagUrl = `${GHL_API_BASE}/contacts/${contactId}/tags`;
+      const tagBody = JSON.stringify({ tags: ["plan-quote"] });
+      await fetch(tagUrl, { method: "DELETE", headers: ghlHeaders, body: tagBody });
+      const addRes = await fetch(tagUrl, { method: "POST", headers: ghlHeaders, body: tagBody });
+      if (!addRes.ok) console.error("GHL plan-quote tag failed:", addRes.status, await addRes.text());
+    } catch (e) {
+      console.error("GHL plan-quote tag error:", e);
     }
 
     // 2) Opportunity in the Yearly Membership pipeline at "Quote", worth the
