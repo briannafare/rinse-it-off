@@ -38,12 +38,16 @@ const config: Config = {
           inverse: "#FFFFFF",
         },
         border: { DEFAULT: "#E4ECF1", light: "#EFF4F7" },
+        // Jet-age layer (2026-09-28): used sparingly on top of the core palette.
+        retro: { pool: "#F3EDE2", paper: "#FBF8F2", sun: "#F2B632", bloom: "#D6336C", line: "#E7E0D3", muted: "#5B6770" },
       },
       fontFamily: {
         display: ["var(--font-display)", "system-ui", "sans-serif"],
         serif: ["var(--font-display)", "system-ui", "sans-serif"],
         body: ["var(--font-text)", "system-ui", "sans-serif"],
         mono: ["var(--font-text)", "system-ui", "sans-serif"],
+        clarendon: ['"clarendon-wide"', "Georgia", "serif"],
+        typewriter: ['"prestige-elite-std"', '"Courier New"', "monospace"],
       },
       fontSize: {
         hero: ["clamp(3rem, 8vw, 5.5rem)", { lineHeight: "1.0", letterSpacing: "-0.03em" }],
@@ -75,11 +79,22 @@ const config: Config = {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        // Retro button: stripe sweeps across slowly, then a star twinkles on the pill's top edge.
+        "retro-sweep": { "0%,55%": { backgroundPosition: "170% 0" }, "85%,100%": { backgroundPosition: "-70% 0" } },
+        "retro-twinkle": {
+          "0%,80%": { opacity: "0", transform: "scale(.2) rotate(0deg)" },
+          "87%": { opacity: "1", transform: "scale(1.1) rotate(40deg)" },
+          "93%": { opacity: "1", transform: "scale(.9) rotate(70deg)" },
+          "100%": { opacity: "0", transform: "scale(.3) rotate(95deg)" },
+        },
       },
       animation: {
         float: "float-gentle 5s ease-in-out infinite",
         "spin-slow": "spin-slow 25s linear infinite",
         "scroll-x": "scroll-x 30s linear infinite",
+        "retro-sweep": "retro-sweep 9s ease-in-out infinite",
+        "retro-twinkle": "retro-twinkle 9s ease-out infinite",
+        "ticker": "scroll-x 60s linear infinite",
       },
     },
   },
