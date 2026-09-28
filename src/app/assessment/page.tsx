@@ -187,16 +187,24 @@ export default function AssessmentPage() {
   const [selectedISO, setSelectedISO] = useState("");
   const [slotMap, setSlotMap] = useState<Record<string, string[]>>({});
   const [slotsLoaded, setSlotsLoaded] = useState(false);
+  const [slotsFailed, setSlotsFailed] = useState(false);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
 
-  // Pull real availability for the audit calendar (today → +45 days) once.
+  // Pull real availability for the audit calendar once. GHL rejects any
+  // free-slots query longer than 31 days (a 45-day ask returned nothing and
+  // greyed out every date), so fetch two 31-day windows (~62 days) and merge,
+  // the same way /plan does.
   useEffect(() => {
     const now = Date.now();
-    getFreeSlots(now, now + 45 * 24 * 60 * 60 * 1000)
-      .then((r) => setSlotMap(r.days))
-      .catch(() => setSlotMap({}))
+    const day = 24 * 60 * 60 * 1000;
+    Promise.all([getFreeSlots(now, now + 31 * day), getFreeSlots(now + 31 * day, now + 62 * day)])
+      .then(([a, b]) => {
+        setSlotMap({ ...a.days, ...b.days });
+        if (!a.ok && !b.ok) setSlotsFailed(true);
+      })
+      .catch(() => { setSlotMap({}); setSlotsFailed(true); })
       .finally(() => setSlotsLoaded(true));
   }, []);
 
@@ -409,7 +417,11 @@ export default function AssessmentPage() {
               <div style={{ marginBottom: 32 }}>
                 <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 4 }}>Book your walkthrough</div>
                 <p style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-muted)", marginBottom: 12, lineHeight: 1.5 }}>
-                  {slotsLoaded ? "Pick a real open time — it's booked the moment you submit." : "Loading live availability…"}
+                  {!slotsLoaded
+                    ? "Loading live availability…"
+                    : slotsFailed
+                      ? "We couldn't load open times just now. Send the form and we'll text you to set a time, or call (971) 626-4146."
+                      : "Pick a real open time — it's booked the moment you submit."}
                 </p>
                 <div style={{ border: "2px solid var(--border)", borderRadius: "var(--r-lg)", overflow: "hidden", background: "var(--surface)" }}>
                   {/* Calendar header */}
