@@ -80,11 +80,11 @@ const config: Config = {
           "100%": { transform: "translateX(-50%)" },
         },
         // Retro button: stripe sweeps across slowly, then a star twinkles on the pill's top edge.
-        "retro-sweep": { "0%,55%": { backgroundPosition: "170% 0" }, "85%,100%": { backgroundPosition: "-70% 0" } },
+        "retro-sweep": { "0%,62%": { backgroundPosition: "170% 0" }, "92%,100%": { backgroundPosition: "-70% 0" } },
         "retro-twinkle": {
-          "0%,80%": { opacity: "0", transform: "scale(.2) rotate(0deg)" },
-          "87%": { opacity: "1", transform: "scale(1.1) rotate(40deg)" },
-          "93%": { opacity: "1", transform: "scale(.9) rotate(70deg)" },
+          "0%,90%": { opacity: "0", transform: "scale(.2) rotate(0deg)" },
+          "94%": { opacity: "1", transform: "scale(1.1) rotate(40deg)" },
+          "97%": { opacity: "1", transform: "scale(.9) rotate(70deg)" },
           "100%": { opacity: "0", transform: "scale(.3) rotate(95deg)" },
         },
       },
@@ -92,8 +92,9 @@ const config: Config = {
         float: "float-gentle 5s ease-in-out infinite",
         "spin-slow": "spin-slow 25s linear infinite",
         "scroll-x": "scroll-x 30s linear infinite",
-        "retro-sweep": "retro-sweep 9s ease-in-out infinite",
-        "retro-twinkle": "retro-twinkle 9s ease-out infinite",
+        // one slow pass (~5s) every 16s, then the twinkle
+        "retro-sweep": "retro-sweep 16s ease-in-out infinite",
+        "retro-twinkle": "retro-twinkle 16s ease-out infinite",
         "ticker": "scroll-x 60s linear infinite",
       },
     },

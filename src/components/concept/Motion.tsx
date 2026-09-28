@@ -32,3 +32,25 @@ export function Reveal({ children, delay = 0, className }: { children: ReactNode
     </motion.div>
   );
 }
+
+/** Hero film: plays once, slowed down, then rests on its last frame (the push-in doesn't loop cleanly). */
+export function HeroFilm({ src, poster, className }: { src: string; poster: string; className?: string }) {
+  const still = useReducedMotion();
+  if (still) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={poster} alt="" className={className} />;
+  }
+  return (
+    <video
+      className={className}
+      src={src}
+      poster={poster}
+      autoPlay
+      muted
+      playsInline
+      preload="auto"
+      onLoadedMetadata={(e) => { e.currentTarget.playbackRate = 0.7; }}
+      aria-hidden
+    />
+  );
+}

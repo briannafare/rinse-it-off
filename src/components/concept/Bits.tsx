@@ -2,28 +2,32 @@
 import clsx from "clsx";
 import type { ReactNode } from "react";
 
-/** Primary button: ink pill; a three-band stripe sweeps across slowly, then a star twinkles on the top edge. */
-export function RetroButton({ href, children, tone = "ink" }: { href: string; children: ReactNode; tone?: "ink" | "cream" }) {
+/** Button. `signature` = the one hero button that gets the slow stripe sweep and twinkle; every other button is plain. */
+export function RetroButton({ href, children, tone = "ink", signature = false }: { href: string; children: ReactNode; tone?: "ink" | "cream" | "white"; signature?: boolean }) {
   return (
     <a
       href={href}
       className={clsx(
-        "group relative isolate inline-flex items-center rounded-full px-6 py-4 text-[15px] font-semibold leading-none transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-retro-sun",
-        tone === "ink" ? "bg-brand-black text-white" : "bg-retro-pool text-brand-black",
+        "group relative isolate inline-flex items-center rounded-full px-7 py-4 text-[15px] font-semibold leading-none transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-retro-sun",
+        tone === "ink" && "bg-brand-black text-white",
+        tone === "cream" && "bg-retro-pool text-brand-black",
+        tone === "white" && "bg-white text-brand-black",
       )}
     >
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-no-repeat motion-safe:animate-retro-sweep group-hover:[animation-duration:2.2s]"
-        style={{
-          backgroundImage:
-            "linear-gradient(105deg,transparent 0 43%,#D6336C 43% 47%,#62C4EB 47% 51%,#F2B632 51% 55%,transparent 55% 100%)",
-          backgroundSize: "300% 100%",
-          backgroundPosition: "170% 0",
-        }}
-      />
+      {signature && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-no-repeat motion-safe:animate-retro-sweep"
+          style={{
+            backgroundImage:
+              "linear-gradient(105deg,transparent 0 43%,#D6336C 43% 47%,#62C4EB 47% 51%,#F2B632 51% 55%,transparent 55% 100%)",
+            backgroundSize: "300% 100%",
+            backgroundPosition: "170% 0",
+          }}
+        />
+      )}
       <span className="relative">{children}</span>
-      <Twinkle className="pointer-events-none absolute -top-[11px] right-[14%] h-[22px] w-[22px] opacity-0 motion-safe:animate-retro-twinkle group-hover:[animation-duration:2.2s]" />
+      {signature && <Twinkle className="pointer-events-none absolute -top-[11px] right-[14%] h-[22px] w-[22px] opacity-0 motion-safe:animate-retro-twinkle" />}
     </a>
   );
 }
