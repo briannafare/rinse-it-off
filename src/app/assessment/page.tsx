@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { submitAssessmentForm, getFreeSlots, type AssessmentFormData } from "./actions";
+import { track as metaTrack } from "@/components/MetaPixel";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const COMMERCIAL_SERVICES = [
@@ -230,6 +231,9 @@ export default function AssessmentPage() {
     const result = await submitAssessmentForm(payload);
     setSending(false);
     if (result.success) {
+      // Meta Pixel: a booked inspection is the commercial conversion, and it lets the
+      // retargeting ads leave out people who already asked for one.
+      metaTrack("Lead", { content_name: "property inspection request", content_category: propertyType || "unknown" });
       setSent(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {

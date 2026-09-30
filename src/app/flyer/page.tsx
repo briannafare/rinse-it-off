@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { submitAssessmentForm } from "@/app/assessment/actions";
+import { track as metaTrack } from "@/components/MetaPixel";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -128,6 +129,7 @@ export default function FlyerPage() {
       setError(res.error || "Something went wrong. Please call us at (971) 626-4146.");
       return;
     }
+    metaTrack("Lead", { content_name: "property inspection request (flyer)", content_category: propertyType || "residential" });
     setSent(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
