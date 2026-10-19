@@ -18,6 +18,9 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return {
       beforeFiles: [
+        // Markdown copy of each key page at <url>.md (see src/lib/ai-content.ts).
+        { source: "/index.md", destination: "/md" },
+        { source: "/:path+.md", destination: "/md/:path+" },
         {
           source: "/",
           destination: "/training",
