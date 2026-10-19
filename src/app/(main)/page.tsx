@@ -1,6 +1,7 @@
 import { CinematicHero } from "@/components/CinematicHero";
 import { AquaStats } from "@/components/AquaStats";
 import { DualFunnel } from "@/components/DualFunnel";
+import { PlanSection } from "@/components/PlanSection";
 import { Methods } from "@/components/Methods";
 import { ProcessSection } from "@/components/ProcessSection";
 import { BeforeAfter } from "@/components/BeforeAfter";
@@ -30,6 +31,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <CinematicHero />
+      <PlanSection />
       <AquaStats />
       <DualFunnel />
       <Methods />

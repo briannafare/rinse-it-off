@@ -50,12 +50,12 @@ const SLIDES: Slide[] = [
       <>
         It comes with the seasonal plan that keeps your roof, siding, driveway, gutters
         and walkways clean all year. Those four window visits on their own would cost you
-        more than <span className="font-semibold text-white">$2,000</span>. Plans run{" "}
-        <span className="font-semibold text-white">$189 to $499 a month</span>, depending
+        more than <span className="font-semibold text-white">$2,000</span>. Plans start at{" "}
+        <span className="font-semibold text-white">$189 a month</span>, depending
         on the size of your home.
       </>
     ),
-    cta: { label: "Get my home price", href: "/assessment?type=residential" },
+    cta: { label: "Get my home price", href: "/plan?src=home-hero" },
     img: "/brand/photos/house-wash-hero.webp",
     alt: "A technician soft-washing the siding of a two-story Portland home from the lawn",
     priority: true,

@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
 import { depositCheckoutPlan } from "@/lib/deposit-checkout.mjs";
-import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, depositSchedule, effectivePrice, prepaidTermTotal, priceHouse, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
+import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, depositSchedule, effectivePrice, handPriceReasons, prepaidTermTotal, priceHouse, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -131,6 +131,10 @@ function cleanHouse(h: HouseInputs): HouseInputs {
 export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteResult> {
   const house = cleanHouse(data.house);
   const price = priceHouse(house);
+  // Past the calculator's limits: no price leaves this server (Bri 2026-10-19).
+  // No plan-quote tag (that tag starts the price texts and the deposit link),
+  // no price fields, a $0 opportunity, and a note telling the team to price it.
+  const hand = handPriceReasons(house);
   const src = cleanSrc(data.src);
   const fallback: PlanQuoteResult = { success: true, saved: false, memberMonthly: price.memberMonthly };
 
@@ -181,10 +185,11 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     // The channel label follows the src prefix so a Meta or referral lead is not filed under "Postcard".
     const channel = src === "web" ? "Website" : src.startsWith("postcard-") ? "Postcard" : src.startsWith("meta-") ? "Meta" : src.startsWith("referral-") ? "Referral" : "Campaign";
     const source = src === "web" ? "Website · plan calculator" : `${channel} · ${src}`;
-    const tags = ["plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : []), ...(coDecider ? ["co-decider"] : []), "consent-sms-email"];
+    const tags = [hand.length ? "plan-hand-price" : "plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : []), ...(coDecider ? ["co-decider"] : []), "consent-sms-email"];
 
     // The full calculator, as a note a human can read in the contact record.
     const noteLines: string[] = [
+      ...(hand.length ? [`PRICE BY HAND: the page showed no price because of ${hand.join(", ")}. The numbers below are the calculator's floor for reference only. Do not quote them.`, ""] : []),
       `YEARLY MEMBERSHIP QUOTE (${new Date().toLocaleDateString("en-US", { timeZone: "America/Los_Angeles" })})`,
       `Source: ${source}`,
       "",
@@ -248,6 +253,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
         // GHL emails or documents; these do, so the team notification and the
         // membership agreement read them.
         customFields: [
+          ...(hand.length ? [] : [
           { key: "membership_monthly_price", field_value: eff.monthly },
           { key: "membership_year_total", field_value: eff.annual },
           { key: "membership_prepaid_total", field_value: eff.prepaid },
@@ -259,7 +265,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
           // The four numbers the decision packet and the text assistant quote back (fields created 2026-09-12).
           { key: "membership_core_annual", field_value: Math.round(price.coreAnnual) },
           { key: "membership_window_value", field_value: Math.round(price.windowsAnnualValue) },
-          { key: "membership_savings", field_value: price.savedVsAlaCarte },
+          { key: "membership_savings", field_value: price.savedVsAlaCarte }]),
           // Custom copies of two standard fields: only custom fields can sit inside {{#if}} in a GHL message.
           { key: "membership_first_name", field_value: firstName },
           { key: "membership_address", field_value: [house.addressParts?.street || house.address, house.addressParts?.city].filter(Boolean).join(", ") },
@@ -294,10 +300,10 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
             locationId: GHL_LOCATION_ID,
             pipelineStageId: MEMBERSHIP_STAGE_QUOTE_ID,
             contactId,
-            name: `Yearly membership · ${house.address || name}`,
+            name: `Yearly membership${hand.length ? " · price by hand" : ""} · ${house.address || name}`,
             status: "open",
             source,
-            monetaryValue: yearValue,
+            monetaryValue: hand.length ? 0 : yearValue,
           }),
         });
         if (!oppRes.ok) {
@@ -308,7 +314,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
             const upd = await fetch(`${GHL_API_BASE}/opportunities/${existingId}`, {
               method: "PUT",
               headers: ghlHeaders,
-              body: JSON.stringify({ name: `Yearly membership · ${house.address || name}`, monetaryValue: yearValue, source }),
+              body: JSON.stringify({ name: `Yearly membership${hand.length ? " · price by hand" : ""} · ${house.address || name}`, monetaryValue: hand.length ? 0 : yearValue, source }),
             });
             if (!upd.ok) console.error("GHL opportunity update failed:", upd.status, await upd.text());
           } else {
@@ -334,7 +340,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       console.error("GHL note error:", e);
     }
 
-    return { success: true, saved: true, memberMonthly: price.memberMonthly, contactId };
+    return { success: true, saved: true, memberMonthly: hand.length ? 0 : price.memberMonthly, contactId };
   } catch (err) {
     console.error("Plan quote submission error:", err);
     return fallback;

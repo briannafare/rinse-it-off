@@ -19,6 +19,7 @@ import {
   prepaidTermTotal,
   type TermYears,
   priceHouse,
+  handPriceReasons,
   suggestedAddOns,
   type Access,
   type AddOnAnswer,
@@ -416,6 +417,9 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
   }, [address, street, city, stateCode, zip, sqft, stories, windows, roof, driveway, access, exact]);
 
   const price = useMemo(() => (house ? priceHouse(house) : null), [house]);
+  // Houses past the calculator's limits get no instant number (Bri 2026-10-19).
+  const hand = useMemo(() => (house ? handPriceReasons(house) : []), [house]);
+  const HAND_STEP = 9;
 
   const toggleAddOn = (k: string) => setAddOns((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
 
@@ -448,8 +452,9 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
     setSending(false);
     if (result.success) {
       setSaved({ saved: result.saved, contactId: result.contactId });
-      if (result.saved) metaTrack("Lead", { content_name: "membership quote", value: result.memberMonthly, currency: "USD" });
-      if (result.saved && result.contactId) go(4);
+      if (result.saved) metaTrack("Lead", hand.length ? { content_name: "membership price by hand" } : { content_name: "membership quote", value: result.memberMonthly, currency: "USD" });
+      if (hand.length) { setDone(true); window.scrollTo({ top: 0, behavior: "smooth" }); }
+      else if (result.saved && result.contactId) go(4);
       else { setDone(true); window.scrollTo({ top: 0, behavior: "smooth" }); }
     } else {
       setError(result.error || "Something went wrong. Give it another try, or call or text (971) 626-4146.");
@@ -473,7 +478,8 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
       { label: "Summer driveway and walkways", value: season(["driveway"]) },
       { label: "Fall gutters and downspouts", value: season(["gutters"]) },
       { label: "Winter walkways and entry", value: season(["winter"]) },
-      { label: `Windows, ${WINDOW_VISITS_PER_YEAR} visits`, sub: "exterior, every window", value: price.windowsAnnualValue, free: true },
+      ...(amt("extra-windows") > 0 ? [{ label: "Windows past the included count", sub: price.lines.find((l) => l.key === "extra-windows")!.label, value: amt("extra-windows") * price.accessMultiplier }] : []),
+      { label: `Windows, ${WINDOW_VISITS_PER_YEAR} visits`, sub: amt("extra-windows") > 0 ? "exterior, the included windows" : "exterior, every window", value: price.windowsAnnualValue, free: true },
       { label: `Screens, ${WINDOW_VISITS_PER_YEAR} visits`, sub: "you remove and reinstall", value: price.screensAnnualValue, free: true },
     ];
     const e = effectivePrice(price, springGutters);
@@ -555,7 +561,25 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
         <a className="phone" href="tel:+19716264146">(971) 626-4146</a>
       </header>
 
-      {done && price && house && saved ? (
+      {done && house && saved && hand.length > 0 ? (
+        <div className="plan-wrap">
+          <div className="plan-card done">
+            <div className="mark">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+            </div>
+            <h2>{saved.saved ? "Got it." : "Call or text us."}</h2>
+            {saved.saved ? (
+              <p>We&apos;ll look at {house.addressParts?.street || house.address} and text you your price from (971) 626-4146.</p>
+            ) : (
+              <p>Our system had trouble saving your details just now. Call or text us and we&apos;ll price it with you.</p>
+            )}
+            <div className="tel">
+              <div className="k">Questions? Call or text</div>
+              <a href="tel:+19716264146">(971) 626-4146</a>
+            </div>
+          </div>
+        </div>
+      ) : done && price && house && saved ? (
         <div className="plan-wrap">
           <div className="plan-card done">
             <div className="mark">
@@ -596,22 +620,22 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
 
           <div className="plan-wrap">
             <div className="plan-card">
-              <div className="steps" aria-label={`Step ${step + 1} of 5`}>
+              {step !== HAND_STEP && <div className="steps" aria-label={`Step ${step + 1} of 5`}>
                 {STEP_NAMES.map((n, i) => (
                   <div key={n}>
                     <div className={`seg ${i === step ? "on" : i < step ? "past" : ""}`} />
                     <div className={`name ${i === step ? "on" : ""}`}>{n}</div>
                   </div>
                 ))}
-              </div>
-              {step >= 2 && price && (
+              </div>}
+              {step >= 2 && step !== HAND_STEP && price && (
                 <div className="strip">
                   You save ${fmt(price.savedVsAlaCarte)} this year<span>·</span>${fmt(price.windowsAnnualValue + price.screensAnnualValue)} of windows and screens free
                 </div>
               )}
 
               {step === 0 && (
-                <form onSubmit={(e) => { e.preventDefault(); if (house) go(1); }}>
+                <form onSubmit={(e) => { e.preventDefault(); if (house) go(hand.length ? HAND_STEP : 1); }}>
                   <h2>First, the house.</h2>
                   <p className="lead">Rough numbers are fine.</p>
 
@@ -737,7 +761,41 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                 </form>
               )}
 
-              {step === 1 && price && house && stack && (
+              {step === HAND_STEP && house && hand.length > 0 && (
+                <form onSubmit={handleSubmit}>
+                  <h2>We&apos;ll price this house by hand.</h2>
+                  <p className="lead">With {hand.join(" and ")}, there&apos;s more ladder work and planning than this page can price. Send us your details and we&apos;ll look at the house and text you your price.</p>
+                  <div className="field">
+                    <label htmlFor="hname">Your name</label>
+                    <input id="hname" type="text" autoComplete="name" placeholder="Jane Smith" value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} required />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="hphone">Mobile number</label>
+                    <input id="hphone" type="tel" inputMode="tel" autoComplete="tel" placeholder="(503) 555-0100" value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} required />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="hemail">Email (optional)</label>
+                    <input id="hemail" type="email" inputMode="email" autoComplete="email" placeholder="jane@example.com" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} />
+                  </div>
+                  {error && <div className="error">{error}</div>}
+                  <div className="field">
+                    <label className="check" htmlFor="hconsent" style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
+                      <input id="hconsent" type="checkbox" required checked={contact.consent} onChange={(e) => setContact({ ...contact, consent: e.target.checked })} style={{ width: "auto", display: "inline-block", margin: "4px 0 0 0" }} />
+                      <span>Yes, text and email me about my price and visits, from (971) 626-4146 and hello@rinseitoff.com.</span>
+                    </label>
+                  </div>
+                  <button type="submit" className="btn btn-ink" disabled={sending || !contact.name || !contact.phone || !contact.consent}>
+                    {sending ? "Sending" : "Send it to us"}
+                  </button>
+                  <p className="consent">
+                    By submitting, you agree to receive calls and texts about your price and visits from Rinse It Off. Msg &amp; data rates may apply, frequency varies. Reply STOP to opt out, HELP for help. See our{" "}
+                    <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms</a>.
+                  </p>
+                  <button type="button" className="btn btn-ghost" onClick={() => go(0)} style={{ marginTop: 4 }}>Change something about the house</button>
+                </form>
+              )}
+
+              {step === 1 && price && house && stack && hand.length === 0 && (
                 <div>
                   <p className="summary">
                     <strong>{house.addressParts ? `${house.addressParts.street}, ${house.addressParts.city}` : house.address}</strong> · {house.livingSqft.toLocaleString()} sq ft · {house.stories === 3 ? "3 stories" : house.stories === 2 ? "2 stories" : "1 story"} · {house.windows} windows · {house.roof === "shake-steep" ? "wood shake or steep" : house.roof === "metal-tile" ? "metal or tile" : "composition"} roof · {house.driveway === "large" ? "large" : house.driveway === "small" ? "small" : "typical"} driveway · {house.access === "gated-tight" ? "gated or tight" : house.access === "steep-ladder" ? "steep" : "easy"} access

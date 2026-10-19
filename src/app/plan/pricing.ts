@@ -183,6 +183,32 @@ export const WINTER_MIN: Record<Stories, number> = { 1: 300, 2: 350, 3: 400 };
 export const VISITS_PER_YEAR = 8;
 export const ACCESS_PER_VISIT: Record<Stories, number> = { 1: 0, 2: 25, 3: 75 };
 
+// Windows are free only up to the count the engine scoped for the house's
+// size (tier A 12, B 20, C 30). Each window past that is $22 a visit, every
+// window visit, the engine's own guardrail. Bri 2026-10-19: window count has
+// to move the price.
+export const INCLUDED_WINDOWS: { upToSqft: number; windows: number }[] = [
+  { upToSqft: 2000, windows: 12 },
+  { upToSqft: 3200, windows: 20 },
+  { upToSqft: Infinity, windows: 30 },
+];
+export const EXTRA_WINDOW_RATE = 22;
+export const includedWindows = (livingSqft: number) => INCLUDED_WINDOWS.find((t) => livingSqft <= t.upToSqft)!.windows;
+
+// ── Hand pricing. Bri 2026-10-19: the calculator quoted a 4-story, 25-window,
+//    hard-access house at about $300 a month, which Rinse It Off can't deliver.
+//    Houses past any of these limits get no instant number: the page takes
+//    their details and the team prices them by hand. ────────────────────────
+export const HAND_PRICE_LIMITS = { stories: 3, windows: 30, livingSqft: 4500 } as const;
+export function handPriceReasons(h: HouseInputs): string[] {
+  const r: string[] = [];
+  if (h.stories >= HAND_PRICE_LIMITS.stories) r.push("3 or more stories");
+  if (h.access === "steep-ladder") r.push("a steep lot or hard ladder access");
+  if ((h.windows || 0) > HAND_PRICE_LIMITS.windows) r.push(`more than ${HAND_PRICE_LIMITS.windows} windows`);
+  if (h.livingSqft > HAND_PRICE_LIMITS.livingSqft) r.push(`more than ${HAND_PRICE_LIMITS.livingSqft.toLocaleString()} sq ft`);
+  return r;
+}
+
 // ── Membership discounts and floor ──────────────────────────────────────────
 export const MEMBER_MONTHLY_DISCOUNT = 0.2; // 12 months, billed monthly
 export const MEMBER_PREPAID_DISCOUNT = 0.28; // 12 months, paid up front: a full 10% under the monthly year (0.72 / 0.80)
@@ -298,15 +324,28 @@ export function priceHouse(h: HouseInputs): PriceResult {
     });
   }
 
+  // Windows past the included count, charged on every window visit.
+  const windows = Math.max(0, Math.floor(h.windows || 0));
+  const included = includedWindows(scope.livingSqft);
+  const extraWindows = Math.max(0, windows - included);
+  if (extraWindows > 0) {
+    lines.push({
+      key: "extra-windows",
+      label: `${extraWindows} windows past the ${included} included, ${WINDOW_VISITS_PER_YEAR} visits`,
+      detail: `$${EXTRA_WINDOW_RATE} a window, every window visit`,
+      amount: extraWindows * EXTRA_WINDOW_RATE * WINDOW_VISITS_PER_YEAR,
+    });
+  }
+
   const subtotal = lines.reduce((s, l) => s + l.amount, 0);
   const accessMultiplier = h.access === "gated-tight" ? MODIFIER.accessGatedTight : h.access === "steep-ladder" ? MODIFIER.accessSteepLadder : 1;
   const coreAnnual = subtotal * accessMultiplier;
 
-  // Windows: free with the membership, valued at what a standalone visit costs.
-  const windows = Math.max(0, Math.floor(h.windows || 0));
-  const windowsPerVisitValue = windowVisitValue(windows, ex.largeWindows || 0, ex.frenchWindows || 0);
+  // Windows: the included ones are free, valued at what a standalone visit costs.
+  const freeWindows = windows - extraWindows;
+  const windowsPerVisitValue = windowVisitValue(freeWindows, Math.min(ex.largeWindows || 0, freeWindows), Math.min(ex.frenchWindows || 0, freeWindows));
   const windowsAnnualValue = windowsPerVisitValue * WINDOW_VISITS_PER_YEAR;
-  const screensAnnualValue = SCREEN_RATE * windows * WINDOW_VISITS_PER_YEAR;
+  const screensAnnualValue = SCREEN_RATE * freeWindows * WINDOW_VISITS_PER_YEAR;
   const valueReceived = coreAnnual + windowsAnnualValue + screensAnnualValue;
 
   const memberMonthly = Math.max(MONTHLY_FLOOR, Math.ceil((coreAnnual * (1 - MEMBER_MONTHLY_DISCOUNT)) / 12));
