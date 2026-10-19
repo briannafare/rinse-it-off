@@ -9,10 +9,15 @@
  *  ~/brain/notes/rinse-it-off-membership-pricing-engine.md
  */
 
-export type Stories = 1 | 2 | 3;
+export type Stories = 1 | 2 | 3 | 4; // 4 = "4 or more", always priced by hand
 export type RoofType = "composition" | "shake-steep" | "metal-tile";
 export type DrivewaySize = "small" | "typical" | "large";
-export type Access = "easy" | "gated-tight" | "steep-ladder";
+// Site difficulty, three questions (Bri 2026-10-19: a 4-story house on a steep
+// slope with a tiny driveway and one open side costs far more than a small
+// suburban single-story).
+export type Slope = "flat" | "some" | "steep";
+export type Sides = "all" | "most" | "one-two"; // sides of the house we can walk and set a ladder on
+export type Parking = "close" | "far"; // truck parks near the house, or a tight drive / street parking and a long hose run
 
 /** Optional exact measurements. Any one given replaces the estimate for its
  *  line (quantity × rate, still subject to the per-job minimum). */
@@ -36,18 +41,55 @@ export interface HouseInputs {
   windows: number;
   roof: RoofType;
   driveway: DrivewaySize;
-  access: Access;
+  slope: Slope;
+  sides: Sides;
+  parking: Parking;
   exact?: ExactInputs;
 }
 
-// ── Per-unit rates (already carry target margin, never discount below) ──────
+// ── Per-unit rates. Two tables, blended by how hard the house is ────────────
+//    RATE is the membership engine's table: right for an easy single-story.
+//    FULL_RATE is Rinse's approved one-off table (src/app/quote/prompt.ts):
+//    right for a hard house. Bri 2026-10-19: "one is too high for your basic
+//    home, and one is way, way, way too low" for the hard ones. So an easy
+//    house pays RATE, each difficulty point moves every line toward FULL_RATE
+//    and adds SITE_STEP to the whole year.
 export const RATE = {
   windowEach: 22, // kept for reference; the window VALUE uses WINDOW_TIERS below
   concreteSf: 0.36, // driveway + walkways, also the winter walkway pass
   sidingSf: 0.31,
   roofSf: 0.5,
-  gutterLf: { 1: 1.25, 2: 1.75, 3: 2.25 } as Record<Stories, number>,
+  gutterLf: { 1: 1.25, 2: 1.75, 3: 2.25, 4: 2.25 } as Record<Stories, number>,
 } as const;
+export const FULL_RATE = {
+  concreteSf: 0.48,
+  sidingSf: 0.72, // already the house-wash rate, no SIDING_FACTOR
+  sidingTallBump: 1.2, // 2 stories and up, +20%
+  roofSf: 0.9,
+  gutterLf: 2.7,
+} as const;
+
+// Difficulty points. 0 = a flat single-story we can walk around with the truck
+// in the driveway. ponytail: points are a judgment call, tune them against
+// real jobs Alstun has priced.
+export const POINTS = {
+  stories: { 1: 0, 2: 1, 3: 2.5, 4: 4 } as Record<Stories, number>,
+  slope: { flat: 0, some: 1, steep: 2 } as Record<Slope, number>,
+  sides: { all: 0, most: 0.5, "one-two": 2 } as Record<Sides, number>,
+  parking: { close: 0, far: 1 } as Record<Parking, number>,
+};
+export const FULL_RATE_POINTS = 4; // at this many points every line is at FULL_RATE
+// Rates alone don't move a small house, because its per-job minimums bind. So
+// every point also adds time to the whole year, minimums included.
+export const SITE_STEP = 0.06; // each point adds 6% to the whole year
+export const HAND_PRICE_POINTS = 6; // at this many points, no instant number
+
+export function difficultyPoints(h: Pick<HouseInputs, "stories" | "slope" | "sides" | "parking">): number {
+  return POINTS.stories[h.stories] + POINTS.slope[h.slope] + POINTS.sides[h.sides] + POINTS.parking[h.parking];
+}
+/** 0 to 1: how far each rate sits from RATE toward FULL_RATE. */
+export const blendFor = (points: number) => Math.min(1, points / FULL_RATE_POINTS);
+const mix = (low: number, full: number, t: number) => low + (full - low) * t;
 
 // ── Windows are FREE with the membership. Their value is what a standalone
 //    visit costs: the real per-trip minimum, or the tiered per-window price if
@@ -163,8 +205,6 @@ export const MODIFIER = {
   roofShakeOrSteep: 1.25, // roof line only
   drivewaySmall: 0.8, // driveway line only
   drivewayLarge: 1.25, // driveway line only
-  accessGatedTight: 1.08, // whole core total
-  accessSteepLadder: 1.15, // whole core total
 } as const;
 
 // ── Per-job minimums: what the crew would actually come out for. Each
@@ -172,16 +212,16 @@ export const MODIFIER = {
 //    Rinse's standalone per-trip minimum is $500, so no seasonal line is ever
 //    under that, and taller houses go up from there.
 export const SIDING_FACTOR = 0.8; // house wash priced 20% under the engine's siding rate
-export const SIDING_MIN: Record<Stories, number> = { 1: 480, 2: 680, 3: 960 };
-export const ROOF_MIN: Record<Stories, number> = { 1: 500, 2: 700, 3: 950 };
-export const GUTTER_VISIT_MIN: Record<Stories, number> = { 1: 500, 2: 650, 3: 850 };
+export const SIDING_MIN: Record<Stories, number> = { 1: 480, 2: 680, 3: 960, 4: 1300 };
+export const ROOF_MIN: Record<Stories, number> = { 1: 500, 2: 700, 3: 950, 4: 1250 };
+export const GUTTER_VISIT_MIN: Record<Stories, number> = { 1: 500, 2: 650, 3: 850, 4: 1100 };
 export const DRIVEWAY_MIN: Record<DrivewaySize, number> = { small: 500, typical: 600, large: 750 };
-export const WINTER_MIN: Record<Stories, number> = { 1: 300, 2: 350, 3: 400 };
+export const WINTER_MIN: Record<Stories, number> = { 1: 300, 2: 350, 3: 400, 4: 450 };
 
 // Height, charged where it happens: a per-visit access charge on every
 // visit of the year (4 seasonal + 4 window).
 export const VISITS_PER_YEAR = 8;
-export const ACCESS_PER_VISIT: Record<Stories, number> = { 1: 0, 2: 25, 3: 75 };
+export const ACCESS_PER_VISIT: Record<Stories, number> = { 1: 0, 2: 25, 3: 75, 4: 125 };
 
 // Windows are free only up to the count the engine scoped for the house's
 // size (tier A 12, B 20, C 30). Each window past that is $22 a visit, every
@@ -199,11 +239,11 @@ export const includedWindows = (livingSqft: number) => INCLUDED_WINDOWS.find((t)
 //    hard-access house at about $300 a month, which Rinse It Off can't deliver.
 //    Houses past any of these limits get no instant number: the page takes
 //    their details and the team prices them by hand. ────────────────────────
-export const HAND_PRICE_LIMITS = { stories: 3, windows: 30, livingSqft: 4500 } as const;
+export const HAND_PRICE_LIMITS = { stories: 4, windows: 30, livingSqft: 4500 } as const;
 export function handPriceReasons(h: HouseInputs): string[] {
   const r: string[] = [];
-  if (h.stories >= HAND_PRICE_LIMITS.stories) r.push("3 or more stories");
-  if (h.access === "steep-ladder") r.push("a steep lot or hard ladder access");
+  if (h.stories >= HAND_PRICE_LIMITS.stories) r.push("4 or more stories");
+  else if (difficultyPoints(h) >= HAND_PRICE_POINTS) r.push("a hard site (height, slope, side access and parking together)");
   if ((h.windows || 0) > HAND_PRICE_LIMITS.windows) r.push(`more than ${HAND_PRICE_LIMITS.windows} windows`);
   if (h.livingSqft > HAND_PRICE_LIMITS.livingSqft) r.push(`more than ${HAND_PRICE_LIMITS.livingSqft.toLocaleString()} sq ft`);
   return r;
@@ -238,8 +278,10 @@ export interface PriceLine {
 export interface PriceResult {
   scope: Scope;
   lines: PriceLine[]; // the priced seasonal lines, plus the per-visit access line
-  subtotal: number; // seasonal total before the site-access multiplier
-  accessMultiplier: number;
+  subtotal: number; // seasonal total before the hard-site multiplier
+  points: number; // difficulty points
+  blend: number; // 0 = engine rates, 1 = full one-off rates
+  accessMultiplier: number; // site-difficulty multiplier on the whole year, 1 + SITE_STEP × points
   coreAnnual: number; // seasonal work booked one at a time, per year, after access
   windowsPerVisitValue: number; // what one standalone window visit would cost
   windowsAnnualValue: number; // × WINDOW_VISITS_PER_YEAR, free with the membership
@@ -254,11 +296,14 @@ export interface PriceResult {
 }
 
 const about = (n: number, step: number) => Math.round(n / step) * step;
-const storyWord = (s: Stories) => (s === 3 ? "3 stories" : s === 2 ? "2 stories" : "1 story");
+const storyWord = (s: Stories) => (s === 4 ? "4+ stories" : s === 3 ? "3 stories" : s === 2 ? "2 stories" : "1 story");
 
 export function priceHouse(h: HouseInputs): PriceResult {
   const scope = scopeFor(h.livingSqft, h.stories);
   const lines: PriceLine[] = [];
+  const points = difficultyPoints(h);
+  const t = blendFor(points);
+  const concreteRate = mix(RATE.concreteSf, FULL_RATE.concreteSf, t);
 
   // Driveway and walkways (summer), scaled by the size the customer picked.
   const ex = h.exact || {};
@@ -270,7 +315,7 @@ export function priceHouse(h: HouseInputs): PriceResult {
     detail: exactConcrete > 0
       ? `Your measurement: ${exactConcrete.toLocaleString()} sq ft`
       : `${h.driveway === "small" ? "Small" : h.driveway === "large" ? "Large or long" : "Typical"}, about ${about(scope.drivewaySf * drivewayMult, 50).toLocaleString()} sq ft`,
-    amount: Math.max(exactConcrete > 0 ? exactConcrete * RATE.concreteSf : scope.drivewaySf * RATE.concreteSf * drivewayMult, DRIVEWAY_MIN[h.driveway]),
+    amount: Math.max(exactConcrete > 0 ? exactConcrete * concreteRate : scope.drivewaySf * concreteRate * drivewayMult, DRIVEWAY_MIN[h.driveway]),
   });
 
   // Siding soft wash (spring): wall area from the perimeter and the wall height.
@@ -278,7 +323,7 @@ export function priceHouse(h: HouseInputs): PriceResult {
     key: "siding",
     label: "Siding soft wash, spring",
     detail: `${storyWord(h.stories)}, about ${about(scope.sidingSf, 50).toLocaleString()} sq ft of siding`,
-    amount: Math.max(scope.sidingSf * RATE.sidingSf * SIDING_FACTOR, SIDING_MIN[h.stories]),
+    amount: Math.max(scope.sidingSf * mix(RATE.sidingSf * SIDING_FACTOR, FULL_RATE.sidingSf * (h.stories >= 2 ? FULL_RATE.sidingTallBump : 1), t), SIDING_MIN[h.stories]),
   });
 
   // Roof soft wash (spring), more for wood shake or a steep pitch.
@@ -290,13 +335,13 @@ export function priceHouse(h: HouseInputs): PriceResult {
     detail: ex.roofSf
       ? `Your measurement: ${ex.roofSf.toLocaleString()} sq ft`
       : `${h.roof === "shake-steep" ? "Wood shake or steep pitch" : h.roof === "metal-tile" ? "Metal or tile" : "Composition shingle"}, about ${about(scope.roofSf, 50).toLocaleString()} sq ft of roof`,
-    amount: Math.max(roofSf * RATE.roofSf * roofMult, ROOF_MIN[h.stories]),
+    amount: Math.max(roofSf * mix(RATE.roofSf, FULL_RATE.roofSf, t) * roofMult, ROOF_MIN[h.stories]),
   });
 
   // Gutters (fall). Rate steps up with stories; a steep roof uses the top rate.
   const gutterStories: Stories = h.roof === "shake-steep" ? 3 : h.stories;
   const gutterLf = ex.gutterLf || scope.gutterLf;
-  const gutterByFeet = gutterLf * RATE.gutterLf[gutterStories];
+  const gutterByFeet = gutterLf * mix(RATE.gutterLf[gutterStories], FULL_RATE.gutterLf, t);
   const gutterFloor = GUTTER_VISIT_MIN[h.stories];
   lines.push({
     key: "gutters",
@@ -310,7 +355,7 @@ export function priceHouse(h: HouseInputs): PriceResult {
     key: "winter",
     label: "Walkways, steps and entry, winter",
     detail: `Front walk, steps and entry, about ${about(scope.winterWalkwaySf, 10)} sq ft`,
-    amount: Math.max(scope.winterWalkwaySf * RATE.concreteSf, WINTER_MIN[h.stories]),
+    amount: Math.max(scope.winterWalkwaySf * concreteRate, WINTER_MIN[h.stories]),
   });
 
   // Tall-house access, charged on every visit of the year.
@@ -338,7 +383,7 @@ export function priceHouse(h: HouseInputs): PriceResult {
   }
 
   const subtotal = lines.reduce((s, l) => s + l.amount, 0);
-  const accessMultiplier = h.access === "gated-tight" ? MODIFIER.accessGatedTight : h.access === "steep-ladder" ? MODIFIER.accessSteepLadder : 1;
+  const accessMultiplier = 1 + SITE_STEP * points;
   const coreAnnual = subtotal * accessMultiplier;
 
   // Windows: the included ones are free, valued at what a standalone visit costs.
@@ -357,6 +402,8 @@ export function priceHouse(h: HouseInputs): PriceResult {
     scope,
     lines,
     subtotal,
+    points,
+    blend: t,
     accessMultiplier,
     coreAnnual,
     windowsPerVisitValue,

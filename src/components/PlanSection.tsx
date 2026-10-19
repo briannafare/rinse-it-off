@@ -48,7 +48,7 @@ export function PlanSection() {
               Talk to us first
             </a>
           </div>
-          <p className="mt-4 text-sm text-[#5A6B78]">Three stories or a steep lot? We price those by hand.</p>
+          <p className="mt-4 text-sm text-[#5A6B78]">Four or more stories, or a steep lot that&apos;s hard to get around? We price those by hand.</p>
         </div>
         <ul className="grid gap-3 sm:grid-cols-2">
           {SEASONS.map((s) => (

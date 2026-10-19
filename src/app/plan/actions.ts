@@ -103,10 +103,12 @@ function cleanAnswer(a: AddOnAnswer | undefined): AddOnAnswer | undefined {
 
 function cleanHouse(h: HouseInputs): HouseInputs {
   const num = (n: unknown, max: number) => Math.min(max, Math.max(0, Math.floor(Number(n) || 0)));
-  const stories = h.stories === 2 ? 2 : h.stories === 3 ? 3 : 1;
+  const stories = h.stories === 2 ? 2 : h.stories === 3 ? 3 : h.stories === 4 ? 4 : 1;
   const roof = h.roof === "shake-steep" || h.roof === "metal-tile" ? h.roof : "composition";
   const driveway = h.driveway === "small" || h.driveway === "large" ? h.driveway : "typical";
-  const access = h.access === "gated-tight" || h.access === "steep-ladder" ? h.access : "easy";
+  const slope = h.slope === "some" || h.slope === "steep" ? h.slope : "flat";
+  const sides = h.sides === "most" || h.sides === "one-two" ? h.sides : "all";
+  const parking = h.parking === "far" ? "far" : "close";
   const ap = h.addressParts;
   const clean = (v: unknown, n: number) => String(v || "").trim().slice(0, n);
   const addressParts: AddressParts | undefined = ap ? { street: clean(ap.street, 120), city: clean(ap.city, 60), state: (clean(ap.state, 2).toUpperCase() || "OR"), zip: clean(ap.zip, 10).replace(/[^0-9-]/g, "") } : undefined;
@@ -123,7 +125,9 @@ function cleanHouse(h: HouseInputs): HouseInputs {
     windows: num(h.windows, 500),
     roof,
     driveway,
-    access,
+    slope,
+    sides,
+    parking,
     exact,
   };
 }
@@ -196,17 +200,17 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       "House",
       `  Address: ${house.address || "not given"}`,
       `  Living area: ${house.livingSqft.toLocaleString()} sq ft`,
-      `  Stories: ${house.stories === 3 ? "3+" : house.stories}`,
+      `  Stories: ${house.stories === 4 ? "4+" : house.stories}`,
       `  Exterior windows: ${house.windows} (free with the membership, valued at $${price.windowsPerVisitValue} a visit)`,
       `  Roof: ${house.roof}`,
       `  Driveway and walkways: ${house.driveway}`,
-      `  Access: ${house.access}`,
+      `  Lot: ${house.slope}, sides we can walk: ${house.sides}, truck parking: ${house.parking}`,
       `  Measurements given: ${Object.keys(house.exact || {}).length ? EXACT_KEYS.filter((k) => house.exact?.[k]).map((k) => `${k}=${house.exact?.[k]}`).join(", ") : "none"}`,
       "",
       "Lines (booked one at a time, per year)",
       ...price.lines.map((l) => `  ${l.label}: $${l.amount.toFixed(2)}  (${l.detail})`),
       `  Seasonal subtotal: $${price.subtotal.toFixed(2)}`,
-      `  Site access modifier: x${price.accessMultiplier}`,
+      `  Difficulty: ${price.points} points, rates ${Math.round(price.blend * 100)}% of the way to the full one-off table, hard-site multiplier x${price.accessMultiplier.toFixed(2)}`,
       `  Seasonal à la carte annual: $${price.coreAnnual.toFixed(2)}`,
       `  Windows value (free): $${price.windowsAnnualValue} (${WINDOW_VISITS_PER_YEAR} visits)`,
       `  Screens value (free while off, customer removes/reinstalls): $${price.screensAnnualValue}`,
