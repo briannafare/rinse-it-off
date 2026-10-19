@@ -20,6 +20,7 @@ import {
   type TermYears,
   priceHouse,
   handPriceReasons,
+  handRange,
   suggestedAddOns,
   type Parking,
   type Sides,
@@ -308,6 +309,14 @@ const PCT = (d: number) => `${Math.round(d * 100)}%`;
 const TZ = "America/Los_Angeles";
 const slotTime = (iso: string) => new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: TZ });
 const slotDate = (iso: string) => new Date(iso).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: TZ });
+// The plan's scope, for houses that see a range instead of one price.
+const HAND_INCLUDES: [string, string][] = [
+  ["Spring", "Moss treatment and soft wash on the roof, and a house wash on the siding"],
+  ["Summer", "Driveway and walkways pressure washed, with an algae treatment"],
+  ["Fall", "Gutters cleared and downspouts flushed once the leaves are down"],
+  ["Winter", "Steps, entries, walkways and patios cleaned"],
+  ["Every visit", "The outside of every window cleaned, free"],
+];
 const DAYS = ["No preference", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const DOW = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -424,6 +433,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
   const price = useMemo(() => (house ? priceHouse(house) : null), [house]);
   // Houses past the calculator's limits get no instant number (Bri 2026-10-19).
   const hand = useMemo(() => (house ? handPriceReasons(house) : []), [house]);
+  const range = price && hand.length ? handRange(price) : null;
   const HAND_STEP = 9;
 
   const toggleAddOn = (k: string) => setAddOns((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
@@ -574,7 +584,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
             </div>
             <h2>{saved.saved ? "Got it." : "Call or text us."}</h2>
             {saved.saved ? (
-              <p>We&apos;ll look at {house.addressParts?.street || house.address} and text you your price from (971) 626-4146.</p>
+              <p>Your range is ${fmt(range?.low ?? 0)} to ${fmt(range?.high ?? 0)} a month. Someone from our team will look at {house.addressParts?.street || house.address} and text you your exact price from (971) 626-4146.</p>
             ) : (
               <p>Our system had trouble saving your details just now. Call or text us and we&apos;ll price it with you.</p>
             )}
@@ -781,8 +791,17 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
 
               {step === HAND_STEP && house && hand.length > 0 && (
                 <form onSubmit={handleSubmit}>
-                  <h2>We&apos;ll price this house by hand.</h2>
-                  <p className="lead">With {hand.join(" and ")}, there&apos;s more ladder work and planning than this page can price. Send us your details and we&apos;ll look at the house and text you your price.</p>
+                  <h2>Homes like yours run about ${fmt(range!.low)} to ${fmt(range!.high)} a month.</h2>
+                  <p className="lead">Your home has {hand.join(" and ")}, so a real person confirms the exact price before you sign up. Send us your details and someone from our team will look at {house.addressParts?.street || "your house"} and text you your exact price.</p>
+                  <div className="stack">
+                    <h3>What the plan includes</h3>
+                    {HAND_INCLUDES.map(([t, sub]) => (
+                      <div className="stack-row" key={t}>
+                        <span className="l"><span className="t">{t}</span><span className="sub">{sub}</span></span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="guarantee">Before-and-after photos every visit. Anything not right, we re-rinse it free within 48 hours.</p>
                   <div className="field">
                     <label htmlFor="hname">Your name</label>
                     <input id="hname" type="text" autoComplete="name" placeholder="Jane Smith" value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} required />
@@ -803,7 +822,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     </label>
                   </div>
                   <button type="submit" className="btn btn-ink" disabled={sending || !contact.name || !contact.phone || !contact.consent}>
-                    {sending ? "Sending" : "Send it to us"}
+                    {sending ? "Sending" : "Text me my exact price"}
                   </button>
                   <p className="consent">
                     By submitting, you agree to receive calls and texts about your price and visits from Rinse It Off. Msg &amp; data rates may apply, frequency varies. Reply STOP to opt out, HELP for help. See our{" "}

@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
 import { depositCheckoutPlan } from "@/lib/deposit-checkout.mjs";
-import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, depositSchedule, effectivePrice, handPriceReasons, prepaidTermTotal, priceHouse, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
+import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, depositSchedule, effectivePrice, handPriceReasons, handRange, prepaidTermTotal, priceHouse, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -139,6 +139,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
   // No plan-quote tag (that tag starts the price texts and the deposit link),
   // no price fields, a $0 opportunity, and a note telling the team to price it.
   const hand = handPriceReasons(house);
+  const range = handRange(price);
   const src = cleanSrc(data.src);
   const fallback: PlanQuoteResult = { success: true, saved: false, memberMonthly: price.memberMonthly };
 
@@ -193,7 +194,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
 
     // The full calculator, as a note a human can read in the contact record.
     const noteLines: string[] = [
-      ...(hand.length ? [`PRICE BY HAND: the page showed no price because of ${hand.join(", ")}. The numbers below are the calculator's floor for reference only. Do not quote them.`, ""] : []),
+      ...(hand.length ? [`CONFIRM THE PRICE: the page showed a range of $${range.low} to $${range.high} a month because of ${hand.join(" and ")}, and told them a person will text the exact price. The numbers below are the calculator's low end.`, ""] : []),
       `YEARLY MEMBERSHIP QUOTE (${new Date().toLocaleDateString("en-US", { timeZone: "America/Los_Angeles" })})`,
       `Source: ${source}`,
       "",
@@ -307,7 +308,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
             name: `Yearly membership${hand.length ? " · price by hand" : ""} · ${house.address || name}`,
             status: "open",
             source,
-            monetaryValue: hand.length ? 0 : yearValue,
+            monetaryValue: hand.length ? range.low * 12 : yearValue,
           }),
         });
         if (!oppRes.ok) {
@@ -318,7 +319,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
             const upd = await fetch(`${GHL_API_BASE}/opportunities/${existingId}`, {
               method: "PUT",
               headers: ghlHeaders,
-              body: JSON.stringify({ name: `Yearly membership${hand.length ? " · price by hand" : ""} · ${house.address || name}`, monetaryValue: hand.length ? 0 : yearValue, source }),
+              body: JSON.stringify({ name: `Yearly membership${hand.length ? " · price by hand" : ""} · ${house.address || name}`, monetaryValue: hand.length ? range.low * 12 : yearValue, source }),
             });
             if (!upd.ok) console.error("GHL opportunity update failed:", upd.status, await upd.text());
           } else {

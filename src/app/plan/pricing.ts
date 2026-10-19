@@ -243,10 +243,18 @@ export const HAND_PRICE_LIMITS = { stories: 4, windows: 30, livingSqft: 4500 } a
 export function handPriceReasons(h: HouseInputs): string[] {
   const r: string[] = [];
   if (h.stories >= HAND_PRICE_LIMITS.stories) r.push("4 or more stories");
-  else if (difficultyPoints(h) >= HAND_PRICE_POINTS) r.push("a hard site (height, slope, side access and parking together)");
+  else if (difficultyPoints(h) >= HAND_PRICE_POINTS) r.push("a steep, hard-to-reach site");
   if ((h.windows || 0) > HAND_PRICE_LIMITS.windows) r.push(`more than ${HAND_PRICE_LIMITS.windows} windows`);
   if (h.livingSqft > HAND_PRICE_LIMITS.livingSqft) r.push(`more than ${HAND_PRICE_LIMITS.livingSqft.toLocaleString()} sq ft`);
   return r;
+}
+
+/** Hand-priced houses still see a range (Bri 2026-10-19: no information after a
+ *  whole form "is really unsatisfying"). Low end is the calculator's number,
+ *  high end HAND_RANGE_SPREAD above it, both on $25 steps. A person confirms. */
+export const HAND_RANGE_SPREAD = 1.3;
+export function handRange(p: PriceResult): { low: number; high: number } {
+  return { low: Math.floor(p.memberMonthly / 25) * 25, high: Math.ceil((p.memberMonthly * HAND_RANGE_SPREAD) / 25) * 25 };
 }
 
 // ── Membership discounts and floor ──────────────────────────────────────────
@@ -263,7 +271,15 @@ export function prepaidTermTotal(coreAnnual: number, years: TermYears): number {
   const discount = years > 1 ? MULTI_YEAR_PREPAID_DISCOUNT : MEMBER_PREPAID_DISCOUNT;
   return Math.ceil(coreAnnual * years * (1 - discount));
 }
-export const MONTHLY_FLOOR = 189; // postcard's "from $189" for a basic 3-bedroom
+export const MONTHLY_FLOOR = 189; // postcard's "from $189": a flat, easy single-story up to FLOOR_SQFT
+// Bri 2026-10-19: $189 is for 1,500 sq ft or less, and the middle sizes were
+// priced too low. Each size and story has its own floor; difficulty multiplies
+// on top of it, so a sloped mid-size house moves up with it.
+export const FLOOR_SQFT = 1500;
+export const FLOOR_PER_100_SQFT = 8; // monthly floor rises $8 for every 100 sq ft past FLOOR_SQFT
+export const FLOOR_PER_STORY = 30; // and $30 for each story past the first
+export const monthlyFloor = (livingSqft: number, stories: Stories) =>
+  MONTHLY_FLOOR + (FLOOR_PER_100_SQFT * Math.max(0, livingSqft - FLOOR_SQFT)) / 100 + FLOOR_PER_STORY * (stories - 1);
 export const ADDON_MEMBER_DISCOUNT = 0.1; // add-on menu = list × 0.90 for members
 export const DEPOSIT_USD = 99; // route-slot deposit, applied to the first month. Bri can change this.
 export const MEMBERSHIPS_PER_YEAR = 150; // new memberships taken per year in the Portland metro (same SLOTS as the postcard). Bri sets the real number.
@@ -278,10 +294,10 @@ export interface PriceLine {
 export interface PriceResult {
   scope: Scope;
   lines: PriceLine[]; // the priced seasonal lines, plus the per-visit access line
-  subtotal: number; // seasonal total before the hard-site multiplier
+  subtotal: number; // seasonal total after the size floor, before the site-difficulty multiplier
   points: number; // difficulty points
   blend: number; // 0 = engine rates, 1 = full one-off rates
-  accessMultiplier: number; // site-difficulty multiplier on the whole year, 1 + SITE_STEP × points
+  accessMultiplier: number; // on the line sum: (1 + SITE_STEP × points) × the size-floor lift
   coreAnnual: number; // seasonal work booked one at a time, per year, after access
   windowsPerVisitValue: number; // what one standalone window visit would cost
   windowsAnnualValue: number; // × WINDOW_VISITS_PER_YEAR, free with the membership
@@ -382,9 +398,14 @@ export function priceHouse(h: HouseInputs): PriceResult {
     });
   }
 
-  const subtotal = lines.reduce((s, l) => s + l.amount, 0);
-  const accessMultiplier = 1 + SITE_STEP * points;
-  const coreAnnual = subtotal * accessMultiplier;
+  const lineSum = lines.reduce((s, l) => s + l.amount, 0);
+  // The size floor, as a seasonal year: what the floor's monthly price comes to before the member discount.
+  const floorYear = (monthlyFloor(h.livingSqft || 0, h.stories) * 12) / (1 - MEMBER_MONTHLY_DISCOUNT);
+  const sizeLift = Math.max(1, floorYear / lineSum);
+  const subtotal = lineSum * sizeLift;
+  // ponytail: the lift rides on accessMultiplier so every consumer that scales lines by it (the value stack) stays in sync.
+  const accessMultiplier = (1 + SITE_STEP * points) * sizeLift;
+  const coreAnnual = lineSum * accessMultiplier;
 
   // Windows: the included ones are free, valued at what a standalone visit costs.
   const freeWindows = windows - extraWindows;
