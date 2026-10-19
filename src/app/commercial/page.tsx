@@ -16,11 +16,20 @@ import {
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { METHODS, type Method } from "@/lib/methods";
+import {
+  AUDIENCES as AUDIENCE_COPY,
+  AUDIT_LEAD,
+  AUDIT_POINTS,
+  COMMERCIAL_CTA_BODY,
+  COMMERCIAL_FAQ,
+  COMMERCIAL_META_DESCRIPTION,
+  COMMERCIAL_METHOD_KEYS,
+  TRUST as TRUST_COPY,
+} from "@/lib/commercial";
 
 export const metadata: Metadata = {
   title: "Commercial & Property Manager Exterior Cleaning",
-  description:
-    "Rinse It Off cleans commercial properties across the Portland metro — parking lots, trash pads, storefronts, siding and roofs. Start with a free 21-point property audit and a firm, itemized quote the same day we walk your property. Insured, with recurring maintenance plans.",
+  description: COMMERCIAL_META_DESCRIPTION,
 };
 
 const PHONE_DISPLAY = "(971) 626-4146";
@@ -29,61 +38,69 @@ const ASSESS_HREF = "/assessment?type=commercial";
 
 /** Commercial surfaces first: lead with lots, trash pads, siding and storefronts.
  *  Copy is reused verbatim from the shared method-matching data (training material). */
-const COMMERCIAL_METHODS: Method[] = ["flatwork", "grease", "siding", "glass", "masonry", "roof"]
+const COMMERCIAL_METHODS: Method[] = COMMERCIAL_METHOD_KEYS
   .map((k) => METHODS.find((m) => m.key === k))
   .filter((m): m is Method => m !== undefined);
 
-const AUDIT_POINTS = [
-  "Every surface walked and photo-documented",
-  "The right method matched to each surface — no over-pressuring",
-  "A board-ready report you can hand to ownership",
-  "A firm, itemized quote the same day we walk your property",
-];
+const AUDIENCE_ICONS = { managers: Building2, hoa: Users, facilities: Warehouse, retail: Store } as const;
+const AUDIENCES: { icon: typeof Building2; title: string; body: string }[] = AUDIENCE_COPY.map((a) => ({
+  icon: AUDIENCE_ICONS[a.key as keyof typeof AUDIENCE_ICONS],
+  title: a.title,
+  body: a.body,
+}));
 
-const AUDIENCES: { icon: typeof Building2; title: string; body: string }[] = [
-  {
-    icon: Building2,
-    title: "Property managers",
-    body: "One vendor for the whole portfolio, scheduled around your tenants, with photo reports you can forward straight to ownership.",
-  },
-  {
-    icon: Users,
-    title: "HOAs & community boards",
-    body: "Common areas, clubhouses, sidewalks and monument signage kept consistent — with documentation ready for the board packet.",
-  },
-  {
-    icon: Warehouse,
-    title: "Facilities & operations",
-    body: "Loading docks, trash pads and drive-throughs degreased on a schedule that keeps sites safe and inspection-ready.",
-  },
-  {
-    icon: Store,
-    title: "Retail & multifamily",
-    body: "Storefronts, walkways and building faces that stay presentable — because curb appeal is the first thing a customer or resident sees.",
-  },
-];
+const TRUST_ICONS = { insured: ShieldCheck, method: BadgeCheck, recurring: CalendarClock } as const;
+const TRUST: { icon: typeof ShieldCheck; title: string; body: string }[] = TRUST_COPY.map((t) => ({
+  icon: TRUST_ICONS[t.key as keyof typeof TRUST_ICONS],
+  title: t.title,
+  body: t.body,
+}));
 
-const TRUST: { icon: typeof ShieldCheck; title: string; body: string }[] = [
-  {
-    icon: ShieldCheck,
-    title: "Fully insured",
-    body: "We carry full general liability and workers’ compensation coverage, and we’re glad to share proof before we start — ready whenever your team asks.",
-  },
-  {
-    icon: BadgeCheck,
-    title: "Method-matched, always",
-    body: "Soft wash on siding and roofs, hot water on grease, high-volume flow on masonry. We match the method to the material, every time.",
-  },
-  {
-    icon: CalendarClock,
-    title: "Recurring maintenance plans",
-    body: "Monthly, quarterly and seasonal plans keep moss, algae and grime from ever getting a foothold. Set the schedule once — we handle the rest.",
-  },
-];
+const BASE_URL = "https://rinseitoff.com";
+
+// FAQPage + Service markup. Every answer is text printed on this page
+// (see src/lib/commercial.ts); nothing is added that the page does not say.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": `${BASE_URL}/commercial#service`,
+      name: "Commercial exterior cleaning",
+      serviceType: "Commercial exterior cleaning",
+      description: COMMERCIAL_META_DESCRIPTION,
+      url: `${BASE_URL}/commercial`,
+      provider: { "@id": `${BASE_URL}/#business` },
+      areaServed: { "@type": "City", name: "Portland" },
+      audience: AUDIENCE_COPY.map((a) => ({ "@type": "Audience", audienceType: a.title })),
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Commercial surfaces and methods",
+        itemListElement: COMMERCIAL_METHODS.map((m) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: `${m.surface}: ${m.method}`, description: m.what },
+        })),
+      },
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${BASE_URL}/commercial#faq`,
+      mainEntity: COMMERCIAL_FAQ.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ],
+};
 
 export default function CommercialPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navbar />
       <main>
         {/* ── HERO — cinematic commercial band (static, matches CinematicHero at rest) ── */}
@@ -161,10 +178,7 @@ export default function CommercialPage() {
                 The free 21-point property audit.
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-[#4B5C6B]">
-                Before we quote a dollar, we walk your property and document every surface that needs
-                attention &mdash; photographed, point by point. You get a board-ready report and a
-                firm, itemized quote the same day we walk your property. No guessing, no surprise
-                line items.
+                {AUDIT_LEAD}
               </p>
 
               <ul className="mt-7 space-y-3">
@@ -377,9 +391,7 @@ export default function CommercialPage() {
                 <span style={{ color: "#62C4EB" }}>The quote comes same-day.</span>
               </h2>
               <p className="mt-4 max-w-lg text-lg text-white/85">
-                Book your free 21-point property audit and get a firm, itemized quote the same day we
-                walk your property. Backed by our Clean Water Promise: we re-rinse anything you&rsquo;re
-                not happy with, free, within 48 hours.
+                {COMMERCIAL_CTA_BODY}
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-6">
                 <a
