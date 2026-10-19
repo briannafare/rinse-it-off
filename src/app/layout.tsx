@@ -1,11 +1,12 @@
 import MetaPixel from "@/components/MetaPixel";
 import type { Metadata } from "next";
 import { AREAS } from "@/lib/areas";
+import { SITE_DESCRIPTION } from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: { default: "Rinse It Off | Pressure Washing Portland OR \u2014 Commercial & Residential", template: "%s | Rinse It Off Portland" },
-  description: "Portland\u2019s exterior cleaning experts for commercial properties and homes. Hot water pressure washing, soft washing, roof and house washing, parking lot cleaning, and recurring maintenance programs. Insured. Free property assessments. Serving Portland, Beaverton, Lake Oswego, Tigard & the Willamette Valley.",
+  description: SITE_DESCRIPTION,
   keywords: [
     "commercial pressure washing Portland",
     "pressure washing Portland OR",
