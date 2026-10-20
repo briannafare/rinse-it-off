@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OG, pageMeta } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Phone } from "lucide-react";
@@ -17,12 +18,13 @@ const display = { fontFamily: "var(--font-display)" } as const;
 
 export const revalidate = 300;
 
-export const metadata: Metadata = {
-  title: "Blog — Exterior Cleaning Answers for Portland Homes & Properties",
+export const metadata: Metadata = pageMeta({
+  title: "Exterior Cleaning Answers for Portland",
   description:
-    "Straight answers about roofs, siding, concrete, storefronts and the Portland rain that gets on all of them. Written by Bri and Alstun, the owners of Rinse It Off.",
-  alternates: { canonical: `${BASE_URL}/blog` },
-};
+    "Straight answers about roofs, siding, concrete, storefronts and the Portland rain, written by Bri and Alstun, the owners of Rinse It Off.",
+  path: "/blog",
+  image: OG.blog,
+});
 
 /** Shown only if Sanity has no categories yet (or can't be reached), so the
  *  empty state never renders blank. Mirrors the seeded category docs. */

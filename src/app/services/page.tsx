@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import { OG, pageMeta } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Phone, ShieldCheck } from "lucide-react";
 import { SERVICES } from "@/lib/services";
 
-export const metadata: Metadata = {
-  title: "Our Services | Exterior Cleaning Methods",
+export const metadata: Metadata = pageMeta({
+  title: "Exterior Cleaning Services in Portland",
   description:
-    "Six matched methods, one for every surface — roof soft washing, concrete surface cleaning, hot-water degreasing, pure-water window cleaning, and brick & masonry washing across the Portland metro. Residential & commercial. Insured.",
-  alternates: { canonical: "https://rinseitoff.com/services" },
-};
+    "Six cleaning methods, each matched to a surface: roof soft washing, house washing, concrete, windows, hot-water degreasing and brick. Homes and businesses.",
+  path: "/services",
+  image: OG.services,
+});
 
 const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";

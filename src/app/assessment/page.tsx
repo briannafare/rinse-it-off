@@ -282,7 +282,7 @@ export default function AssessmentPage() {
 
       {/* Header */}
       <header style={{ background: "var(--ink)", padding: "18px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
-        <a href="https://www.rinseitoff.com" style={{ display: "inline-block" }}><img src="/logo-white.png" alt="Rinse It Off" style={{ height: 36, width: "auto" }} onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} /></a>
+        <a href="/" style={{ display: "inline-block" }}><img src="/logo-white.png" alt="Rinse It Off" style={{ height: 36, width: "auto" }} onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} /></a>
         <a href="tel:+19716264146" style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "0.9375rem", color: "var(--blue)", textDecoration: "none", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>
           (971) 626-4146
         </a>

@@ -1,44 +1,30 @@
 import MetaPixel from "@/components/MetaPixel";
 import type { Metadata } from "next";
 import { AREAS } from "@/lib/areas";
-import { SITE_DESCRIPTION } from "@/lib/site";
+import { SERVICES } from "@/lib/services";
+import { HOME_DESCRIPTION } from "@/lib/site";
+import { BUSINESS_ID, OG, SITE_URL, WEBSITE_ID } from "@/lib/seo";
 import { Fraunces, Shrikhand, Bowlby_One } from "next/font/google";
 import "./globals.css";
 
 // Late-60s display faces. Fraunces (soft, fat, Cooper-family) is the pick; the other two
 // are on the preview for comparison via ?type=b / ?type=c. ponytail: drop the losers once chosen.
 const fraunces = Fraunces({ subsets: ["latin"], axes: ["SOFT", "WONK", "opsz"], variable: "--f-fraunces", display: "swap" });
-const shrikhand = Shrikhand({ subsets: ["latin"], weight: "400", variable: "--f-shrikhand", display: "swap" });
-const bowlby = Bowlby_One({ subsets: ["latin"], weight: "400", variable: "--f-bowlby", display: "swap" });
+// preload: false — these two only show with ?type=b / ?type=c, so they should not
+// be preloaded on every page view ahead of the hero photo.
+const shrikhand = Shrikhand({ subsets: ["latin"], weight: "400", variable: "--f-shrikhand", display: "swap", preload: false });
+const bowlby = Bowlby_One({ subsets: ["latin"], weight: "400", variable: "--f-bowlby", display: "swap", preload: false });
 
 export const metadata: Metadata = {
-  title: { default: "Rinse It Off | Pressure Washing Portland OR \u2014 Commercial & Residential", template: "%s | Rinse It Off Portland" },
-  description: SITE_DESCRIPTION,
-  keywords: [
-    "commercial pressure washing Portland",
-    "pressure washing Portland OR",
-    "building washing Portland",
-    "parking lot cleaning Portland",
-    "soft washing Portland Oregon",
-    "exterior cleaning Portland",
-    "commercial power washing near me",
-    "storefront cleaning Portland",
-    "HOA pressure washing Portland",
-    "recurring maintenance pressure washing",
-    "hot water pressure washing Portland",
-    "concrete cleaning Portland OR",
-    "house washing Portland",
-    "roof cleaning Portland Oregon",
-  ],
-  openGraph: {
-    title: "Rinse It Off | Pressure Washing Portland OR — Commercial & Residential",
-    description: "Hot water pressure washing, soft washing & recurring maintenance for commercial properties and homes across Portland metro. Free property assessments.",
-    type: "website",
-    locale: "en_US",
-    siteName: "Rinse It Off",
-    url: "https://rinseitoff.com",
-  },
-  alternates: { canonical: "https://rinseitoff.com" },
+  metadataBase: new URL(SITE_URL),
+  title: { default: "Rinse It Off | Pressure Washing in Portland, OR", template: "%s | Rinse It Off" },
+  description: HOME_DESCRIPTION,
+  applicationName: "Rinse It Off",
+  // Every page sets its own canonical and share tags through pageMeta() in
+  // src/lib/seo.ts. Nothing canonical lives here: a root canonical is inherited
+  // by any page that forgets one, which pointed /commercial at the home page.
+  openGraph: { type: "website", locale: "en_US", siteName: "Rinse It Off", images: [{ url: OG.home.url, width: 1200, height: 630, alt: OG.home.alt }] },
+  twitter: { card: "summary_large_image", images: [OG.home.url] },
   robots: { index: true, follow: true },
 };
 
@@ -55,17 +41,30 @@ const AREA_SERVED = AREAS.map((a) =>
     : { "@type": "Place", name: a.name, containedInPlace: { "@type": "City", name: "Portland" } },
 );
 
+// The yearly plan and the six methods, so answer engines can name what is sold
+// and from where. Prices only where the site prints them ("from $189 a month").
+const SERVICE_OFFERS = SERVICES.map((s) => ({
+  "@type": "Offer",
+  itemOffered: { "@type": "Service", name: s.h1, url: `${SITE_URL}/services/${s.slug}`, provider: { "@id": BUSINESS_ID } },
+}));
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "LocalBusiness",
-      "@id": "https://rinseitoff.com/#business",
+      // HomeAndConstructionBusiness is a LocalBusiness subtype; schema.org has
+      // no exterior-cleaning type, and this is the nearest true one.
+      "@type": "HomeAndConstructionBusiness",
+      "@id": BUSINESS_ID,
       name: "Rinse It Off",
-      description: "Commercial and residential exterior cleaning services in Portland, Oregon. Specializing in hot water pressure washing, soft washing, building washing, parking lot cleaning, and recurring maintenance programs.",
-      url: "https://rinseitoff.com",
+      legalName: "Fresh Rinse, LLC",
+      description:
+        "Exterior cleaning for homes and commercial properties across the Portland, Oregon metro: roof soft washing and moss removal, house washing, concrete and parking lot cleaning, pure-water window cleaning, hot-water degreasing of trash pads, and a yearly maintenance plan for houses.",
+      url: SITE_URL,
       telephone: "+1-971-626-4146",
       email: "hello@rinseitoff.com",
+      logo: { "@type": "ImageObject", "@id": `${SITE_URL}/#logo`, url: `${SITE_URL}/logo-dark.png`, width: 706, height: 438 },
+      image: [`${SITE_URL}${OG.home.url}`, `${SITE_URL}${OG.commercial.url}`],
       address: {
         "@type": "PostalAddress",
         // ponytail: city only. Service-area business; the street address is the owner's home.
@@ -74,35 +73,72 @@ const jsonLd = {
         addressCountry: "US",
       },
       areaServed: AREA_SERVED,
-      serviceType: [
-        "Commercial Pressure Washing",
-        "Building Exterior Washing",
-        "Parking Lot Cleaning",
-        "Soft Washing",
-        "Hot Water Pressure Washing",
-        "Storefront Cleaning",
-        "HOA Property Maintenance",
-        "Recurring Exterior Maintenance",
-        "House Washing",
-        "Roof and Gutter Cleaning",
-        "Concrete Cleaning",
-        "Window Washing",
+      knowsAbout: [
+        "Pressure washing",
+        "Soft washing",
+        "Roof moss removal",
+        "House washing",
+        "Hot water pressure washing",
+        "Concrete cleaning",
+        "Parking lot cleaning",
+        "Trash pad and dumpster pad cleaning",
+        "Pure-water window cleaning",
+        "Gutter cleaning",
+        "Brick and masonry washing",
       ],
       priceRange: "$$",
+      currenciesAccepted: "USD",
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: "+1-971-626-4146",
+        email: "hello@rinseitoff.com",
+        contactType: "customer service",
+        areaServed: "US-OR",
+        availableLanguage: "English",
+      },
       sameAs: ["https://www.facebook.com/profile.php?id=61594392927890"],
+      // OPEN: the contact page prints Monday–Saturday 7am–6pm; this says every day,
+      // all day (set 2026-09-12 because the AI assistant answers around the clock).
+      // Bri decides which one is true for Google; both must then say the same.
       openingHoursSpecification: {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
         opens: "00:00",
         closes: "23:59",
       },
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Exterior cleaning",
+        itemListElement: [
+          {
+            "@type": "Offer",
+            name: "The yearly plan",
+            url: `${SITE_URL}/plan`,
+            description:
+              "A full year of exterior care for a house: roof, siding, driveway, gutters, winter walkways, and the windows cleaned four times. Priced for the house online.",
+            priceSpecification: {
+              "@type": "UnitPriceSpecification",
+              minPrice: 189,
+              priceCurrency: "USD",
+              referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" },
+            },
+            itemOffered: { "@type": "Service", name: "Yearly exterior maintenance plan", provider: { "@id": BUSINESS_ID } },
+          },
+          ...SERVICE_OFFERS,
+          {
+            "@type": "Offer",
+            itemOffered: { "@type": "Service", name: "Commercial exterior cleaning", url: `${SITE_URL}/commercial`, provider: { "@id": BUSINESS_ID } },
+          },
+        ],
+      },
     },
     {
       "@type": "WebSite",
-      "@id": "https://rinseitoff.com/#website",
-      url: "https://rinseitoff.com",
+      "@id": WEBSITE_ID,
+      url: SITE_URL,
       name: "Rinse It Off",
-      publisher: { "@id": "https://rinseitoff.com/#business" },
+      inLanguage: "en-US",
+      publisher: { "@id": BUSINESS_ID },
     },
   ],
 };
@@ -111,6 +147,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${fraunces.variable} ${shrikhand.variable} ${bowlby.variable}`} suppressHydrationWarning>
       <head>
+        {/* Typekit CSS is render-blocking; warm both of its hosts first. */}
+        <link rel="preconnect" href="https://use.typekit.net" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://p.typekit.net" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://use.typekit.net/asf7gwn.css" />
         {/* Futura PT for small spaced labels */}
         <link rel="stylesheet" href="https://use.typekit.net/zlw7xqi.css" />

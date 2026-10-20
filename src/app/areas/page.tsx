@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OG, pageMeta } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { Phone, ArrowRight, ArrowUpRight, MapPin } from "lucide-react";
@@ -10,12 +11,13 @@ const BASE_URL = "https://rinseitoff.com";
 const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";
 
-export const metadata: Metadata = {
-  title: "Service Areas — Portland Metro Pressure Washing & Exterior Cleaning",
+export const metadata: Metadata = pageMeta({
+  title: "Areas We Serve Across the Portland Metro",
   description:
-    "Rinse It Off serves homes and businesses across the Portland metro — Portland, Beaverton, Tigard, Lake Oswego, Hillsboro, Gresham, Milwaukie and dozens of Portland neighborhoods. Method-matched exterior cleaning, free property audits, Clean Water Promise.",
-  alternates: { canonical: `${BASE_URL}/areas` },
-};
+    "Exterior cleaning for homes and businesses in Portland, Beaverton, Tigard, Lake Oswego, Hillsboro, Gresham, Milwaukie and dozens of Portland neighborhoods.",
+  path: "/areas",
+  image: OG.areas,
+});
 
 const jsonLd = {
   "@context": "https://schema.org",

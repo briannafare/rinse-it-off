@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import {
   Droplets,
   ClipboardCheck,
@@ -15,12 +16,12 @@ import {
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Terms & the Clean Water Promise",
   description:
-    "How Rinse It Off works, in plain English: the free 21-point property audit, a firm itemized quote the same day we walk your property, and the Clean Water Promise to re-rinse anything free within 48 hours.",
-  alternates: { canonical: "https://rinseitoff.com/terms" },
-};
+    "How Rinse It Off works, in plain English: the free property audit, a firm itemized quote, and the 48-hour re-rinse guarantee.",
+  path: "/terms",
+});
 
 const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";

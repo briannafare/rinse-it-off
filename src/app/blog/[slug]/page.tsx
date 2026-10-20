@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OG } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -86,13 +87,14 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       publishedTime: post.date,
       modifiedTime: post.updatedAt || post.date,
       authors: post.author?.name ? [post.author.name] : undefined,
-      images: og ? [{ url: og, width: 1200, height: 630 }] : undefined,
+      locale: "en_US",
+      images: [{ url: og ?? OG.blog.url, width: 1200, height: 630, alt: og ? post.title : OG.blog.alt }],
     },
     twitter: {
-      card: og ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       title,
       description,
-      images: og ? [og] : undefined,
+      images: [og ?? OG.blog.url],
     },
   };
 }
@@ -112,7 +114,8 @@ function structuredData(post: Post) {
     dateModified: post.updatedAt || post.date,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     url,
-    ...(post.heroImage?.asset ? { image: [imageUrl(post.heroImage, 1200, 630)] } : {}),
+    image: [post.heroImage?.asset ? imageUrl(post.heroImage, 1200, 630) : `${BASE_URL}${OG.blog.url}`],
+    inLanguage: "en-US",
     ...(post.author?.name
       ? {
           author: {

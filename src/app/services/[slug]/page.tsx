@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { breadcrumbLd, pageMeta } from "@/lib/seo";
 import Image from "next/image";
 import { RetroButton } from "@/components/retro/Bits";
 import Link from "next/link";
@@ -6,6 +7,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, Phone, Check, ShieldCheck, Droplets } from "lucide-react";
 import { SERVICES, SERVICE_SLUGS, getService } from "@/lib/services";
 import { ServiceFAQ } from "@/components/ServiceFAQ";
+import { getAiPage, visibleHere } from "@/lib/ai-pages";
 
 const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";
@@ -18,6 +20,32 @@ export function generateStaticParams() {
   return SERVICE_SLUGS.map((slug) => ({ slug }));
 }
 
+/** Answer pages that go deeper on each method (internal links both ways:
+ *  the answer pages link back through the footer and their own copy). */
+const RELATED_ANSWERS: Record<string, string[]> = {
+  "roof-soft-wash": ["/blog/roof-moss-removal-cost-and-method", "/blog/soft-wash-vs-pressure-wash"],
+  "house-washing": ["/blog/house-washing-cost-portland", "/blog/how-often-wash-a-portland-house", "/blog/soft-wash-vs-pressure-wash"],
+  "concrete-surface-cleaning": ["/blog/how-often-wash-a-portland-house", "/compare/rinse-it-off-vs-diy-rented-pressure-washer"],
+  "pure-water-window-cleaning": ["/compare/subscription-vs-one-off-pressure-washing", "/blog/how-often-wash-a-portland-house"],
+  "hot-water-degreasing": ["/commercial/hiring-a-pressure-washing-company"],
+  "brick-masonry-washing": ["/blog/soft-wash-vs-pressure-wash", "/compare/rinse-it-off-vs-diy-rented-pressure-washer"],
+};
+
+/** Search titles: the method plus the words people type, under 60 characters
+ *  once the layout adds " | Rinse It Off". The page h1 stays as written. */
+const SEO_TITLES: Record<string, string> = {
+  "roof-soft-wash": "Roof Moss Removal & Soft Washing, Portland",
+  "house-washing": "House Washing & Siding Soft Wash, Portland",
+  "concrete-surface-cleaning": "Driveway & Concrete Cleaning, Portland OR",
+  "pure-water-window-cleaning": "Pure-Water Window Cleaning, Portland OR",
+  "hot-water-degreasing": "Hot-Water Degreasing & Trash Pads, Portland",
+  "brick-masonry-washing": "Brick & Masonry Washing, Portland OR",
+};
+
+function serviceDescription(service: { method: string; surface: string }) {
+  return `${service.method} for ${service.surface.toLowerCase()} at Portland-area homes and businesses. Insured, with a 48-hour re-rinse guarantee.`;
+}
+
 /** Per-service metadata. */
 export async function generateMetadata({
   params,
@@ -27,21 +55,12 @@ export async function generateMetadata({
   const { slug } = await params;
   const service = getService(slug);
   if (!service) return { title: "Service not found" };
-
-  const description = `${service.method} for ${service.surface.toLowerCase()} — the method-matched way we clean it, residential & commercial, across the Portland metro. Free 21-point property audit, insured, backed by our Clean Water Promise.`;
-
-  return {
-    title: service.h1,
-    description,
-    alternates: { canonical: `${BASE_URL}/services/${service.slug}` },
-    openGraph: {
-      title: `${service.h1} | Rinse It Off Portland`,
-      description,
-      type: "website",
-      url: `${BASE_URL}/services/${service.slug}`,
-      images: [{ url: service.img }],
-    },
-  };
+  return pageMeta({
+    title: SEO_TITLES[service.slug] ?? `${service.h1}, Portland OR`,
+    description: serviceDescription(service),
+    path: `/services/${service.slug}`,
+    image: { url: `/og/service-${service.slug}.jpg`, alt: service.alt },
+  });
 }
 
 export default async function ServicePage({ params }: { params: Promise<Params> }) {
@@ -50,6 +69,9 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
   if (!service) notFound();
 
   const others = SERVICES.filter((s) => s.slug !== service.slug);
+  const related = (RELATED_ANSWERS[service.slug] ?? [])
+    .map((path) => getAiPage(path))
+    .filter((p): p is NonNullable<typeof p> => !!p && visibleHere(p));
 
   // Structured data — Service + FAQPage, no pricing.
   const jsonLd = {
@@ -57,13 +79,23 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
     "@graph": [
       {
         "@type": "Service",
+        "@id": `${BASE_URL}/services/${service.slug}#service`,
         name: service.h1,
         serviceType: service.method,
         description: service.intro,
-        areaServed: { "@type": "City", name: "Portland" },
+        image: `${BASE_URL}/og/service-${service.slug}.jpg`,
+        areaServed: { "@type": "AdministrativeArea", name: "Portland, Oregon metropolitan area" },
+        audience: [
+          { "@type": "Audience", audienceType: "Homeowners" },
+          { "@type": "Audience", audienceType: "Commercial property managers" },
+        ],
         provider: { "@id": `${BASE_URL}/#business` },
         url: `${BASE_URL}/services/${service.slug}`,
       },
+      breadcrumbLd([
+        { name: "Services", path: "/services" },
+        { name: service.h1, path: `/services/${service.slug}` },
+      ]),
       {
         "@type": "FAQPage",
         mainEntity: service.faqs.map((f) => ({
@@ -183,9 +215,9 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
               Real work, real lines
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-[#4B5C6B]">
-              No staging and no stock photography — every photo on this site is a real
-              Portland-metro job, with the before and after in the same frame. The line where the
-              surface changes is simply where we stopped.
+              The before-and-after photos in our proof section are real Portland-metro jobs, with
+              the before and after in the same frame. The line where the surface changes is where
+              we stopped.
             </p>
             <Link
               href="/#proof"
@@ -234,6 +266,23 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
               <Phone className="h-4 w-4 text-[#62C4EB]" aria-hidden />
               {PHONE_DISPLAY}
             </a>
+            {related.length ? (
+              <div className="mt-8">
+                <p className="label-caps !tracking-[0.12em] text-retro-muted">Related answers</p>
+                <ul className="mt-3 space-y-2">
+                  {related.map((r) => (
+                    <li key={r.path}>
+                      <Link
+                        href={r.path}
+                        className="text-sm font-semibold text-[#0C1215] underline decoration-[#62C4EB] decoration-2 underline-offset-[3px] transition-colors hover:text-[#3AA8D4]"
+                      >
+                        {r.h1}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </div>
           <div className="lg:col-span-3">
             <ServiceFAQ items={service.faqs} />

@@ -17,3 +17,7 @@ export const PLAN_SEASONS = [
 ];
 
 export const PLAN_EVERY_VISIT = "The outside of every window, free";
+
+/** /plan meta description; also the plan summary in llms.txt. */
+export const PLAN_META_DESCRIPTION =
+  "See the monthly price for a year of exterior care on your Portland-area house: roof, siding, driveway, gutters, winter walkways, and windows four times.";

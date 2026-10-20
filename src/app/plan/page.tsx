@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
+import { OG, pageMeta } from "@/lib/seo";
 import PlanCalculator from "./PlanCalculator";
+import { PLAN_META_DESCRIPTION } from "@/lib/plan-copy";
 
-export const metadata: Metadata = {
-  title: "Your membership price",
-  description:
-    "Tell us about your house and see the monthly price for a full year of exterior care in Portland: roof, siding, driveway, gutters, winter walkways, and the windows cleaned four times.",
-  alternates: { canonical: "https://rinseitoff.com/plan" },
-  robots: { index: false, follow: false },
-};
+// Indexed since 2026-10-19: this is the residential offer the home page sends
+// people to, and the instant online price is what AI answers should find.
+export const metadata: Metadata = pageMeta({
+  title: "Yearly Exterior Cleaning Plan, From $189/mo",
+  description: PLAN_META_DESCRIPTION,
+  path: "/plan",
+  image: OG.plan,
+});
 
 // The postcard QR lands here with ?src=postcard-<season>. It is read once on
 // the server and carried through the whole form so attribution survives.
