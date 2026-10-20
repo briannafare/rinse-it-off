@@ -514,7 +514,7 @@ function HalFace() {
 }
 
 const CSS = `
-.hal-root{--hal-cream:#FFFFFF;--hal-paper:#F8FAF6;--hal-ink:#102E32;--hal-teal:#2F6B66;--hal-line:#D4E0DC;--hal-muted:#5A7275;--hal-gold:#F9D8E6;--hal-orange:#D6336C;
+.hal-root{--hal-cream:#FFFFFF;--hal-paper:#FBF8F2;--hal-ink:#0C1215;--hal-teal:#2E9BC6;--hal-line:#E4DCCD;--hal-muted:#5F676C;--hal-gold:#F2B632;--hal-orange:#D6336C;
   --hal-gap:16px;--hal-bottom:calc(var(--hal-gap) + env(safe-area-inset-bottom));--hal-right:calc(var(--hal-gap) + env(safe-area-inset-right))}
 @media (max-width:767px){.hal-root{--hal-bottom:calc(var(--hal-bar) + 14px + env(safe-area-inset-bottom));--hal-right:calc(12px + env(safe-area-inset-right))}}
 .hal-root *{box-sizing:border-box}
@@ -527,7 +527,7 @@ const CSS = `
 .hal-launcher-face img,.hal-avatar img{width:100%;height:100%;display:block}
 .hal-dot{position:absolute;top:-3px;right:-3px;width:12px;height:12px;border-radius:999px;background:var(--hal-orange);border:2px solid var(--hal-paper)}
 .hal-panel{position:fixed;z-index:61;right:var(--hal-right);bottom:calc(var(--hal-bottom) + 56px);width:min(390px,calc(100vw - 32px));height:min(620px,calc(100dvh - var(--hal-bottom) - 80px));
-  display:flex;flex-direction:column;background:var(--hal-paper);color:var(--hal-ink);border:1.5px solid var(--hal-ink);border-radius:14px;box-shadow:0 12px 32px rgba(16,46,50,.18);overflow:hidden;
+  display:flex;flex-direction:column;background:var(--hal-paper);color:var(--hal-ink);border:1.5px solid var(--hal-ink);border-radius:14px;box-shadow:0 12px 32px rgba(12,18,21,.18);overflow:hidden;
   font-family:var(--font-text);transform-origin:bottom right;animation:hal-pop .22s ease-out}
 @media (max-width:639px){
   .hal-panel{inset:0;width:100%;height:100dvh;border:0;border-radius:0;box-shadow:none;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);animation:hal-up .24s ease-out}
@@ -542,7 +542,7 @@ const CSS = `
 .hal-avatar-sm{width:30px;height:30px;padding:3px;align-self:flex-end}
 .hal-avatar-ghost{visibility:hidden}
 .hal-icon-btn{all:unset;cursor:pointer;display:grid;place-items:center;width:40px;height:40px;border-radius:999px;color:var(--hal-ink)}
-.hal-icon-btn:hover{background:rgba(16,46,50,.07)}
+.hal-icon-btn:hover{background:rgba(12,18,21,.07)}
 .hal-icon-btn-sm{width:30px;height:30px}
 .hal-log{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:18px 14px 10px;display:flex;flex-direction:column;gap:10px;background:var(--hal-paper)}
 .hal-row{display:flex;gap:8px;align-items:flex-end}
@@ -560,7 +560,7 @@ const CSS = `
 .hal-chip:hover{background:var(--hal-cream)}
 .hal-compose{display:flex;align-items:flex-end;gap:8px;padding:10px 12px;border-top:1.5px solid var(--hal-ink);background:var(--hal-paper)}
 .hal-input{flex:1;resize:none;max-height:120px;min-height:44px;font:inherit;font-size:16px;line-height:1.35;color:var(--hal-ink);background:#FFFFFF;border:1.5px solid var(--hal-ink);border-radius:14px;padding:11px 14px;outline:none}
-.hal-input:focus{box-shadow:0 0 0 3px rgba(47,107,102,.35)}
+.hal-input:focus{box-shadow:0 0 0 3px rgba(46,155,198,.35)}
 .hal-send{all:unset;box-sizing:border-box;cursor:pointer;flex:none;width:44px;height:44px;border-radius:12px;background:var(--hal-teal);color:var(--hal-paper);border:2px solid var(--hal-ink);box-shadow:4px 4px 0 var(--hal-ink);display:grid;place-items:center;margin:0 4px 4px 0;transition:transform .12s ease,box-shadow .12s ease}
 .hal-send:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--hal-ink)}
 .hal-send:disabled{opacity:.45;cursor:default}
@@ -571,8 +571,8 @@ const CSS = `
 .hal-card-title{margin:0;font-family:var(--font-title);font-weight:800;font-size:17px;line-height:1.2}
 .hal-field{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:500}
 .hal-field input{font:inherit;font-size:16px;font-weight:400;color:var(--hal-ink);background:#FFFFFF;border:1.5px solid var(--hal-ink);border-radius:10px;padding:10px 12px;outline:none;min-height:44px}
-.hal-field input:focus{box-shadow:0 0 0 3px rgba(47,107,102,.35)}
-.hal-check{display:flex;gap:9px;align-items:flex-start;font-size:11.5px;line-height:1.45;color:#3E5A5D}
+.hal-field input:focus{box-shadow:0 0 0 3px rgba(46,155,198,.35)}
+.hal-check{display:flex;gap:9px;align-items:flex-start;font-size:11.5px;line-height:1.45;color:#3B4247}
 .hal-check input{flex:none;width:20px;height:20px;margin:1px 0 0;accent-color:var(--hal-ink)}
 .hal-err{margin:0;font-size:13px;color:#9c3f1d}
 .hal-primary{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;font-family:var(--font-label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:14px;padding:12px 16px;border-radius:14px;background:var(--hal-teal);color:var(--hal-paper);border:2px solid var(--hal-ink);box-shadow:4px 4px 0 var(--hal-ink);margin:0 4px 4px 0}

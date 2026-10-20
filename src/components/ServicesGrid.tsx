@@ -50,12 +50,12 @@ export function ServicesGrid() {
       <div className="container-site">
         <div ref={headRef} className="flex flex-wrap items-end justify-between gap-6">
           <h2
-            className="max-w-xl text-3xl font-medium text-[#102E32] md:text-4xl"
+            className="max-w-xl text-3xl font-medium text-[#0C1215] md:text-4xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Six services. One rule: the method matches the surface.
           </h2>
-          <p className="max-w-sm text-[#3E5A5D]">
+          <p className="max-w-sm text-[#3B4247]">
             Pressure is a tool, not a default. Every card tells you exactly how
             we&apos;ll clean it.
           </p>
@@ -68,22 +68,22 @@ export function ServicesGrid() {
               className="group relative overflow-hidden rounded-[4px] border border-retro-line bg-retro-paper p-7 transition-all duration-300 hover:-translate-y-1"
             >
               {/* hairline turns water-blue on hover */}
-              <span className="absolute inset-x-0 top-0 h-[2px] bg-transparent transition-colors duration-300 group-hover:bg-[#2F6B66]" />
+              <span className="absolute inset-x-0 top-0 h-[2px] bg-transparent transition-colors duration-300 group-hover:bg-[#2E9BC6]" />
               <div className="flex items-start justify-between">
-                <span className="flex h-16 w-16 items-center justify-center rounded-[4px] bg-[#D7EFE9] transition-transform duration-300 group-hover:scale-105">
+                <span className="flex h-16 w-16 items-center justify-center rounded-[4px] bg-[#E6F5FC] transition-transform duration-300 group-hover:scale-105">
                   <Image src={s.icon} alt="" width={40} height={40} className="h-10 w-10" />
                 </span>
-                <span className="rounded-lg bg-[#D7EFE9] px-2.5 py-1 text-xs font-semibold text-[#2F6B66]">
+                <span className="rounded-lg bg-[#E6F5FC] px-2.5 py-1 text-xs font-semibold text-[#1A6E93]">
                   {s.method}
                 </span>
               </div>
               <h3
-                className="mt-5 text-lg font-medium text-[#102E32]"
+                className="mt-5 text-lg font-medium text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {s.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#3E5A5D]">{s.body}</p>
+              <p className="mt-2 text-sm leading-relaxed text-[#3B4247]">{s.body}</p>
             </div>
           ))}
         </div>

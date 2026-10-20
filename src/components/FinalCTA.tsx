@@ -19,30 +19,30 @@ export function FinalCTA() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#102E32]/85 via-black/30 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#FBF8F2]/95 via-[#FBF8F2]/55 to-transparent" />
 
         <div className="container-site relative flex flex-1 flex-col items-start justify-end pb-16 pt-28 md:pb-20">
           <h2
-            className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl"
+            className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-[#0C1215] md:text-6xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Free walkthrough.
             <br />
             <span>Firm price the same day.</span>
           </h2>
-          <p className="mt-4 max-w-lg text-lg text-white/85">
+          <p className="mt-4 max-w-lg text-lg text-[#0C1215]/85">
             We walk the property with you, note every surface that needs work, and
             leave you an itemized price you can take all of or part of. Same
             walkthrough whether it&rsquo;s your house or your building. If something we
             clean isn&rsquo;t right, we come back and re-rinse it free within 48 hours.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-6">
-            <RetroButton href="/assessment" tone="gold" signature>
+            <RetroButton href="/assessment" signature>
               Get your same-day quote
             </RetroButton>
             <a
               href="tel:+19716264146"
-              className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32] motion-reduce:transition-none"
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-[#0C1215]/85 transition-colors hover:text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
             >
               <Phone className="h-4 w-4" aria-hidden />
               (971) 626-4146

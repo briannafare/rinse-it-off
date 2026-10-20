@@ -14,15 +14,15 @@ export function PromoBar() {
   }, []);
   if (!PROMO_ON) return null;
   return (
-    <div id="promo-bar" hidden={hidden} className="relative h-9 bg-[#12433F] text-white">
+    <div id="promo-bar" hidden={hidden} className="relative h-9 bg-[#62C4EB] text-[#0C1215]">
       <p className="flex h-full items-center justify-center gap-2 px-12 text-[13px] sm:text-sm">
-        <Sparkle className="h-3 w-3 shrink-0" fill="#F9D8E6" />
+        <Sparkle className="h-3 w-3 shrink-0" fill="#F2B632" />
         <span className="truncate">
-          <span className="font-semibold text-white sm:hidden">Holiday lights</span>
-          <span className="hidden font-semibold text-white sm:inline">Now booking holiday light installs</span>
+          <span className="font-semibold text-[#0C1215] sm:hidden">Holiday lights</span>
+          <span className="hidden font-semibold text-[#0C1215] sm:inline">Now booking holiday light installs</span>
           <span className="hidden sm:inline"> for this season.</span>
         </span>
-        <a href="/#holiday" className="shrink-0 font-semibold underline decoration-[#F9D8E6] decoration-2 underline-offset-4 hover:text-[#F9D8E6]">
+        <a href="/#holiday" className="shrink-0 font-semibold underline decoration-[#F2B632] decoration-2 underline-offset-4 hover:decoration-[#D6336C]">
           See the details
         </a>
       </p>
@@ -30,7 +30,7 @@ export function PromoBar() {
         type="button"
         aria-label="Hide the holiday lights announcement"
         onClick={() => { setHidden(true); try { sessionStorage.setItem("rio-promo-hide", "1"); } catch {} }}
-        className="absolute right-1 top-0 flex h-9 w-11 items-center justify-center text-white/80 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-sun"
+        className="absolute right-1 top-0 flex h-9 w-11 items-center justify-center text-[#0C1215]/80 hover:text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0C1215]"
       >
         <X className="h-4 w-4" aria-hidden />
       </button>

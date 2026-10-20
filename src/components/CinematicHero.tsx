@@ -157,7 +157,7 @@ export function CinematicHero() {
               <span
                 className={[
                   "label-caps !tracking-[0.14em] transition-colors duration-300 motion-reduce:transition-none",
-                  i === active ? "text-[#2F6B66]" : "text-[#5A7275] group-hover:text-[#102E32]",
+                  i === active ? "text-[#1A6E93]" : "text-[#5F676C] group-hover:text-[#0C1215]",
                 ].join(" ")}
               >
                 {s.tab}
@@ -190,7 +190,7 @@ export function CinematicHero() {
               );
             })()}
 
-            <motion.p key={`${s.key}-body-${active}`} {...rise(0.16)} className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-[#3E5A5D] md:text-lg">
+            <motion.p key={`${s.key}-body-${active}`} {...rise(0.16)} className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-[#3B4247] md:text-lg">
               {s.body}
             </motion.p>
 
@@ -200,7 +200,7 @@ export function CinematicHero() {
               </RetroButton>
               <a
                 href={PHONE_TEL}
-                className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-base font-semibold text-brand-black hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue"
+                className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-base font-semibold text-brand-black hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue"
               >
                 <Phone className="h-4 w-4" aria-hidden />
                 {PHONE_DISPLAY}

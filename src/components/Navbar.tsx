@@ -46,13 +46,13 @@ export function Navbar() {
 
   // over the cinematic photo hero the bar is wet glass with white text; after
   // scroll it settles onto solid white with dark ink.
-  const ink = scrolled ? "text-[#102E32]" : "text-white";
+  const ink = scrolled ? "text-[#0C1215]" : "text-[#0C1215]";
   // shared focus-visible ring; offset color flips with the bar's state
   const focusRing =
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2";
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2";
   const offset = scrolled
     ? "focus-visible:ring-offset-white"
-    : "focus-visible:ring-offset-[#102E32]";
+    : "focus-visible:ring-offset-[#62C4EB]";
 
   return (
     <>
@@ -60,7 +60,7 @@ export function Navbar() {
         className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
           scrolled
             ? "border-b border-retro-line bg-retro-paper/95 backdrop-blur-xl"
-            : "border-b border-white/15 bg-white/10 backdrop-blur-md"
+            : "border-b border-[#0C1215]/15 bg-white/10 backdrop-blur-md"
         }`}
       >
         <PromoBar />
@@ -71,7 +71,7 @@ export function Navbar() {
             aria-label="Rinse It Off — home"
           >
             <Image
-              src={scrolled ? "/logo-dark.png" : "/logo-white.png"}
+              src="/logo-dark.png"
               alt="Rinse It Off"
               width={706}
               height={438}
@@ -85,7 +85,7 @@ export function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
-                className={`label-caps !text-[0.8rem] !font-semibold rounded px-1 transition-colors duration-300 ${ink} hover:!text-[#2F6B66] ${focusRing} ${offset} motion-reduce:transition-none`}
+                className={`label-caps !text-[0.8rem] !font-semibold rounded px-1 transition-colors duration-300 ${ink} hover:!text-[#1A6E93] ${focusRing} ${offset} motion-reduce:transition-none`}
               >
                 {l.label}
               </a>
@@ -102,10 +102,10 @@ export function Navbar() {
             </a>
             <a
               href="/assessment"
-              className={`btn-print inline-flex items-center px-5 py-3 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 motion-reduce:transition-none ${
+              className={`btn-print inline-flex items-center px-5 py-3 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 motion-reduce:transition-none ${
                 scrolled
-                  ? "bg-[#F8FAF6] text-[#102E32] hover:bg-[#FFFFFF] focus-visible:ring-offset-white"
-                  : "bg-white text-[#102E32] hover:bg-white/90 focus-visible:ring-offset-[#102E32]"
+                  ? "bg-[#F2B632] text-[#0C1215] hover:bg-[#F6C451] focus-visible:ring-offset-white"
+                  : "bg-[#F2B632] text-[#0C1215] hover:bg-[#F6C451] focus-visible:ring-offset-white"
               }`}
             >
               Free assessment
@@ -146,7 +146,7 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
-                className="flex min-h-11 min-w-11 items-center justify-center rounded text-[#102E32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32]"
+                className="flex min-h-11 min-w-11 items-center justify-center rounded text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB]"
                 aria-label="Close menu"
               >
                 <X className="h-6 w-6" />
@@ -159,7 +159,7 @@ export function Navbar() {
                   key={l.href}
                   href={l.href}
                   onClick={() => setMobileOpen(false)}
-                  className="rounded py-2.5 font-title text-[2.6rem] font-bold leading-tight text-[#102E32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-retro-pool"
+                  className="rounded py-2.5 font-title text-[2.6rem] font-bold leading-tight text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-retro-pool"
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.08 + i * 0.06 }}
@@ -174,7 +174,7 @@ export function Navbar() {
               <img src="/brand/hal/hal-still.webp" alt="" aria-hidden width={360} height={410} className="mb-2 w-24 self-end" />
               <a
                 href={PHONE_TEL}
-                className="flex items-center gap-3 rounded text-lg font-medium text-[#102E32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32]"
+                className="flex items-center gap-3 rounded text-lg font-medium text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB]"
               >
                 <Phone className="h-5 w-5" aria-hidden />
                 {PHONE_DISPLAY}
@@ -182,7 +182,7 @@ export function Navbar() {
               <a
                 href="/assessment"
                 onClick={() => setMobileOpen(false)}
-                className="btn-print bg-[#2F6B66] px-6 py-4 text-center text-white transition-colors hover:bg-[#12433F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32] motion-reduce:transition-none"
+                className="btn-print bg-[#F2B632] px-6 py-4 text-center text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Free assessment

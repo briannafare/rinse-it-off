@@ -1,12 +1,13 @@
-// Late-60s brand layer: the small kit every page shares (restyled to the 2026-10-19 brief:
-// warm paper, spruce teal, harvest gold, one burnt-orange detail per section, no gradients,
-// no multi-colour dashes). Modern structure; the period feel comes from type, frames and these accents.
+// Late-60s brand layer: the small kit every page shares (2026-10-20 finish brief: a bright 1968
+// print ad on cream paper; sky is the calm ground, sun yellow marks decisions, magenta is the spark,
+// and the three-stripe mark is the through-line). Modern structure; the period feel comes from type,
+// frames and these accents.
 import clsx from "clsx";
 import type { ReactNode } from "react";
 
 /** Print button: Futura caps, 14px corners, ink outline, hard offset shadow (CSS .btn-retro).
- *  Teal by default; gold on dark bands (CSS). `signature` = a single gold shine that passes across
- *  now and then, reserved for a page's main buttons. */
+ *  Sun yellow by default (yellow marks decisions); "gold" = white, for use on a yellow ground.
+ *  `signature` = the three-stripe sweep passing across now and then, for a page's main buttons. */
 export function RetroButton({
   href,
   children,
@@ -24,10 +25,10 @@ export function RetroButton({
     <a
       href={href}
       className={clsx(
-        "btn-retro group relative isolate inline-flex min-h-[52px] items-center justify-center gap-2 overflow-hidden px-7 py-4 leading-none focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-retro-sun",
-        tone === "teal" && "bg-[#2F6B66] text-white",
-        tone === "cream" && "bg-[#F8FAF6] text-[#102E32]",
-        tone === "gold" && "bg-white text-[#12433F]",
+        "btn-retro group relative isolate inline-flex min-h-[52px] items-center justify-center gap-2 overflow-hidden px-7 py-4 leading-none focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-[#0C1215]",
+        tone === "teal" && "bg-[#F2B632] text-[#0C1215]",
+        tone === "cream" && "bg-[#FBF8F2] text-[#0C1215]",
+        tone === "gold" && "bg-white text-[#0C1215]",
         className,
       )}
     >
@@ -36,7 +37,7 @@ export function RetroButton({
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 bg-no-repeat motion-safe:animate-retro-sweep"
           style={{
-            backgroundImage: "linear-gradient(105deg,transparent 0 44%,rgba(214,51,108,.55) 44% 52%,transparent 52% 100%)",
+            backgroundImage: STRIPES,
             backgroundSize: "300% 100%",
             backgroundPosition: "170% 0",
           }}
@@ -45,6 +46,17 @@ export function RetroButton({
       <span className="relative">{children}</span>
     </a>
   );
+}
+
+/** The brand mark: three thin parallel stripes, always magenta, sky, yellow, on a slight diagonal,
+ *  like a light sweep. Thin and crisp: never equal colour blocks, never a band. */
+export const STRIPES =
+  "linear-gradient(105deg,transparent 0 43%,#D6336C 43% 47%,#62C4EB 47% 51%,#F2B632 51% 55%,transparent 55% 100%)";
+
+/** The mark as an element (CSS .stripes keeps each stripe 4px wide at any size): a divider between
+ *  sections, an underline under a title, the top edge of the footer. Size it with className. */
+export function Stripes({ className }: { className?: string }) {
+  return <span aria-hidden className={clsx("stripes block", className)} />;
 }
 
 /** Small four-point sparkle, one accent colour. */
@@ -56,7 +68,7 @@ export function Sparkle({ className, fill = "#D6336C" }: { className?: string; f
   );
 }
 
-/** Motel-sign starburst badge, for FREE and prices only: gold fill, 1.5px ink outline, tilted -6°. */
+/** Motel-sign starburst badge, for FREE and prices only: magenta spark, white type, ink outline, tilted -6°. */
 export function Starburst({ className, top, bottom }: { className?: string; top: string; bottom?: string }) {
   const pts = Array.from({ length: 32 }, (_, i) => {
     const r = i % 2 === 0 ? 96 : 80,
@@ -65,12 +77,12 @@ export function Starburst({ className, top, bottom }: { className?: string; top:
   }).join(" ");
   return (
     <svg viewBox="0 0 200 200" className={clsx("-rotate-6", className)} role="img" aria-label={`${top} ${bottom ?? ""}`.trim()}>
-      <polygon points={pts} fill="#F9D8E6" stroke="#102E32" strokeWidth="1.5" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
-      <text x="100" y={bottom ? 100 : 114} textAnchor="middle" style={{ fontFamily: "var(--font-title)" }} fontWeight="900" fontSize="44" fill="#A51E53">
+      <polygon points={pts} fill="#D6336C" stroke="#0C1215" strokeWidth="1.5" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+      <text x="100" y={bottom ? 100 : 114} textAnchor="middle" style={{ fontFamily: "var(--font-title)" }} fontWeight="900" fontSize="44" fill="#FFFFFF">
         {top}
       </text>
       {bottom && (
-        <text x="100" y="130" textAnchor="middle" fontFamily="futura-pt, sans-serif" fontWeight="700" fontSize="14" letterSpacing="2" fill="#A51E53">
+        <text x="100" y="130" textAnchor="middle" fontFamily="futura-pt, sans-serif" fontWeight="700" fontSize="14" letterSpacing="2" fill="#FFFFFF">
           {bottom.toUpperCase()}
         </text>
       )}
@@ -96,19 +108,19 @@ export function TitleCard({ chapter, title, tone = "pool" }: { chapter: string; 
         "pb-8 pt-14 text-center md:pb-10 md:pt-20",
         tone === "pool" && "bg-stars bg-retro-pool text-brand-black",
         tone === "paper" && "bg-stars bg-retro-paper text-brand-black",
-        tone === "blue" && "bg-brand-blue text-white",
-        tone === "ink" && "bg-brand-black text-white",
-        tone === "tealtint" && "bg-[#D7EFE9] text-[#12433F]",
-        tone === "sky" && "bg-stars bg-[#E6F5FC] text-[#102E32]",
+        tone === "blue" && "bg-brand-blue text-[#0C1215]",
+        tone === "ink" && "bg-brand-black text-[#0C1215]",
+        tone === "tealtint" && "bg-stars bg-[#E6F5FC] text-[#0C1215]",
+        tone === "sky" && "bg-stars bg-[#E6F5FC] text-[#0C1215]",
       )}
     >
       <div className="container-site flex flex-col items-center">
         <p className="flex items-center gap-2 font-label text-[12px] font-bold uppercase tracking-[0.14em]">
           {chapter}
-          <Sparkle className="h-3 w-3" fill={dark ? "#F9D8E6" : "#D6336C"} />
+          <Sparkle className="h-3 w-3" fill={dark ? "#F2B632" : "#D6336C"} />
         </p>
         <p className="mt-3 font-title text-[clamp(2.6rem,9vw,4.6rem)] leading-[0.95]">{title}</p>
-        <Squiggle className="mt-4" color={dark ? "#F9D8E6" : "#D6336C"} />
+        <Stripes className="mt-5 h-8 w-24" />
       </div>
     </div>
   );
@@ -121,15 +133,15 @@ export function Seal({ text, className, center = "FREE" }: { text: string; class
   return (
     <div aria-hidden className={clsx("pointer-events-none select-none", className)}>
       <svg viewBox="0 0 200 200" className="h-full w-full">
-        <circle cx="100" cy="100" r="96" fill="#F9D8E6" stroke="#102E32" strokeWidth="3" />
-        <circle cx="100" cy="100" r="62" fill="#F8FAF6" stroke="#102E32" strokeWidth="2.5" />
+        <circle cx="100" cy="100" r="96" fill="#F2B632" stroke="#0C1215" strokeWidth="3" />
+        <circle cx="100" cy="100" r="62" fill="#FBF8F2" stroke="#0C1215" strokeWidth="2.5" />
         <defs><path id={id} d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" /></defs>
         <g className="origin-center motion-safe:animate-[spin_36s_linear_infinite]" style={{ transformBox: "fill-box" }}>
-          <text fontFamily="futura-pt, sans-serif" fontWeight="600" fontSize="14.5" letterSpacing="2.2" fill="#A51E53">
+          <text fontFamily="futura-pt, sans-serif" fontWeight="600" fontSize="14.5" letterSpacing="2.2" fill="#0C1215">
             <textPath href={`#${id}`}>{text.toUpperCase()}</textPath>
           </text>
         </g>
-        <text x="100" y="110" textAnchor="middle" style={{ fontFamily: "var(--font-title)" }} fontSize="30" fill="#A51E53">{center}</text>
+        <text x="100" y="110" textAnchor="middle" style={{ fontFamily: "var(--font-title)" }} fontSize="30" fill="#0C1215">{center}</text>
       </svg>
     </div>
   );

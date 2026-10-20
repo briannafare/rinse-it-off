@@ -34,14 +34,14 @@ export function Promise() {
   return (
     <section className="relative overflow-hidden bg-retro-paper py-16 md:py-24">
       {/* soft water aura on the clean-water canvas */}
-      <div className="aura-blob left-[-10%] top-[-35%] h-[500px] w-[500px] bg-[#2F6B66]/12 motion-reduce:animate-none" aria-hidden />
-      <div className="aura-blob right-[-8%] bottom-[-45%] h-[440px] w-[440px] bg-[#2F6B66]/10 motion-reduce:animate-none" style={{ animationDelay: "-7s" }} aria-hidden />
+      <div className="aura-blob left-[-10%] top-[-35%] h-[500px] w-[500px] bg-[#62C4EB]/25 motion-reduce:animate-none" aria-hidden />
+      <div className="aura-blob right-[-8%] bottom-[-45%] h-[440px] w-[440px] bg-[#62C4EB]/25 motion-reduce:animate-none" style={{ animationDelay: "-7s" }} aria-hidden />
 
       <div className="container-site relative">
         <div className="flex items-center gap-4">
-          <Droplets className="h-9 w-9 shrink-0 text-[#2F6B66]" aria-hidden />
+          <Droplets className="h-9 w-9 shrink-0 text-[#1A6E93]" aria-hidden />
           <h2
-            className="text-3xl font-medium text-[#102E32] md:text-4xl"
+            className="text-3xl font-medium text-[#0C1215] md:text-4xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
             No surprises, no padding, no fine print.
@@ -55,15 +55,15 @@ export function Promise() {
               className="frame group bg-retro-paper p-7"
             >
               <div className="flex items-center justify-between">
-                <p.icon className="h-6 w-6 text-[#2F6B66]" aria-hidden />
+                <p.icon className="h-6 w-6 text-[#1A6E93]" aria-hidden />
               </div>
               <h3
-                className="mt-5 text-lg font-medium text-[#102E32]"
+                className="mt-5 text-lg font-medium text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {p.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#3E5A5D]">{p.body}</p>
+              <p className="mt-2 text-sm leading-relaxed text-[#3B4247]">{p.body}</p>
             </div>
           ))}
         </div>

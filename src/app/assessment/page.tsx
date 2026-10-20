@@ -53,32 +53,32 @@ const DS = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --ink:          #102E32;
-    --ink-soft:     #102E32;
-    --blue:         #2F6B66;
-    --blue-wash:    #D7EFE9;
+    --ink:          #0C1215;
+    --ink-soft:     #0C1215;
+    --blue:         #2E9BC6;
+    --blue-wash:    #E6F5FC;
     --surface:      #FFFFFF;
     --surface-alt:  #FFFFFF;
-    --text-primary: #102E32;
-    --text-secondary:#3E5A5D;
-    --text-muted:   #7D9194;
-    --border:       #D4E0DC;
-    --border-light: #D4E0DC;
+    --text-primary: #0C1215;
+    --text-secondary:#3B4247;
+    --text-muted:   #7A8186;
+    --border:       #E4DCCD;
+    --border-light: #E4DCCD;
     --font-display: "neue-haas-grotesk-display", system-ui, -apple-system, sans-serif;
     --font-body:    "neue-haas-grotesk-text", system-ui, -apple-system, sans-serif;
     --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 24px; --r-2xl: 32px;
-    --shadow-soft: 0 2px 16px rgba(16,46,50,0.05);
-    --shadow-card-hover: 0 4px 12px rgba(16,46,50,0.06), 0 22px 50px rgba(16,46,50,0.09);
+    --shadow-soft: 0 2px 16px rgba(12,18,21,0.05);
+    --shadow-card-hover: 0 4px 12px rgba(12,18,21,0.06), 0 22px 50px rgba(12,18,21,0.09);
     --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
     --aura-water:
-      radial-gradient(120% 120% at 12% 10%, #D7EFE9 0%, transparent 55%),
+      radial-gradient(120% 120% at 12% 10%, #E6F5FC 0%, transparent 55%),
       radial-gradient(120% 120% at 88% 22%, #E9F6FC 0%, transparent 55%),
-      radial-gradient(140% 130% at 55% 100%, #D7EFE9 0%, transparent 60%);
+      radial-gradient(140% 130% at 55% 100%, #E6F5FC 0%, transparent 60%);
   }
 
   html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
   body { font-family: var(--font-body); color: var(--text-primary); background: var(--surface); }
-  ::selection { background: rgba(47,107,102,0.25); }
+  ::selection { background: rgba(46,155,198,0.25); }
 
   a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
     outline: 2px solid var(--blue) !important;
@@ -99,11 +99,11 @@ const DS = `
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
     padding: 1rem 2rem; width: 100%; cursor: pointer; appearance: none; text-decoration: none;
     font-family: var(--font-label); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1;
-    color: #F8FAF6; background: #2F6B66; border: 2px solid #102E32; border-radius: 14px;
-    box-shadow: 4px 4px 0 #102E32; transition: transform .15s ease, box-shadow .15s ease;
+    color: #FBF8F2; background: #2E9BC6; border: 2px solid #0C1215; border-radius: 14px;
+    box-shadow: 4px 4px 0 #0C1215; transition: transform .15s ease, box-shadow .15s ease;
   }
-  .btn-glass:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #102E32; }
-  .btn-glass:active { transform: translate(4px,4px); box-shadow: 0 0 0 #102E32; }
+  .btn-glass:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #0C1215; }
+  .btn-glass:active { transform: translate(4px,4px); box-shadow: 0 0 0 #0C1215; }
   .btn-glass:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   @media (prefers-reduced-motion: reduce) { .btn-glass, .btn-glass:hover { transform: none; transition: none; } }
 `;
@@ -434,7 +434,7 @@ export default function AssessmentPage() {
 
             {/* Submit — liquid glass CTA over the aura */}
             {propertyType && (
-              <div style={{ background: "var(--aura-water)", backgroundColor: "var(--blue-wash, #D7EFE9)", borderRadius: "var(--r-xl)", padding: "24px", marginTop: 8 }}>
+              <div style={{ background: "var(--aura-water)", backgroundColor: "var(--blue-wash, #E6F5FC)", borderRadius: "var(--r-xl)", padding: "24px", marginTop: 8 }}>
                 <button type="submit" disabled={sending || !form.name || !form.phone} className="btn-glass">
                   <span>{sending ? "Sending your request..." : apptLabel ? "Request My Free Assessment" : "Request My Free Assessment"}</span>
                   {!sending && (

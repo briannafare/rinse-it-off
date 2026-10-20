@@ -16,9 +16,9 @@ const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";
 
 const cardBase =
-  "block rounded-[4px] bg-white p-6 ring-1 ring-retro-line transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none";
+  "block rounded-[4px] bg-white p-6 ring-1 ring-retro-line transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none";
 const cardLink = `group ${cardBase} hover:-translate-y-1 motion-reduce:hover:translate-y-0`;
-const label = "text-sm font-semibold text-[#5A7275]";
+const label = "text-sm font-semibold text-[#5F676C]";
 
 export default function ContactPage() {
   return (
@@ -26,15 +26,15 @@ export default function ContactPage() {
       <Navbar />
       <main>
         {/* Dark band = punctuation; the body below is light clean-water. */}
-        <section className="relative overflow-hidden bg-[#12433F] pt-28 pb-14 md:pt-32 md:pb-20">
+        <section className="relative overflow-hidden bg-[#62C4EB] pt-28 pb-14 md:pt-32 md:pb-20">
           <div className="container-site">
             <h1
-              className="max-w-3xl text-[clamp(2rem,5vw,3.6rem)] leading-[1.02] tracking-[-0.03em] text-white"
+              className="max-w-3xl text-[clamp(2rem,5vw,3.6rem)] leading-[1.02] tracking-[-0.03em] text-[#0C1215]"
               style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
             >
               Get in touch
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/80">
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[#0C1215]/80">
               Questions, scheduling, or ready for your free property assessment — here&apos;s
               how to reach us. We serve homeowners and businesses across the Portland metro.
             </p>
@@ -46,51 +46,51 @@ export default function ContactPage() {
             <div className="grid gap-5 sm:grid-cols-2">
               {/* Phone */}
               <a href={PHONE_TEL} className={cardLink}>
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#2F6B66]/12">
-                  <Phone className="h-5 w-5 text-[#2F6B66]" aria-hidden />
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#62C4EB]/25">
+                  <Phone className="h-5 w-5 text-[#1A6E93]" aria-hidden />
                 </span>
                 <p className={`mt-5 ${label}`}>Call or text</p>
                 <p
-                  className="mt-1 text-lg font-semibold text-[#102E32]"
+                  className="mt-1 text-lg font-semibold text-[#0C1215]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {PHONE_DISPLAY}
                 </p>
-                <p className="mt-1 text-sm text-[#3E5A5D]">
+                <p className="mt-1 text-sm text-[#3B4247]">
                   Fastest way to reach us for a quick question.
                 </p>
               </a>
 
               {/* Email */}
               <a href="mailto:hello@rinseitoff.com" className={cardLink}>
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#2F6B66]/12">
-                  <Mail className="h-5 w-5 text-[#2F6B66]" aria-hidden />
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#62C4EB]/25">
+                  <Mail className="h-5 w-5 text-[#1A6E93]" aria-hidden />
                 </span>
                 <p className={`mt-5 ${label}`}>Email</p>
                 <p
-                  className="mt-1 text-lg font-semibold text-[#102E32]"
+                  className="mt-1 text-lg font-semibold text-[#0C1215]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   hello@rinseitoff.com
                 </p>
-                <p className="mt-1 text-sm text-[#3E5A5D]">
+                <p className="mt-1 text-sm text-[#3B4247]">
                   Send details or photos and we&apos;ll follow up quickly.
                 </p>
               </a>
 
               {/* Service area */}
               <div className={cardBase}>
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#2F6B66]/12">
-                  <MapPin className="h-5 w-5 text-[#2F6B66]" aria-hidden />
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#62C4EB]/25">
+                  <MapPin className="h-5 w-5 text-[#1A6E93]" aria-hidden />
                 </span>
                 <p className={`mt-5 ${label}`}>Service area</p>
                 <p
-                  className="mt-1 text-lg font-semibold text-[#102E32]"
+                  className="mt-1 text-lg font-semibold text-[#0C1215]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Portland, Oregon &amp; the surrounding metro
                 </p>
-                <p className="mt-1 text-sm leading-relaxed text-[#3E5A5D]">
+                <p className="mt-1 text-sm leading-relaxed text-[#3B4247]">
                   Beaverton, Hillsboro, Lake Oswego, Tigard, Tualatin, West Linn, Gresham
                   &amp; Milwaukie. Larger commercial projects throughout the Willamette
                   Valley.
@@ -99,17 +99,17 @@ export default function ContactPage() {
 
               {/* Hours */}
               <div className={cardBase}>
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#2F6B66]/12">
-                  <Clock className="h-5 w-5 text-[#2F6B66]" aria-hidden />
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#62C4EB]/25">
+                  <Clock className="h-5 w-5 text-[#1A6E93]" aria-hidden />
                 </span>
                 <p className={`mt-5 ${label}`}>Hours</p>
                 <p
-                  className="mt-1 text-lg font-semibold text-[#102E32]"
+                  className="mt-1 text-lg font-semibold text-[#0C1215]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Monday–Saturday, 7am–6pm
                 </p>
-                <p className="mt-1 text-sm text-[#3E5A5D]">
+                <p className="mt-1 text-sm text-[#3B4247]">
                   Closed Sundays. Leave a message anytime and we&apos;ll get right back to
                   you.
                 </p>
@@ -117,21 +117,21 @@ export default function ContactPage() {
             </div>
 
             {/* Primary CTA panel */}
-            <div className="mt-8 overflow-hidden rounded-[4px] bg-[#12433F] p-8 md:mt-10 md:p-10">
+            <div className="mt-8 overflow-hidden rounded-[4px] bg-[#62C4EB] p-8 md:mt-10 md:p-10">
               <h2
-                className="text-[clamp(1.5rem,3vw,2.1rem)] leading-[1.1] tracking-[-0.02em] text-white"
+                className="text-[clamp(1.5rem,3vw,2.1rem)] leading-[1.1] tracking-[-0.02em] text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 Ready for a free property assessment?
               </h2>
-              <p className="mt-3 max-w-xl text-base leading-relaxed text-white/80">
+              <p className="mt-3 max-w-xl text-base leading-relaxed text-[#0C1215]/80">
                 We walk your property, read every surface, and hand you a firm, itemized
                 quote the same day. No obligation — just an honest look.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
                 <a
                   href="/assessment"
-                  className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#12433F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32] motion-reduce:transition-none"
+                  className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Book your free assessment
@@ -139,14 +139,14 @@ export default function ContactPage() {
                 </a>
                 <a
                   href="/assessment?type=residential"
-                  className="inline-flex min-h-11 items-center rounded-lg px-1 text-sm font-semibold text-white hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32]"
+                  className="inline-flex min-h-11 items-center rounded-lg px-1 text-sm font-semibold text-[#0C1215] hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Homeowner? Start a residential quote
                 </a>
                 <a
                   href="/assessment?type=commercial"
-                  className="inline-flex min-h-11 items-center rounded-lg px-1 text-sm font-semibold text-white hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32]"
+                  className="inline-flex min-h-11 items-center rounded-lg px-1 text-sm font-semibold text-[#0C1215] hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Commercial property?

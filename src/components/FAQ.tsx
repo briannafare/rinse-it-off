@@ -23,7 +23,7 @@ export function FAQ() {
             </p>
             <a
               href="tel:+19716264146"
-              className="inline-flex min-h-11 items-center rounded-lg text-sm font-semibold text-text-primary hover:text-text-secondary transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF]"
+              className="inline-flex min-h-11 items-center rounded-lg text-sm font-semibold text-text-primary hover:text-text-secondary transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF]"
             >
               (971) 626-4146 →
             </a>
@@ -40,12 +40,12 @@ export function FAQ() {
                       aria-expanded={isOpen}
                       aria-controls={`faq-panel-${i}`}
                       id={`faq-trigger-${i}`}
-                      className="flex items-center justify-between w-full min-h-11 py-5 px-6 text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#2F6B66]"
+                      className="flex items-center justify-between w-full min-h-11 py-5 px-6 text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#1A6E93]"
                     >
                       <div className="flex items-center gap-4 pr-4">
                         <span className="font-display font-semibold text-sm md:text-base text-text-primary group-hover:text-brand-black transition-colors motion-reduce:transition-none">{faq.q}</span>
                       </div>
-                      <span className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-colors duration-300 motion-reduce:transition-none ${isOpen ? "bg-[#2F6B66] text-white" : "border border-border text-text-muted"}`}>
+                      <span className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-colors duration-300 motion-reduce:transition-none ${isOpen ? "bg-[#2E9BC6] text-[#0C1215]" : "border border-border text-text-muted"}`}>
                         {isOpen ? <Minus className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
                       </span>
                     </button>

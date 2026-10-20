@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { Phone, Mail, MapPin, ArrowRight, ShieldCheck } from "lucide-react";
 import { AI_PAGES, visibleHere } from "@/lib/ai-pages";
+import { Stripes } from "@/components/retro/Bits";
 
 const linkClass =
-  "block rounded-sm py-1 text-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none";
+  "block rounded-sm py-1 text-sm text-[#0C1215]/70 transition-colors hover:text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none";
 
 // Slugs map to the six method-matched services at /services/[slug]
 // (single source of truth: src/lib/services.ts → SERVICE_SLUGS).
@@ -49,48 +50,48 @@ const guideLinks = AI_PAGES.filter((p) => GUIDE_LABELS[p.path] && visibleHere(p)
 
 export function Footer() {
   return (
-    <footer className="relative z-10 overflow-hidden bg-brand-dark pb-16 text-white md:pb-0">
-      {/* The livery stripe, once, along the top edge */}
-      <div className="h-1.5 w-full bg-[#D6336C]" aria-hidden />
+    <footer className="relative z-10 overflow-hidden bg-[#62C4EB] pb-16 text-[#0C1215] md:pb-0">
+      {/* the three-stripe mark, once, along the top edge */}
+      <Stripes className="h-6 w-full" />
       <div className="container-site pt-16 md:pt-20 pb-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
           {/* Brand */}
           <div>
             <Image
-              src="/logo-white.png"
+              src="/logo-dark.png"
               alt="Rinse It Off"
               width={141}
               height={87}
               className="h-11 w-auto mb-5"
             />
-            <p className="text-white/70 text-sm leading-relaxed mb-6">
+            <p className="text-[#0C1215]/70 text-sm leading-relaxed mb-6">
               Residential &amp; commercial exterior cleaning across the Portland metro.
             </p>
             <div className="space-y-1.5">
               <a
                 href="tel:+19716264146"
-                className="flex min-h-11 items-center gap-2.5 rounded-sm py-1 text-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+                className="flex min-h-11 items-center gap-2.5 rounded-sm py-1 text-sm text-[#0C1215]/70 transition-colors hover:text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
               >
-                <Phone className="w-4 h-4 text-[#2F6B66]" /> (971) 626-4146
+                <Phone className="w-4 h-4 text-[#0C1215]" /> (971) 626-4146
               </a>
               <a
                 href="mailto:hello@rinseitoff.com"
-                className="flex min-h-11 items-center gap-2.5 rounded-sm py-1 text-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+                className="flex min-h-11 items-center gap-2.5 rounded-sm py-1 text-sm text-[#0C1215]/70 transition-colors hover:text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
               >
-                <Mail className="w-4 h-4 text-[#2F6B66]" /> hello@rinseitoff.com
+                <Mail className="w-4 h-4 text-[#0C1215]" /> hello@rinseitoff.com
               </a>
-              <div className="flex items-center gap-2.5 py-1 text-sm text-white/70">
-                <MapPin className="w-4 h-4 text-[#2F6B66]" /> Portland, Oregon &amp; surrounding metro
+              <div className="flex items-center gap-2.5 py-1 text-sm text-[#0C1215]/70">
+                <MapPin className="w-4 h-4 text-[#0C1215]" /> Portland, Oregon &amp; surrounding metro
               </div>
-              <div className="flex items-center gap-2.5 py-1 text-sm text-white/70">
-                <ShieldCheck className="w-4 h-4 text-[#2F6B66]" /> Insured
+              <div className="flex items-center gap-2.5 py-1 text-sm text-[#0C1215]/70">
+                <ShieldCheck className="w-4 h-4 text-[#0C1215]" /> Insured
               </div>
             </div>
           </div>
 
           {/* Residential services */}
           <div>
-            <p className="label-caps mb-4 text-retro-sun">Residential</p>
+            <p className="label-caps mb-4 text-[#0C1215]">Residential</p>
             <nav aria-label="Residential services" className="space-y-1">
               {residentialServices.map((s) => (
                 <a key={s.label} href={`/services/${s.slug}`} className={linkClass}>
@@ -102,7 +103,7 @@ export function Footer() {
 
           {/* Commercial services */}
           <div>
-            <p className="label-caps mb-4 text-retro-sun">Commercial</p>
+            <p className="label-caps mb-4 text-[#0C1215]">Commercial</p>
             <nav aria-label="Commercial services" className="space-y-1">
               {commercialServices.map((s) => (
                 <a key={s.label} href={`/services/${s.slug}`} className={linkClass}>
@@ -114,7 +115,7 @@ export function Footer() {
 
           {/* Answers */}
           <div>
-            <p className="label-caps mb-4 text-retro-sun">Answers</p>
+            <p className="label-caps mb-4 text-[#0C1215]">Answers</p>
             <nav aria-label="Answers" className="space-y-1">
               {guideLinks.map((l) => (
                 <a key={l.href} href={l.href} className={linkClass}>
@@ -126,7 +127,7 @@ export function Footer() {
 
           {/* Company + CTA */}
           <div>
-            <p className="label-caps mb-4 text-retro-sun">Company</p>
+            <p className="label-caps mb-4 text-[#0C1215]">Company</p>
             <nav aria-label="Company" className="space-y-1 mb-6">
               {companyLinks.map((l) => (
                 <a key={l.label} href={l.href} className={linkClass}>
@@ -134,12 +135,12 @@ export function Footer() {
                 </a>
               ))}
             </nav>
-            <p className="text-sm text-white/70 leading-relaxed mb-4">
+            <p className="text-sm text-[#0C1215]/70 leading-relaxed mb-4">
               Accepting new residential &amp; commercial clients.
             </p>
             <a
               href="/assessment"
-              className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#12433F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+              className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
             >
               Free Assessment
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" />
@@ -148,8 +149,8 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
-          <p className="flex items-center gap-3 text-sm text-white/65">
+        <div className="border-t border-[#0C1215]/15 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
+          <p className="flex items-center gap-3 text-sm text-[#0C1215]/65">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/brand/hal/hal-mark-outline.svg" alt="" aria-hidden width={40} height={40} className="h-9 w-9" />&copy; {new Date().getFullYear()} Fresh Rinse, LLC dba Rinse It Off &middot; Tigard, Oregon</p>
           <div className="flex items-center gap-4">
@@ -157,29 +158,29 @@ export function Footer() {
               href="https://www.facebook.com/profile.php?id=61594392927890"
               target="_blank"
               rel="noopener"
-              className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66]"
+              className="rounded-sm text-sm text-[#0C1215]/65 transition-colors hover:text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]"
             >
               Facebook
             </a>
             <a
               href="/terms"
-              className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+              className="rounded-sm text-sm text-[#0C1215]/65 transition-colors hover:text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
             >
               Terms
             </a>
             <a
               href="/privacy"
-              className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+              className="rounded-sm text-sm text-[#0C1215]/65 transition-colors hover:text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
             >
               Privacy
             </a>
-            <p className="text-sm text-white/65">
+            <p className="text-sm text-[#0C1215]/65">
               Built by{" "}
               <a
                 href="https://eighty5labs.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+                className="rounded-sm text-[#0C1215]/70 transition-colors hover:text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
               >
                 eighty5labs
               </a>

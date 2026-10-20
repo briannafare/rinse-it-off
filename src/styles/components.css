@@ -21,7 +21,7 @@
   font-family: var(--font-body); color: var(--text-secondary);
   background: var(--surface);
 }
-.badge-blue { background: var(--blue-wash); color: var(--blue-deep); border-color: rgba(47,107,102,0.22); }
+.badge-blue { background: var(--blue-wash); color: var(--blue-deep); border-color: rgba(46,155,198,0.22); }
 .badge-ink  { background: var(--ink); color: #fff; border-color: var(--ink); }
 
 /* legacy alias: .pill used to exist — map it to the soft-rect badge */

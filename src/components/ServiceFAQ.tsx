@@ -22,7 +22,7 @@ export function ServiceFAQ({ items }: { items: FAQItem[] }) {
               aria-expanded={isOpen}
               aria-controls={`svc-faq-panel-${i}`}
               id={`svc-faq-trigger-${i}`}
-              className="group flex min-h-11 w-full items-center justify-between px-6 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#2F6B66]"
+              className="group flex min-h-11 w-full items-center justify-between px-6 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#1A6E93]"
             >
               <div className="flex items-center gap-4 pr-4">
                 <span className="font-display text-sm font-semibold text-text-primary transition-colors group-hover:text-brand-black motion-reduce:transition-none md:text-base">
@@ -31,7 +31,7 @@ export function ServiceFAQ({ items }: { items: FAQItem[] }) {
               </div>
               <span
                 className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg transition-colors duration-300 motion-reduce:transition-none ${
-                  isOpen ? "bg-[#2F6B66] text-white" : "border border-border text-text-muted"
+                  isOpen ? "bg-[#2E9BC6] text-[#0C1215]" : "border border-border text-text-muted"
                 }`}
               >
                 {isOpen ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
