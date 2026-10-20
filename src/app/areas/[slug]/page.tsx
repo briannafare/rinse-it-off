@@ -7,6 +7,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { METHODS } from "@/lib/methods";
 import { AREAS, getAreaBySlug, getNearbyAreas, type Area } from "@/lib/areas";
+import { getAreaFacts } from "@/lib/area-facts";
 
 const BASE_URL = "https://rinseitoff.com";
 const PHONE_DISPLAY = "(971) 626-4146";
@@ -96,6 +97,9 @@ type IntroCopy = { hero: string; paragraphs: string[] };
 
 function buildIntro(area: Area): IntroCopy {
   const seed = hashSlug(area.slug);
+  // The "164 rainy days" opener (last in OPENERS) contradicts the sourced
+  // rain-day counts on pages that state their own, so those pages skip it.
+  const openers = getAreaFacts(area.slug).some((f) => /\bdays\b/.test(f.text)) ? OPENERS.slice(0, -1) : OPENERS;
   const near = joinNames(getNearbyAreas(area).slice(0, 3).map((a) => a.name));
 
   const typeLine =
@@ -103,7 +107,7 @@ function buildIntro(area: Area): IntroCopy {
       ? pick(CITY_LINES, seed >> 2)(area.name)
       : pick(NEIGHBORHOOD_LINES, seed >> 2)(area.name);
 
-  const p1 = `${pick(OPENERS, seed)(area.name)} ${pick(METHOD_LINES, seed >> 1)}`;
+  const p1 = `${pick(openers, seed)(area.name)} ${pick(METHOD_LINES, seed >> 1)}`;
   const p2 = `${typeLine} ${near ? pick(NEARBY_LINES, seed >> 3)(area.name, near) + " " : ""}${pick(PROMISE_LINES, seed >> 4)}`;
 
   return { hero: pick(HERO_LEADS, seed)(area.name), paragraphs: [p1, p2] };
@@ -152,6 +156,7 @@ export default async function AreaPage({
   if (!area) notFound();
 
   const intro = buildIntro(area);
+  const facts = getAreaFacts(area.slug);
   const nearby = getNearbyAreas(area);
   const hero = pick(HERO_PHOTOS, hashSlug(area.slug));
 
@@ -274,6 +279,25 @@ export default async function AreaPage({
                 <p key={i}>{p}</p>
               ))}
             </div>
+
+            {facts.length > 0 && (
+              <div className="mt-8">
+                <h3
+                  className="text-xl font-semibold text-[#0C1215]"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  About {area.name}
+                </h3>
+                <ul className="mt-3 space-y-3 text-lg leading-relaxed text-[#4B5C6B]">
+                  {facts.map((f) => (
+                    <li key={f.text} className="flex gap-3">
+                      <Check className="mt-1.5 h-4 w-4 shrink-0 text-[#62C4EB]" aria-hidden />
+                      <span>{f.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <div className="mt-8 flex flex-wrap gap-3 text-sm">
               <a
