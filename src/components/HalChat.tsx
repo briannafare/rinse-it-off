@@ -280,7 +280,7 @@ export default function HalChat({ mobileBarOffset = 52 }: { mobileBarOffset?: nu
 
   // One small nudge per tab: only after the visitor has scrolled past the hero and lingered a bit.
   useEffect(() => {
-    if (read(K_NUDGE, "") === "done") return;
+    if (read<string>(K_NUDGE, "") === "done") return;
     let timer: ReturnType<typeof setTimeout> | null = null;
     const onScroll = () => {
       if (window.scrollY < 500 || timer) return;
