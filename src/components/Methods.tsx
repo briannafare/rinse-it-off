@@ -29,7 +29,7 @@ export function Methods() {
           {METHODS.map((m) => (
             <article
               key={m.key}
-              className="group overflow-hidden rounded-[4px] bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+              className="frame group overflow-hidden bg-white transition-all duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image

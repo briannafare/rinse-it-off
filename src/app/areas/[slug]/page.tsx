@@ -204,7 +204,7 @@ export default async function AreaPage({
       <main>
         {/* ── Hero — dark image band (matches CinematicHero language) ─────── */}
         <section className="w-full overflow-hidden bg-retro-pool pt-16 md:grid md:min-h-[76svh] md:grid-cols-2 md:pt-[72px]">
-          <div className="film-grain relative h-[40svh] min-h-[260px] md:order-2 md:h-auto">
+          <div className="frame film-grain relative m-3 h-[40svh] min-h-[260px] overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5 md:h-auto">
           <Image
             src={hero.src}
             alt={hero.alt}
@@ -226,7 +226,7 @@ export default async function AreaPage({
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 Pressure Washing &amp; Exterior Cleaning in{" "}
-                <span className="text-[#2E9BC6]">{area.name}</span>, {placeSuffix(area)}
+                <span className="title-accent text-[#2E9BC6]">{area.name}</span>, {placeSuffix(area)}
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#3B4650]">{intro.hero}</p>
 

@@ -4,7 +4,8 @@
 import clsx from "clsx";
 import type { ReactNode } from "react";
 
-/** Pill button. `signature` = the slow stripe sweep + twinkle, reserved for a page's main button. */
+/** Pill button, printed-ticket style: Futura capitals, an ink outline and a hard offset shadow that
+ *  presses in. `signature` = the stripe sweep + twinkle, reserved for a page's main buttons. */
 export function RetroButton({
   href,
   children,
@@ -22,7 +23,7 @@ export function RetroButton({
     <a
       href={href}
       className={clsx(
-        "group relative isolate inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full px-7 py-4 text-[15px] font-semibold leading-none transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-retro-sun motion-reduce:transition-none motion-reduce:hover:translate-y-0",
+        "btn-retro group relative isolate inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full px-7 py-4 font-label text-[14px] font-semibold uppercase leading-none tracking-[0.12em] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-retro-sun",
         tone === "ink" && "bg-brand-black text-white",
         tone === "white" && "bg-white text-brand-black",
         tone === "blue" && "bg-brand-blue text-brand-black",
@@ -104,17 +105,38 @@ export function TitleCard({ chapter, title, tone = "pool" }: { chapter: string; 
     <div
       className={clsx(
         "pb-8 pt-14 text-center md:pb-10 md:pt-20",
-        tone === "pool" && "bg-retro-pool text-brand-black",
-        tone === "paper" && "bg-retro-paper text-brand-black",
+        tone === "pool" && "bg-stars bg-retro-pool text-brand-black",
+        tone === "paper" && "bg-stars bg-retro-paper text-brand-black",
         tone === "blue" && "bg-brand-blue text-brand-black",
         tone === "ink" && "bg-brand-black text-white",
       )}
     >
       <div className="container-site flex flex-col items-center">
-        <p className={clsx("label-caps", tone === "ink" ? "text-retro-sun" : tone === "blue" ? "text-brand-black/70" : "text-retro-muted")}>{chapter}</p>
+        <p className={clsx("label-caps rounded-full border-2 px-4 py-1.5", tone === "ink" ? "border-retro-sun text-retro-sun" : "border-brand-black text-brand-black")}>{chapter}</p>
         <p className="mt-3 font-title text-[clamp(2.6rem,9vw,4.6rem)] font-black leading-[0.95]">{title}</p>
         <StripeTab className="mt-5" />
       </div>
+    </div>
+  );
+}
+
+/** Slowly turning round seal: text set on a circle around a small centre mark, like a 1960s
+ *  sticker or service badge. Decorative; the words also appear elsewhere on the page. */
+export function Seal({ text, className, center = "FREE" }: { text: string; className?: string; center?: string }) {
+  const id = "seal-" + text.length;
+  return (
+    <div aria-hidden className={clsx("pointer-events-none select-none", className)}>
+      <svg viewBox="0 0 200 200" className="h-full w-full">
+        <circle cx="100" cy="100" r="96" fill="#F2B632" stroke="#0C1215" strokeWidth="3" />
+        <circle cx="100" cy="100" r="62" fill="#FBF8F2" stroke="#0C1215" strokeWidth="2.5" />
+        <defs><path id={id} d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" /></defs>
+        <g className="origin-center motion-safe:animate-[spin_36s_linear_infinite]" style={{ transformBox: "fill-box" }}>
+          <text fontFamily="futura-pt, sans-serif" fontWeight="600" fontSize="14.5" letterSpacing="2.2" fill="#0C1215">
+            <textPath href={`#${id}`}>{text.toUpperCase()}</textPath>
+          </text>
+        </g>
+        <text x="100" y="110" textAnchor="middle" style={{ fontFamily: "var(--font-title)" }} fontSize="30" fill="#0C1215">{center}</text>
+      </svg>
     </div>
   );
 }

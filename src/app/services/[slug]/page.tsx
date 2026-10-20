@@ -116,7 +116,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
 
       {/* ── Hero: the photograph beside a flat cream title block (late-60s layer) ── */}
       <section className="w-full overflow-hidden bg-retro-pool pt-16 md:grid md:min-h-[78svh] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:pt-[72px]">
-        <div className="film-grain relative h-[42svh] min-h-[280px] md:order-2 md:h-auto">
+        <div className="frame film-grain relative m-3 h-[42svh] min-h-[280px] overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5 md:h-auto">
           <Image src={service.img} alt={service.alt} fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-cover object-center" />
         </div>
         <div className="flex flex-col justify-center px-5 pb-14 pt-8 sm:px-8 md:order-1 md:px-12 md:py-16 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))]">

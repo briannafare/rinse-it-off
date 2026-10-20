@@ -104,7 +104,7 @@ export default function CommercialPage() {
       <main>
         {/* ── HERO: the photograph beside a flat cream title block; Hal with his clipboard at the seam ── */}
         <section className="relative w-full overflow-hidden bg-retro-pool pt-16 md:grid md:min-h-[100svh] md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] md:pt-[72px]">
-          <div className="film-grain relative h-[46svh] min-h-[300px] md:order-2 md:h-auto">
+          <div className="frame film-grain relative m-3 h-[46svh] min-h-[300px] overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5 md:h-auto">
             <Image
               src="/brand/retro/r6-11-com-office-entry.webp"
               alt="Two Rinse It Off cleaners at a mid-century office: one washing the tall glass from the ground with a water-fed pole, one running a surface cleaner across the entry walk"
@@ -126,7 +126,7 @@ export default function CommercialPage() {
           <div className="relative flex flex-col justify-center px-5 pb-[calc(4rem+env(safe-area-inset-bottom))] pt-8 sm:px-8 md:order-1 md:px-12 md:py-16 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))]">
             <p className="label-caps mb-4 max-w-[70%] !tracking-[0.14em] text-retro-muted md:max-w-none">Commercial &amp; property management &middot; Portland metro</p>
             <h1 className="text-[clamp(2.6rem,9vw,5.2rem)] leading-[0.95] text-brand-black [text-wrap:balance]">
-              Every commercial surface <span className="text-[#2E9BC6]">gets its own method.</span>
+              Every commercial surface <span className="title-accent text-[#2E9BC6]">gets its own method.</span>
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#3B4650]">
               From parking lots and trash pads to storefronts, siding and roofs, we assess

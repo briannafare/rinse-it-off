@@ -85,7 +85,7 @@ export function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
-                className={`label-caps rounded px-1 transition-colors duration-300 ${ink} opacity-80 hover:opacity-100 ${focusRing} ${offset} motion-reduce:transition-none`}
+                className={`label-caps !text-[0.8rem] !font-semibold rounded px-1 transition-colors duration-300 ${ink} hover:!text-[#2E9BC6] ${focusRing} ${offset} motion-reduce:transition-none`}
               >
                 {l.label}
               </a>
@@ -104,7 +104,7 @@ export function Navbar() {
               href="/assessment"
               className={`inline-flex items-center rounded-full px-6 py-3.5 text-sm font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 motion-reduce:transition-none ${
                 scrolled
-                  ? "bg-[#0C1215] text-white hover:bg-[#1d2830] focus-visible:ring-offset-white"
+                  ? "border-2 border-[#0C1215] bg-[#62C4EB] text-[#0C1215] shadow-[2px_2px_0_#0C1215] hover:bg-[#7CD0EF] focus-visible:ring-offset-white"
                   : "bg-white text-[#0C1215] hover:bg-white/90 focus-visible:ring-offset-[#0C1215]"
               }`}
               style={{ fontFamily: "var(--font-display)" }}

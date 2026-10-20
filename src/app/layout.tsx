@@ -4,16 +4,15 @@ import { AREAS } from "@/lib/areas";
 import { SERVICES } from "@/lib/services";
 import { HOME_DESCRIPTION } from "@/lib/site";
 import { BUSINESS_ID, OG, SITE_URL, WEBSITE_ID } from "@/lib/seo";
-import { Fraunces, Shrikhand, Bowlby_One } from "next/font/google";
+import { Fraunces, Shrikhand, Ultra } from "next/font/google";
 import "./globals.css";
 
-// Late-60s display faces. Fraunces (soft, fat, Cooper-family) is the pick; the other two
-// are on the preview for comparison via ?type=b / ?type=c. ponytail: drop the losers once chosen.
-const fraunces = Fraunces({ subsets: ["latin"], axes: ["SOFT", "WONK", "opsz"], variable: "--f-fraunces", display: "swap" });
-// preload: false — these two only show with ?type=b / ?type=c, so they should not
-// be preloaded on every page view ahead of the hero photo.
-const shrikhand = Shrikhand({ subsets: ["latin"], weight: "400", variable: "--f-shrikhand", display: "swap", preload: false });
-const bowlby = Bowlby_One({ subsets: ["latin"], weight: "400", variable: "--f-bowlby", display: "swap", preload: false });
+// Late-60s display face: Shrikhand (a swashy 1960s ad/diner italic) with a painted-sign shadow.
+// Ultra (fat painted-sign slab) and Fraunces stay on the preview for comparison via ?type=b / ?type=c,
+// not preloaded. ponytail: drop the losers once Bri picks.
+const shrikhand = Shrikhand({ subsets: ["latin"], weight: "400", variable: "--f-shrikhand", display: "swap" });
+const ultra = Ultra({ subsets: ["latin"], weight: "400", variable: "--f-ultra", display: "swap", preload: false });
+const fraunces = Fraunces({ subsets: ["latin"], axes: ["SOFT", "WONK", "opsz"], variable: "--f-fraunces", display: "swap", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -145,7 +144,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${shrikhand.variable} ${bowlby.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${fraunces.variable} ${shrikhand.variable} ${ultra.variable}`} suppressHydrationWarning>
       <head>
         {/* Typekit CSS is render-blocking; warm both of its hosts first. */}
         <link rel="preconnect" href="https://use.typekit.net" crossOrigin="anonymous" />

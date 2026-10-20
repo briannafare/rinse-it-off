@@ -82,7 +82,7 @@ export function WorkGallery() {
       >
         {SHOTS.map((s, i) => (
           <figure key={s.src} className="w-[82vw] shrink-0 snap-start sm:w-[420px]">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[4px] bg-white/5">
+            <div className="frame frame-light relative aspect-[4/5] overflow-hidden bg-white/5">
               <Image
                 src={`/brand/photos/work/${s.src}.webp`}
                 alt={s.alt}

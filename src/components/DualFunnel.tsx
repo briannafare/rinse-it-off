@@ -37,7 +37,7 @@ export function DualFunnel() {
           <a
             key={f.title}
             href={f.href}
-            className="group flex flex-col overflow-hidden rounded-[4px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-retro-paper"
+            className="frame group flex flex-col overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-retro-paper"
           >
             <div className="relative aspect-[3/2] overflow-hidden">
               <Image

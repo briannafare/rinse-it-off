@@ -35,8 +35,8 @@ export function PlanSection() {
         {/* The four visits */}
         <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 md:mt-14">
           {SEASONS.map((s) => (
-            <li key={s.name} className="grid grid-cols-[96px_1fr] gap-4 overflow-hidden rounded-[4px] bg-retro-paper p-4 sm:block sm:p-0">
-              <div className="relative aspect-square overflow-hidden rounded-[4px] sm:rounded-none">
+            <li key={s.name} className="frame grid grid-cols-[96px_1fr] gap-4 overflow-hidden bg-retro-paper p-4 sm:block sm:p-0">
+              <div className="relative aspect-square overflow-hidden rounded-[10px] sm:rounded-none sm:border-b-2 sm:border-[#0C1215]">
                 <Image src={s.img} alt={`Illustration: ${s.title.toLowerCase()} cleaning in ${s.name.toLowerCase()}`} fill sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 96px" className="object-cover" />
               </div>
               <div className="sm:p-5">
@@ -49,8 +49,8 @@ export function PlanSection() {
         </ol>
 
         {/* Free window cleaning, every visit */}
-        <div className="relative mt-4 grid overflow-hidden rounded-[4px] bg-[#0C1215] text-white md:grid-cols-[1fr_1.3fr]">
-          <div className="relative aspect-[4/3] md:aspect-auto">
+        <div className="frame relative mt-4 grid overflow-visible bg-[#0C1215] text-white md:grid-cols-[1fr_1.3fr]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-t-[14px] md:aspect-auto md:rounded-l-[14px] md:rounded-tr-none">
             <Image src="/brand/retro/mi-glass.webp" alt="Illustration: a cleaner washing a tall picture window from the ground with a water-fed pole" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-cover" />
           </div>
           <div className="relative p-6 md:p-10 md:pr-44">
@@ -63,7 +63,7 @@ export function PlanSection() {
 
         {/* What else comes with it, the value, and the price */}
         <div className="mt-4 grid gap-4 md:grid-cols-[1fr_1.15fr]">
-          <div className="rounded-[4px] bg-retro-paper p-6 md:p-8">
+          <div className="frame bg-retro-paper p-6 md:p-8">
             <p className="label-caps !tracking-[0.14em] text-retro-muted">Also included</p>
             <ul className="mt-4 grid gap-3">
               {PLAN_INCLUDED.map((x) => (
@@ -74,7 +74,7 @@ export function PlanSection() {
               ))}
             </ul>
           </div>
-          <div className="rounded-[4px] bg-retro-sun p-6 text-[#0C1215] md:p-8">
+          <div className="frame bg-retro-sun p-6 text-[#0C1215] md:p-8">
             <p className="label-caps !tracking-[0.14em] text-[#0C1215]/70">What it&rsquo;s worth</p>
             <p className="mt-3 text-[1.05rem] leading-relaxed">{PLAN_VALUE}</p>
             <div className="mt-6 flex flex-wrap items-center gap-3">

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Phone } from "lucide-react";
 import { HalFlyIn } from "@/components/retro/HalFlyIn";
-import { RetroButton } from "@/components/retro/Bits";
+import { RetroButton, Seal } from "@/components/retro/Bits";
 
 /** Full-bleed rotating hero: one slide for homes, one for properties.
  *
@@ -122,8 +122,9 @@ export function CinematicHero() {
 
   return (
     <section className="relative w-full overflow-hidden bg-retro-pool md:grid md:min-h-[100svh] md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
-      {/* The photograph: full width on top on phones, the right half bleeding off the edge on desktop. */}
-      <div className="film-grain relative h-[50svh] min-h-[340px] md:order-2 md:h-auto">
+      {/* The photograph, set like a print: rounded corners and an ink outline, inset on the cream. */}
+      <div className="relative h-[58svh] min-h-[380px] px-3 pb-3 pt-[76px] md:order-2 md:h-auto md:min-h-0 md:py-5 md:pl-0 md:pr-5 md:pt-[92px]">
+      <div className="frame film-grain relative h-full overflow-hidden">
         {SLIDES.map((s, i) => (
           <div
             key={s.key}
@@ -134,12 +135,12 @@ export function CinematicHero() {
             <Image src={s.img} alt={i === active ? s.alt : ""} fill priority={s.priority} sizes="(min-width: 768px) 55vw, 100vw" className={`object-cover ${s.pos}`} />
           </div>
         ))}
-        {/* only so the white nav reads over the photo on phones */}
-        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/40 to-transparent md:hidden" aria-hidden />
+      </div>
+      <Seal text="Free window cleaning ★ four times a year ★ " className="absolute left-1 top-[64px] z-10 w-24 -rotate-6 md:bottom-1 md:left-[-2.75rem] md:top-auto md:w-32" />
       </div>
 
       {/* Hal: settles on the seam between the photo and the cream, never on a person. */}
-      <HalFlyIn className="pointer-events-none absolute right-[2%] top-[calc(50svh-64px)] z-20 w-[30vw] max-w-[140px] md:left-[calc(46%-130px)] md:right-auto md:top-[13%] md:w-[13vw] md:max-w-[210px]" />
+      <HalFlyIn className="pointer-events-none absolute right-[2%] top-[calc(58svh-80px)] z-20 w-[30vw] max-w-[140px] md:left-[calc(46%-130px)] md:right-auto md:top-[13%] md:w-[13vw] md:max-w-[210px]" />
 
       {/* The title block: flat cream, like the page of a 1967 magazine ad. */}
       <div className="relative z-10 flex flex-col justify-center px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-8 sm:px-8 md:order-1 md:px-12 md:pb-16 md:pt-28 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-14">
@@ -175,20 +176,26 @@ export function CinematicHero() {
 
         {SLIDES.map((s, i) => (
           <div key={s.key} className={i === active ? "" : "hidden"}>
-            <motion.h1
-              key={`${s.key}-h1-${active}`}
-              {...rise(0.08)}
-              className="text-[clamp(2.7rem,10.5vw,5.4rem)] leading-[0.95] text-brand-black [text-wrap:balance] md:text-[clamp(3rem,5.4vw,5.6rem)]"
-            >
-              {s.headline} <span className="text-[#2E9BC6]">{s.accent}</span>
-            </motion.h1>
+            {(() => {
+              // one h1 on the page: the other slide's headline is a plain paragraph
+              const H = i === active ? motion.h1 : motion.p;
+              return (
+                <H
+                  key={`${s.key}-h1-${active}`}
+                  {...rise(0.08)}
+                  className="font-title text-[clamp(2.6rem,10vw,5.2rem)] leading-[1] text-brand-black [text-shadow:0.055em_0.055em_0_#62C4EB] [text-wrap:balance] md:text-[clamp(2.9rem,5.2vw,5.4rem)]"
+                >
+                  {s.headline} <span className="title-accent text-[#2E9BC6]">{s.accent}</span>
+                </H>
+              );
+            })()}
 
             <motion.p key={`${s.key}-body-${active}`} {...rise(0.16)} className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-[#3B4650] md:text-lg">
               {s.body}
             </motion.p>
 
             <motion.div key={`${s.key}-cta-${active}`} {...rise(0.24)} className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <RetroButton href={s.cta.href} signature>
+              <RetroButton href={s.cta.href} tone="sun" signature>
                 {s.cta.label}
               </RetroButton>
               <a
