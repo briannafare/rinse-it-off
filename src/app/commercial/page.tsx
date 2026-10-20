@@ -168,7 +168,7 @@ export default function CommercialPage() {
                 <Droplets className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#62C4EB]" aria-hidden />
                 <p className="text-sm leading-relaxed text-[#4B5C6B]">
                   <span className="font-semibold text-[#0C1215]">
-                    About 164 rainy days a year in Portland
+                    About 157 days of rain a year in Portland
                   </span>{" "}
                   keep moss, algae and grime coming back. The audit is where we map what your property
                   needs to stay ahead of it &mdash; at no charge.

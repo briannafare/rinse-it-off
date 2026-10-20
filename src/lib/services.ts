@@ -6,7 +6,7 @@
  *
  *  Claims are locked: free 21-point property audit → firm itemized quote the
  *  same day we walk your property; Clean Water Promise = re-rinse free within
- *  48 hours; ~164 rainy days/yr; Insured (no license number); NO pricing,
+ *  48 hours; ~157 days with measurable rain/yr (NOAA 1991-2020, PDX); Insured (no license number); NO pricing,
  *  NO reviews. Serves BOTH residential and commercial. */
 import { METHODS, type Method } from "@/lib/methods";
 import type { FAQItem } from "@/lib/faqs";
@@ -29,7 +29,7 @@ const EXTRA: Record<string, Omit<Service, keyof Method>> = {
     intro:
       "The roof is the most expensive surface on the property and the easiest to ruin with the wrong approach — high pressure strips the protective granules off asphalt shingles. We soft wash instead: a low-pressure application of biodegradable cleaners that kill moss, algae and mildew at the root, then rinse clean. Home or commercial building, the roof reads the same to us — assess first, match the chemistry, never blast.",
     whenYouNeedIt:
-      "Black streaks down the slope, green moss cushions along the shingle seams, or a north-facing pitch that never seems to dry out. With around 164 rainy days a year in the Portland metro, roof moss isn't an if but a when — and staying ahead of it protects the roof from real, expensive damage.",
+      "Black streaks down the slope, green moss cushions along the shingle seams, or a north-facing pitch that never seems to dry out. With measurable rain on about 157 days a year in Portland, roof moss isn't an if but a when — and staying ahead of it protects the roof from real, expensive damage.",
     bullets: [
       "Low-pressure soft wash that kills moss and algae at the root — no granule loss, no cracked shingles",
       "Safe for asphalt shingle, composite and low-slope commercial roofing",

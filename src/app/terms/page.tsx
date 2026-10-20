@@ -117,7 +117,7 @@ export default function TermsPage() {
                   Scheduling &amp; the Portland weather
                 </h2>
                 <p className="mt-3 text-base leading-relaxed text-[#4B5C6B]">
-                  Portland sees around 164 rainy days a year, and that&apos;s okay — most of
+                  Portland gets measurable rain on about 157 days a year, and that&apos;s okay — most of
                   our methods work just fine in the rain, and a fresh rinse isn&apos;t undone
                   by a little weather. If conditions ever genuinely affect the work,
                   we&apos;ll talk it through and reschedule at no penalty.

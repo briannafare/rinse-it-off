@@ -26,7 +26,7 @@ const STEPS = [
   {
     num: "03",
     title: "We Show Up & Deliver",
-    desc: "On time, every time. Your property looks like new when we leave, and we set up a maintenance schedule so it stays that way through Portland's 164 days of rain.",
+    desc: "On time, every time. Your property looks like new when we leave, and we set up a maintenance schedule so it stays that way through Portland's 157 or so days of rain.",
     icon: <Sparkles className="w-6 h-6" />,
     detail: "On-time arrival • Full cleanup • Maintenance plan",
     color: "bg-brand-lime",

@@ -60,7 +60,7 @@ const OPENERS = [
   (n: string) => `In ${n}, the same Northwest weather that keeps everything green also keeps a slow film of moss and algae creeping across roofs, siding, walkways, and concrete.`,
   (n: string) => `Exterior surfaces around ${n} take a beating from Portland's damp climate — north-facing walls, shaded walkways, and shingle roofs all grow the same green haze.`,
   (n: string) => `Across ${n}, the wet season does its quiet damage: black streaks down the roof, a slick green layer on the driveway, and grime settling into the siding.`,
-  (n: string) => `With Portland averaging about 164 rainy days a year, ${n} gets plenty of the steady moisture that moss, algae, and mildew need to take hold.`,
+  (n: string) => `With Portland getting measurable rain on about 157 days a year, ${n} gets plenty of the steady moisture that moss, algae, and mildew need to take hold.`,
 ] as const;
 
 const METHOD_LINES = [
@@ -97,7 +97,8 @@ type IntroCopy = { hero: string; paragraphs: string[] };
 
 function buildIntro(area: Area): IntroCopy {
   const seed = hashSlug(area.slug);
-  // The "164 rainy days" opener (last in OPENERS) contradicts the sourced
+  // The "157 days" opener (last in OPENERS, NOAA 1991-2020 normals for Portland
+  // airport) would contradict the sourced
   // rain-day counts on pages that state their own, so those pages skip it.
   const openers = getAreaFacts(area.slug).some((f) => /\bdays\b/.test(f.text)) ? OPENERS.slice(0, -1) : OPENERS;
   const near = joinNames(getNearbyAreas(area).slice(0, 3).map((a) => a.name));

@@ -8,7 +8,7 @@ type Stat =
   | { text: string; label: string; note: string };
 
 const STATS: Stat[] = [
-  { value: 164, suffix: "", label: "days of rain a year in Portland", note: "Moss never takes a season off." },
+  { value: 157, suffix: "", label: "days with rain a year in Portland", note: "Moss never takes a season off." },
   { value: 48, suffix: "hr", label: "re-rinse guarantee", note: "Anything you're not happy with, redone free." },
   { value: 21, suffix: "-pt", label: "free property audit", note: "Photo-documented, board-ready." },
   { text: "same-day", label: "quote", note: "A firm number the day we walk your property." },
@@ -20,7 +20,7 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
   const reduced = useReducedMotion();
   // ponytail: null means "not counting" and renders the real number. The roll-up is
   // an enhancement — when the observer never fires (iOS Safari did exactly this) the
-  // stat still reads 164, never a false 0. Same reason the server HTML is correct.
+  // stat still reads 157, never a false 0. Same reason the server HTML is correct.
   const [n, setN] = useState<number | null>(null);
   // Only roll up from 0 for a stat the visitor scrolls down to. If it was already
   // on screen at mount, the final number is the honest thing to show.
