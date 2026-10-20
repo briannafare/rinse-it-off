@@ -41,7 +41,7 @@ export function Promise() {
         <div className="flex items-center gap-4">
           <Droplets className="h-9 w-9 shrink-0 text-[#2F6B66]" aria-hidden />
           <h2
-            className="text-3xl font-medium text-[#26211B] md:text-4xl"
+            className="text-3xl font-medium text-[#102E32] md:text-4xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
             No surprises, no padding, no fine print.
@@ -58,12 +58,12 @@ export function Promise() {
                 <p.icon className="h-6 w-6 text-[#2F6B66]" aria-hidden />
               </div>
               <h3
-                className="mt-5 text-lg font-medium text-[#26211B]"
+                className="mt-5 text-lg font-medium text-[#102E32]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {p.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#4A4238]">{p.body}</p>
+              <p className="mt-2 text-sm leading-relaxed text-[#3E5A5D]">{p.body}</p>
             </div>
           ))}
         </div>

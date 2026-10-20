@@ -28,7 +28,7 @@ export default function PrivacyPage() {
       <Navbar />
       <main>
         {/* Dark band = punctuation; the body below is light clean-water. */}
-        <section className="relative overflow-hidden bg-[#26211B] pt-28 pb-14 md:pt-32 md:pb-20">
+        <section className="relative overflow-hidden bg-[#12433F] pt-28 pb-14 md:pt-32 md:pb-20">
           <div className="container-site">
             <p className="flex items-center gap-2 text-sm font-medium text-white/85">
               <span className="inline-block h-2 w-2 rounded-[3px] bg-[#2F6B66]" aria-hidden />
@@ -53,13 +53,13 @@ export default function PrivacyPage() {
               {/* Who we are */}
               <article>
                 <h2
-                  className="flex items-center gap-3 text-xl font-semibold text-[#26211B] md:text-2xl"
+                  className="flex items-center gap-3 text-xl font-semibold text-[#102E32] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   <ShieldCheck className="h-5 w-5 shrink-0 text-[#2F6B66]" aria-hidden />
                   Who we are
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4A4238]">
+                <p className="mt-3 text-base leading-relaxed text-[#3E5A5D]">
                   Rinse It Off (a DBA of Fresh Rinse, LLC) provides residential and commercial
                   exterior cleaning across the Portland, Oregon metro. This policy covers the
                   information we collect through rinseitoff.com, our free property assessment
@@ -71,13 +71,13 @@ export default function PrivacyPage() {
               {/* What we collect */}
               <article>
                 <h2
-                  className="flex items-center gap-3 text-xl font-semibold text-[#26211B] md:text-2xl"
+                  className="flex items-center gap-3 text-xl font-semibold text-[#102E32] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   <Database className="h-5 w-5 shrink-0 text-[#2F6B66]" aria-hidden />
                   What we collect
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4A4238]">
+                <p className="mt-3 text-base leading-relaxed text-[#3E5A5D]">
                   When you request a free assessment or reach out, we collect your name, phone
                   number, email address, and property address, plus anything you tell us about
                   the job (surfaces, access notes, photos you send). If you book a walkthrough,
@@ -88,13 +88,13 @@ export default function PrivacyPage() {
               {/* Texting & calls — the section carriers actually check */}
               <article>
                 <h2
-                  className="flex items-center gap-3 text-xl font-semibold text-[#26211B] md:text-2xl"
+                  className="flex items-center gap-3 text-xl font-semibold text-[#102E32] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   <MessageSquare className="h-5 w-5 shrink-0 text-[#2F6B66]" aria-hidden />
                   Calls &amp; text messages
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4A4238]">
+                <p className="mt-3 text-base leading-relaxed text-[#3E5A5D]">
                   If you give us your phone number through our website, over the phone, or in
                   person, we may call or text you about your quote, appointment, or service —
                   things like confirming a walkthrough time, sending your written estimate, or
@@ -102,7 +102,7 @@ export default function PrivacyPage() {
                   apply. Reply <strong>STOP</strong> at any time to opt out, or{" "}
                   <strong>HELP</strong> for help.
                 </p>
-                <p className="mt-3 text-base leading-relaxed text-[#4A4238]">
+                <p className="mt-3 text-base leading-relaxed text-[#3E5A5D]">
                   <strong>
                     Your mobile phone number and messaging opt-in are never shared, sold, or
                     rented to third parties or affiliates for their marketing or promotional
@@ -115,13 +115,13 @@ export default function PrivacyPage() {
               {/* How we use it */}
               <article>
                 <h2
-                  className="flex items-center gap-3 text-xl font-semibold text-[#26211B] md:text-2xl"
+                  className="flex items-center gap-3 text-xl font-semibold text-[#102E32] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   <UserCheck className="h-5 w-5 shrink-0 text-[#2F6B66]" aria-hidden />
                   How we use your information
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4A4238]">
+                <p className="mt-3 text-base leading-relaxed text-[#3E5A5D]">
                   We use your information to schedule your free assessment, prepare and send
                   your quote, coordinate the job, process payment, and follow up afterward
                   (service reminders, review requests). We don&apos;t sell your information, and
@@ -133,13 +133,13 @@ export default function PrivacyPage() {
               {/* Service providers */}
               <article>
                 <h2
-                  className="flex items-center gap-3 text-xl font-semibold text-[#26211B] md:text-2xl"
+                  className="flex items-center gap-3 text-xl font-semibold text-[#102E32] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   <Cookie className="h-5 w-5 shrink-0 text-[#2F6B66]" aria-hidden />
                   Tools we use to run the business
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4A4238]">
+                <p className="mt-3 text-base leading-relaxed text-[#3E5A5D]">
                   We use standard business software — a CRM to track your job and send
                   scheduling texts/emails, payment processing to run your card or deposit, and
                   basic website analytics. These providers can see your information only to the
@@ -151,12 +151,12 @@ export default function PrivacyPage() {
               {/* Your choices */}
               <article className="rounded-[4px] bg-retro-pool p-6 ring-1 ring-retro-line md:p-8">
                 <h2
-                  className="text-xl font-semibold text-[#26211B] md:text-2xl"
+                  className="text-xl font-semibold text-[#102E32] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Your choices
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4A4238]">
+                <p className="mt-3 text-base leading-relaxed text-[#3E5A5D]">
                   Reply <strong>STOP</strong> to any text from us to stop receiving texts, or{" "}
                   <strong>HELP</strong> for assistance. To update or remove your information
                   entirely, just call or email us — we&apos;ll take care of it directly, no
@@ -165,7 +165,7 @@ export default function PrivacyPage() {
                 <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
                   <a
                     href={PHONE_TEL}
-                    className="inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-semibold text-[#26211B] hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#EDE2CB]"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-semibold text-[#102E32] hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF]"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     <Phone className="h-4 w-4 text-[#2F6B66]" aria-hidden />
@@ -173,7 +173,7 @@ export default function PrivacyPage() {
                   </a>
                   <a
                     href="mailto:hello@rinseitoff.com"
-                    className="inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-semibold text-[#26211B] hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#EDE2CB]"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-semibold text-[#102E32] hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF]"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     <Mail className="h-4 w-4 text-[#2F6B66]" aria-hidden />
@@ -183,7 +183,7 @@ export default function PrivacyPage() {
               </article>
 
               <article>
-                <p className="text-sm leading-relaxed text-[#8A8072]">
+                <p className="text-sm leading-relaxed text-[#7D9194]">
                   We may update this policy from time to time; the version posted here is the
                   one in effect. See also our{" "}
                   <a href="/terms" className="font-semibold text-[#2F6B66] underline">

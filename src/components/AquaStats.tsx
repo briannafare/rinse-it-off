@@ -50,28 +50,28 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
   return (
     <span ref={ref} className="tabular-nums">
       {n ?? target}
-      <span className="text-[#E4A33C]">{suffix}</span>
+      <span className="text-[#A51E53]">{suffix}</span>
     </span>
   );
 }
 
 export function AquaStats() {
   return (
-    <section className="relative overflow-hidden bg-[#26211B] py-14 text-center md:py-20">
-      {/* set like the closing credits of a film: white on ink, centered */}
+    <section className="relative overflow-hidden bg-[#F9D8E6] py-14 text-center md:py-20">
+      {/* set like the closing credits of a film, on the pink tint: magenta-deep figures, ink notes */}
 
       <div className="container-site relative grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
         {STATS.map((s) => (
           <div key={s.label}>
-            <div className="font-title text-5xl font-bold text-white md:text-6xl">
+            <div className="font-title text-5xl font-bold text-[#A51E53] md:text-6xl">
               {"text" in s ? (
                 <span className="tabular-nums">{s.text}</span>
               ) : (
                 <CountUp target={s.value} suffix={s.suffix} />
               )}
             </div>
-            <p className="label-caps mt-3 text-retro-sun">{s.label}</p>
-            <p className="mx-auto mt-2 max-w-[22ch] text-sm text-white/70">{s.note}</p>
+            <p className="label-caps mt-3 text-[#102E32]">{s.label}</p>
+            <p className="mx-auto mt-2 max-w-[22ch] text-sm text-[#102E32]">{s.note}</p>
           </div>
         ))}
       </div>

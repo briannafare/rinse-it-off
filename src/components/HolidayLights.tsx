@@ -15,11 +15,11 @@ const INCLUDED = [
   "Trees, wreaths and extras if you want them",
 ];
 
-const BULBS = ["#E4A33C", "#E4A33C", "#E4A33C", "#E4A33C"]; // one accent colour per detail
+const BULBS = ["#62C4EB", "#D6336C", "#62C4EB", "#D6336C"]; // sky and magenta bulbs
 
 export function HolidayLights() {
   return (
-    <section id="holiday" className="relative scroll-mt-28 overflow-hidden bg-[#26211B] text-white">
+    <section id="holiday" className="relative scroll-mt-28 overflow-hidden bg-[#12433F] text-white">
       {/* a string of bulbs along the top edge */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-10">
         <svg viewBox="0 0 1200 40" preserveAspectRatio="none" className="absolute inset-x-0 top-0 h-10 w-full">
@@ -37,7 +37,7 @@ export function HolidayLights() {
       </div>
 
       <div className="container-site grid gap-8 pb-16 pt-20 md:grid-cols-[1.05fr_1fr] md:items-center md:gap-14 md:pb-24 md:pt-24">
-        <div className="frame frame-light film-grain relative aspect-[3/2] overflow-hidden md:order-2">
+        <div className="mat film-grain relative aspect-[3/2] overflow-hidden md:order-2">
           <Image
             src="/brand/retro/holiday-install.webp"
             alt="Two Rinse It Off crew members adding the last strand of big colored bulbs to a mid-century house covered in holiday lights, light-up carolers in the yard and a family watching from the lawn"

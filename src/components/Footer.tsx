@@ -51,11 +51,7 @@ export function Footer() {
   return (
     <footer className="relative z-10 overflow-hidden bg-brand-dark pb-16 text-white md:pb-0">
       {/* The livery stripe, once, along the top edge */}
-      <div className="flex h-1.5 w-full" aria-hidden>
-        <span className="flex-1 bg-retro-bloom" />
-        <span className="flex-1 bg-brand-blue" />
-        <span className="flex-1 bg-retro-sun" />
-      </div>
+      <div className="h-1.5 w-full bg-[#D6336C]" aria-hidden />
       <div className="container-site pt-16 md:pt-20 pb-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
           {/* Brand */}
@@ -143,7 +139,7 @@ export function Footer() {
             </p>
             <a
               href="/assessment"
-              className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+              className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#12433F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
             >
               Free Assessment
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" />

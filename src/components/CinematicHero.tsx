@@ -124,7 +124,7 @@ export function CinematicHero() {
     <section className="relative w-full overflow-hidden bg-retro-pool md:grid md:min-h-[100svh] md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
       {/* The photograph, set like a print: rounded corners and an ink outline, inset on the cream. */}
       <div className="relative h-[58svh] min-h-[380px] px-3 pb-3 pt-[76px] md:order-2 md:h-auto md:min-h-0 md:py-5 md:pl-0 md:pr-5 md:pt-[92px]">
-      <div className="frame film-grain relative h-full overflow-hidden">
+      <div className="mat film-grain relative h-full overflow-hidden">
         {SLIDES.map((s, i) => (
           <div
             key={s.key}
@@ -157,7 +157,7 @@ export function CinematicHero() {
               <span
                 className={[
                   "label-caps !tracking-[0.14em] transition-colors duration-300 motion-reduce:transition-none",
-                  i === active ? "text-brand-black" : "text-brand-black/45 group-hover:text-brand-black/75",
+                  i === active ? "text-[#2F6B66]" : "text-[#5A7275] group-hover:text-[#102E32]",
                 ].join(" ")}
               >
                 {s.tab}
@@ -185,12 +185,12 @@ export function CinematicHero() {
                   {...rise(0.08)}
                   className="font-title text-[clamp(2.6rem,10vw,5.2rem)] leading-[1] text-brand-black [text-wrap:balance] md:text-[clamp(2.9rem,5.2vw,5.4rem)]"
                 >
-                  {s.headline} <span className="title-accent text-[#2F6B66]">{s.accent}</span>
+                  {s.headline} <span className="offer-accent">{s.accent}</span>
                 </H>
               );
             })()}
 
-            <motion.p key={`${s.key}-body-${active}`} {...rise(0.16)} className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-[#4A4238] md:text-lg">
+            <motion.p key={`${s.key}-body-${active}`} {...rise(0.16)} className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-[#3E5A5D] md:text-lg">
               {s.body}
             </motion.p>
 

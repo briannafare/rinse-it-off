@@ -44,7 +44,7 @@ export function WorkGallery() {
   }, []);
 
   return (
-    <section id="work" className="bg-[#26211B] py-16 text-white md:py-24">
+    <section id="work" className="bg-[#12433F] py-16 text-white md:py-24">
       <div className="container-site flex items-end justify-between gap-6">
         <header className="max-w-2xl">
           <h2

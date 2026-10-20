@@ -52,8 +52,8 @@ function FilterLink({
       aria-current={active ? "page" : undefined}
       className={`inline-flex min-h-11 shrink-0 items-center rounded-lg px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 ${
         active
-          ? "bg-[#26211B] text-white"
-          : "bg-white text-[#4A4238] ring-1 ring-retro-line hover:text-[#26211B] hover:ring-[#2F6B66]/50"
+          ? "bg-[#12433F] text-white"
+          : "bg-white text-[#3E5A5D] ring-1 ring-retro-line hover:text-[#102E32] hover:ring-[#2F6B66]/50"
       }`}
       style={display}
     >
@@ -90,7 +90,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
   return (
     <>
       {/* Hero — dark image band, same construction as /areas */}
-      <section className="relative w-full overflow-hidden bg-[#26211B]">
+      <section className="relative w-full overflow-hidden bg-[#12433F]">
         <Image
           src="/brand/photos/work/lot-steam-wide.webp"
           alt="A Rinse It Off technician running a surface cleaner across a wet parking lot on an overcast day, steam rising"
@@ -154,13 +154,13 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
                       <p className="mb-3 text-sm font-medium text-[#2F6B66]">{featured.categoryLabel}</p>
                     ) : null}
                     <h2
-                      className="mb-4 text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.08] tracking-[-0.02em] text-[#26211B]"
+                      className="mb-4 text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.08] tracking-[-0.02em] text-[#102E32]"
                       style={{ ...display, fontWeight: 600 }}
                     >
                       {featured.title}
                     </h2>
-                    <p className="mb-6 max-w-xl text-lg leading-relaxed text-[#4A4238]">{featured.excerpt}</p>
-                    <span className="inline-flex items-center gap-2 font-semibold text-[#26211B]" style={display}>
+                    <p className="mb-6 max-w-xl text-lg leading-relaxed text-[#3E5A5D]">{featured.excerpt}</p>
+                    <span className="inline-flex items-center gap-2 font-semibold text-[#102E32]" style={display}>
                       Read it
                       <ArrowRight className="h-4 w-4 text-[#2F6B66] transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" aria-hidden />
                     </span>
@@ -180,9 +180,9 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
                   ))}
                 </ul>
               ) : activeCategory ? (
-                <p className="text-lg text-[#4A4238]">
+                <p className="text-lg text-[#3E5A5D]">
                   Nothing in this category yet.{" "}
-                  <Link href="/blog" className="text-[#26211B] underline decoration-[#2F6B66] decoration-2 underline-offset-[3px]">
+                  <Link href="/blog" className="text-[#102E32] underline decoration-[#2F6B66] decoration-2 underline-offset-[3px]">
                     See every article
                   </Link>
                   .
@@ -197,12 +197,12 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
-                className="text-[clamp(1.7rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-[#26211B]"
+                className="text-[clamp(1.7rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-[#102E32]"
                 style={{ ...display, fontWeight: 600 }}
               >
                 The first articles are being written now.
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-[#4A4238]">
+              <p className="mt-4 text-lg leading-relaxed text-[#3E5A5D]">
                 They&rsquo;ll cover three topics. If you have a question you&rsquo;d like us to
                 answer first, call or text us and it goes to the top of the list.
               </p>
@@ -210,17 +210,17 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
             <ul className="mt-10 grid gap-4 md:grid-cols-3">
               {categories.map((c) => (
                 <li key={c._id} className="rounded-[4px] bg-white p-6 ring-1 ring-retro-line md:p-7">
-                  <p className="mb-2 text-xl text-[#26211B]" style={{ ...display, fontWeight: 600 }}>
+                  <p className="mb-2 text-xl text-[#102E32]" style={{ ...display, fontWeight: 600 }}>
                     {c.title}
                   </p>
-                  {c.description ? <p className="leading-relaxed text-[#4A4238]">{c.description}</p> : null}
+                  {c.description ? <p className="leading-relaxed text-[#3E5A5D]">{c.description}</p> : null}
                 </li>
               ))}
             </ul>
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
               <a
                 href={PHONE_TEL}
-                className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#EDE2CB]"
+                className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 font-semibold text-white transition-colors hover:bg-[#12433F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF]"
                 style={display}
               >
                 <Phone className="h-4 w-4" aria-hidden />
@@ -228,7 +228,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
               </a>
               <Link
                 href="/services"
-                className="inline-flex min-h-11 items-center gap-2 rounded-lg px-1 font-semibold text-[#26211B] hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66]"
+                className="inline-flex min-h-11 items-center gap-2 rounded-lg px-1 font-semibold text-[#102E32] hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66]"
                 style={display}
               >
                 See what we clean

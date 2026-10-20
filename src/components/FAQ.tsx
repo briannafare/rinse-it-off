@@ -23,7 +23,7 @@ export function FAQ() {
             </p>
             <a
               href="tel:+19716264146"
-              className="inline-flex min-h-11 items-center rounded-lg text-sm font-semibold text-text-primary hover:text-text-secondary transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#EDE2CB]"
+              className="inline-flex min-h-11 items-center rounded-lg text-sm font-semibold text-text-primary hover:text-text-secondary transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF]"
             >
               (971) 626-4146 →
             </a>

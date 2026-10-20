@@ -33,7 +33,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <CinematicHero />
-      <TitleCard chapter="Chapter one" title="The Yearly Plan" tone="blue" />
+      <TitleCard chapter="Chapter one" title="The Yearly Plan" tone="tealtint" />
       <PlanSection />
       <AquaStats />
       <HolidayLights />
@@ -41,7 +41,7 @@ export default function HomePage() {
       <TitleCard chapter="Chapter two" title="How We Clean" />
       <Methods />
       <ProcessSection />
-      <TitleCard chapter="Chapter three" title="Real Jobs" />
+      <TitleCard chapter="Chapter three" title="Real Jobs" tone="sky" />
       <BeforeAfter />
       <WorkGallery />
       <PromiseSection />

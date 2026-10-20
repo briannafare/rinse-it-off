@@ -116,7 +116,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
 
       {/* ── Hero: the photograph beside a flat cream title block (late-60s layer) ── */}
       <section className="w-full overflow-hidden bg-retro-pool pt-16 md:grid md:min-h-[78svh] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:pt-[72px]">
-        <div className="frame film-grain relative m-3 h-[42svh] min-h-[280px] overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5 md:h-auto">
+        <div className="mat film-grain relative m-3 h-[42svh] min-h-[280px] overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5 md:h-auto">
           <Image src={service.img} alt={service.alt} fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-cover object-center" />
         </div>
         <div className="flex flex-col justify-center px-5 pb-14 pt-8 sm:px-8 md:order-1 md:px-12 md:py-16 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))]">
@@ -128,7 +128,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             <span className="text-[#2F6B66]">{service.method}</span>
           </p>
           <h1 className="text-[clamp(2.5rem,8vw,4.6rem)] leading-[0.95] text-brand-black [text-wrap:balance]">{service.h1}</h1>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#4A4238]">{service.what}</p>
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#3E5A5D]">{service.what}</p>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
             <RetroButton href="/assessment" signature>Get your free assessment</RetroButton>
             <a href={PHONE_TEL} className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-base font-semibold text-brand-black hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66]">
@@ -145,23 +145,23 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
         <div className="container-site grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
             <h2
-              className="mt-3 text-[clamp(1.8rem,4vw,2.75rem)] leading-[1.05] tracking-[-0.02em] text-[#26211B]"
+              className="mt-3 text-[clamp(1.8rem,4vw,2.75rem)] leading-[1.05] tracking-[-0.02em] text-[#102E32]"
               style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
             >
               How we clean {service.surface.toLowerCase()}
             </h2>
-            <p className="mt-5 text-lg leading-relaxed text-[#4A4238]">{service.intro}</p>
+            <p className="mt-5 text-lg leading-relaxed text-[#3E5A5D]">{service.intro}</p>
 
             {/* When you need it */}
-            <div className="mt-8 rounded-[4px] border border-retro-line bg-[#E3ECE6] p-6">
+            <div className="mt-8 rounded-[4px] border border-retro-line bg-[#D7EFE9] p-6">
               <h3
-                className="flex items-center gap-2 text-base font-semibold text-[#26211B]"
+                className="flex items-center gap-2 text-base font-semibold text-[#102E32]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 <Droplets className="h-4 w-4 text-[#2F6B66]" aria-hidden />
                 When you need it
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#4A4238]">{service.whenYouNeedIt}</p>
+              <p className="mt-2 text-sm leading-relaxed text-[#3E5A5D]">{service.whenYouNeedIt}</p>
             </div>
           </div>
 
@@ -169,7 +169,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           <div className="lg:pt-2">
             <div className="rounded-[4px] border border-retro-line bg-retro-paper p-6 md:p-8">
               <h3
-                className="text-lg font-semibold text-[#26211B]"
+                className="text-lg font-semibold text-[#102E32]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 What this covers
@@ -178,20 +178,20 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                 {service.bullets.map((b) => (
                   <li key={b} className="flex items-start gap-3">
                     <span className="mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-lg bg-[#2F6B66]">
-                      <Check className="h-3.5 w-3.5 text-[#26211B]" strokeWidth={3} aria-hidden />
+                      <Check className="h-3.5 w-3.5 text-[#102E32]" strokeWidth={3} aria-hidden />
                     </span>
-                    <span className="text-sm leading-relaxed text-[#4A4238]">{b}</span>
+                    <span className="text-sm leading-relaxed text-[#3E5A5D]">{b}</span>
                   </li>
                 ))}
               </ul>
               <div className="mt-7 border-t border-retro-line pt-6">
-                <p className="text-sm leading-relaxed text-[#4A4238]">
+                <p className="text-sm leading-relaxed text-[#3E5A5D]">
                   Every job starts with a free 21-point property audit — we walk the property and
                   hand you a firm, itemized quote the same day, no guesswork.
                 </p>
                 <Link
                   href="/assessment"
-                  className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#26211B] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#3A332A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5EDDC] motion-reduce:transition-none"
+                  className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#12433F] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#12433F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F8FAF6] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Book your free audit
@@ -209,19 +209,19 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           <div className="rounded-[4px] border border-retro-line bg-white p-6 md:p-8">
             <Droplets className="h-6 w-6 text-[#2F6B66]" aria-hidden />
             <h2
-              className="mt-4 text-xl font-semibold text-[#26211B]"
+              className="mt-4 text-xl font-semibold text-[#102E32]"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Real work, real lines
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-[#4A4238]">
+            <p className="mt-2 text-sm leading-relaxed text-[#3E5A5D]">
               The before-and-after photos in our proof section are real jobs, with
               the before and after in the same frame. The line where the surface changes is where
               we stopped.
             </p>
             <Link
               href="/#proof"
-              className="mt-5 inline-flex min-h-11 items-center gap-1.5 rounded-lg text-sm font-semibold text-[#26211B] transition-colors hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+              className="mt-5 inline-flex min-h-11 items-center gap-1.5 rounded-lg text-sm font-semibold text-[#102E32] transition-colors hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
             >
               See the proof
               <ArrowRight className="h-4 w-4" aria-hidden />
@@ -231,17 +231,17 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           <div className="rounded-[4px] border border-retro-line bg-white p-6 md:p-8">
             <ShieldCheck className="h-6 w-6 text-[#2F6B66]" aria-hidden />
             <h2
-              className="mt-4 text-xl font-semibold text-[#26211B]"
+              className="mt-4 text-xl font-semibold text-[#102E32]"
               style={{ fontFamily: "var(--font-display)" }}
             >
               The Clean Water Promise
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-[#4A4238]">
+            <p className="mt-2 text-sm leading-relaxed text-[#3E5A5D]">
               If there&apos;s any spot you&apos;re not happy with, we re-rinse it free within 48
               hours. No debate, no fine print — we&apos;d rather come back and make it right than
               leave you looking at a streak.
             </p>
-            <p className="mt-4 text-sm font-medium text-[#26211B]">Insured · Portland metro</p>
+            <p className="mt-4 text-sm font-medium text-[#102E32]">Insured · Portland metro</p>
           </div>
         </div>
       </section>
@@ -251,17 +251,17 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
         <div className="container-site grid gap-12 lg:grid-cols-5 lg:gap-16">
           <div className="lg:col-span-2">
             <h2
-              className="mt-3 text-[clamp(1.7rem,3.5vw,2.5rem)] leading-[1.05] tracking-[-0.02em] text-[#26211B]"
+              className="mt-3 text-[clamp(1.7rem,3.5vw,2.5rem)] leading-[1.05] tracking-[-0.02em] text-[#102E32]"
               style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
             >
               About {service.surface.toLowerCase()}
             </h2>
-            <p className="mt-4 text-[#4A4238]">
+            <p className="mt-4 text-[#3E5A5D]">
               Straight answers on how we approach this surface. Anything we didn&apos;t cover?
             </p>
             <a
               href={PHONE_TEL}
-              className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-semibold text-[#26211B] transition-colors hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+              className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-semibold text-[#102E32] transition-colors hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
             >
               <Phone className="h-4 w-4 text-[#2F6B66]" aria-hidden />
               {PHONE_DISPLAY}
@@ -274,7 +274,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                     <li key={r.path}>
                       <Link
                         href={r.path}
-                        className="text-sm font-semibold text-[#26211B] underline decoration-[#2F6B66] decoration-2 underline-offset-[3px] transition-colors hover:text-[#2F6B66]"
+                        className="text-sm font-semibold text-[#102E32] underline decoration-[#2F6B66] decoration-2 underline-offset-[3px] transition-colors hover:text-[#2F6B66]"
                       >
                         {r.h1}
                       </Link>
@@ -294,7 +294,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
       <section className="bg-retro-pool py-16 md:py-24">
         <div className="container-site">
           <h2
-            className="text-[clamp(1.6rem,3vw,2.25rem)] leading-[1.05] tracking-[-0.02em] text-[#26211B]"
+            className="text-[clamp(1.6rem,3vw,2.25rem)] leading-[1.05] tracking-[-0.02em] text-[#102E32]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
           >
             Explore the other methods
@@ -304,7 +304,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
               <Link
                 key={o.key}
                 href={`/services/${o.slug}`}
-                className="group flex items-center gap-4 rounded-[4px] bg-white p-3 ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#EDE2CB] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                className="group flex items-center gap-4 rounded-[4px] bg-white p-3 ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 <div className="relative h-16 w-20 flex-shrink-0 overflow-hidden rounded-xl">
                   <Image
@@ -316,9 +316,9 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                   />
                 </div>
                 <div className="min-w-0 flex-1 pr-2">
-                  <p className="text-xs font-semibold text-[#8A8072]">{o.method}</p>
+                  <p className="text-xs font-semibold text-[#7D9194]">{o.method}</p>
                   <p
-                    className="truncate text-sm font-semibold text-[#26211B]"
+                    className="truncate text-sm font-semibold text-[#102E32]"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     {o.surface}
@@ -330,7 +330,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           </div>
           <Link
             href="/services"
-            className="mt-8 inline-flex min-h-11 items-center gap-1.5 rounded-lg text-sm font-semibold text-[#26211B] transition-colors hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#EDE2CB] motion-reduce:transition-none"
+            className="mt-8 inline-flex min-h-11 items-center gap-1.5 rounded-lg text-sm font-semibold text-[#102E32] transition-colors hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none"
           >
             View all services
             <ArrowRight className="h-4 w-4" aria-hidden />
@@ -339,7 +339,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
       </section>
 
       {/* ── Final dual CTA ──────────────────────────────────────────── */}
-      <section className="bg-[#26211B] py-16 md:py-24">
+      <section className="bg-[#12433F] py-16 md:py-24">
         <div className="container-site">
           <h2
             className="max-w-2xl text-[clamp(1.9rem,4.5vw,3.25rem)] leading-[1.03] tracking-[-0.025em] text-white"
@@ -355,7 +355,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
               href="/assessment"
-              className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#26211B] motion-reduce:transition-none"
+              className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#12433F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32] motion-reduce:transition-none"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Get your free assessment
@@ -363,7 +363,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             </Link>
             <Link
               href="/assessment?type=residential"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#26211B] motion-reduce:transition-none"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32] motion-reduce:transition-none"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Get a home quote
@@ -373,7 +373,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             Managing a property or portfolio?{" "}
             <Link
               href="/assessment?type=commercial"
-              className="rounded font-semibold text-white underline decoration-[#2F6B66] decoration-2 underline-offset-4 transition-colors hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#26211B]"
+              className="rounded font-semibold text-white underline decoration-[#2F6B66] decoration-2 underline-offset-4 transition-colors hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32]"
             >
               Book a free commercial property audit
             </Link>

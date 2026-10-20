@@ -53,27 +53,27 @@ const DS = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --ink:          #26211B;
-    --ink-soft:     #26211B;
+    --ink:          #102E32;
+    --ink-soft:     #102E32;
     --blue:         #2F6B66;
-    --blue-wash:    #E3ECE6;
+    --blue-wash:    #D7EFE9;
     --surface:      #FFFFFF;
-    --surface-alt:  #EDE2CB;
-    --text-primary: #26211B;
-    --text-secondary:#4A4238;
-    --text-muted:   #8A8072;
-    --border:       #E2D6BF;
-    --border-light: #E2D6BF;
+    --surface-alt:  #FFFFFF;
+    --text-primary: #102E32;
+    --text-secondary:#3E5A5D;
+    --text-muted:   #7D9194;
+    --border:       #D4E0DC;
+    --border-light: #D4E0DC;
     --font-display: "neue-haas-grotesk-display", system-ui, -apple-system, sans-serif;
     --font-body:    "neue-haas-grotesk-text", system-ui, -apple-system, sans-serif;
     --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 24px; --r-2xl: 32px;
-    --shadow-soft: 0 2px 16px rgba(38,33,27,0.05);
-    --shadow-card-hover: 0 4px 12px rgba(38,33,27,0.06), 0 22px 50px rgba(38,33,27,0.09);
+    --shadow-soft: 0 2px 16px rgba(16,46,50,0.05);
+    --shadow-card-hover: 0 4px 12px rgba(16,46,50,0.06), 0 22px 50px rgba(16,46,50,0.09);
     --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
     --aura-water:
-      radial-gradient(120% 120% at 12% 10%, #E3ECE6 0%, transparent 55%),
+      radial-gradient(120% 120% at 12% 10%, #D7EFE9 0%, transparent 55%),
       radial-gradient(120% 120% at 88% 22%, #E9F6FC 0%, transparent 55%),
-      radial-gradient(140% 130% at 55% 100%, #E3ECE6 0%, transparent 60%);
+      radial-gradient(140% 130% at 55% 100%, #D7EFE9 0%, transparent 60%);
   }
 
   html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
@@ -99,11 +99,11 @@ const DS = `
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
     padding: 1rem 2rem; width: 100%; cursor: pointer; appearance: none; text-decoration: none;
     font-family: var(--font-label); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1;
-    color: #F5EDDC; background: #2F6B66; border: 2px solid #26211B; border-radius: 14px;
-    box-shadow: 4px 4px 0 #26211B; transition: transform .15s ease, box-shadow .15s ease;
+    color: #F8FAF6; background: #2F6B66; border: 2px solid #102E32; border-radius: 14px;
+    box-shadow: 4px 4px 0 #102E32; transition: transform .15s ease, box-shadow .15s ease;
   }
-  .btn-glass:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #26211B; }
-  .btn-glass:active { transform: translate(4px,4px); box-shadow: 0 0 0 #26211B; }
+  .btn-glass:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #102E32; }
+  .btn-glass:active { transform: translate(4px,4px); box-shadow: 0 0 0 #102E32; }
   .btn-glass:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   @media (prefers-reduced-motion: reduce) { .btn-glass, .btn-glass:hover { transform: none; transition: none; } }
 `;
@@ -223,7 +223,7 @@ export default function AssessmentPage() {
       </header>
 
       {/* Hero strip */}
-      <div style={{ background: "var(--aura-water)", backgroundColor: "var(--surface-alt, #EDE2CB)", padding: "40px 24px 36px" }}>
+      <div style={{ background: "var(--aura-water)", backgroundColor: "var(--surface-alt, #FFFFFF)", padding: "40px 24px 36px" }}>
         <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
           <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 12 }}>Portland, OR · Licensed &amp; Insured</div>
           <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(2rem, 6vw, 3rem)", color: "var(--ink)", letterSpacing: "-0.03em", lineHeight: 1.0, marginBottom: 16 }}>
@@ -434,7 +434,7 @@ export default function AssessmentPage() {
 
             {/* Submit — liquid glass CTA over the aura */}
             {propertyType && (
-              <div style={{ background: "var(--aura-water)", backgroundColor: "var(--blue-wash, #E3ECE6)", borderRadius: "var(--r-xl)", padding: "24px", marginTop: 8 }}>
+              <div style={{ background: "var(--aura-water)", backgroundColor: "var(--blue-wash, #D7EFE9)", borderRadius: "var(--r-xl)", padding: "24px", marginTop: 8 }}>
                 <button type="submit" disabled={sending || !form.name || !form.phone} className="btn-glass">
                   <span>{sending ? "Sending your request..." : apptLabel ? "Request My Free Assessment" : "Request My Free Assessment"}</span>
                   {!sending && (

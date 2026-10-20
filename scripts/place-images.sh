@@ -1,8 +1,8 @@
 #!/bin/sh
-# Grade the round-14 art and every real job photo with the one print grade, into public/.
+# Grade the round-15 art and every real job photo with the one print grade, into public/.
 # Real photos are graded from their git originals (main), so re-running never double-grades.
 set -e
-R="../../design-system/retro/round14"; G="python3 scripts/print-grade.py"; D=public/brand/retro
+R="../../design-system/retro/round15"; G="python3 scripts/print-grade.py"; D=public/brand/retro
 for f in hero-home hero-biz com-hero com-apartments final-truck siding deck patio driveway; do $G $R/$f.png $D/$f.webp 2000; done
 $G $R/holiday.png $D/holiday-install.webp 2000
 $G $R/glass-detail.png $D/glass-detail.webp 1600

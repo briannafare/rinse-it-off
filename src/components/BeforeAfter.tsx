@@ -33,9 +33,9 @@ export function BeforeAfter() {
   const y = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? ["0%", "0%"] : ["-12%", "12%"]);
 
   return (
-    <section id="proof" className="bg-retro-pool pb-16 md:pb-24">
+    <section id="proof" className="bg-[#E6F5FC] pb-16 md:pb-24">
       {/* full-bleed parallax band */}
-      <div ref={bandRef} className="frame relative mx-3 h-[52vh] min-h-[380px] overflow-hidden md:mx-5">
+      <div ref={bandRef} className="mat relative mx-3 h-[52vh] min-h-[380px] overflow-hidden md:mx-5">
         <motion.div className="absolute -inset-y-[14%] inset-x-0" style={{ y }}>
           <Image
             src="/brand/photos/curb-dramatic.webp"
@@ -60,12 +60,12 @@ export function BeforeAfter() {
 
       <div className="container-site mt-14 md:mt-20">
         <h2
-          className="max-w-2xl text-3xl font-medium text-[#26211B] md:text-4xl"
+          className="max-w-2xl text-3xl font-medium text-[#102E32] md:text-4xl"
           style={{ fontFamily: "var(--font-display)" }}
         >
           The moment dirt lets go.
         </h2>
-        <p className="mt-3 max-w-xl text-[#4A4238]">
+        <p className="mt-3 max-w-xl text-[#3E5A5D]">
           No staging and no stock photos. Each of these is a real job of ours,
           shot mid-pass, so the before and the after sit in the same frame.
         </p>
@@ -87,7 +87,7 @@ export function BeforeAfter() {
                   className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
               </div>
-              <figcaption className="mt-3 text-sm text-[#4A4238]">{s.caption}</figcaption>
+              <figcaption className="mt-3 text-sm text-[#3E5A5D]">{s.caption}</figcaption>
             </figure>
           ))}
         </div>
@@ -97,8 +97,8 @@ export function BeforeAfter() {
             waiting on the real numbers from the verified Google Business
             Profile. When they land, replace this comment with a live badge,
             e.g.:
-              <p className="mt-8 text-sm text-[#4A4238]">
-                <span className="font-semibold text-[#26211B]">{rating}</span>{" "}
+              <p className="mt-8 text-sm text-[#3E5A5D]">
+                <span className="font-semibold text-[#102E32]">{rating}</span>{" "}
                 on Google · {reviewCount} reviews
               </p>
         */}
@@ -107,7 +107,7 @@ export function BeforeAfter() {
         <div className="mt-12 flex flex-col items-start gap-4 md:mt-14 sm:flex-row sm:items-center">
           <a
             href="/assessment"
-            className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#EDE2CB] motion-reduce:transition-none"
+            className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#12433F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none"
           >
             Book your free 21-point property audit
             <svg
@@ -121,7 +121,7 @@ export function BeforeAfter() {
               <path d="M4 10h12M11 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
-          <p className="max-w-sm text-sm text-[#4A4238]">
+          <p className="max-w-sm text-sm text-[#3E5A5D]">
             You&apos;ll get a firm, itemized quote the same day we walk your
             property — home or commercial site.
           </p>

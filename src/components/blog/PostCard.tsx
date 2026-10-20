@@ -29,15 +29,15 @@ export function PostCard({ post }: { post: PostCardType }) {
             <p className="mb-3 text-sm font-medium text-[#2F6B66]">{post.categoryLabel}</p>
           ) : null}
           <h3
-            className="mb-3 text-xl leading-snug tracking-[-0.01em] text-[#26211B]"
+            className="mb-3 text-xl leading-snug tracking-[-0.01em] text-[#102E32]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
           >
             {post.title}
           </h3>
-          <p className="mb-6 line-clamp-3 flex-1 text-[0.95rem] leading-relaxed text-[#4A4238]">
+          <p className="mb-6 line-clamp-3 flex-1 text-[0.95rem] leading-relaxed text-[#3E5A5D]">
             {post.excerpt}
           </p>
-          <div className="flex items-center justify-between border-t border-retro-line pt-4 text-sm text-[#8A8072]">
+          <div className="flex items-center justify-between border-t border-retro-line pt-4 text-sm text-[#7D9194]">
             <span>
               {formatDate(post.date)}
               {post.authorName ? ` · ${post.authorName}` : ""}

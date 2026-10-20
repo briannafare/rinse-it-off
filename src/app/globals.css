@@ -17,7 +17,7 @@
     --font-dm-serif: var(--font-display);
     --font-jetbrains: var(--font-text);
     /* liquid-glass CTA dependencies (from the design system) */
-    --ink: #26211B;
+    --ink: #102E32;
     --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
     --soap-cyan: rgba(120, 232, 255, 1);
     --soap-mint: rgba(122, 255, 206, 1);
@@ -27,7 +27,7 @@
   }
   html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
   body { @apply bg-retro-paper text-text-primary font-body; font-size: 17px; line-height: 1.55; }
-  ::selection { background: rgba(228,163,60,0.35); }
+  ::selection { background: rgba(214,51,108,0.35); }
   /* the holiday strip sits inside the fixed header; push the page down only while it shows */
   body:has(#promo-bar:not([hidden])) { padding-top: 2.25rem; }
   @keyframes bulb { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
@@ -35,8 +35,10 @@
      Headlines are one solid color each: ink on light sections, cream on dark bands. */
   h1, h2, .font-title { font-family: var(--font-title) !important; font-weight: 900 !important; font-style: normal !important; letter-spacing: -0.012em !important; font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 144; }
   .title-accent { color: inherit !important; }
-  /* dark bands: cream fill with a hard gold offset shadow, no blur */
-  .bg-brand-black h1, .bg-brand-black h2, .bg-\[\#26211B\] h1, .bg-\[\#26211B\] h2 { color: #F5EDDC !important; text-shadow: 3px 3px 0 #E4A33C; }
+  /* one large offer phrase per hero in the restored magenta (large display only) */
+  .offer-accent { color: #D6336C !important; }
+  /* dark (teal-deep) bands: white headlines; conversion buttons white with teal-deep labels */
+  .bg-brand-black h1, .bg-brand-black h2, .bg-\[\#102E32\] h1, .bg-\[\#102E32\] h2, .bg-\[\#12433F\] h1, .bg-\[\#12433F\] h2, .bg-brand-dark h1, .bg-brand-dark h2 { color: #FFFFFF !important; text-shadow: none; }
   /* fine paper grain over the whole page, like a printed piece */
   body::after { content: ""; position: fixed; inset: 0; z-index: 70; pointer-events: none; opacity: .05;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
@@ -48,14 +50,16 @@
   /* print button (brief 2026-10-19): spruce teal, cream Futura caps, 14px corners, ink outline,
      hard 4px shadow; on dark bands gold with ink text. .btn-retro = RetroButton, .btn-print = older inline buttons. */
   .btn-retro, .btn-print { font-family: var(--font-label) !important; font-weight: 700 !important; font-size: 13px !important; letter-spacing: .1em !important; text-transform: uppercase;
-    border-radius: 14px !important; border: 2px solid #26211B; box-shadow: 4px 4px 0 #26211B; transition: transform .15s ease, box-shadow .15s ease; }
-  .btn-retro:hover, .btn-print:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #26211B; }
-  .btn-retro:active, .btn-print:active { transform: translate(4px,4px); box-shadow: 0 0 0 #26211B; }
-  .bg-brand-black .btn-retro, .bg-\[\#26211B\] .btn-retro { background: #E4A33C !important; color: #26211B !important; border-color: #26211B; box-shadow: 4px 4px 0 #F5EDDC; }
+    border-radius: 14px !important; border: 2px solid #102E32; box-shadow: 4px 4px 0 #102E32; transition: transform .15s ease, box-shadow .15s ease; }
+  .btn-retro:hover, .btn-print:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #102E32; }
+  .btn-retro:active, .btn-print:active { transform: translate(4px,4px); box-shadow: 0 0 0 #102E32; }
+  .bg-brand-black .btn-retro, .bg-\[\#102E32\] .btn-retro, .bg-\[\#12433F\] .btn-retro { background: #FFFFFF !important; color: #12433F !important; border-color: #102E32; box-shadow: 4px 4px 0 #F9D8E6; }
   @media (prefers-reduced-motion: reduce) { .btn-retro, .btn-retro:hover, .btn-retro:active, .btn-print, .btn-print:hover { transition: none; transform: none; } }
   /* a printed photo or card: 14px corners and a 1.5px ink outline */
-  .frame { border-radius: 14px; box-shadow: 0 0 0 1.5px #26211B; }
-  .frame-light { box-shadow: 0 0 0 1.5px #EDE2CB; }
+  .frame { border-radius: 14px; box-shadow: 0 0 0 1.5px #102E32; }
+  .frame-light { box-shadow: 0 0 0 1.5px #FFFFFF; }
+  /* photos: white mat, ink keyline, hard ink offset */
+  .mat { border: 6px solid #FFFFFF; border-radius: 16px; box-shadow: 0 0 0 1.5px #102E32, 5px 5px 0 1.5px #102E32; }
   /* faint 1960s twinkle stars behind cream bands */
   .bg-stars { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' fill='%2326211B' fill-opacity='.06'%3E%3Cpath transform='translate(24 30) scale(.5)' d='M20 1 L23 14 L34 6 L26 17 L39 20 L26 23 L34 34 L23 26 L20 39 L17 26 L6 34 L14 23 L1 20 L14 17 L6 6 L17 14Z'/%3E%3Cpath transform='translate(118 104) scale(.34)' d='M20 1 L23 14 L34 6 L26 17 L39 20 L26 23 L34 34 L23 26 L20 39 L17 26 L6 34 L14 23 L1 20 L14 17 L6 6 L17 14Z'/%3E%3Ccircle cx='140' cy='38' r='2'/%3E%3Ccircle cx='52' cy='140' r='2'/%3E%3C/svg%3E"); }
 
@@ -64,7 +68,7 @@
 
   /* Film grain over staged photos (pointer-events off, sits above the image). */
   .film-grain::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .16; mix-blend-mode: overlay;
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .08; mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 

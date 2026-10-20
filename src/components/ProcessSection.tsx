@@ -74,7 +74,7 @@ export function ProcessSection() {
       <div className="container-site">
         <div ref={headRef}>
           <h2
-            className="max-w-2xl text-3xl font-medium text-[#26211B] md:text-4xl"
+            className="max-w-2xl text-3xl font-medium text-[#102E32] md:text-4xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
             You approve the work before the balance ever charges.
@@ -97,7 +97,7 @@ export function ProcessSection() {
               className="aspect-[4/3] w-full object-cover"
               aria-label="Rotary surface cleaner removing grime in a single pass"
             />
-            <span className="absolute bottom-4 left-4 rounded-[10px] border-2 border-[#26211B] bg-[#F5EDDC] px-3 py-1.5 font-label text-[12px] font-bold uppercase tracking-[0.1em] text-[#26211B]">
+            <span className="absolute bottom-4 left-4 rounded-[10px] border-2 border-[#102E32] bg-[#F8FAF6] px-3 py-1.5 font-label text-[12px] font-bold uppercase tracking-[0.1em] text-[#102E32]">
               Real job footage
             </span>
           </div>
@@ -113,12 +113,12 @@ export function ProcessSection() {
                 </span>
                 <div>
                   <h3
-                    className="text-lg font-medium text-[#26211B]"
+                    className="text-lg font-medium text-[#102E32]"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     {s.title}
                   </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-[#4A4238]">{s.body}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-[#3E5A5D]">{s.body}</p>
                 </div>
               </div>
             ))}
@@ -128,7 +128,7 @@ export function ProcessSection() {
         <div className="mt-12 flex md:mt-16">
           <a
             href="/assessment"
-            className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+            className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#12433F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
           >
             Book your free 21-point audit
           </a>

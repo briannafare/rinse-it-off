@@ -104,7 +104,7 @@ export default function CommercialPage() {
       <main>
         {/* ── HERO: the photograph beside a flat cream title block; Hal with his clipboard at the seam ── */}
         <section className="relative w-full overflow-hidden bg-retro-pool pt-16 md:grid md:min-h-[100svh] md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] md:pt-[72px]">
-          <div className="frame film-grain relative m-3 h-[46svh] min-h-[300px] overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5 md:h-auto">
+          <div className="mat film-grain relative m-3 h-[46svh] min-h-[300px] overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5 md:h-auto">
             <Image
               src="/brand/retro/com-hero.webp"
               alt="A Rinse It Off crew of three at a mid-century office building: one on a short ladder at the canopy, one washing the tall entry glass with a water-fed pole, one coiling a hose by the work truck"
@@ -128,7 +128,7 @@ export default function CommercialPage() {
             <h1 className="text-[clamp(2.6rem,9vw,5.2rem)] leading-[0.95] text-brand-black [text-wrap:balance]">
               Every commercial surface <span className="title-accent text-[#2F6B66]">gets its own method.</span>
             </h1>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#4A4238]">
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#3E5A5D]">
               From parking lots and trash pads to storefronts, siding and roofs, we assess
               your property first — then match the right{" "}
               <span className="font-semibold text-brand-black">pressure, temperature, and chemistry</span> to each
@@ -153,30 +153,30 @@ export default function CommercialPage() {
           <div className="container-site grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <div>
               <h2
-                className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#26211B]"
+                className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#102E32]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 The free 21-point property audit.
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-[#4A4238]">
+              <p className="mt-4 text-lg leading-relaxed text-[#3E5A5D]">
                 {AUDIT_LEAD}
               </p>
 
               <ul className="mt-7 space-y-3">
                 {AUDIT_POINTS.map((point) => (
-                  <li key={point} className="flex items-start gap-3 text-[#26211B]">
-                    <span className="mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-lg bg-[#E3ECE6]">
-                      <Check className="h-3.5 w-3.5 text-[#26211B]" strokeWidth={3} aria-hidden />
+                  <li key={point} className="flex items-start gap-3 text-[#102E32]">
+                    <span className="mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-lg bg-[#D7EFE9]">
+                      <Check className="h-3.5 w-3.5 text-[#102E32]" strokeWidth={3} aria-hidden />
                     </span>
                     <span className="text-sm leading-relaxed">{point}</span>
                   </li>
                 ))}
               </ul>
 
-              <div className="mt-7 flex items-start gap-3 rounded-[4px] bg-[#E3ECE6] p-4">
+              <div className="mt-7 flex items-start gap-3 rounded-[4px] bg-[#D7EFE9] p-4">
                 <Droplets className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#2F6B66]" aria-hidden />
-                <p className="text-sm leading-relaxed text-[#4A4238]">
-                  <span className="font-semibold text-[#26211B]">
+                <p className="text-sm leading-relaxed text-[#3E5A5D]">
+                  <span className="font-semibold text-[#102E32]">
                     About 157 days of rain a year in Portland
                   </span>{" "}
                   keep moss, algae and grime coming back. The audit is where we map what your property
@@ -187,7 +187,7 @@ export default function CommercialPage() {
               <div className="mt-8">
                 <a
                   href={ASSESS_HREF}
-                  className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                  className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#12433F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Book your free property audit
@@ -216,12 +216,12 @@ export default function CommercialPage() {
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
-                className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#26211B]"
+                className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#102E32]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 The right method for every commercial surface.
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-[#4A4238]">
+              <p className="mt-4 text-lg leading-relaxed text-[#3E5A5D]">
                 Pressure is a tool, not a default. Lots, trash pads, siding, storefronts, masonry and
                 roofs &mdash; each gets the method its material calls for, so it comes clean without
                 being worn down.
@@ -242,18 +242,18 @@ export default function CommercialPage() {
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                     />
-                    <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-3 py-1.5 text-sm font-semibold text-[#26211B] backdrop-blur-sm">
+                    <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-3 py-1.5 text-sm font-semibold text-[#102E32] backdrop-blur-sm">
                       {m.method}
                     </span>
                   </div>
                   <div className="p-6">
                     <h3
-                      className="mt-1 text-lg font-semibold text-[#26211B]"
+                      className="mt-1 text-lg font-semibold text-[#102E32]"
                       style={{ fontFamily: "var(--font-display)" }}
                     >
                       {m.surface}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-[#4A4238]">{m.what}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-[#3E5A5D]">{m.what}</p>
                   </div>
                 </article>
               ))}
@@ -262,13 +262,13 @@ export default function CommercialPage() {
             <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3">
               <a
                 href={ASSESS_HREF}
-                className="inline-flex items-center gap-2 rounded-full bg-[#26211B] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#3A332A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#EDE2CB] motion-reduce:transition-none"
+                className="inline-flex items-center gap-2 rounded-full bg-[#12433F] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#12433F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Get your free property audit
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </a>
-              <span className="text-sm text-[#6B6255]">
+              <span className="text-sm text-[#5A7275]">
                 Not sure which your property needs? That&apos;s what the audit is for.
               </span>
             </div>
@@ -280,12 +280,12 @@ export default function CommercialPage() {
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
-                className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#26211B]"
+                className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#102E32]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 Built for the people who answer for the property.
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-[#4A4238]">
+              <p className="mt-4 text-lg leading-relaxed text-[#3E5A5D]">
                 Portfolios, communities and facilities across the Portland metro &mdash; one crew, one
                 schedule, documentation you can forward up the chain.
               </p>
@@ -299,12 +299,12 @@ export default function CommercialPage() {
                 >
                   <a.icon className="h-6 w-6 text-[#2F6B66]" aria-hidden />
                   <h3
-                    className="mt-5 text-lg font-medium text-[#26211B]"
+                    className="mt-5 text-lg font-medium text-[#102E32]"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     {a.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#4A4238]">{a.body}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-[#3E5A5D]">{a.body}</p>
                 </div>
               ))}
             </div>
@@ -323,7 +323,7 @@ export default function CommercialPage() {
           <div className="container-site relative">
             <div className="max-w-2xl">
               <h2
-                className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#26211B]"
+                className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#102E32]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 No surprises, no padding, no fine print.
@@ -338,20 +338,20 @@ export default function CommercialPage() {
                 >
                   <t.icon className="h-6 w-6 text-[#2F6B66]" aria-hidden />
                   <h3
-                    className="mt-5 text-lg font-medium text-[#26211B]"
+                    className="mt-5 text-lg font-medium text-[#102E32]"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     {t.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#4A4238]">{t.body}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-[#3E5A5D]">{t.body}</p>
                 </div>
               ))}
             </div>
-            <p className="mt-8 max-w-2xl text-base leading-relaxed text-[#4A4238]">
+            <p className="mt-8 max-w-2xl text-base leading-relaxed text-[#3E5A5D]">
               Comparing contractors for a board or an owner? Here&apos;s{" "}
               <Link
                 href="/commercial/hiring-a-pressure-washing-company"
-                className="font-semibold text-[#26211B] underline decoration-[#2F6B66] decoration-2 underline-offset-4 hover:text-[#2F6B66]"
+                className="font-semibold text-[#102E32] underline decoration-[#2F6B66] decoration-2 underline-offset-4 hover:text-[#2F6B66]"
               >
                 what to check before you hire a pressure washing company
               </Link>
@@ -370,7 +370,7 @@ export default function CommercialPage() {
               sizes="100vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#26211B]/85 via-black/30 to-black/10" aria-hidden />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#102E32]/85 via-black/30 to-black/10" aria-hidden />
 
             <div className="container-site relative flex h-full flex-col items-start justify-end pb-16 md:pb-20">
               <h2
@@ -387,7 +387,7 @@ export default function CommercialPage() {
               <div className="mt-8 flex flex-wrap items-center gap-6">
                 <a
                   href={ASSESS_HREF}
-                  className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#26211B] motion-reduce:transition-none"
+                  className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#12433F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Book your free property audit
@@ -398,7 +398,7 @@ export default function CommercialPage() {
                 </a>
                 <a
                   href={PHONE_TEL}
-                  className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#26211B] motion-reduce:transition-none"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32] motion-reduce:transition-none"
                 >
                   <Phone className="h-4 w-4" aria-hidden />
                   {PHONE_DISPLAY} &mdash; talk to the team

@@ -174,12 +174,12 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       ))}
 
       {/* Title band — dark, so the glass navbar reads the same as every other page */}
-      <section className="bg-[#26211B]">
+      <section className="bg-[#12433F]">
         <div className="container-site pb-12 pt-28 md:pb-16 md:pt-36">
           <div className="max-w-3xl">
             <Link
               href={post.category ? `/blog?category=${post.category}` : "/blog"}
-              className="mb-6 inline-flex min-h-11 items-center gap-2 rounded text-sm font-medium text-white/75 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#26211B]"
+              className="mb-6 inline-flex min-h-11 items-center gap-2 rounded text-sm font-medium text-white/75 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#102E32]"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden />
               {post.categoryLabel ?? "Blog"}
@@ -241,14 +241,14 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 />
               ) : null}
               <div>
-                <p className="text-sm text-[#8A8072]">Written by</p>
-                <p className="mt-1 text-lg text-[#26211B]" style={{ ...display, fontWeight: 600 }}>
+                <p className="text-sm text-[#7D9194]">Written by</p>
+                <p className="mt-1 text-lg text-[#102E32]" style={{ ...display, fontWeight: 600 }}>
                   {post.author.name}
                   {post.author.title ? (
-                    <span className="font-normal text-[#4A4238]"> · {post.author.title}</span>
+                    <span className="font-normal text-[#3E5A5D]"> · {post.author.title}</span>
                   ) : null}
                 </p>
-                <p className="mt-2 leading-relaxed text-[#4A4238]">{post.author.bio}</p>
+                <p className="mt-2 leading-relaxed text-[#3E5A5D]">{post.author.bio}</p>
               </div>
             </div>
           </div>
@@ -259,7 +259,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         <section className="bg-retro-pool py-16 md:py-20">
           <div className="container-site">
             <h2
-              className="mb-8 text-[clamp(1.6rem,3.2vw,2.2rem)] leading-[1.1] tracking-[-0.02em] text-[#26211B]"
+              className="mb-8 text-[clamp(1.6rem,3.2vw,2.2rem)] leading-[1.1] tracking-[-0.02em] text-[#102E32]"
               style={{ ...display, fontWeight: 600 }}
             >
               More from {post.categoryLabel ?? "the blog"}
