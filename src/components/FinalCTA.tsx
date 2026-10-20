@@ -12,8 +12,8 @@ export function FinalCTA() {
     <section className="relative overflow-hidden">
       <div className="relative flex min-h-[70vh] flex-col">
         <Image
-          src="/brand/photos/patio-umbrellas.webp"
-          alt="A clean aggregate concrete patio with tables and umbrellas after a wash"
+          src="/brand/retro/r6-06-pnw-wave.webp"
+          alt="A Rinse It Off cleaner waving from the service truck to a neighbor on her lawn in a Portland neighborhood"
           fill
           sizes="100vw"
           className="object-cover"

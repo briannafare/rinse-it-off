@@ -41,8 +41,6 @@ type Slide = {
   body: React.ReactNode;
   cta: { label: string; href: string };
   img: string;
-  /** optional film; plays once, slowed, then rests on its last frame */
-  film?: string;
   /** focal point, so phones crop onto the people, not the siding */
   pos: string;
   alt: string;
@@ -52,7 +50,7 @@ type Slide = {
 const SLIDES: Slide[] = [
   {
     key: "home",
-    tab: "My home",
+    tab: "For your home",
     eyebrow: "Exterior cleaning across the Portland metro",
     headline: "Free window cleaning,",
     accent: "four times a year.",
@@ -60,21 +58,20 @@ const SLIDES: Slide[] = [
       <>
         It comes with the seasonal plan that keeps your roof, siding, driveway, gutters
         and walkways clean all year. Those four window visits on their own would cost you
-        more than <span className="font-semibold text-white">$2,000</span>. Plans start at{" "}
-        <span className="font-semibold text-white">$189 a month</span>, depending
+        more than <span className="font-semibold text-brand-black">$2,000</span>. Plans start at{" "}
+        <span className="font-semibold text-brand-black">$189 a month</span>, depending
         on the size of your home.
       </>
     ),
     cta: { label: "Get my home price", href: "/plan?src=home-hero" },
-    img: "/brand/retro/hero-poster.webp",
-    film: "/brand/retro/hero.mp4",
-    pos: "object-[48%_40%] md:object-[60%_40%]",
-    alt: "A Rinse It Off crew washing the tall windows of a mid-century house with a water-fed pole while the homeowners watch from the lawn",
+    img: "/brand/retro/r6-07-pnw-glasswall-wfp.webp",
+    pos: "object-[46%_38%] md:object-[40%_40%]",
+    alt: "Two Rinse It Off cleaners washing the tall windows of a mid-century Portland house from the ground with a water-fed pole",
     priority: true,
   },
   {
     key: "commercial",
-    tab: "My property",
+    tab: "For your business",
     eyebrow: "Exterior cleaning across the Portland metro",
     headline: "A free 21-point inspection",
     accent: "of your whole property.",
@@ -86,9 +83,9 @@ const SLIDES: Slide[] = [
       </>
     ),
     cta: { label: "Book my free inspection", href: "/assessment?type=commercial" },
-    img: "/brand/retro/com-office.webp",
-    pos: "object-[62%_50%] md:object-center",
-    alt: "A Rinse It Off crew cleaning the glass front and the entry walkway of a mid-century office building",
+    img: "/brand/retro/r6-12-com-shopping-center.webp",
+    pos: "object-[38%_50%] md:object-[45%_50%]",
+    alt: "A Rinse It Off cleaner running a surface cleaner along a shopping-center walkway, the service truck parked at the curb",
     priority: false,
   },
 ];
@@ -124,51 +121,29 @@ export function CinematicHero() {
         };
 
   return (
-    <section className="film-grain relative min-h-[100svh] w-full overflow-hidden bg-[#0C1215]">
-      {/* Both scenes stay mounted so switching never shows an empty band. */}
-      {SLIDES.map((s, i) => (
-        <div
-          key={s.key}
-          className="absolute inset-0 transition-opacity duration-1000 ease-out motion-reduce:transition-none"
-          style={{ opacity: i === active ? 1 : 0 }}
-          aria-hidden={i !== active}
-        >
-          <Image
-            src={s.img}
-            alt={i === active ? s.alt : ""}
-            fill
-            priority={s.priority}
-            sizes="100vw"
-            className={`object-cover ${s.pos}`}
-          />
-          {s.film && !reduce && (
-            <video
-              className={`absolute inset-0 h-full w-full object-cover ${s.pos}`}
-              src={s.film}
-              poster={s.img}
-              autoPlay
-              muted
-              playsInline
-              preload="auto"
-              onLoadedMetadata={(e) => {
-                e.currentTarget.playbackRate = 0.7;
-              }}
-              aria-hidden
-            />
-          )}
-        </div>
-      ))}
+    <section className="relative w-full overflow-hidden bg-retro-pool md:grid md:min-h-[100svh] md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
+      {/* The photograph: full width on top on phones, the right half bleeding off the edge on desktop. */}
+      <div className="film-grain relative h-[50svh] min-h-[340px] md:order-2 md:h-auto">
+        {SLIDES.map((s, i) => (
+          <div
+            key={s.key}
+            className="absolute inset-0 transition-opacity duration-1000 ease-out motion-reduce:transition-none"
+            style={{ opacity: i === active ? 1 : 0 }}
+            aria-hidden={i !== active}
+          >
+            <Image src={s.img} alt={i === active ? s.alt : ""} fill priority={s.priority} sizes="(min-width: 768px) 55vw, 100vw" className={`object-cover ${s.pos}`} />
+          </div>
+        ))}
+        {/* only so the white nav reads over the photo on phones */}
+        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/40 to-transparent md:hidden" aria-hidden />
+      </div>
 
-      {/* legibility: soft top for the nav, a deep bottom for the credits */}
-      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/45 to-transparent" aria-hidden />
-      <div className="absolute inset-x-0 bottom-0 h-[72%] bg-gradient-to-t from-black/85 via-black/45 to-transparent md:h-[62%]" aria-hidden />
+      {/* Hal: settles on the seam between the photo and the cream, never on a person. */}
+      <HalFlyIn className="pointer-events-none absolute right-[2%] top-[calc(50svh-64px)] z-20 w-[30vw] max-w-[140px] md:left-[calc(46%-130px)] md:right-auto md:top-[13%] md:w-[13vw] md:max-w-[210px]" />
 
-      {/* Hal: open sky on the right on phones, over the trees on desktop */}
-      <HalFlyIn className="absolute right-[2%] top-[8%] z-10 w-[30vw] max-w-[170px] md:right-[7%] md:top-[11%] md:w-[13vw] md:max-w-[220px]" />
-
-      <div className="container-site relative z-10 flex min-h-[100svh] flex-col justify-end pb-[calc(6rem+env(safe-area-inset-bottom))] pt-24 md:pb-20 md:pt-28">
-        {/* Audience switch: Futura capitals on a shared rail, the marker slides between them. */}
-        <div className="mb-7 flex items-end gap-7 md:mb-9 md:gap-10" role="tablist" aria-label="Choose your property type">
+      {/* The title block: flat cream, like the page of a 1967 magazine ad. */}
+      <div className="relative z-10 flex flex-col justify-center px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-8 sm:px-8 md:order-1 md:px-12 md:pb-16 md:pt-28 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-14">
+        <div className="mb-6 flex items-end gap-6 md:mb-8" role="tablist" aria-label="Who is this for?">
           {SLIDES.map((s, i) => (
             <button
               key={s.key}
@@ -176,22 +151,20 @@ export function CinematicHero() {
               role="tab"
               aria-selected={i === active}
               onClick={() => pick(i)}
-              className="group relative min-h-11 pb-2.5 text-left focus-visible:outline-none"
+              className="group relative min-h-11 pb-2 text-left focus-visible:outline-none"
             >
               <span
                 className={[
-                  "label-caps !text-[0.8rem] transition-colors duration-300 md:!text-sm motion-reduce:transition-none",
-                  i === active ? "text-white" : "text-white/55 group-hover:text-white/85",
-                  "group-focus-visible:text-white",
+                  "label-caps !tracking-[0.14em] transition-colors duration-300 motion-reduce:transition-none",
+                  i === active ? "text-brand-black" : "text-brand-black/45 group-hover:text-brand-black/75",
                 ].join(" ")}
               >
                 {s.tab}
               </span>
-              <span className="absolute inset-x-0 bottom-0 h-px bg-white/30" aria-hidden />
               {i === active && (
                 <motion.span
                   layoutId={reduce ? undefined : "hero-tab-marker"}
-                  className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-retro-sun"
+                  className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-brand-blue"
                   transition={{ duration: 0.45, ease: EASE }}
                   aria-hidden
                 />
@@ -201,41 +174,32 @@ export function CinematicHero() {
         </div>
 
         {SLIDES.map((s, i) => (
-          <div key={s.key} className={i === active ? "max-w-3xl" : "hidden"}>
-            <motion.p key={`${s.key}-eyebrow-${active}`} {...rise(0.05)} className="label-caps mb-4 !tracking-[0.12em] text-white/85 md:!tracking-[0.2em]">
-              {s.eyebrow}
-            </motion.p>
-
+          <div key={s.key} className={i === active ? "" : "hidden"}>
             <motion.h1
               key={`${s.key}-h1-${active}`}
-              {...rise(0.12)}
-              className="text-[clamp(2.6rem,7.4vw,5.6rem)] font-bold leading-[0.98] text-white [text-wrap:balance]"
+              {...rise(0.08)}
+              className="text-[clamp(2.7rem,10.5vw,5.4rem)] leading-[0.95] text-brand-black [text-wrap:balance] md:text-[clamp(3rem,5.4vw,5.6rem)]"
             >
-              {s.headline}
-              <br />
-              <span className="text-retro-sun">{s.accent}</span>
+              {s.headline} <span className="text-[#2E9BC6]">{s.accent}</span>
             </motion.h1>
 
-            <motion.p
-              key={`${s.key}-body-${active}`}
-              {...rise(0.2)}
-              className="mt-5 max-w-xl text-base leading-relaxed text-white/85 md:text-lg"
-            >
+            <motion.p key={`${s.key}-body-${active}`} {...rise(0.16)} className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-[#3B4650] md:text-lg">
               {s.body}
             </motion.p>
 
-            <motion.div key={`${s.key}-cta-${active}`} {...rise(0.28)} className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-4">
-              <RetroButton href={s.cta.href} tone="white" signature>
+            <motion.div key={`${s.key}-cta-${active}`} {...rise(0.24)} className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <RetroButton href={s.cta.href} signature>
                 {s.cta.label}
               </RetroButton>
               <a
                 href={PHONE_TEL}
-                className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-base font-semibold text-white hover:text-retro-sun focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-sun"
+                className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-base font-semibold text-brand-black hover:text-[#2E9BC6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue"
               >
                 <Phone className="h-4 w-4" aria-hidden />
                 {PHONE_DISPLAY}
               </a>
             </motion.div>
+            <p className="label-caps mt-8 !tracking-[0.14em] text-retro-muted">{s.eyebrow}</p>
           </div>
         ))}
       </div>

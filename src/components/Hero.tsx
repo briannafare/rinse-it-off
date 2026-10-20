@@ -55,7 +55,7 @@ export function Hero() {
 
           <div data-hero className="flex flex-wrap items-center gap-4">
             {/* Neutral button with chunky neon shadow — like Framer site */}
-            <a href="#contact" className="group inline-flex items-center gap-2 bg-white text-brand-black font-bold text-sm px-7 py-3.5 rounded-full shadow-[0_4px_24px_rgba(77,255,166,0.4),0_0_60px_rgba(77,255,166,0.15)] hover:shadow-[0_4px_32px_rgba(77,255,166,0.55),0_0_80px_rgba(77,255,166,0.2)] transition-all duration-300">
+            <a href="#contact" className="group inline-flex items-center gap-2 bg-white text-brand-black font-bold text-sm px-7 py-3.5 rounded-full transition-all duration-300">
               Get a Free Property Assessment
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </a>

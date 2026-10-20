@@ -30,7 +30,7 @@ export function FAQ() {
           </div>
 
           <div className="lg:col-span-3">
-            <div className="bg-white rounded-3xl border border-border-light shadow-soft-md overflow-hidden">
+            <div className="bg-white rounded-[4px] border border-border-light overflow-hidden">
               {FAQS.map((faq, i) => {
                 const isOpen = openIdx === i;
                 return (

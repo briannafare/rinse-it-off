@@ -207,37 +207,37 @@ export default async function AreaPage({
       <Navbar />
       <main>
         {/* ── Hero — dark image band (matches CinematicHero language) ─────── */}
-        <section className="relative min-h-[76svh] w-full overflow-hidden bg-[#0C1215]">
+        <section className="w-full overflow-hidden bg-retro-pool pt-16 md:grid md:min-h-[76svh] md:grid-cols-2 md:pt-[72px]">
+          <div className="film-grain relative h-[40svh] min-h-[260px] md:order-2 md:h-auto">
           <Image
             src={hero.src}
             alt={hero.alt}
             fill
             priority
-            sizes="100vw"
+            sizes="(min-width: 768px) 50vw, 100vw"
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/10" aria-hidden />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/35" aria-hidden />
+          </div>
 
-          <div className="container-site relative z-10 flex min-h-[76svh] flex-col justify-end pb-16 pt-32 md:justify-center md:pb-24">
+          <div className="flex flex-col justify-center px-5 pb-14 pt-8 sm:px-8 md:order-1 md:px-12 md:py-16 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))]">
             <div className="max-w-2xl">
-              <p className="mb-4 flex items-center gap-2 text-sm font-medium text-white/85">
+              <p className="mb-4 flex items-center gap-2 label-caps !tracking-[0.12em] text-retro-muted">
                 <MapPin className="h-4 w-4 text-[#62C4EB]" aria-hidden />
                 {typeLabel} · Residential &amp; commercial
               </p>
               <h1
-                className="text-[clamp(2rem,5.4vw,4rem)] leading-[1.02] tracking-[-0.03em] text-white"
+                className="text-[clamp(2.2rem,6.5vw,4rem)] leading-[0.98] text-brand-black [text-wrap:balance]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 Pressure Washing &amp; Exterior Cleaning in{" "}
-                <span className="text-[#62C4EB]">{area.name}</span>, Portland OR
+                <span className="text-[#2E9BC6]">{area.name}</span>, Portland OR
               </h1>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/85">{intro.hero}</p>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#3B4650]">{intro.hero}</p>
 
               <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
                 <a
                   href="/assessment"
-                  className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] shadow-[0_10px_28px_-8px_rgba(98,196,235,0.55)] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
+                  className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-retro-pool"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Get your free assessment
@@ -245,7 +245,7 @@ export default async function AreaPage({
                 </a>
                 <a
                   href={PHONE_TEL}
-                  className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-sm font-semibold text-white hover:text-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
+                  className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-sm font-semibold text-brand-black hover:text-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-retro-pool"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   <Phone className="h-4 w-4" aria-hidden />
@@ -253,7 +253,7 @@ export default async function AreaPage({
                 </a>
               </div>
 
-              <p className="mt-8 text-sm text-white/85">
+              <p className="mt-8 text-sm text-[#3B4650]">
                 Insured · Free 21-point property audit · Firm, itemized quote the same day we walk your property.
               </p>
             </div>
@@ -316,7 +316,7 @@ export default async function AreaPage({
               {METHODS.map((m, i) => (
                 <article
                   key={m.key}
-                  className="group overflow-hidden rounded-2xl bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+                  className="group overflow-hidden rounded-[4px] bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
@@ -346,7 +346,7 @@ export default async function AreaPage({
         <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <figure className="order-2 lg:order-1">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-retro-line shadow-[0_30px_60px_-30px_rgba(20,45,60,0.3)]">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[4px] border border-retro-line">
                 <Image
                   src="/brand/photos/before-after-concrete.webp"
                   alt="A Portland-metro sidewalk half black with grime, half freshly surface-cleaned, the machine still in frame"
@@ -386,7 +386,7 @@ export default async function AreaPage({
 
         {/* ── Clean Water Promise strip ────────────────────────────────────── */}
         <section className="bg-retro-pool py-14 md:py-16">
-          <div className="container-site flex flex-col gap-6 rounded-3xl bg-white p-8 ring-1 ring-retro-line md:flex-row md:items-center md:justify-between md:p-10">
+          <div className="container-site flex flex-col gap-6 rounded-[4px] bg-white p-8 ring-1 ring-retro-line md:flex-row md:items-center md:justify-between md:p-10">
             <div className="flex items-start gap-4">
               <Droplets className="mt-0.5 h-8 w-8 flex-shrink-0 text-[#62C4EB]" aria-hidden />
               <div>

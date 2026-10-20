@@ -11,7 +11,7 @@ export function PostCard({ post }: { post: PostCardType }) {
     <li>
       <Link
         href={`/blog/${post.slug}`}
-        className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-retro-line transition-shadow hover:shadow-card-hover hover:ring-[#62C4EB]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2"
+        className="group flex h-full flex-col overflow-hidden rounded-[4px] bg-white ring-1 ring-retro-line transition-shadow hover:ring-[#62C4EB]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2"
       >
         {post.heroImage?.asset ? (
           <div className="relative aspect-[16/10] w-full overflow-hidden bg-retro-pool">

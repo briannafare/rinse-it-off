@@ -2,7 +2,14 @@ import MetaPixel from "@/components/MetaPixel";
 import type { Metadata } from "next";
 import { AREAS } from "@/lib/areas";
 import { SITE_DESCRIPTION } from "@/lib/site";
+import { Fraunces, Shrikhand, Bowlby_One } from "next/font/google";
 import "./globals.css";
+
+// Late-60s display faces. Fraunces (soft, fat, Cooper-family) is the pick; the other two
+// are on the preview for comparison via ?type=b / ?type=c. ponytail: drop the losers once chosen.
+const fraunces = Fraunces({ subsets: ["latin"], axes: ["SOFT", "WONK", "opsz"], variable: "--f-fraunces", display: "swap" });
+const shrikhand = Shrikhand({ subsets: ["latin"], weight: "400", variable: "--f-shrikhand", display: "swap" });
+const bowlby = Bowlby_One({ subsets: ["latin"], weight: "400", variable: "--f-bowlby", display: "swap" });
 
 export const metadata: Metadata = {
   title: { default: "Rinse It Off | Pressure Washing Portland OR \u2014 Commercial & Residential", template: "%s | Rinse It Off Portland" },
@@ -102,11 +109,16 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${fraunces.variable} ${shrikhand.variable} ${bowlby.variable}`} suppressHydrationWarning>
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/asf7gwn.css" />
-        {/* Reiher Headline (titles) + Futura PT (labels): the late-60s layer */}
+        {/* Futura PT for small spaced labels */}
         <link rel="stylesheet" href="https://use.typekit.net/zlw7xqi.css" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=new URLSearchParams(location.search).get('type');if(t)sessionStorage.setItem('rio-type',t);t=sessionStorage.getItem('rio-type');if(t)document.documentElement.dataset.type=t}catch(e){}`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

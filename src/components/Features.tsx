@@ -30,7 +30,7 @@ function DiagnosticShuffler() {
         return (
           <div
             key={item.label}
-            className="absolute left-4 right-4 rounded-xl border border-border-light bg-white px-4 py-3 shadow-soft flex items-center justify-between"
+            className="absolute left-4 right-4 rounded-xl border border-border-light bg-white px-4 py-3 flex items-center justify-between"
             style={{
               transform: `translateY(${offset}px) scale(${scale})`,
               opacity,
@@ -158,7 +158,7 @@ function CursorScheduler() {
             key={i}
             className={`aspect-square rounded-lg flex items-center justify-center text-xs font-medium transition-all duration-300 ${
               activeDay === i
-                ? "bg-brand-mint text-brand-black scale-95 shadow-glow-mint"
+                ? "bg-brand-mint text-brand-black scale-95"
                 : "bg-surface-alt text-text-muted border border-border-light"
             }`}
           >
@@ -225,7 +225,7 @@ export function Features() {
 
         <div ref={cardsRef} className="grid md:grid-cols-3 gap-5">
           {cards.map((card) => (
-            <div key={card.heading} className="group rounded-[2rem] bg-white border border-border-light p-6 md:p-7 shadow-soft hover:shadow-[0_8px_40px_rgba(172,170,255,0.2)] hover:border-brand-lavender/20 transition-all duration-500">
+            <div key={card.heading} className="group rounded-[2rem] bg-white border border-border-light p-6 md:p-7 hover:border-brand-lavender/20 transition-all duration-500">
               {card.content}
               <div className="mt-5 pt-5 border-t border-border-light">
                 <h3 className="font-display font-bold text-base text-text-primary mb-1.5">{card.heading}</h3>

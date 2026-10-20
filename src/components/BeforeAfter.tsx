@@ -78,7 +78,7 @@ export function BeforeAfter() {
         <div ref={gridRef} className="mt-10 grid gap-5 md:mt-12 md:grid-cols-3">
           {SHOTS.map((s) => (
             <figure key={s.src} className="group">
-              <div className="relative aspect-[3/4] overflow-hidden rounded-3xl border border-retro-line">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-[4px] border border-retro-line">
                 <Image
                   src={s.src}
                   alt={s.alt}

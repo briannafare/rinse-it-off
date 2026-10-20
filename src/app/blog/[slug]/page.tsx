@@ -200,7 +200,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       {post.heroImage?.asset ? (
         <div className="bg-white pt-10 md:pt-14">
           <div className="container-site">
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl bg-retro-pool md:aspect-[21/9]">
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[4px] bg-retro-pool md:aspect-[21/9]">
               <Image
                 src={imageUrl(post.heroImage, 1800)}
                 alt={post.heroImage.alt || ""}
@@ -227,7 +227,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       {post.author?.bio ? (
         <section className="bg-retro-paper py-14">
           <div className="container-site">
-            <div className="mx-auto flex max-w-[720px] items-start gap-5 rounded-2xl p-6 ring-1 ring-retro-line md:p-7">
+            <div className="mx-auto flex max-w-[720px] items-start gap-5 rounded-[4px] p-6 ring-1 ring-retro-line md:p-7">
               {post.author.headshot?.asset ? (
                 <Image
                   src={imageUrl(post.author.headshot, 160, 160)}

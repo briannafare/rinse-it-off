@@ -59,7 +59,7 @@ export default function ServicesIndexPage() {
               <Link
                 key={s.key}
                 href={`/services/${s.slug}`}
-                className="group flex flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+                className="group flex flex-col overflow-hidden rounded-[4px] bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
@@ -91,7 +91,7 @@ export default function ServicesIndexPage() {
           </div>
 
           {/* Reassurance + dual funnel */}
-          <div className="mt-12 flex flex-col items-start gap-6 rounded-2xl border border-retro-line bg-white p-6 shadow-soft md:mt-14 md:flex-row md:items-center md:justify-between md:p-8">
+          <div className="mt-12 flex flex-col items-start gap-6 rounded-[4px] border border-retro-line bg-white p-6 md:mt-14 md:flex-row md:items-center md:justify-between md:p-8">
             <div className="flex items-start gap-3">
               <ShieldCheck className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#62C4EB]" aria-hidden />
               <p className="max-w-xl text-sm leading-relaxed text-[#4B5C6B]">

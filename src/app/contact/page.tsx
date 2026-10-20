@@ -14,8 +14,8 @@ const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";
 
 const cardBase =
-  "block rounded-2xl bg-white p-6 ring-1 ring-retro-line transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none";
-const cardLink = `group ${cardBase} hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none`;
+  "block rounded-[4px] bg-white p-6 ring-1 ring-retro-line transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none";
+const cardLink = `group ${cardBase} hover:-translate-y-1 motion-reduce:hover:translate-y-0`;
 const label = "text-sm font-semibold text-[#5A6B78]";
 
 export default function ContactPage() {
@@ -115,7 +115,7 @@ export default function ContactPage() {
             </div>
 
             {/* Primary CTA panel */}
-            <div className="mt-8 overflow-hidden rounded-2xl bg-[#0C1215] p-8 md:mt-10 md:p-10">
+            <div className="mt-8 overflow-hidden rounded-[4px] bg-[#0C1215] p-8 md:mt-10 md:p-10">
               <h2
                 className="text-[clamp(1.5rem,3vw,2.1rem)] leading-[1.1] tracking-[-0.02em] text-white"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}

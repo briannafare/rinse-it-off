@@ -65,12 +65,12 @@ export function ServicesGrid() {
           {SERVICES.map((s) => (
             <div
               key={s.title}
-              className="group relative overflow-hidden rounded-2xl border border-retro-line bg-retro-paper p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)]"
+              className="group relative overflow-hidden rounded-[4px] border border-retro-line bg-retro-paper p-7 transition-all duration-300 hover:-translate-y-1"
             >
               {/* hairline turns water-blue on hover */}
               <span className="absolute inset-x-0 top-0 h-[2px] bg-transparent transition-colors duration-300 group-hover:bg-[#62C4EB]" />
               <div className="flex items-start justify-between">
-                <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#EDF7FC] transition-transform duration-300 group-hover:scale-105">
+                <span className="flex h-16 w-16 items-center justify-center rounded-[4px] bg-[#EDF7FC] transition-transform duration-300 group-hover:scale-105">
                   <Image src={s.icon} alt="" width={40} height={40} className="h-10 w-10" />
                 </span>
                 <span className="rounded-lg bg-[#EDF7FC] px-2.5 py-1 text-xs font-semibold text-[#3AA8D4]">

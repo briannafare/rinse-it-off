@@ -13,7 +13,7 @@ export function FaqSection({ faqs, heading = "Common questions", renderAnswer }:
           >
             {heading}
           </h2>
-          <div className="divide-y divide-[#E4ECF1] rounded-2xl bg-white px-6 ring-1 ring-retro-line md:px-8">
+          <div className="divide-y divide-[#E4ECF1] rounded-[4px] bg-white px-6 ring-1 ring-retro-line md:px-8">
             {faqs.map((f, i) => (
               <details key={i} className="group py-5" open={i === 0}>
                 <summary

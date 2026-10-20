@@ -199,7 +199,7 @@ export default function TermsPage() {
               </article>
 
               {/* Questions / contact */}
-              <article className="rounded-2xl bg-retro-pool p-6 ring-1 ring-retro-line md:p-8">
+              <article className="rounded-[4px] bg-retro-pool p-6 ring-1 ring-retro-line md:p-8">
                 <h2
                   className="text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}

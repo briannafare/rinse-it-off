@@ -78,7 +78,7 @@ const btnPrimary =
   "inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#62C4EB] px-5 py-3 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none";
 const btnOutline =
   "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-retro-line bg-white px-5 py-3 text-sm font-semibold text-[#0C1215] transition-colors hover:border-[#62C4EB] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none";
-const cardCls = "rounded-2xl border border-retro-line bg-white p-5 shadow-soft sm:p-6";
+const cardCls = "rounded-[4px] border border-retro-line bg-white p-5 sm:p-6";
 const labelCls = "mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[#4B5C6B]";
 
 const STEPS = ["Property", "Photos", "Analysis", "Quote", "Send"];
@@ -485,7 +485,7 @@ export default function QuoteWizard() {
       <main className="mx-auto max-w-2xl space-y-4 px-4 py-5 sm:px-6">
         {/* Resume banner */}
         {resumeAvailable && (
-          <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-[#C8E8F5] bg-[#EDF7FC] p-4 text-sm">
+          <div className="flex flex-wrap items-center gap-3 rounded-[4px] border border-[#C8E8F5] bg-[#EDF7FC] p-4 text-sm">
             <p className="min-w-0 flex-1 text-[#0C1215]">
               Draft from {new Date(resumeAvailable.savedAt).toLocaleString()} found
               {resumeAvailable.contact.address ? ` — ${resumeAvailable.contact.address}` : ""}.
@@ -733,7 +733,7 @@ export default function QuoteWizard() {
           <div className="space-y-4">
             {analyzing ? (
               <div className={`${cardCls} py-10 text-center`}>
-                <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-[#EDF7FC]">
+                <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-[4px] bg-[#EDF7FC]">
                   <Sparkles className="h-6 w-6 text-[#62C4EB]" aria-hidden />
                 </div>
                 <h2 className="font-display text-base font-semibold">Analyzing {Math.min(draft.photos.length, 8)} photos</h2>
@@ -767,7 +767,7 @@ export default function QuoteWizard() {
 
                 {/* Minimum floor note */}
                 {draft.analysis.minimumApplied && (
-                  <div className="rounded-2xl border border-[#FED7AA] bg-[#FFF7ED] p-4 text-sm text-[#9A3412]">
+                  <div className="rounded-[4px] border border-[#FED7AA] bg-[#FFF7ED] p-4 text-sm text-[#9A3412]">
                     <p className="font-semibold">
                       Standalone minimum applied — {draft.analysis.minimumApplied.tier} floor $
                       {draft.analysis.minimumApplied.floor}
@@ -859,7 +859,7 @@ export default function QuoteWizard() {
               </>
             ) : (
               <div className={`${cardCls} py-10 text-center`}>
-                <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-[#EDF7FC]">
+                <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-[4px] bg-[#EDF7FC]">
                   <Sparkles className="h-6 w-6 text-[#62C4EB]" aria-hidden />
                 </div>
                 <h2 className="font-display text-base font-semibold">Ready to analyze</h2>

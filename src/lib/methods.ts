@@ -44,7 +44,7 @@ export const METHODS: Method[] = [
     what:
       "Moss and algae get treated at the root at low pressure. High pressure would strip the protective granules off your shingles, which is the expensive kind of clean.",
     img: "/brand/photos/roof-softwash.webp",
-    alt: "A moss-covered shingle roof being treated with low-pressure soft wash",
+    alt: "A cleaner standing on a single-story roof treating moss with low-pressure soft wash",
   },
   {
     key: "glass",

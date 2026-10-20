@@ -13,16 +13,16 @@ const FUNNELS = [
     body: "Driveway, siding, roof, gutters, deck. We walk it with you, then hand you a firm price the same day, itemized so you can take part of it or all of it.",
     cta: "Get my home quote",
     href: "/assessment?type=residential",
-    img: "/brand/retro/crew.webp",
-    alt: "The Rinse It Off crew lined up in front of their truck at a mid-century house while the homeowners wave from the door",
+    img: "/brand/retro/r6-10-pnw-crew-lineup.webp",
+    alt: "The Rinse It Off crew lined up in front of their truck outside a mid-century Portland house",
   },
   {
-    title: "For my property",
+    title: "For my business",
     body: "Storefronts, offices, HOAs, multifamily, clubhouses. Start with the free 21-point audit and you get photos of every problem area, which is the part ownership actually reads.",
     cta: "Book a property audit",
     href: "/assessment?type=commercial",
-    img: "/brand/retro/com-shops.webp",
-    alt: "A Rinse It Off crew cleaning the walkway of a shopping center while shoppers walk past",
+    img: "/brand/retro/r6-14-com-inspection.webp",
+    alt: "A Rinse It Off inspector walking a property manager through the 21-point inspection outside a mid-century office",
   },
 ];
 
@@ -31,35 +31,33 @@ export function DualFunnel() {
 
   return (
     <section className="bg-retro-paper py-16 md:py-24">
-      <div ref={ref} className="container-site grid gap-5 md:grid-cols-2 md:gap-8">
-        {FUNNELS.map((f) => (
+      {/* Photo on top, a flat block of color underneath: the 1967 magazine-ad layout. */}
+      <div ref={ref} className="container-site grid gap-6 md:grid-cols-2 md:gap-8">
+        {FUNNELS.map((f, i) => (
           <a
             key={f.title}
             href={f.href}
-            className="film-grain group relative flex h-[440px] flex-col justify-end overflow-hidden rounded-2xl border border-retro-line p-8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] md:h-[500px] md:p-10"
+            className="group flex flex-col overflow-hidden rounded-[4px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-retro-paper"
           >
-            <Image
-              src={f.img}
-              alt={f.alt}
-              fill
-              sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/15 transition-opacity duration-500 group-hover:opacity-90 motion-reduce:transition-none" />
-            <div className="relative">
-              <h2
-                className="text-3xl font-medium text-white md:text-4xl"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                {f.title}
-              </h2>
-              <p className="mt-3 max-w-md text-white/80">{f.body}</p>
+            <div className="film-grain relative aspect-[3/2] overflow-hidden">
+              <Image
+                src={f.img}
+                alt={f.alt}
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+              />
+            </div>
+            <div className={`flex flex-1 flex-col p-7 md:p-9 ${i === 0 ? "bg-brand-blue text-[#0C1215]" : "bg-[#0C1215] text-white"}`}>
+              <h2 className="text-[2.2rem] leading-none md:text-[2.8rem]">{f.title}</h2>
+              <p className={`mt-3 max-w-md ${i === 0 ? "text-[#0C1215]/85" : "text-white/80"}`}>{f.body}</p>
               <span
-                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-5 py-3 text-sm font-semibold text-[#0C1215] transition-colors duration-300 group-hover:bg-[#7CD0EF] motion-reduce:transition-none"
-                style={{ fontFamily: "var(--font-display)" }}
+                className={`mt-6 inline-flex items-center gap-2 self-start rounded-full px-5 py-3 text-sm font-semibold transition-transform duration-300 group-hover:-translate-y-0.5 motion-reduce:transition-none ${
+                  i === 0 ? "bg-[#0C1215] text-white" : "bg-white text-[#0C1215]"
+                }`}
               >
                 {f.cta}
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" />
+                <ArrowRight className="h-4 w-4" aria-hidden />
               </span>
             </div>
           </a>

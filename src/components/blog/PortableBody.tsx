@@ -108,7 +108,7 @@ const components: PortableTextComponents = {
     figure: ({ value }) =>
       value?.asset ? (
         <figure className="my-12">
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-retro-pool">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[4px] bg-retro-pool">
             <Image
               src={imageUrl(value, 1440)}
               alt={value.alt || ""}
@@ -124,7 +124,7 @@ const components: PortableTextComponents = {
       ) : null,
     callout: ({ value }) => (
       <aside
-        className={`my-10 rounded-2xl p-6 ring-1 md:p-7 ${
+        className={`my-10 rounded-[4px] p-6 ring-1 md:p-7 ${
           calloutTone[value?.tone as string] ?? calloutTone.note
         }`}
       >
@@ -142,7 +142,7 @@ const components: PortableTextComponents = {
       </aside>
     ),
     ctaBlock: ({ value }) => (
-      <div className="my-14 rounded-3xl bg-[#EDF7FC] px-8 py-10 text-center ring-1 ring-[#62C4EB]/25">
+      <div className="my-14 rounded-[4px] bg-[#EDF7FC] px-8 py-10 text-center ring-1 ring-[#62C4EB]/25">
         <p
           className="mb-3 text-[1.6rem] leading-tight text-[#0C1215]"
           style={{ ...display, fontWeight: 600 }}

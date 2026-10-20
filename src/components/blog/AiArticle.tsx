@@ -104,7 +104,7 @@ function Blocks({ blocks }: { blocks: Block[] }) {
             );
           case "table":
             return (
-              <div key={i} className="mb-8 overflow-x-auto rounded-2xl ring-1 ring-retro-line">
+              <div key={i} className="mb-8 overflow-x-auto rounded-[4px] ring-1 ring-retro-line">
                 <table className="w-full min-w-[34rem] border-collapse text-left text-[0.975rem] leading-relaxed">
                   <thead className="bg-retro-pool text-[#0C1215]">
                     <tr>

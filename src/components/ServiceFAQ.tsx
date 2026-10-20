@@ -12,7 +12,7 @@ export function ServiceFAQ({ items }: { items: FAQItem[] }) {
   const reduce = useReducedMotion();
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-border-light bg-white shadow-soft-md">
+    <div className="overflow-hidden rounded-[4px] border border-border-light bg-white">
       {items.map((faq, i) => {
         const isOpen = openIdx === i;
         return (

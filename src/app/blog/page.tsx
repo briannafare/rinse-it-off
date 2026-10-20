@@ -140,7 +140,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
               <div className="container-site">
                 <Link
                   href={`/blog/${featured.slug}`}
-                  className="group grid overflow-hidden rounded-3xl bg-retro-pool ring-1 ring-retro-line transition-shadow hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 md:grid-cols-2"
+                  className="group grid overflow-hidden rounded-[4px] bg-retro-pool ring-1 ring-retro-line transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 md:grid-cols-2"
                 >
                   {featured.heroImage?.asset ? (
                     <div className="relative aspect-[16/10] md:aspect-auto md:min-h-[360px]">
@@ -207,7 +207,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
             </header>
             <ul className="mt-10 grid gap-4 md:grid-cols-3">
               {categories.map((c) => (
-                <li key={c._id} className="rounded-2xl bg-white p-6 ring-1 ring-retro-line md:p-7">
+                <li key={c._id} className="rounded-[4px] bg-white p-6 ring-1 ring-retro-line md:p-7">
                   <p className="mb-2 text-xl text-[#0C1215]" style={{ ...display, fontWeight: 600 }}>
                     {c.title}
                   </p>

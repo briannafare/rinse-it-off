@@ -162,7 +162,7 @@ export default function FlyerPage() {
                 <p className="text-text-secondary text-base leading-relaxed mb-5">
                   We&apos;ll see you on-site for your <strong className="text-text-primary">Free Property Assessment</strong> on:
                 </p>
-                <div className="inline-block border-2 border-brand-mint rounded-2xl px-6 py-4 bg-surface-mint mb-5">
+                <div className="inline-block border-2 border-brand-mint rounded-[4px] px-6 py-4 bg-surface-mint mb-5">
                   <p className="font-display font-semibold text-text-primary text-base">{apptLabel}</p>
                 </div>
                 <p className="text-text-muted text-sm leading-relaxed mb-8">
@@ -177,7 +177,7 @@ export default function FlyerPage() {
             )}
 
             {/* Contact card */}
-            <div className="bg-brand-black rounded-2xl px-6 py-5 inline-block">
+            <div className="bg-brand-black rounded-[4px] px-6 py-5 inline-block">
               <p className="text-white/50 text-xs font-medium mb-1">Questions? Call or text</p>
               <a href="tel:9716264146" className="text-brand-mint font-display font-bold text-2xl tracking-tight no-underline">
                 (971) 626-4146
@@ -220,7 +220,7 @@ export default function FlyerPage() {
       {/* ── Form ── */}
       <div className="flex-1 bg-surface-alt px-6 py-10">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-3xl shadow-soft-md p-6 sm:p-8">
+          <div className="bg-white rounded-[4px] p-6 sm:p-8">
             <form onSubmit={handleSubmit} noValidate>
 
               {/* ── Step 1: Property type ── */}
@@ -236,7 +236,7 @@ export default function FlyerPage() {
                       type="button"
                       onClick={() => { setPropertyType(t); setSelectedServices([]); }}
                       className={[
-                        "py-4 px-4 rounded-2xl border-2 text-sm font-semibold font-display transition-all duration-200 text-left",
+                        "py-4 px-4 rounded-[4px] border-2 text-sm font-semibold font-display transition-all duration-200 text-left",
                         propertyType === t
                           ? "border-brand-mint bg-brand-black text-white"
                           : "border-border bg-white text-text-primary hover:border-brand-blue",
@@ -338,7 +338,7 @@ export default function FlyerPage() {
                       Optional — pick a day and we&apos;ll confirm the time. Or skip and we&apos;ll reach out to find a time that works.
                     </p>
 
-                    <div className="border-2 border-border rounded-2xl overflow-hidden">
+                    <div className="border-2 border-border rounded-[4px] overflow-hidden">
                       {/* Month nav */}
                       <div className="bg-brand-black px-5 py-3.5 flex items-center justify-between">
                         <button
@@ -447,10 +447,10 @@ export default function FlyerPage() {
                     type="submit"
                     disabled={sending || !form.name || !form.phone || !form.email}
                     className={[
-                      "w-full py-4 rounded-2xl font-display font-bold text-base transition-all duration-200",
+                      "w-full py-4 rounded-[4px] font-display font-bold text-base transition-all duration-200",
                       sending || !form.name || !form.phone || !form.email
                         ? "bg-border text-text-muted cursor-not-allowed"
-                        : "bg-brand-mint text-brand-black hover:brightness-105 shadow-glow-mint",
+                        : "bg-brand-mint text-brand-black hover:brightness-105",
                     ].join(" ")}
                   >
                     {sending ? "Sending your request…" : apptLabel ? "Book My Assessment →" : "Get My Free Quote →"}
@@ -475,7 +475,7 @@ export default function FlyerPage() {
               { label: "Same-Day Response", icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" },
               { label: "Free Assessment", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
             ].map(({ label, icon }) => (
-              <div key={label} className="bg-white rounded-2xl px-3 py-4 text-center shadow-soft border border-border-light">
+              <div key={label} className="bg-white rounded-[4px] px-3 py-4 text-center border border-border-light">
                 <svg className="w-5 h-5 text-brand-blue mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d={icon} />
                 </svg>

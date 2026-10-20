@@ -9,7 +9,7 @@
     --font-text: 'neue-haas-grotesk-text', system-ui, sans-serif;
     /* Late-60s brand layer: one film-title face for big titles, Futura for small spaced labels.
        Everything you read in sentences stays Neue Haas. */
-    --font-title: 'reiher-headline', Georgia, serif;
+    --font-title: var(--f-fraunces), Georgia, serif;
     --font-label: 'futura-pt', system-ui, sans-serif;
     /* legacy aliases — old components reference these; all resolve to the one family */
     --font-dm-sans: var(--font-text);
@@ -29,7 +29,11 @@
   ::selection { background: rgba(242,182,50,0.35); }
   /* ponytail: one rule rebrands every page title, including the ones that set
      font-family inline. Swap for per-component classes if a page ever needs Neue Haas titles. */
-  h1, h2 { font-family: var(--font-title) !important; letter-spacing: -0.01em !important; }
+  h1, h2 { font-family: var(--font-title) !important; letter-spacing: -0.015em !important; font-weight: 900 !important; font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144; }
+  .font-title { font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144; }
+  html[data-type="b"] { --font-title: var(--f-shrikhand), Georgia, serif; }
+  html[data-type="c"] { --font-title: var(--f-bowlby), Impact, sans-serif; }
+  html[data-type="b"] h1, html[data-type="b"] h2, html[data-type="c"] h1, html[data-type="c"] h2, html[data-type="b"] .font-title, html[data-type="c"] .font-title { font-weight: 400 !important; }
 }
 
 @layer components {
@@ -125,6 +129,7 @@
   50%      { transform: translate(4%, -6%) scale(1.12); }
 }
 .aura-blob {
+  display: none; /* late-60s layer: flat color only */
   position: absolute;
   border-radius: 50%;
   filter: blur(70px);

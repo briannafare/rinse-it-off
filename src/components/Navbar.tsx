@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Phone, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 const LINKS = [
   { label: "Services", href: "/services" },
@@ -19,7 +20,12 @@ const PHONE_TEL = "tel:+19716264146";
  *  image behind it); after scroll it settles onto solid white with a hairline.
  *  Full width both ways — no shrinking capsule. */
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolledDown, setScrolled] = useState(false);
+  // The home hero is a cream title block beside the photo, so the bar starts solid there.
+  // ponytail: the late-60s layer keeps one solid paper bar on every page (scroll state
+  // kept for the hairline). Bring the over-photo glass state back per page if a hero needs it.
+  usePathname();
+  const scrolled = scrolledDown || true;
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {

@@ -29,7 +29,7 @@ export default async function QuoteToolPage({
       <div className="w-full max-w-sm">
         <form
           action={unlockQuoteTool}
-          className="rounded-2xl border border-retro-line bg-white p-6 shadow-soft-md sm:p-8"
+          className="rounded-[4px] border border-retro-line bg-white p-6 sm:p-8"
         >
           <div className="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-[#EDF7FC]">
             <Lock className="h-5 w-5 text-[#62C4EB]" aria-hidden />

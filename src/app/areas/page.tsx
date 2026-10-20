@@ -86,7 +86,7 @@ export default function AreasIndexPage() {
               <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
                 <a
                   href="/assessment"
-                  className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] shadow-[0_10px_28px_-8px_rgba(98,196,235,0.55)] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
+                  className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Get your free assessment
@@ -164,7 +164,7 @@ export default function AreasIndexPage() {
         {/* Closing CTA */}
         <section className="bg-retro-pool pb-20 md:pb-28">
           <div className="container-site">
-            <div className="flex flex-col items-start gap-5 rounded-3xl bg-[#0C1215] p-8 md:flex-row md:items-center md:justify-between md:p-12">
+            <div className="flex flex-col items-start gap-5 rounded-[4px] bg-[#0C1215] p-8 md:flex-row md:items-center md:justify-between md:p-12">
               <div className="max-w-xl">
                 <h2 className="text-2xl font-semibold text-white md:text-3xl" style={{ fontFamily: "var(--font-display)" }}>
                   Don&apos;t see your street?

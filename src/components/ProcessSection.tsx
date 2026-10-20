@@ -54,7 +54,7 @@ export function ProcessSection() {
 
         <div className="mt-10 grid items-center gap-10 md:mt-14 lg:grid-cols-2 lg:gap-16">
           {/* real footage — the rotary cleaner mid-pass */}
-          <div className="relative overflow-hidden rounded-3xl border border-retro-line shadow-[0_30px_60px_-30px_rgba(20,45,60,0.3)]">
+          <div className="relative overflow-hidden rounded-[4px] border border-retro-line">
             <video
               src="/brand/video/surface-cleaning.mp4"
               poster="/brand/photos/work/surface-cleaning-poster.webp"

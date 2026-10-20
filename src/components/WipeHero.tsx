@@ -115,7 +115,7 @@ export function WipeHero() {
             initial={reduce ? false : { opacity: 0, y: 20, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
-            className="relative overflow-hidden rounded-[28px] shadow-[0_14px_48px_rgba(12,18,21,0.14)] ring-1 ring-black/5"
+            className="relative overflow-hidden rounded-[28px] ring-1 ring-black/5"
           >
             <div className="relative aspect-[4/5] w-full">
               <Image
@@ -139,7 +139,7 @@ export function WipeHero() {
               )}
 
               {/* caption — explains the photo (clear beats clever) */}
-              <div className="absolute bottom-3 right-3 max-w-[64%] rounded-2xl bg-black/45 px-4 py-2.5 backdrop-blur-md">
+              <div className="absolute bottom-3 right-3 max-w-[64%] rounded-[4px] bg-black/45 px-4 py-2.5 backdrop-blur-md">
                 <p className="text-[13px] font-medium leading-snug text-white/95">
                   Real Portland sidewalk — left: before, right: one pass.
                 </p>
@@ -150,7 +150,7 @@ export function WipeHero() {
                 initial={reduce ? false : { opacity: 0, y: 16, scale: 0.96 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.55, ease: EASE }}
-                className="absolute bottom-5 left-5 z-20 rounded-2xl bg-white px-5 py-4 shadow-[0_10px_34px_rgba(12,18,21,0.22)] ring-1 ring-black/5"
+                className="absolute bottom-5 left-5 z-20 rounded-[4px] bg-white px-5 py-4 ring-1 ring-black/5"
               >
                 <span
                   className="text-4xl leading-none tracking-tight text-[#0C1215]"

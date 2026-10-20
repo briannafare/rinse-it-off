@@ -52,7 +52,7 @@ export function Promise() {
           {POINTS.map((p) => (
             <div
               key={p.title}
-              className="group rounded-2xl border border-retro-line bg-retro-paper p-7 transition-colors duration-300 hover:border-[#62C4EB]/40 hover:bg-white motion-reduce:transition-none"
+              className="group rounded-[4px] border border-retro-line bg-retro-paper p-7 transition-colors duration-300 hover:border-[#62C4EB]/40 hover:bg-white motion-reduce:transition-none"
             >
               <div className="flex items-center justify-between">
                 <p.icon className="h-6 w-6 text-[#62C4EB]" aria-hidden />

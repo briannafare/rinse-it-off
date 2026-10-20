@@ -29,7 +29,7 @@ export function Methods() {
           {METHODS.map((m) => (
             <article
               key={m.key}
-              className="group overflow-hidden rounded-2xl bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+              className="group overflow-hidden rounded-[4px] bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
@@ -39,7 +39,7 @@ export function Methods() {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
-                <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-3 py-1.5 text-sm font-semibold text-[#0C1215] backdrop-blur-sm">
+                <span className="label-caps absolute left-0 top-4 bg-[#0C1215] px-3 py-2 !tracking-[0.14em] text-white">
                   {m.method}
                 </span>
               </div>

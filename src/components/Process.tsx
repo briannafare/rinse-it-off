@@ -72,7 +72,7 @@ export function Process() {
               <button
                 key={step.num}
                 onClick={() => handleClick(i)}
-                className={`w-full text-left rounded-2xl border transition-all duration-500 p-5 md:p-6 group ${
+                className={`w-full text-left rounded-[4px] border transition-all duration-500 p-5 md:p-6 group ${
                   active === i
                     ? `border-transparent ${step.shadowColor} bg-white`
                     : "border-border-light bg-surface-alt hover:bg-white hover:border-border"
@@ -111,12 +111,12 @@ export function Process() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, scale: 0.97 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className={`rounded-3xl p-8 md:p-10 h-full flex flex-col justify-between ${STEPS[active].color}`}
+                className={`rounded-[4px] p-8 md:p-10 h-full flex flex-col justify-between ${STEPS[active].color}`}
               >
                 {/* Top — large icon + step */}
                 <div>
                   <div className="flex items-center justify-between mb-8">
-                    <div className="w-14 h-14 rounded-2xl bg-brand-black/10 flex items-center justify-center text-brand-black">
+                    <div className="w-14 h-14 rounded-[4px] bg-brand-black/10 flex items-center justify-center text-brand-black">
                       {STEPS[active].icon}
                     </div>
                     <span className="font-mono text-sm text-brand-black/40">{STEPS[active].num} / 03</span>
