@@ -21,7 +21,7 @@ export function PromoBar() {
           ))}
         </span>
         <span className="truncate">
-          <span className="font-semibold text-retro-sun sm:hidden">Holiday lights: now booking</span>
+          <span className="font-semibold text-retro-sun sm:hidden">Holiday lights</span>
           <span className="hidden font-semibold text-retro-sun sm:inline">Now booking holiday light installs</span>
           <span className="hidden sm:inline"> for this season.</span>
         </span>
