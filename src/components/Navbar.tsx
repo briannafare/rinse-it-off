@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Phone, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { PromoBar } from "@/components/PromoBar";
 
 const LINKS = [
   { label: "Services", href: "/services" },
@@ -62,6 +63,7 @@ export function Navbar() {
             : "border-b border-white/15 bg-white/10 backdrop-blur-md"
         }`}
       >
+        <PromoBar />
         <nav className="container-site flex h-16 items-center justify-between md:h-[72px]">
           <a
             href="/"

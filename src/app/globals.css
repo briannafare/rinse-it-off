@@ -29,6 +29,9 @@
   ::selection { background: rgba(242,182,50,0.35); }
   /* ponytail: one rule rebrands every page title, including the ones that set
      font-family inline. Swap for per-component classes if a page ever needs Neue Haas titles. */
+  /* the holiday strip sits inside the fixed header; push the page down only while it shows */
+  body:has(#promo-bar:not([hidden])) { padding-top: 2.25rem; }
+  @keyframes bulb { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
   h1, h2 { font-family: var(--font-title) !important; letter-spacing: -0.015em !important; font-weight: 900 !important; font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144; }
   .font-title { font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144; }
   html[data-type="b"] { --font-title: var(--f-shrikhand), Georgia, serif; }

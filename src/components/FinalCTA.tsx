@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Phone } from "lucide-react";
+import { RetroButton } from "@/components/retro/Bits";
 
 /** The closer. Show a finished job and say plainly what happens next.
  *  The old version ran "This surface was gray last week. Yours is next." over an
@@ -36,12 +37,9 @@ export function FinalCTA() {
             clean isn&rsquo;t right, we come back and re-rinse it free within 48 hours.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-6">
-            <a
-              href="/assessment"
-              className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
-            >
+            <RetroButton href="/assessment" tone="sun" signature>
               Get your same-day quote
-            </a>
+            </RetroButton>
             <a
               href="tel:+19716264146"
               className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"

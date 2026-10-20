@@ -12,6 +12,7 @@ import { FAQS } from "@/lib/faqs";
 import { FinalCTA } from "@/components/FinalCTA";
 import { StickyMobileBar } from "@/components/StickyMobileBar";
 import { TitleCard } from "@/components/retro/Bits";
+import { HolidayLights } from "@/components/HolidayLights";
 import Script from "next/script";
 
 const faqSchema = {
@@ -35,6 +36,7 @@ export default function HomePage() {
       <TitleCard chapter="Chapter one" title="The Yearly Plan" tone="blue" />
       <PlanSection />
       <AquaStats />
+      <HolidayLights />
       <DualFunnel />
       <TitleCard chapter="Chapter two" title="How We Clean" />
       <Methods />

@@ -14,7 +14,7 @@ export function RetroButton({
 }: {
   href: string;
   children: ReactNode;
-  tone?: "ink" | "white" | "blue";
+  tone?: "ink" | "white" | "blue" | "sun";
   signature?: boolean;
   className?: string;
 }) {
@@ -26,6 +26,7 @@ export function RetroButton({
         tone === "ink" && "bg-brand-black text-white",
         tone === "white" && "bg-white text-brand-black",
         tone === "blue" && "bg-brand-blue text-brand-black",
+        tone === "sun" && "bg-retro-sun text-brand-black",
         className,
       )}
     >

@@ -66,7 +66,7 @@ function homeMd(): string {
     "",
     PLAN_BODY,
     "",
-    ...PLAN_SEASONS.map((s) => `- ${s.name}: ${s.work}`),
+    ...PLAN_SEASONS.map((s) => `- ${s.name}, ${s.title.toLowerCase()}: ${s.work}`),
     `- Every visit: ${PLAN_EVERY_VISIT}`,
     "",
     PLAN_NOTE,
