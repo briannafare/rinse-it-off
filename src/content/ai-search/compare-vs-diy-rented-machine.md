@@ -50,7 +50,7 @@ The $105 to $170 is our arithmetic from HomeAdvisor's lines: $70 to $100 for the
 | Windows | Your own ladder and your own cleaner | Pure water from the ground with a water-fed pole, so it dries without spots |
 | If something gets damaged | Yours to fix | We're insured, and we'll send the certificate the same day you ask |
 | If a spot gets missed | You go back out | Tell us and we re-rinse it free within 48 hours |
-| Time you spend | The day | About a minute to get your price |
+| Time you spend | The day | A couple of minutes to get your price |
 
 ## The limits on both sides
 

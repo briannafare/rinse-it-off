@@ -6,7 +6,7 @@ target_url: /commercial/hiring-a-pressure-washing-company
 
 # What should a property manager look for in a pressure washing contractor?
 
-Look for three things: a certificate of insurance that names you, a method matched to each surface, and a plan for where the wash water goes. Rinse It Off cleans the outside of properties for property managers, from walkways and parking lots to trash pads, storefronts and building faces, and we start with a free 21-point inspection whose photo report is yours to keep whether or not you hire us.
+Look for three things: a certificate of insurance that names you, a method matched to each surface, and a plan for where the wash water goes. Rinse It Off cleans the outside of properties for property managers, from walkways and parking lots to trash pads, storefronts and building faces, and we start with a free 21-point inspection that photographs every surface, point by point.
 
 *By Rinse It Off. Last checked 2026-10-19.*
 
