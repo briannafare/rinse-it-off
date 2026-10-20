@@ -1,10 +1,12 @@
 import MetaPixel from "@/components/MetaPixel";
 import type { Metadata } from "next";
+import { AREAS } from "@/lib/areas";
+import { SITE_DESCRIPTION } from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: { default: "Rinse It Off | Pressure Washing Portland OR \u2014 Commercial & Residential", template: "%s | Rinse It Off Portland" },
-  description: "Portland\u2019s exterior cleaning experts for commercial properties and homes. Hot water pressure washing, soft washing, roof and house washing, parking lot cleaning, and recurring maintenance programs. Insured. Free property assessments. Serving Portland, Beaverton, Lake Oswego, Tigard & the Willamette Valley.",
+  description: SITE_DESCRIPTION,
   keywords: [
     "commercial pressure washing Portland",
     "pressure washing Portland OR",
@@ -33,6 +35,19 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+// Every page in the sitemap's /areas list: the nine cities, then the Portland
+// neighborhoods (marked as places inside Portland). Built from the same
+// registry that generates the pages, so the markup cannot drift from them.
+const AREA_SERVED = AREAS.map((a) =>
+  a.type === "city"
+    ? {
+        "@type": "City",
+        name: a.name,
+        ...(a.slug === "portland" ? { sameAs: "https://en.wikipedia.org/wiki/Portland,_Oregon" } : {}),
+      }
+    : { "@type": "Place", name: a.name, containedInPlace: { "@type": "City", name: "Portland" } },
+);
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -51,15 +66,7 @@ const jsonLd = {
         addressRegion: "OR",
         addressCountry: "US",
       },
-      areaServed: [
-        { "@type": "City", name: "Portland", sameAs: "https://en.wikipedia.org/wiki/Portland,_Oregon" },
-        { "@type": "City", name: "Beaverton" },
-        { "@type": "City", name: "Lake Oswego" },
-        { "@type": "City", name: "Tigard" },
-        { "@type": "City", name: "Hillsboro" },
-        { "@type": "City", name: "Gresham" },
-        { "@type": "City", name: "Milwaukie" },
-      ],
+      areaServed: AREA_SERVED,
       serviceType: [
         "Commercial Pressure Washing",
         "Building Exterior Washing",

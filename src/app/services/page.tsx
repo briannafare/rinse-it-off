@@ -7,7 +7,7 @@ import { SERVICES } from "@/lib/services";
 export const metadata: Metadata = {
   title: "Our Services | Exterior Cleaning Methods",
   description:
-    "Six matched methods, one for every surface — roof soft washing, concrete surface cleaning, hot-water degreasing, pure-water window cleaning, brick & masonry washing, and high-reach building facade washing across the Portland metro. Residential & commercial. Insured.",
+    "Six matched methods, one for every surface — roof soft washing, concrete surface cleaning, hot-water degreasing, pure-water window cleaning, and brick & masonry washing across the Portland metro. Residential & commercial. Insured.",
   alternates: { canonical: "https://rinseitoff.com/services" },
 };
 

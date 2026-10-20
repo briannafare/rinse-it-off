@@ -7,6 +7,7 @@ import { PostCard } from "@/components/blog/PostCard";
 import { BASE_URL } from "@/components/blog/format";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { imageUrl } from "@/sanity/lib/image";
+import { AI_PAGES, isPublishable } from "@/lib/ai-pages";
 import { categoriesQuery, postsQuery } from "@/sanity/lib/queries";
 import type { Category, PostCard as PostCardType } from "@/sanity/lib/types";
 
@@ -62,10 +63,21 @@ function FilterLink({
 export default async function BlogIndexPage({ searchParams }: { searchParams: SearchParams }) {
   const { category: activeCategory } = await searchParams;
 
-  const [posts, fetchedCategories] = await Promise.all([
+  const [sanityPosts, fetchedCategories] = await Promise.all([
     sanityFetch<PostCardType[]>({ query: postsQuery, tags: ["posts"], fallback: [] }),
     sanityFetch<Category[]>({ query: categoriesQuery, tags: ["category"], fallback: [] }),
   ]);
+  // Answer pages from src/content/ai-search that are cleared for publishing, shown as ordinary cards.
+  const answerCards: PostCardType[] = AI_PAGES.filter((p) => p.kind === "blog" && isPublishable(p)).map((p) => ({
+    _id: `ai-${p.slug}`,
+    title: p.h1,
+    slug: p.path.replace("/blog/", ""),
+    excerpt: p.description,
+    date: p.checked,
+    category: "homes",
+    categoryLabel: "Homes",
+  }));
+  const posts = [...sanityPosts, ...answerCards];
   const categories = fetchedCategories.length ? fetchedCategories : FALLBACK_CATEGORIES;
 
   const filtered = activeCategory ? posts.filter((p) => p.category === activeCategory) : posts;

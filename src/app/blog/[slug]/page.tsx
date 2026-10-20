@@ -13,6 +13,9 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { imageUrl } from "@/sanity/lib/image";
 import { postQuery, postSlugsQuery } from "@/sanity/lib/queries";
 import type { Post } from "@/sanity/lib/types";
+import { AiArticle } from "@/components/blog/AiArticle";
+import { aiPageMetadata } from "@/lib/ai-page-meta";
+import { aiPagesByKind, getAiPage, visibleHere } from "@/lib/ai-pages";
 
 const display = { fontFamily: "var(--font-display)" } as const;
 
@@ -26,11 +29,21 @@ type Params = Promise<{ slug: string }>;
 export async function generateStaticParams() {
   try {
     const slugs = await client.fetch<string[]>(postSlugsQuery);
-    return slugs.map((slug) => ({ slug }));
+    return [...slugs, ...staticSlugs()].map((slug) => ({ slug }));
   } catch {
-    return [];
+    return staticSlugs().map((slug) => ({ slug }));
   }
 }
+
+/** Blog answers kept in the repo (src/content/ai-search). A Sanity post with the
+ *  same slug wins, so an editor can take one over in the Studio at any time. */
+function staticSlugs() {
+  return aiPagesByKind("blog").map((p) => p.path.replace("/blog/", ""));
+}
+const staticPage = (slug: string) => {
+  const p = getAiPage(`/blog/${slug}`);
+  return p && visibleHere(p) ? p : undefined;
+};
 
 function getPost(slug: string) {
   return sanityFetch<Post | null>({
@@ -44,7 +57,10 @@ function getPost(slug: string) {
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post) return {};
+  if (!post) {
+    const sp = staticPage(slug);
+    return sp ? aiPageMetadata(sp) : {};
+  }
 
   const title = post.seo?.metaTitle || post.title;
   const description = post.seo?.metaDescription || post.excerpt;
@@ -140,7 +156,11 @@ function structuredData(post: Post) {
 export default async function BlogPostPage({ params }: { params: Params }) {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post) notFound();
+  if (!post) {
+    const sp = staticPage(slug);
+    if (sp) return <AiArticle page={sp} />;
+    notFound();
+  }
 
   const related = post.related ?? [];
 

@@ -1,17 +1,11 @@
 "use client";
 import { ArrowRight } from "lucide-react";
 import { useStaggerReveal } from "@/lib/gsap";
+import { PLAN_BODY, PLAN_EVERY_VISIT, PLAN_HEADLINE, PLAN_NOTE, PLAN_SEASONS as SEASONS } from "@/lib/plan-copy";
 
 /** The yearly plan, on the home page with two ways in: the instant price at
  *  /plan, or reaching us at /contact (Bri 2026-10-19). The paragraph is Bri's
  *  approved plan copy, word for word. Seasons are the plan's real scope. */
-const SEASONS = [
-  { name: "Spring", work: "Roof moss treatment and soft wash, siding house wash" },
-  { name: "Summer", work: "Driveway and walkways, algae treatment" },
-  { name: "Fall", work: "Gutters cleared and downspouts flushed once the leaves are down" },
-  { name: "Winter", work: "Steps, entries, walkways and patios" },
-];
-
 export function PlanSection() {
   const ref = useStaggerReveal(0.08);
 
@@ -24,12 +18,10 @@ export function PlanSection() {
             className="mt-3 text-3xl font-medium leading-[1.08] tracking-tight text-[#0C1215] md:text-5xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            One plan for the outside of your house, from $189 a month.
+            {PLAN_HEADLINE}
           </h2>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#4B5C6B]">
-            Our yearly home plan keeps the outside of your house clean every season. You don&apos;t have to
-            remember to book anything, and nobody has to bring up the green on the siding at Thanksgiving.
-            Free window cleaning four times a year comes with it.
+            {PLAN_BODY}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a
@@ -48,7 +40,7 @@ export function PlanSection() {
               Talk to us first
             </a>
           </div>
-          <p className="mt-4 text-sm text-[#5A6B78]">Three stories or a steep lot? We price those by hand.</p>
+          <p className="mt-4 text-sm text-[#5A6B78]">{PLAN_NOTE}</p>
         </div>
         <ul className="grid gap-3 sm:grid-cols-2">
           {SEASONS.map((s) => (
@@ -59,7 +51,7 @@ export function PlanSection() {
           ))}
           <li className="rounded-2xl bg-[#0C1215] p-5 sm:col-span-2">
             <div className="text-lg font-semibold text-white" style={{ fontFamily: "var(--font-display)" }}>Every visit</div>
-            <div className="mt-1 text-[0.95rem] leading-snug text-white/80">The outside of every window, free</div>
+            <div className="mt-1 text-[0.95rem] leading-snug text-white/80">{PLAN_EVERY_VISIT}</div>
           </li>
         </ul>
       </div>
