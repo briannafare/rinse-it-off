@@ -7,7 +7,7 @@
 export const IMG = {
   hero:       "/brand/photos/work/surface-cleaner-steam.webp", // real: surface cleaner mid-pass
   parkingLot: "/brand/photos/work/lot-steam-wide.webp",        // real: lot cleaning, wide
-  breezeway:  "/brand/photos/hotwater-degrease.webp",          // placeholder: hot-water degrease
+  breezeway:  "/brand/retro/mi-grease.webp",                  // illustration: hot-water degrease
   walkway:    "/brand/photos/walkway-split.webp",         // real: clean/dirty split
   patio:      "/brand/photos/patio-umbrellas.webp",            // real: finished patio
   driveway:   "/brand/photos/work/driveway-after.webp",        // real: residential driveway

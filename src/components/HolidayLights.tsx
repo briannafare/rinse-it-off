@@ -15,11 +15,11 @@ const INCLUDED = [
   "Trees, wreaths and extras if you want them",
 ];
 
-const BULBS = ["#F2B632", "#D6336C", "#62C4EB", "#F3EDE2"];
+const BULBS = ["#E4A33C", "#E4A33C", "#E4A33C", "#E4A33C"]; // one accent colour per detail
 
 export function HolidayLights() {
   return (
-    <section id="holiday" className="relative scroll-mt-28 overflow-hidden bg-[#0B1A2A] text-white">
+    <section id="holiday" className="relative scroll-mt-28 overflow-hidden bg-[#26211B] text-white">
       {/* a string of bulbs along the top edge */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-10">
         <svg viewBox="0 0 1200 40" preserveAspectRatio="none" className="absolute inset-x-0 top-0 h-10 w-full">
@@ -70,7 +70,7 @@ export function HolidayLights() {
             Thanksgiving go first, so the sooner you book the visit, the more dates you can pick from.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <RetroButton href="/assessment?type=residential&src=holiday-lights" tone="sun" signature>
+            <RetroButton href="/assessment?type=residential&src=holiday-lights" tone="gold" signature>
               Book my lights visit
             </RetroButton>
             <a href="tel:+19716264146" className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 font-semibold text-white hover:text-retro-sun focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-sun">

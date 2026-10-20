@@ -50,10 +50,10 @@ function FilterLink({
       href={href}
       scroll={false}
       aria-current={active ? "page" : undefined}
-      className={`inline-flex min-h-11 shrink-0 items-center rounded-lg px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 ${
+      className={`inline-flex min-h-11 shrink-0 items-center rounded-lg px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 ${
         active
-          ? "bg-[#0C1215] text-white"
-          : "bg-white text-[#4B5C6B] ring-1 ring-retro-line hover:text-[#0C1215] hover:ring-[#62C4EB]/50"
+          ? "bg-[#26211B] text-white"
+          : "bg-white text-[#4A4238] ring-1 ring-retro-line hover:text-[#26211B] hover:ring-[#2F6B66]/50"
       }`}
       style={display}
     >
@@ -90,7 +90,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
   return (
     <>
       {/* Hero — dark image band, same construction as /areas */}
-      <section className="relative w-full overflow-hidden bg-[#0C1215]">
+      <section className="relative w-full overflow-hidden bg-[#26211B]">
         <Image
           src="/brand/photos/work/lot-steam-wide.webp"
           alt="A Rinse It Off technician running a surface cleaner across a wet parking lot on an overcast day, steam rising"
@@ -108,7 +108,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
               className="text-[clamp(2rem,5.4vw,4rem)] leading-[1.02] tracking-[-0.03em] text-white"
               style={{ ...display, fontWeight: 600 }}
             >
-              Straight answers from the people doing the <span className="text-[#62C4EB]">washing.</span>
+              Straight answers from the people doing the <span>washing.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/85">
               Roofs, siding, concrete, storefronts, and the Portland rain that gets on all of them.
@@ -142,7 +142,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
               <div className="container-site">
                 <Link
                   href={`/blog/${featured.slug}`}
-                  className="group grid overflow-hidden rounded-[4px] bg-retro-pool ring-1 ring-retro-line transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 md:grid-cols-2"
+                  className="group grid overflow-hidden rounded-[4px] bg-retro-pool ring-1 ring-retro-line transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 md:grid-cols-2"
                 >
                   {featured.heroImage?.asset ? (
                     <div className="relative aspect-[16/10] md:aspect-auto md:min-h-[360px]">
@@ -151,18 +151,18 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
                   ) : null}
                   <div className={`flex flex-col justify-center p-8 md:p-12 ${featured.heroImage?.asset ? "" : "md:col-span-2"}`}>
                     {featured.categoryLabel ? (
-                      <p className="mb-3 text-sm font-medium text-[#3AA8D4]">{featured.categoryLabel}</p>
+                      <p className="mb-3 text-sm font-medium text-[#2F6B66]">{featured.categoryLabel}</p>
                     ) : null}
                     <h2
-                      className="mb-4 text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.08] tracking-[-0.02em] text-[#0C1215]"
+                      className="mb-4 text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.08] tracking-[-0.02em] text-[#26211B]"
                       style={{ ...display, fontWeight: 600 }}
                     >
                       {featured.title}
                     </h2>
-                    <p className="mb-6 max-w-xl text-lg leading-relaxed text-[#4B5C6B]">{featured.excerpt}</p>
-                    <span className="inline-flex items-center gap-2 font-semibold text-[#0C1215]" style={display}>
+                    <p className="mb-6 max-w-xl text-lg leading-relaxed text-[#4A4238]">{featured.excerpt}</p>
+                    <span className="inline-flex items-center gap-2 font-semibold text-[#26211B]" style={display}>
                       Read it
-                      <ArrowRight className="h-4 w-4 text-[#62C4EB] transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" aria-hidden />
+                      <ArrowRight className="h-4 w-4 text-[#2F6B66] transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" aria-hidden />
                     </span>
                   </div>
                 </Link>
@@ -180,9 +180,9 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
                   ))}
                 </ul>
               ) : activeCategory ? (
-                <p className="text-lg text-[#4B5C6B]">
+                <p className="text-lg text-[#4A4238]">
                   Nothing in this category yet.{" "}
-                  <Link href="/blog" className="text-[#0C1215] underline decoration-[#62C4EB] decoration-2 underline-offset-[3px]">
+                  <Link href="/blog" className="text-[#26211B] underline decoration-[#2F6B66] decoration-2 underline-offset-[3px]">
                     See every article
                   </Link>
                   .
@@ -197,12 +197,12 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
-                className="text-[clamp(1.7rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-[#0C1215]"
+                className="text-[clamp(1.7rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-[#26211B]"
                 style={{ ...display, fontWeight: 600 }}
               >
                 The first articles are being written now.
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-[#4B5C6B]">
+              <p className="mt-4 text-lg leading-relaxed text-[#4A4238]">
                 They&rsquo;ll cover three topics. If you have a question you&rsquo;d like us to
                 answer first, call or text us and it goes to the top of the list.
               </p>
@@ -210,17 +210,17 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
             <ul className="mt-10 grid gap-4 md:grid-cols-3">
               {categories.map((c) => (
                 <li key={c._id} className="rounded-[4px] bg-white p-6 ring-1 ring-retro-line md:p-7">
-                  <p className="mb-2 text-xl text-[#0C1215]" style={{ ...display, fontWeight: 600 }}>
+                  <p className="mb-2 text-xl text-[#26211B]" style={{ ...display, fontWeight: 600 }}>
                     {c.title}
                   </p>
-                  {c.description ? <p className="leading-relaxed text-[#4B5C6B]">{c.description}</p> : null}
+                  {c.description ? <p className="leading-relaxed text-[#4A4238]">{c.description}</p> : null}
                 </li>
               ))}
             </ul>
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
               <a
                 href={PHONE_TEL}
-                className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8]"
+                className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#EDE2CB]"
                 style={display}
               >
                 <Phone className="h-4 w-4" aria-hidden />
@@ -228,7 +228,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
               </a>
               <Link
                 href="/services"
-                className="inline-flex min-h-11 items-center gap-2 rounded-lg px-1 font-semibold text-[#0C1215] hover:text-[#3AA8D4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB]"
+                className="inline-flex min-h-11 items-center gap-2 rounded-lg px-1 font-semibold text-[#26211B] hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66]"
                 style={display}
               >
                 See what we clean

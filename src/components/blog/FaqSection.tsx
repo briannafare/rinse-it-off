@@ -8,27 +8,27 @@ export function FaqSection({ faqs, heading = "Common questions", renderAnswer }:
       <div className="container-site">
         <div className="mx-auto max-w-3xl">
           <h2
-            className="mb-8 text-[clamp(1.6rem,3.2vw,2.2rem)] leading-[1.1] tracking-[-0.02em] text-[#0C1215]"
+            className="mb-8 text-[clamp(1.6rem,3.2vw,2.2rem)] leading-[1.1] tracking-[-0.02em] text-[#26211B]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
           >
             {heading}
           </h2>
-          <div className="divide-y divide-[#E4ECF1] rounded-[4px] bg-white px-6 ring-1 ring-retro-line md:px-8">
+          <div className="divide-y divide-[#E2D6BF] rounded-[4px] bg-white px-6 ring-1 ring-retro-line md:px-8">
             {faqs.map((f, i) => (
               <details key={i} className="group py-5" open={i === 0}>
                 <summary
-                  className="flex cursor-pointer list-none items-start justify-between gap-6 text-lg leading-snug text-[#0C1215] [&::-webkit-details-marker]:hidden"
+                  className="flex cursor-pointer list-none items-start justify-between gap-6 text-lg leading-snug text-[#26211B] [&::-webkit-details-marker]:hidden"
                   style={{ fontFamily: "var(--font-display)", fontWeight: 500 }}
                 >
                   {f.question}
                   <span
                     aria-hidden
-                    className="mt-0.5 shrink-0 text-xl text-[#62C4EB] transition-transform group-open:rotate-45 motion-reduce:transition-none"
+                    className="mt-0.5 shrink-0 text-xl text-[#2F6B66] transition-transform group-open:rotate-45 motion-reduce:transition-none"
                   >
                     +
                   </span>
                 </summary>
-                <p className="mt-3 leading-[1.75] text-[#4B5C6B]">{renderAnswer ? renderAnswer(f.answer) : f.answer}</p>
+                <p className="mt-3 leading-[1.75] text-[#4A4238]">{renderAnswer ? renderAnswer(f.answer) : f.answer}</p>
               </details>
             ))}
           </div>

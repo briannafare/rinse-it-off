@@ -18,7 +18,7 @@
   --line:     #E7E7E1;
   --citron:   #E7FE55;
   --electric: #457BF1;
-  --blue:     #62C4EB;
+  --blue:     #2F6B66;
 
   font-family: var(--font-text);
   color: var(--ink);
@@ -120,7 +120,7 @@
   color: rgba(255,255,255,0.8);
 }
 .nav-item.completed .nav-badge {
-  background: rgba(77, 255, 166, 0.12);
+  background: rgba(228,163,60, 0.12);
   color: #2a9d5c;
 }
 
@@ -228,7 +228,7 @@
   opacity: 0.5;
 }
 .stat-card.aura-tide::before {
-  background: radial-gradient(120% 120% at 85% 100%, #DDF6FF 0%, transparent 55%),
+  background: radial-gradient(120% 120% at 85% 100%, #E3ECE6 0%, transparent 55%),
               radial-gradient(100% 100% at 10% 10%, #D9FFEC 0%, transparent 55%);
 }
 .stat-card.aura-sunrise::before {
@@ -436,7 +436,7 @@
   z-index: 0;
   opacity: 0.4;
   background: radial-gradient(120% 120% at 10% 0%, #E7E0FF 0%, transparent 55%),
-              radial-gradient(100% 100% at 90% 100%, #DDF6FF 0%, transparent 55%);
+              radial-gradient(100% 100% at 90% 100%, #E3ECE6 0%, transparent 55%);
 }
 .speech-card > * { position: relative; z-index: 1; }
 .speech-script {
@@ -536,7 +536,7 @@
   inset: 0;
   z-index: 0;
   opacity: 0.35;
-  background: radial-gradient(80% 100% at 95% 10%, #DDF6FF 0%, transparent 55%),
+  background: radial-gradient(80% 100% at 95% 10%, #E3ECE6 0%, transparent 55%),
               radial-gradient(70% 90% at 5% 90%, #D9FFEC 0%, transparent 55%);
 }
 .welcome-banner > * { position: relative; z-index: 1; }
@@ -676,8 +676,8 @@
   gap: 16px;
   padding: 18px 22px;
   border-radius: 14px;
-  background: rgba(77, 255, 166, 0.06);
-  border: 1px solid rgba(77, 255, 166, 0.15);
+  background: rgba(228,163,60, 0.06);
+  border: 1px solid rgba(228,163,60, 0.15);
   margin-top: 20px;
 }
 .completion-banner svg { color: #2a9d5c; width: 22px; height: 22px; flex-shrink: 0; }

@@ -8,7 +8,7 @@ import { OG } from "@/lib/seo";
 
 const display = { fontFamily: "var(--font-display)" } as const;
 const linkClass =
-  "text-[#0C1215] underline decoration-[#62C4EB] decoration-2 underline-offset-[3px] transition-colors hover:text-[#3AA8D4] break-words";
+  "text-[#26211B] underline decoration-[#2F6B66] decoration-2 underline-offset-[3px] transition-colors hover:text-[#2F6B66] break-words";
 
 /** Inline markdown -> React nodes. No HTML is ever injected. */
 function Inline({ text }: { text: string }) {
@@ -35,7 +35,7 @@ function Inline({ text }: { text: string }) {
       );
     } else if (m[3]) {
       out.push(
-        <strong key={k++} className="font-semibold text-[#0C1215]">
+        <strong key={k++} className="font-semibold text-[#26211B]">
           <Inline text={m[3]} />
         </strong>,
       );
@@ -65,7 +65,7 @@ function Blocks({ blocks }: { blocks: Block[] }) {
             return (
               <h2
                 key={i}
-                className="mb-4 mt-14 scroll-mt-28 text-[clamp(1.5rem,3vw,2rem)] leading-[1.15] tracking-[-0.02em] text-[#0C1215]"
+                className="mb-4 mt-14 scroll-mt-28 text-[clamp(1.5rem,3vw,2rem)] leading-[1.15] tracking-[-0.02em] text-[#26211B]"
                 style={{ ...display, fontWeight: 600 }}
               >
                 {b.text}
@@ -73,21 +73,21 @@ function Blocks({ blocks }: { blocks: Block[] }) {
             );
           case "h3":
             return (
-              <h3 key={i} className="mb-3 mt-10 scroll-mt-28 text-[1.25rem] leading-snug text-[#0C1215]" style={{ ...display, fontWeight: 600 }}>
+              <h3 key={i} className="mb-3 mt-10 scroll-mt-28 text-[1.25rem] leading-snug text-[#26211B]" style={{ ...display, fontWeight: 600 }}>
                 {b.text}
               </h3>
             );
           case "p":
             return (
-              <p key={i} className="mb-6 text-[1.075rem] leading-[1.8] text-[#4B5C6B]">
+              <p key={i} className="mb-6 text-[1.075rem] leading-[1.8] text-[#4A4238]">
                 <Inline text={b.text} />
               </p>
             );
           case "ul":
             return (
-              <ul key={i} className="mb-6 list-disc space-y-2 pl-5 marker:text-[#62C4EB]">
+              <ul key={i} className="mb-6 list-disc space-y-2 pl-5 marker:text-[#2F6B66]">
                 {b.items.map((it, j) => (
-                  <li key={j} className="text-[1.075rem] leading-[1.75] text-[#4B5C6B] break-words">
+                  <li key={j} className="text-[1.075rem] leading-[1.75] text-[#4A4238] break-words">
                     <Inline text={it} />
                   </li>
                 ))}
@@ -95,9 +95,9 @@ function Blocks({ blocks }: { blocks: Block[] }) {
             );
           case "ol":
             return (
-              <ol key={i} className="mb-6 list-decimal space-y-2 pl-5 marker:font-semibold marker:text-[#8C9AA5]">
+              <ol key={i} className="mb-6 list-decimal space-y-2 pl-5 marker:font-semibold marker:text-[#8A8072]">
                 {b.items.map((it, j) => (
-                  <li key={j} className="text-[1.075rem] leading-[1.75] text-[#4B5C6B]">
+                  <li key={j} className="text-[1.075rem] leading-[1.75] text-[#4A4238]">
                     <Inline text={it} />
                   </li>
                 ))}
@@ -107,7 +107,7 @@ function Blocks({ blocks }: { blocks: Block[] }) {
             return (
               <div key={i} className="mb-8 overflow-x-auto rounded-[4px] ring-1 ring-retro-line">
                 <table className="w-full min-w-[34rem] border-collapse text-left text-[0.975rem] leading-relaxed">
-                  <thead className="bg-retro-pool text-[#0C1215]">
+                  <thead className="bg-retro-pool text-[#26211B]">
                     <tr>
                       {b.head.map((c, j) => (
                         <th key={j} scope="col" className="px-4 py-3 font-semibold" style={display}>
@@ -116,7 +116,7 @@ function Blocks({ blocks }: { blocks: Block[] }) {
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E4ECF1] text-[#4B5C6B]">
+                  <tbody className="divide-y divide-[#E2D6BF] text-[#4A4238]">
                     {b.rows.map((r, j) => (
                       <tr key={j}>
                         {r.map((c, n) => (
@@ -157,8 +157,8 @@ function RelatedReading({ page }: { page: AiPage }) {
   return (
     <nav aria-labelledby="related-reading" className="bg-white pb-12 md:pb-16">
       <div className="container-site">
-        <div className="mx-auto max-w-[720px] border-t border-[#E7E0D3] pt-8">
-          <h2 id="related-reading" className="text-xl font-semibold text-[#0C1215]" style={display}>
+        <div className="mx-auto max-w-[720px] border-t border-[#E2D6BF] pt-8">
+          <h2 id="related-reading" className="text-xl font-semibold text-[#26211B]" style={display}>
             More straight answers
           </h2>
           <ul className="mt-4 space-y-2">
@@ -243,12 +243,12 @@ export function AiArticle({ page }: { page: AiPage }) {
         <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(d) }} />
       ))}
 
-      <section className="bg-[#0C1215]">
+      <section className="bg-[#26211B]">
         <div className="container-site pb-12 pt-28 md:pb-16 md:pt-36">
           <div className="max-w-3xl">
             <Link
               href={parent.href}
-              className="mb-6 inline-flex min-h-11 items-center gap-2 rounded text-sm font-medium text-white/75 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
+              className="mb-6 inline-flex min-h-11 items-center gap-2 rounded text-sm font-medium text-white/75 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#26211B]"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden />
               {parent.name}

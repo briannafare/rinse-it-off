@@ -8,7 +8,7 @@ type Stat =
   | { text: string; label: string; note: string };
 
 const STATS: Stat[] = [
-  { value: 157, suffix: "", label: "days with rain a year in Portland", note: "Moss never takes a season off." },
+  { value: 157, suffix: "", label: "rainy days a year, give or take", note: "Moss never takes a season off." },
   { value: 48, suffix: "hr", label: "re-rinse guarantee", note: "Anything you're not happy with, redone free." },
   { value: 21, suffix: "-pt", label: "free property audit", note: "Photo-documented, board-ready." },
   { text: "same-day", label: "quote", note: "A firm number the day we walk your property." },
@@ -50,14 +50,14 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
   return (
     <span ref={ref} className="tabular-nums">
       {n ?? target}
-      <span className="text-[#62C4EB]">{suffix}</span>
+      <span className="text-[#E4A33C]">{suffix}</span>
     </span>
   );
 }
 
 export function AquaStats() {
   return (
-    <section className="relative overflow-hidden bg-[#0C1215] py-14 text-center md:py-20">
+    <section className="relative overflow-hidden bg-[#26211B] py-14 text-center md:py-20">
       {/* set like the closing credits of a film: white on ink, centered */}
 
       <div className="container-site relative grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">

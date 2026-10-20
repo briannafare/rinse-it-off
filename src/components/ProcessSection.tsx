@@ -35,6 +35,14 @@ export function ProcessSection() {
   // download with the page and compete with the hero photo on phones.
   const videoBox = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
+  const video = useRef<HTMLVideoElement>(null);
+  // the source is set late, so the element has to be told to load and play it
+  useEffect(() => {
+    const v = video.current;
+    if (!near || !v) return;
+    v.load();
+    if (!reduceMotion) v.play().catch(() => {});
+  }, [near, reduceMotion]);
 
   useEffect(() => {
     const el = videoBox.current;
@@ -66,7 +74,7 @@ export function ProcessSection() {
       <div className="container-site">
         <div ref={headRef}>
           <h2
-            className="max-w-2xl text-3xl font-medium text-[#0C1215] md:text-4xl"
+            className="max-w-2xl text-3xl font-medium text-[#26211B] md:text-4xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
             You approve the work before the balance ever charges.
@@ -75,8 +83,9 @@ export function ProcessSection() {
 
         <div className="mt-10 grid items-center gap-10 md:mt-14 lg:grid-cols-2 lg:gap-16">
           {/* real footage — the rotary cleaner mid-pass */}
-          <div ref={videoBox} className="relative overflow-hidden rounded-[4px] border border-retro-line">
+          <div ref={videoBox} className="frame relative overflow-hidden">
             <video
+              ref={video}
               src={near ? "/brand/video/surface-cleaning.mp4" : undefined}
               preload="none"
               poster="/brand/photos/work/surface-cleaning-poster.webp"
@@ -88,8 +97,8 @@ export function ProcessSection() {
               className="aspect-[4/3] w-full object-cover"
               aria-label="Rotary surface cleaner removing grime in a single pass"
             />
-            <span className="absolute bottom-4 left-4 rounded-lg bg-black/50 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
-              Actual RIO job footage
+            <span className="absolute bottom-4 left-4 rounded-[10px] border-2 border-[#26211B] bg-[#F5EDDC] px-3 py-1.5 font-label text-[12px] font-bold uppercase tracking-[0.1em] text-[#26211B]">
+              Real job footage
             </span>
           </div>
 
@@ -97,19 +106,19 @@ export function ProcessSection() {
             {STEPS.map((s) => (
               <div key={s.n} className="flex gap-5">
                 <span
-                  className="text-3xl font-medium leading-none text-[#62C4EB] md:text-4xl"
+                  className="font-label text-lg font-bold leading-snug text-[#2F6B66]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {s.n}
                 </span>
                 <div>
                   <h3
-                    className="text-lg font-medium text-[#0C1215]"
+                    className="text-lg font-medium text-[#26211B]"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     {s.title}
                   </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-[#4B5C6B]">{s.body}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-[#4A4238]">{s.body}</p>
                 </div>
               </div>
             ))}
@@ -119,7 +128,7 @@ export function ProcessSection() {
         <div className="mt-12 flex md:mt-16">
           <a
             href="/assessment"
-            className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+            className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
           >
             Book your free 21-point audit
           </a>

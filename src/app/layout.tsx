@@ -4,15 +4,11 @@ import { AREAS } from "@/lib/areas";
 import { SERVICES } from "@/lib/services";
 import { HOME_DESCRIPTION } from "@/lib/site";
 import { BUSINESS_ID, OG, SITE_URL, WEBSITE_ID } from "@/lib/seo";
-import { Fraunces, Shrikhand, Ultra } from "next/font/google";
+import { Fraunces } from "next/font/google";
 import "./globals.css";
 
-// Late-60s display face: Shrikhand (a swashy 1960s ad/diner italic) with a painted-sign shadow.
-// Ultra (fat painted-sign slab) and Fraunces stay on the preview for comparison via ?type=b / ?type=c,
-// not preloaded. ponytail: drop the losers once Bri picks.
-const shrikhand = Shrikhand({ subsets: ["latin"], weight: "400", variable: "--f-shrikhand", display: "swap" });
-const ultra = Ultra({ subsets: ["latin"], weight: "400", variable: "--f-ultra", display: "swap", preload: false });
-const fraunces = Fraunces({ subsets: ["latin"], axes: ["SOFT", "WONK", "opsz"], variable: "--f-fraunces", display: "swap", preload: false });
+// Display: Fraunces 900, upright only. Body Neue Haas, labels Futura PT. Three families, no more.
+const fraunces = Fraunces({ subsets: ["latin"], axes: ["SOFT", "opsz"], variable: "--f-fraunces", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -144,7 +140,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${shrikhand.variable} ${ultra.variable}`} suppressHydrationWarning>
+    <html lang="en" className={fraunces.variable} suppressHydrationWarning>
       <head>
         {/* Typekit CSS is render-blocking; warm both of its hosts first. */}
         <link rel="preconnect" href="https://use.typekit.net" crossOrigin="anonymous" />
@@ -152,11 +148,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="https://use.typekit.net/asf7gwn.css" />
         {/* Futura PT for small spaced labels */}
         <link rel="stylesheet" href="https://use.typekit.net/zlw7xqi.css" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{var t=new URLSearchParams(location.search).get('type');if(t)sessionStorage.setItem('rio-type',t);t=sessionStorage.getItem('rio-type');if(t)document.documentElement.dataset.type=t}catch(e){}`,
-          }}
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

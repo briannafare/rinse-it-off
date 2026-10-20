@@ -22,12 +22,13 @@ const SLUG_BY_KEY: Record<string, string> = Object.fromEntries(SERVICES.map((s) 
 // rebrand overwrote several of these files with new art; the alts describe the
 // current files, so check them again whenever a file is swapped. ──────────────
 const HERO_PHOTOS = [
-  { src: "/brand/photos/house-softwash.webp", alt: "A flat 1960s-style illustration of a cleaner washing the tall windows of a mid-century house with a water-fed pole while the owners watch" },
+  // generated and real alternate (brief 2026-10-19, 4e); every file carries the same warm print grade
+  { src: "/brand/retro/siding.webp", alt: "A Rinse It Off cleaner soft-washing the wood siding of a mid-century house from the lawn" },
   { src: "/brand/photos/work/clubhouse-entry.webp", alt: "A clubhouse entry with the concrete freshly cleaned" },
-  { src: "/brand/photos/roof-softwash.webp", alt: "A flat 1960s-style illustration of a cleaner on a shingle roof spraying soft wash over green moss" },
+  { src: "/brand/retro/deck.webp", alt: "A freshly washed cedar deck and railing behind a mid-century house, water still on the boards" },
   { src: "/brand/photos/walkway-split.webp", alt: "A walkway mid-clean, the finished half bright against the dark, dirty half" },
-  { src: "/brand/photos/masonry-coldwater.webp", alt: "Two Rinse It Off cleaners running surface cleaners along the walkways of a mid-century garden apartment complex" },
-  { src: "/brand/photos/window-purewater.webp", alt: "A Rinse It Off cleaner washing a tall window with a water-fed pole, the service truck behind her" },
+  { src: "/brand/retro/patio.webp", alt: "A clean concrete patio with 1960s outdoor furniture and an umbrella, still wet from washing" },
+  { src: "/brand/photos/work/driveway-after.webp", alt: "A residential driveway in the trees, washed clean" },
 ] as const;
 
 // ── Copy variation — anti-thin-content ───────────────────────────────────────
@@ -218,7 +219,7 @@ export default async function AreaPage({
           <div className="flex flex-col justify-center px-5 pb-14 pt-8 sm:px-8 md:order-1 md:px-12 md:py-16 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))]">
             <div className="max-w-2xl">
               <p className="mb-4 flex items-center gap-2 label-caps !tracking-[0.12em] text-retro-muted">
-                <MapPin className="h-4 w-4 text-[#62C4EB]" aria-hidden />
+                <MapPin className="h-4 w-4 text-[#2F6B66]" aria-hidden />
                 {typeLabel} · Residential &amp; commercial
               </p>
               <h1
@@ -226,14 +227,14 @@ export default async function AreaPage({
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 Pressure Washing &amp; Exterior Cleaning in{" "}
-                <span className="title-accent text-[#2E9BC6]">{area.name}</span>, {placeSuffix(area)}
+                <span className="title-accent text-[#2F6B66]">{area.name}</span>, {placeSuffix(area)}
               </h1>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#3B4650]">{intro.hero}</p>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#4A4238]">{intro.hero}</p>
 
               <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
                 <a
                   href="/assessment"
-                  className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-retro-pool"
+                  className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-retro-pool"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Get your free assessment
@@ -241,7 +242,7 @@ export default async function AreaPage({
                 </a>
                 <a
                   href={PHONE_TEL}
-                  className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-sm font-semibold text-brand-black hover:text-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-retro-pool"
+                  className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-sm font-semibold text-brand-black hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-retro-pool"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   <Phone className="h-4 w-4" aria-hidden />
@@ -249,7 +250,7 @@ export default async function AreaPage({
                 </a>
               </div>
 
-              <p className="mt-8 text-sm text-[#3B4650]">
+              <p className="mt-8 text-sm text-[#4A4238]">
                 Insured · Free 21-point property audit · Firm, itemized quote the same day we walk your property.
               </p>
             </div>
@@ -260,12 +261,12 @@ export default async function AreaPage({
         <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site max-w-3xl">
             <h2
-              className="mt-3 text-[clamp(1.7rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-[#0C1215]"
+              className="mt-3 text-[clamp(1.7rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-[#26211B]"
               style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
             >
               Why {area.name} surfaces need a matched method — not raw pressure.
             </h2>
-            <div className="mt-5 space-y-4 text-lg leading-relaxed text-[#4B5C6B]">
+            <div className="mt-5 space-y-4 text-lg leading-relaxed text-[#4A4238]">
               {intro.paragraphs.map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
@@ -274,15 +275,15 @@ export default async function AreaPage({
             {facts.length > 0 && (
               <div className="mt-8">
                 <h3
-                  className="text-xl font-semibold text-[#0C1215]"
+                  className="text-xl font-semibold text-[#26211B]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   About {area.name}
                 </h3>
-                <ul className="mt-3 space-y-3 text-lg leading-relaxed text-[#4B5C6B]">
+                <ul className="mt-3 space-y-3 text-lg leading-relaxed text-[#4A4238]">
                   {facts.map((f) => (
                     <li key={f.text} className="flex gap-3">
-                      <Check className="mt-1.5 h-4 w-4 shrink-0 text-[#62C4EB]" aria-hidden />
+                      <Check className="mt-1.5 h-4 w-4 shrink-0 text-[#2F6B66]" aria-hidden />
                       <span>{f.text}</span>
                     </li>
                   ))}
@@ -293,7 +294,7 @@ export default async function AreaPage({
             <div className="mt-8 flex flex-wrap gap-3 text-sm">
               <a
                 href="/assessment?type=residential"
-                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl bg-[#EDF7FC] px-5 py-3 font-semibold text-[#0C1215] transition-colors hover:bg-[#DDF0FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl bg-[#E3ECE6] px-5 py-3 font-semibold text-[#26211B] transition-colors hover:bg-[#DDF0FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Home in {area.name}? Start a house-wash quote
@@ -301,7 +302,7 @@ export default async function AreaPage({
               </a>
               <a
                 href="/assessment?type=commercial"
-                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl px-5 py-3 font-semibold text-[#0C1215] ring-1 ring-retro-line transition-colors hover:ring-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl px-5 py-3 font-semibold text-[#26211B] ring-1 ring-retro-line transition-colors hover:ring-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Business or property manager? Book a property audit
@@ -316,12 +317,12 @@ export default async function AreaPage({
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
-                className="text-[clamp(1.7rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-[#0C1215]"
+                className="text-[clamp(1.7rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-[#26211B]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 How we&apos;d approach a {area.name} property
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-[#4B5C6B]">
+              <p className="mt-4 text-lg leading-relaxed text-[#4A4238]">
                 Six methods, one crew. On your free audit we walk {area.name} with you and note
                 which of these each surface actually needs.
               </p>
@@ -341,16 +342,16 @@ export default async function AreaPage({
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                     />
-                    <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-3 py-1.5 text-sm font-semibold text-[#0C1215] backdrop-blur-sm">
+                    <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-3 py-1.5 text-sm font-semibold text-[#26211B] backdrop-blur-sm">
                       {m.method}
                     </span>
                   </div>
                   <div className="p-6">
-                    <h3 className="mt-1 text-lg font-semibold text-[#0C1215]" style={{ fontFamily: "var(--font-display)" }}>
+                    <h3 className="mt-1 text-lg font-semibold text-[#26211B]" style={{ fontFamily: "var(--font-display)" }}>
                       {SLUG_BY_KEY[m.key] ? (
                         <Link
                           href={`/services/${SLUG_BY_KEY[m.key]}`}
-                          className="rounded after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB]"
+                          className="rounded after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66]"
                         >
                           {m.surface}
                         </Link>
@@ -358,7 +359,7 @@ export default async function AreaPage({
                         m.surface
                       )}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-[#4B5C6B]">{m.what}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-[#4A4238]">{m.what}</p>
                   </div>
                 </article>
               ))}
@@ -385,12 +386,12 @@ export default async function AreaPage({
             </figure>
             <div className="order-1 lg:order-2">
               <h2
-                className="mt-3 text-[clamp(1.6rem,3.4vw,2.4rem)] leading-[1.1] tracking-[-0.02em] text-[#0C1215]"
+                className="mt-3 text-[clamp(1.6rem,3.4vw,2.4rem)] leading-[1.1] tracking-[-0.02em] text-[#26211B]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 The moment dirt lets go.
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-[#4B5C6B]">
+              <p className="mt-4 text-lg leading-relaxed text-[#4A4238]">
                 This is a real Portland-metro sidewalk — the same slab, one pass of the surface
                 cleaner, with the machine still in the shot. No staging, no stock photo. That crisp
                 line is simply where we stopped, and it&apos;s the kind of finish we bring to driveways,
@@ -398,7 +399,7 @@ export default async function AreaPage({
               </p>
               <a
                 href="/assessment"
-                className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#26211B] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#3A332A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 See what your surfaces could look like
@@ -412,12 +413,12 @@ export default async function AreaPage({
         <section className="bg-retro-pool py-14 md:py-16">
           <div className="container-site flex flex-col gap-6 rounded-[4px] bg-white p-8 ring-1 ring-retro-line md:flex-row md:items-center md:justify-between md:p-10">
             <div className="flex items-start gap-4">
-              <Droplets className="mt-0.5 h-8 w-8 flex-shrink-0 text-[#62C4EB]" aria-hidden />
+              <Droplets className="mt-0.5 h-8 w-8 flex-shrink-0 text-[#2F6B66]" aria-hidden />
               <div>
-                <h2 className="text-xl font-semibold text-[#0C1215]" style={{ fontFamily: "var(--font-display)" }}>
+                <h2 className="text-xl font-semibold text-[#26211B]" style={{ fontFamily: "var(--font-display)" }}>
                   The Clean Water Promise in {area.name}
                 </h2>
-                <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-[#4B5C6B]">
+                <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-[#4A4238]">
                   Any spot you&apos;re not happy with, we re-rinse it free within 48 hours. No debate, no
                   fine print — the same promise on every home and every building we clean.
                 </p>
@@ -425,8 +426,8 @@ export default async function AreaPage({
             </div>
             <ul className="flex flex-shrink-0 flex-col gap-2">
               {["Insured", "Free 21-point audit", "Same-day itemized quote"].map((t) => (
-                <li key={t} className="flex items-center gap-2 text-sm font-medium text-[#0C1215]">
-                  <Check className="h-4 w-4 text-[#62C4EB]" strokeWidth={3} aria-hidden />
+                <li key={t} className="flex items-center gap-2 text-sm font-medium text-[#26211B]">
+                  <Check className="h-4 w-4 text-[#2F6B66]" strokeWidth={3} aria-hidden />
                   {t}
                 </li>
               ))}
@@ -439,12 +440,12 @@ export default async function AreaPage({
           <section className="bg-retro-paper py-16 md:py-20">
             <div className="container-site">
               <h2
-                className="text-[clamp(1.4rem,3vw,2rem)] leading-[1.1] tracking-[-0.02em] text-[#0C1215]"
+                className="text-[clamp(1.4rem,3vw,2rem)] leading-[1.1] tracking-[-0.02em] text-[#26211B]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 We also clean near {area.name}
               </h2>
-              <p className="mt-3 max-w-xl text-[#4B5C6B]">
+              <p className="mt-3 max-w-xl text-[#4A4238]">
                 Same method-matched crew, same Clean Water Promise across the Portland metro.
               </p>
               <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -452,35 +453,35 @@ export default async function AreaPage({
                   <li key={a.slug}>
                     <Link
                       href={`/areas/${a.slug}`}
-                      className="group flex min-h-[44px] items-center justify-between gap-2 rounded-xl bg-retro-pool px-5 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#EDF7FC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                      className="group flex min-h-[44px] items-center justify-between gap-2 rounded-xl bg-retro-pool px-5 py-3.5 text-sm font-semibold text-[#26211B] transition-colors hover:bg-[#E3ECE6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                       style={{ fontFamily: "var(--font-display)" }}
                     >
                       {a.name}
-                      <ArrowUpRight className="h-4 w-4 text-[#8C9AA5] transition-colors group-hover:text-[#62C4EB]" aria-hidden />
+                      <ArrowUpRight className="h-4 w-4 text-[#8A8072] transition-colors group-hover:text-[#2F6B66]" aria-hidden />
                     </Link>
                   </li>
                 ))}
               </ul>
-              <p className="mt-8 text-sm text-[#4B5C6B]">
+              <p className="mt-8 text-sm text-[#4A4238]">
                 <Link
                   href="/areas"
-                  className="rounded font-semibold text-[#0C1215] underline decoration-[#62C4EB] decoration-2 underline-offset-4 hover:text-[#4B5C6B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  className="rounded font-semibold text-[#26211B] underline decoration-[#2F6B66] decoration-2 underline-offset-4 hover:text-[#4A4238] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 >
                   See every Portland-metro area we serve
                 </Link>
               </p>
-              <p className="mt-3 text-sm text-[#4B5C6B]">
+              <p className="mt-3 text-sm text-[#4A4238]">
                 Own a house in {area.name}?{" "}
                 <Link
                   href="/plan"
-                  className="rounded font-semibold text-[#0C1215] underline decoration-[#62C4EB] decoration-2 underline-offset-4 hover:text-[#4B5C6B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  className="rounded font-semibold text-[#26211B] underline decoration-[#2F6B66] decoration-2 underline-offset-4 hover:text-[#4A4238] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 >
                   See the yearly plan price for it
                 </Link>{" "}
                 or read{" "}
                 <Link
                   href="/blog/how-often-wash-a-portland-house"
-                  className="rounded font-semibold text-[#0C1215] underline decoration-[#62C4EB] decoration-2 underline-offset-4 hover:text-[#4B5C6B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  className="rounded font-semibold text-[#26211B] underline decoration-[#2F6B66] decoration-2 underline-offset-4 hover:text-[#4A4238] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 >
                   how often a Portland house needs washing
                 </Link>
@@ -500,7 +501,7 @@ export default async function AreaPage({
               sizes="100vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0C1215]/90 via-black/40 to-black/15" aria-hidden />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#26211B]/90 via-black/40 to-black/15" aria-hidden />
             <div className="container-site relative flex h-full flex-col items-start justify-end pb-16 md:pb-20">
               <h2
                 className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl"
@@ -515,14 +516,14 @@ export default async function AreaPage({
               <div className="mt-8 flex flex-wrap items-center gap-6">
                 <a
                   href="/assessment"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+                  className="inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#26211B] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Get your same-day quote
                 </a>
                 <a
                   href={PHONE_TEL}
-                  className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#26211B] motion-reduce:transition-none"
                 >
                   <Phone className="h-4 w-4" aria-hidden />
                   {PHONE_DISPLAY} — talk to the team

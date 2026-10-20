@@ -34,7 +34,7 @@ const EXTRA: Record<string, Omit<Service, keyof Method>> = {
       "Low-pressure soft wash that kills moss and algae at the root — no granule loss, no cracked shingles",
       "Safe for asphalt shingle, composite and low-slope commercial roofing",
       "Biodegradable cleaners rinsed clean; landscaping and gutters protected before we start",
-      "Recurring plans that stay ahead of Portland's year-round regrowth",
+      "Recurring plans that stay ahead of year-round regrowth",
     ],
     faqs: [
       {
@@ -58,7 +58,7 @@ const EXTRA: Record<string, Omit<Service, keyof Method>> = {
     intro:
       "A wand alone leaves zebra stripes on flat concrete. We run a commercial 28-inch surface cleaner — a spinning-bar head that lays down even, overlapping passes for a uniform finish with no wand marks. Driveways, walkways, patios, pool decks and parking lots all come back to an even tone instead of a patchwork.",
     whenYouNeedIt:
-      "Gray-black grime, moss in the control joints, tire marks or oil shadows on a driveway or lot. Flat concrete collects everything Portland's rain washes down onto it, and a surface clean resets it in a single even pass.",
+      "Gray-black grime, moss in the control joints, tire marks or oil shadows on a driveway or lot. Flat concrete collects everything the rain washes down onto it, and a surface clean resets it in a single even pass.",
     bullets: [
       "Commercial 28-inch surface cleaner for a uniform, stripe-free finish",
       "Even overlapping passes on driveways, walkways, patios, pool decks and lots",
@@ -172,7 +172,7 @@ const EXTRA: Record<string, Omit<Service, keyof Method>> = {
     slug: "house-washing",
     h1: "House washing",
     intro:
-      "Siding doesn't get dirty the way concrete does. What builds up on lap siding, stucco and painted trim is a thin green film of algae and mildew that the north side of a Portland house grows all winter. High pressure would drive water behind the boards and strip paint, so we do the opposite: low pressure, the right cleaning solution, and enough dwell time for it to release on its own.",
+      "Siding doesn't get dirty the way concrete does. What builds up on lap siding, stucco and painted trim is a thin green film of algae and mildew that the north side of a house grows all winter. High pressure would drive water behind the boards and strip paint, so we do the opposite: low pressure, the right cleaning solution, and enough dwell time for it to release on its own.",
     whenYouNeedIt:
       "Green or grey film on the shaded walls, dark streaks under the gutters, cobwebs in every eave, or siding that looks tired next to the neighbours. If you're about to list the house or repaint it, this is the step that comes first.",
     bullets: [

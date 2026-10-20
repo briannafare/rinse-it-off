@@ -148,7 +148,7 @@ export default function FlyerPage() {
           <div className="max-w-md w-full text-center">
             {/* Check circle */}
             <div className="w-16 h-16 rounded-full bg-brand-mint flex items-center justify-center mx-auto mb-6">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0C1215" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#26211B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>

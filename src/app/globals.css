@@ -9,15 +9,15 @@
     --font-text: 'neue-haas-grotesk-text', system-ui, sans-serif;
     /* Late-60s brand layer: one film-title face for big titles, Futura for small spaced labels.
        Everything you read in sentences stays Neue Haas. */
-    --font-title: var(--f-shrikhand), Georgia, serif;
-    --title-shadow: #62C4EB; /* painted-sign shadow; sections override it */
+    /* One chunky retro serif for display, upright only (brief 2026-10-19): Fraunces 900. */
+    --font-title: var(--f-fraunces), Georgia, serif;
     --font-label: 'futura-pt', system-ui, sans-serif;
     /* legacy aliases — old components reference these; all resolve to the one family */
     --font-dm-sans: var(--font-text);
     --font-dm-serif: var(--font-display);
     --font-jetbrains: var(--font-text);
     /* liquid-glass CTA dependencies (from the design system) */
-    --ink: #0C1215;
+    --ink: #26211B;
     --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
     --soap-cyan: rgba(120, 232, 255, 1);
     --soap-mint: rgba(122, 255, 206, 1);
@@ -26,45 +26,41 @@
     --soap-gold: rgba(255, 214, 138, 1);
   }
   html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-  body { @apply bg-retro-paper text-text-primary font-body; }
-  ::selection { background: rgba(242,182,50,0.35); }
-  /* ponytail: one rule rebrands every page title, including the ones that set
-     font-family inline. Swap for per-component classes if a page ever needs Neue Haas titles. */
+  body { @apply bg-retro-paper text-text-primary font-body; font-size: 17px; line-height: 1.55; }
+  ::selection { background: rgba(228,163,60,0.35); }
   /* the holiday strip sits inside the fixed header; push the page down only while it shows */
   body:has(#promo-bar:not([hidden])) { padding-top: 2.25rem; }
   @keyframes bulb { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
-  h1, h2, .font-title { font-family: var(--font-title) !important; letter-spacing: 0 !important; font-weight: 400 !important; }
-  h1, h2 { text-shadow: 0.055em 0.055em 0 var(--title-shadow); }
-  .title-accent { text-shadow: 0.055em 0.055em 0 #0C1215 !important; }
-  html[data-type="b"] { --font-title: var(--f-ultra), Georgia, serif; }
-  html[data-type="c"] { --font-title: var(--f-fraunces), Georgia, serif; }
-  html[data-type="c"] h1, html[data-type="c"] h2, html[data-type="c"] .font-title { font-weight: 900 !important; letter-spacing: -0.015em !important; font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144; }
-  /* section backgrounds set the shadow colour their titles need */
-  .bg-brand-blue { --title-shadow: #FBF8F2; }
-  .bg-brand-black, .bg-\[\#0C1215\], .bg-\[\#0B1A2A\] { --title-shadow: #F2B632; }
-  .bg-retro-sun { --title-shadow: #FBF8F2; }
+  /* ponytail: one rule sets every page title, including the ones that set font-family inline.
+     Headlines are one solid color each: ink on light sections, cream on dark bands. */
+  h1, h2, .font-title { font-family: var(--font-title) !important; font-weight: 900 !important; font-style: normal !important; letter-spacing: -0.012em !important; font-variation-settings: "SOFT" 50, "WONK" 0, "opsz" 144; }
+  .title-accent { color: inherit !important; }
+  /* dark bands: cream fill with a hard gold offset shadow, no blur */
+  .bg-brand-black h1, .bg-brand-black h2, .bg-\[\#26211B\] h1, .bg-\[\#26211B\] h2 { color: #F5EDDC !important; text-shadow: 3px 3px 0 #E4A33C; }
   /* fine paper grain over the whole page, like a printed piece */
-  body::after { content: ""; position: fixed; inset: 0; z-index: 70; pointer-events: none; opacity: .07; mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .15 0 0 0 0 .1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  body::after { content: ""; position: fixed; inset: 0; z-index: 70; pointer-events: none; opacity: .05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 }
 
 @layer components {
   .container-site { @apply max-w-7xl mx-auto px-5 sm:px-6 lg:px-8; }
 
-  /* the ticket button: ink outline, hard shadow that presses in on tap */
-  .btn-retro { --btn-shadow: #0C1215; border: 2px solid #0C1215; box-shadow: 3px 3px 0 var(--btn-shadow); transition: transform .15s ease, box-shadow .15s ease; }
-  .btn-retro:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--btn-shadow); }
-  .btn-retro:active { transform: translate(3px,3px); box-shadow: 0 0 0 var(--btn-shadow); }
-  .bg-brand-black .btn-retro, .bg-\[\#0C1215\] .btn-retro, .bg-\[\#0B1A2A\] .btn-retro { --btn-shadow: #FBF8F2; border-color: #FBF8F2; }
-  @media (prefers-reduced-motion: reduce) { .btn-retro, .btn-retro:hover, .btn-retro:active { transition: none; transform: none; } }
-  /* a printed photo or card: rounded print corners and an ink outline */
-  .frame { border-radius: 14px; box-shadow: 0 0 0 2px #0C1215; }
-  .frame-light { box-shadow: 0 0 0 2px #F3EDE2; }
+  /* print button (brief 2026-10-19): spruce teal, cream Futura caps, 14px corners, ink outline,
+     hard 4px shadow; on dark bands gold with ink text. .btn-retro = RetroButton, .btn-print = older inline buttons. */
+  .btn-retro, .btn-print { font-family: var(--font-label) !important; font-weight: 700 !important; font-size: 13px !important; letter-spacing: .1em !important; text-transform: uppercase;
+    border-radius: 14px !important; border: 2px solid #26211B; box-shadow: 4px 4px 0 #26211B; transition: transform .15s ease, box-shadow .15s ease; }
+  .btn-retro:hover, .btn-print:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #26211B; }
+  .btn-retro:active, .btn-print:active { transform: translate(4px,4px); box-shadow: 0 0 0 #26211B; }
+  .bg-brand-black .btn-retro, .bg-\[\#26211B\] .btn-retro { background: #E4A33C !important; color: #26211B !important; border-color: #26211B; box-shadow: 4px 4px 0 #F5EDDC; }
+  @media (prefers-reduced-motion: reduce) { .btn-retro, .btn-retro:hover, .btn-retro:active, .btn-print, .btn-print:hover { transition: none; transform: none; } }
+  /* a printed photo or card: 14px corners and a 1.5px ink outline */
+  .frame { border-radius: 14px; box-shadow: 0 0 0 1.5px #26211B; }
+  .frame-light { box-shadow: 0 0 0 1.5px #EDE2CB; }
   /* faint 1960s twinkle stars behind cream bands */
-  .bg-stars { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' fill='%230C1215' fill-opacity='.06'%3E%3Cpath transform='translate(24 30) scale(.5)' d='M20 1 L23 14 L34 6 L26 17 L39 20 L26 23 L34 34 L23 26 L20 39 L17 26 L6 34 L14 23 L1 20 L14 17 L6 6 L17 14Z'/%3E%3Cpath transform='translate(118 104) scale(.34)' d='M20 1 L23 14 L34 6 L26 17 L39 20 L26 23 L34 34 L23 26 L20 39 L17 26 L6 34 L14 23 L1 20 L14 17 L6 6 L17 14Z'/%3E%3Ccircle cx='140' cy='38' r='2'/%3E%3Ccircle cx='52' cy='140' r='2'/%3E%3C/svg%3E"); }
+  .bg-stars { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' fill='%2326211B' fill-opacity='.06'%3E%3Cpath transform='translate(24 30) scale(.5)' d='M20 1 L23 14 L34 6 L26 17 L39 20 L26 23 L34 34 L23 26 L20 39 L17 26 L6 34 L14 23 L1 20 L14 17 L6 6 L17 14Z'/%3E%3Cpath transform='translate(118 104) scale(.34)' d='M20 1 L23 14 L34 6 L26 17 L39 20 L26 23 L34 34 L23 26 L20 39 L17 26 L6 34 L14 23 L1 20 L14 17 L6 6 L17 14Z'/%3E%3Ccircle cx='140' cy='38' r='2'/%3E%3Ccircle cx='52' cy='140' r='2'/%3E%3C/svg%3E"); }
 
   /* Futura spaced capitals: chapter numbers, eyebrows, nav. */
-  .label-caps { font-family: var(--font-label); font-weight: 500; text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.75rem; line-height: 1.3; }
+  .label-caps { font-family: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; line-height: 1.3; }
 
   /* Film grain over staged photos (pointer-events off, sits above the image). */
   .film-grain::after {
@@ -75,7 +71,7 @@
   /* ── TEXT ── */
   .text-gradient-blue {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #62C4EB 0%, #3AA8D4 100%);
+    background-image: linear-gradient(135deg, #2F6B66 0%, #2F6B66 100%);
   }
 
   /* ── PILLS ── */

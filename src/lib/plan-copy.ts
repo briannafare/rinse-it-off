@@ -12,7 +12,7 @@ export const PLAN_LABEL = "The yearly home plan · from $189 a month";
 export const PLAN_HEADLINE = "We clean the outside of your house every season, so the moss never gets a head start.";
 
 export const PLAN_BODY =
-  "Moss on the roof, green film on the siding, black streaks on the driveway. In Portland all of it grows back, and it grows back faster on the side that doesn't get sun. The plan puts us on your calendar every season, so the cleaning happens before anyone brings it up at Thanksgiving. You don't have to book anything. We schedule each visit and text you before we come.";
+  "Moss on the roof, green film on the siding, black streaks on the driveway. Around here all of it grows back, and it grows back faster on the side that doesn't get sun. The plan puts us on your calendar every season, so the cleaning happens before anyone brings it up at Thanksgiving. You don't have to book anything. We schedule each visit and text you before we come.";
 
 export const PLAN_NOTE = "Three stories or a steep lot? We price those by hand.";
 

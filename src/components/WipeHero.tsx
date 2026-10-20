@@ -12,9 +12,9 @@ import { IridescentCTA } from "./IridescentCTA";
 // the ONE allowed ambient gradient — the water-aura mesh, ported inline because
 // the token stylesheet that defines --aura-water isn't wired into the build.
 const AURA =
-  "radial-gradient(120% 120% at 12% 8%, #DDF1FB 0%, transparent 52%)," +
+  "radial-gradient(120% 120% at 12% 8%, #E3ECE6 0%, transparent 52%)," +
   "radial-gradient(115% 120% at 90% 20%, #E9FBF3 0%, transparent 52%)," +
-  "radial-gradient(140% 130% at 55% 105%, #EEF5FB 0%, transparent 60%)";
+  "radial-gradient(140% 130% at 55% 105%, #E3ECE6 0%, transparent 60%)";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -45,7 +45,7 @@ export function WipeHero() {
         <div className="min-w-0 max-w-xl">
           <motion.p
             {...rise(0.05)}
-            className="mb-5 text-sm font-medium text-[#5A6B78]"
+            className="mb-5 text-sm font-medium text-[#6B6255]"
             style={{ fontFamily: "var(--font-body)" }}
           >
             Homes · roofs · concrete · storefronts — across the Portland metro
@@ -53,20 +53,20 @@ export function WipeHero() {
 
           <motion.h1
             {...rise(0.12)}
-            className="text-[clamp(2.7rem,6.6vw,5.2rem)] leading-[0.96] tracking-[-0.035em] text-[#0C1215]"
+            className="text-[clamp(2.7rem,6.6vw,5.2rem)] leading-[0.96] tracking-[-0.035em] text-[#26211B]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
           >
             Portland wears on everything.
             <br />
-            We <span className="text-[#3AA8D4]">rinse it off.</span>
+            We <span className="text-[#2F6B66]">rinse it off.</span>
           </motion.h1>
 
           <motion.p
             {...rise(0.22)}
-            className="mt-6 max-w-md text-lg leading-relaxed text-[#4B5C6B]"
+            className="mt-6 max-w-md text-lg leading-relaxed text-[#4A4238]"
           >
             The right method for every surface — soft-wash, surface-clean, or
-            hot-water — with a firm quote the <span className="text-[#0C1215]">same day you ask</span>.
+            hot-water — with a firm quote the <span className="text-[#26211B]">same day you ask</span>.
             You walk the finished job before you pay a dime.
           </motion.p>
 
@@ -76,7 +76,7 @@ export function WipeHero() {
             </IridescentCTA>
             <a
               href="/assessment"
-              className="text-sm font-medium text-[#3AA8D4] underline-offset-4 hover:text-[#0C1215] hover:underline"
+              className="text-sm font-medium text-[#2F6B66] underline-offset-4 hover:text-[#26211B] hover:underline"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Property managers → free 21-point audit
@@ -86,15 +86,15 @@ export function WipeHero() {
           {/* trust row — no pills, hairline-separated */}
           <motion.div
             {...rise(0.42)}
-            className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#5A6B78]"
+            className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#6B6255]"
           >
             <span className="inline-flex items-center gap-1.5">
               <span className="flex" aria-hidden>
                 {[0, 1, 2, 3, 4].map((i) => (
-                  <Star key={i} className="h-3.5 w-3.5 fill-[#62C4EB] text-[#62C4EB]" />
+                  <Star key={i} className="h-3.5 w-3.5 fill-[#2F6B66] text-[#2F6B66]" />
                 ))}
               </span>
-              <span className="font-semibold text-[#0C1215]">5.0</span> on Google
+              <span className="font-semibold text-[#26211B]">5.0</span> on Google
             </span>
             <span className="h-3 w-px bg-[#D4E1E8]" aria-hidden />
             <span>Licensed &amp; insured</span>
@@ -153,12 +153,12 @@ export function WipeHero() {
                 className="absolute bottom-5 left-5 z-20 rounded-[4px] bg-white px-5 py-4 ring-1 ring-black/5"
               >
                 <span
-                  className="text-4xl leading-none tracking-tight text-[#0C1215]"
+                  className="text-4xl leading-none tracking-tight text-[#26211B]"
                   style={{ fontFamily: "var(--font-display)", fontWeight: 300 }}
                 >
                   $0
                 </span>
-                <p className="mt-1.5 max-w-[9.5rem] text-[13px] leading-snug text-[#5A6B78]">
+                <p className="mt-1.5 max-w-[9.5rem] text-[13px] leading-snug text-[#6B6255]">
                   until you&apos;ve walked the finished job and it&apos;s right.
                 </p>
               </motion.div>

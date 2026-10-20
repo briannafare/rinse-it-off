@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { RetroButton, StripeTab } from "@/components/retro/Bits";
+import { RetroButton, Squiggle } from "@/components/retro/Bits";
 
 export const metadata: Metadata = { title: "Page not found", robots: { index: false } };
 
@@ -12,7 +12,7 @@ export default function NotFound() {
       <p className="label-caps mt-6 text-retro-muted">Error 404</p>
       <h1 className="mt-3 max-w-[16ch] text-[clamp(2.4rem,7vw,4.2rem)] font-bold leading-none text-brand-black">This page isn&rsquo;t here.</h1>
       <p className="mt-4 max-w-md text-lg text-retro-muted">Hal checked twice. The rest of the site is right where we left it.</p>
-      <StripeTab className="my-8" />
+      <Squiggle className="my-8" />
       <RetroButton href="/">Back to the home page</RetroButton>
     </main>
   );

@@ -73,13 +73,13 @@ function emptyDraft(): Draft {
 
 // ── Style constants (brand: light canvas, ink, one blue) ─────────────────────
 const inputCls =
-  "min-h-11 w-full rounded-xl border border-retro-line bg-white px-4 py-3 text-sm text-[#0C1215] placeholder:text-[#8899A6] focus:border-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white";
+  "min-h-11 w-full rounded-xl border border-retro-line bg-white px-4 py-3 text-sm text-[#26211B] placeholder:text-[#8A8072] focus:border-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white";
 const btnPrimary =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#62C4EB] px-5 py-3 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-5 py-3 text-sm font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none";
 const btnOutline =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-retro-line bg-white px-5 py-3 text-sm font-semibold text-[#0C1215] transition-colors hover:border-[#62C4EB] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-retro-line bg-white px-5 py-3 text-sm font-semibold text-[#26211B] transition-colors hover:border-[#2F6B66] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none";
 const cardCls = "rounded-[4px] border border-retro-line bg-white p-5 sm:p-6";
-const labelCls = "mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[#4B5C6B]";
+const labelCls = "mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[#4A4238]";
 
 const STEPS = ["Property", "Photos", "Analysis", "Quote", "Send"];
 
@@ -95,7 +95,7 @@ function money(n: number): string {
 }
 
 function scoreColor(s: number): string {
-  return s <= 3 ? "#3AA8D4" : s <= 6 ? "#D97706" : "#DC4B2A";
+  return s <= 3 ? "#2F6B66" : s <= 6 ? "#D97706" : "#DC4B2A";
 }
 
 let idCounter = 0;
@@ -416,13 +416,13 @@ export default function QuoteWizard() {
 
   // ═══ Render ════════════════════════════════════════════════════════════════
   return (
-    <div className="min-h-screen bg-retro-pool font-body text-[#0C1215]">
+    <div className="min-h-screen bg-retro-pool font-body text-[#26211B]">
       {/* Header */}
       <header className="sticky top-0 z-10 border-b border-retro-line bg-white">
         <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div className="min-w-0">
             <h1 className="truncate font-display text-base font-semibold tracking-tight">Audit Tool</h1>
-            <p className="truncate text-xs text-[#8899A6]">
+            <p className="truncate text-xs text-[#8A8072]">
               {draft.quoteNumber || "New quote"}
               {draft.contact.address ? ` — ${draft.contact.address}` : ""}
             </p>
@@ -432,7 +432,7 @@ export default function QuoteWizard() {
             onClick={() => {
               if (confirm("Start a new quote? The current draft will be cleared.")) startFresh();
             }}
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-xs font-semibold text-[#4B5C6B] hover:bg-[#EDF7FC]"
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-xs font-semibold text-[#4A4238] hover:bg-[#E3ECE6]"
           >
             <RotateCcw className="h-3.5 w-3.5" aria-hidden /> New
           </button>
@@ -455,23 +455,23 @@ export default function QuoteWizard() {
                     <span
                       className={`grid h-7 w-7 place-items-center rounded-lg text-xs font-semibold ${
                         active
-                          ? "bg-[#62C4EB] text-[#0C1215]"
+                          ? "bg-[#2F6B66] text-[#F5EDDC]"
                           : done
-                            ? "bg-[#EDF7FC] text-[#3AA8D4]"
-                            : "bg-retro-pool text-[#8899A6]"
+                            ? "bg-[#E3ECE6] text-[#2F6B66]"
+                            : "bg-retro-pool text-[#8A8072]"
                       }`}
                     >
                       {done ? <Check className="h-3.5 w-3.5" aria-hidden /> : n}
                     </span>
                     <span
-                      className={`text-[10px] leading-none ${active ? "font-semibold text-[#0C1215]" : "text-[#8899A6]"}`}
+                      className={`text-[10px] leading-none ${active ? "font-semibold text-[#26211B]" : "text-[#8A8072]"}`}
                     >
                       {label}
                     </span>
                   </button>
                   {i < STEPS.length - 1 && (
                     <span
-                      className={`mx-1 mb-3.5 h-px flex-1 ${done ? "bg-[#62C4EB]" : "bg-[#E4ECF1]"}`}
+                      className={`mx-1 mb-3.5 h-px flex-1 ${done ? "bg-[#2F6B66]" : "bg-[#E2D6BF]"}`}
                       aria-hidden
                     />
                   )}
@@ -485,8 +485,8 @@ export default function QuoteWizard() {
       <main className="mx-auto max-w-2xl space-y-4 px-4 py-5 sm:px-6">
         {/* Resume banner */}
         {resumeAvailable && (
-          <div className="flex flex-wrap items-center gap-3 rounded-[4px] border border-[#C8E8F5] bg-[#EDF7FC] p-4 text-sm">
-            <p className="min-w-0 flex-1 text-[#0C1215]">
+          <div className="flex flex-wrap items-center gap-3 rounded-[4px] border border-[#C8E8F5] bg-[#E3ECE6] p-4 text-sm">
+            <p className="min-w-0 flex-1 text-[#26211B]">
               Draft from {new Date(resumeAvailable.savedAt).toLocaleString()} found
               {resumeAvailable.contact.address ? ` — ${resumeAvailable.contact.address}` : ""}.
             </p>
@@ -520,7 +520,7 @@ export default function QuoteWizard() {
           <div className="space-y-4">
             <div className={cardCls}>
               <h2 className="font-display text-base font-semibold">Property &amp; contact</h2>
-              <p className="mt-1 text-sm text-[#4B5C6B]">Who and where is this quote for?</p>
+              <p className="mt-1 text-sm text-[#4A4238]">Who and where is this quote for?</p>
 
               {/* Property type */}
               <div className="mt-4">
@@ -533,8 +533,8 @@ export default function QuoteWizard() {
                       onClick={() => patch({ propertyType: t.value })}
                       className={`min-h-11 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors motion-reduce:transition-none ${
                         draft.propertyType === t.value
-                          ? "border-[#62C4EB] bg-[#EDF7FC] font-semibold"
-                          : "border-retro-line bg-white hover:border-[#62C4EB]"
+                          ? "border-[#2F6B66] bg-[#E3ECE6] font-semibold"
+                          : "border-retro-line bg-white hover:border-[#2F6B66]"
                       }`}
                     >
                       {t.label}
@@ -568,7 +568,7 @@ export default function QuoteWizard() {
                 {searchResults !== null && (
                   <div className="mt-2 overflow-hidden rounded-xl border border-retro-line">
                     {searchResults.length === 0 ? (
-                      <p className="bg-white px-4 py-3 text-sm text-[#8899A6]">
+                      <p className="bg-white px-4 py-3 text-sm text-[#8A8072]">
                         No matches — fill the fields below to create a new contact on send.
                       </p>
                     ) : (
@@ -585,15 +585,15 @@ export default function QuoteWizard() {
                             });
                             setSearchResults(null);
                           }}
-                          className="flex min-h-11 w-full items-center justify-between gap-3 border-b border-retro-line bg-white px-4 py-2.5 text-left text-sm last:border-0 hover:bg-[#EDF7FC]"
+                          className="flex min-h-11 w-full items-center justify-between gap-3 border-b border-retro-line bg-white px-4 py-2.5 text-left text-sm last:border-0 hover:bg-[#E3ECE6]"
                         >
                           <span className="min-w-0">
                             <span className="block truncate font-medium">{c.name || "(no name)"}</span>
-                            <span className="block truncate text-xs text-[#8899A6]">
+                            <span className="block truncate text-xs text-[#8A8072]">
                               {[c.email, c.phone, c.address].filter(Boolean).join(" · ")}
                             </span>
                           </span>
-                          <Plus className="h-4 w-4 shrink-0 text-[#62C4EB]" aria-hidden />
+                          <Plus className="h-4 w-4 shrink-0 text-[#2F6B66]" aria-hidden />
                         </button>
                       ))
                     )}
@@ -635,7 +635,7 @@ export default function QuoteWizard() {
                     value={draft.notes}
                     onChange={(e) => patch({ notes: e.target.value })}
                   />
-                  <p className="mt-1 text-xs text-[#8899A6]">
+                  <p className="mt-1 text-xs text-[#8A8072]">
                     Everything written here MUST be quoted by the AI — notes override photos.
                   </p>
                 </div>
@@ -646,7 +646,7 @@ export default function QuoteWizard() {
               Continue to photos
             </button>
             {!canLeaveStep1 && (
-              <p className="text-center text-xs text-[#8899A6]">Contact name and property address are required.</p>
+              <p className="text-center text-xs text-[#8A8072]">Contact name and property address are required.</p>
             )}
           </div>
         )}
@@ -656,7 +656,7 @@ export default function QuoteWizard() {
           <div className="space-y-4">
             <div className={cardCls}>
               <h2 className="font-display text-base font-semibold">Property photos</h2>
-              <p className="mt-1 text-sm text-[#4B5C6B]">
+              <p className="mt-1 text-sm text-[#4A4238]">
                 More photos, better quote. Capture every dirty area — close-ups of stains and moss, wide shots for
                 scale, all sides of the building, driveways and enclosures.
               </p>
@@ -667,8 +667,8 @@ export default function QuoteWizard() {
                 onChange={(e) => addPhotos(e.target.files)} />
 
               {uploading && (
-                <div className="mt-4 flex items-center gap-3 rounded-xl border border-[#C8E8F5] bg-[#EDF7FC] px-4 py-3 text-sm font-medium">
-                  <Loader2 className="h-4 w-4 shrink-0 animate-spin text-[#3AA8D4]" aria-hidden />
+                <div className="mt-4 flex items-center gap-3 rounded-xl border border-[#C8E8F5] bg-[#E3ECE6] px-4 py-3 text-sm font-medium">
+                  <Loader2 className="h-4 w-4 shrink-0 animate-spin text-[#2F6B66]" aria-hidden />
                   Compressing photos…
                 </div>
               )}
@@ -677,16 +677,16 @@ export default function QuoteWizard() {
               <div className="mt-4 grid grid-cols-2 gap-3">
                 <label
                   htmlFor="q-camera"
-                  className={`flex min-h-[88px] cursor-pointer select-none flex-col items-center justify-center gap-2 rounded-xl border-2 border-retro-line text-sm font-medium hover:border-[#62C4EB] ${uploading ? "pointer-events-none opacity-50" : ""}`}
+                  className={`flex min-h-[88px] cursor-pointer select-none flex-col items-center justify-center gap-2 rounded-xl border-2 border-retro-line text-sm font-medium hover:border-[#2F6B66] ${uploading ? "pointer-events-none opacity-50" : ""}`}
                 >
-                  <Camera className="h-6 w-6 text-[#62C4EB]" aria-hidden />
+                  <Camera className="h-6 w-6 text-[#2F6B66]" aria-hidden />
                   Take photo
                 </label>
                 <label
                   htmlFor="q-gallery"
-                  className={`flex min-h-[88px] cursor-pointer select-none flex-col items-center justify-center gap-2 rounded-xl border-2 border-retro-line text-sm font-medium hover:border-[#62C4EB] ${uploading ? "pointer-events-none opacity-50" : ""}`}
+                  className={`flex min-h-[88px] cursor-pointer select-none flex-col items-center justify-center gap-2 rounded-xl border-2 border-retro-line text-sm font-medium hover:border-[#2F6B66] ${uploading ? "pointer-events-none opacity-50" : ""}`}
                 >
-                  <Images className="h-6 w-6 text-[#62C4EB]" aria-hidden />
+                  <Images className="h-6 w-6 text-[#2F6B66]" aria-hidden />
                   Choose photos
                 </label>
               </div>
@@ -706,7 +706,7 @@ export default function QuoteWizard() {
                           type="button"
                           onClick={() => removePhoto(p.id)}
                           aria-label={`Remove ${p.name}`}
-                          className="absolute right-1 top-1 grid h-7 w-7 place-items-center rounded-lg bg-[#0C1215]/70 text-white"
+                          className="absolute right-1 top-1 grid h-7 w-7 place-items-center rounded-lg bg-[#26211B]/70 text-white"
                         >
                           <X className="h-3.5 w-3.5" aria-hidden />
                         </button>
@@ -733,14 +733,14 @@ export default function QuoteWizard() {
           <div className="space-y-4">
             {analyzing ? (
               <div className={`${cardCls} py-10 text-center`}>
-                <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-[4px] bg-[#EDF7FC]">
-                  <Sparkles className="h-6 w-6 text-[#62C4EB]" aria-hidden />
+                <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-[4px] bg-[#E3ECE6]">
+                  <Sparkles className="h-6 w-6 text-[#2F6B66]" aria-hidden />
                 </div>
                 <h2 className="font-display text-base font-semibold">Analyzing {Math.min(draft.photos.length, 8)} photos</h2>
-                <p className="mx-auto mt-2 max-w-sm text-sm text-[#4B5C6B]">
+                <p className="mx-auto mt-2 max-w-sm text-sm text-[#4A4238]">
                   This takes 30–90 seconds. Stay on this page — results appear automatically.
                 </p>
-                <Loader2 className="mx-auto mt-4 h-5 w-5 animate-spin text-[#3AA8D4]" aria-hidden />
+                <Loader2 className="mx-auto mt-4 h-5 w-5 animate-spin text-[#2F6B66]" aria-hidden />
               </div>
             ) : draft.analysis ? (
               <>
@@ -758,7 +758,7 @@ export default function QuoteWizard() {
                     </div>
                     <div className="min-w-0">
                       <h2 className="font-display text-base font-semibold">Diagnostic summary</h2>
-                      <p className="mt-1 text-sm leading-relaxed text-[#4B5C6B]">
+                      <p className="mt-1 text-sm leading-relaxed text-[#4A4238]">
                         {draft.analysis.assessment.summaryText}
                       </p>
                     </div>
@@ -787,7 +787,7 @@ export default function QuoteWizard() {
                         Findings ({draft.analysis.assessment.findings.length})
                       </h3>
                     </div>
-                    <div className="divide-y divide-[#EFF4F7]">
+                    <div className="divide-y divide-[#E2D6BF]">
                       {draft.analysis.assessment.findings.map((f, i) => (
                         <div key={i} className="px-5 py-4">
                           <div className="flex flex-wrap items-center gap-2">
@@ -797,17 +797,17 @@ export default function QuoteWizard() {
                                   ? "bg-[#FDE8E4] text-[#B3341C]"
                                   : f.severity === "medium"
                                     ? "bg-[#FEF3D9] text-[#92600A]"
-                                    : "bg-[#EDF7FC] text-[#3AA8D4]"
+                                    : "bg-[#E3ECE6] text-[#2F6B66]"
                               }`}
                             >
                               {f.severity}
                             </span>
                             <p className="text-sm font-medium">{f.area}</p>
                           </div>
-                          <p className="mt-1 text-xs text-[#4B5C6B]">{f.issue}</p>
+                          <p className="mt-1 text-xs text-[#4A4238]">{f.issue}</p>
                           {(f.remediation || f.professionalApproach) && (
-                            <p className="mt-2 rounded-xl bg-retro-pool p-3 text-xs leading-relaxed text-[#4B5C6B]">
-                              <span className="font-semibold text-[#0C1215]">Remediation: </span>
+                            <p className="mt-2 rounded-xl bg-retro-pool p-3 text-xs leading-relaxed text-[#4A4238]">
+                              <span className="font-semibold text-[#26211B]">Remediation: </span>
                               {f.remediation || f.professionalApproach}
                             </p>
                           )}
@@ -822,17 +822,17 @@ export default function QuoteWizard() {
                   <div className="border-b border-retro-line px-5 py-3">
                     <h3 className="font-display text-sm font-semibold">Recommended services</h3>
                   </div>
-                  <div className="divide-y divide-[#EFF4F7]">
+                  <div className="divide-y divide-[#E2D6BF]">
                     {draft.analysis.recommendedServices
                       .filter((s) => s.category !== "Pricing Note")
                       .map((s, i) => (
                         <div key={i} className="flex items-start justify-between gap-3 px-5 py-3">
                           <div className="min-w-0">
-                            <p className={`text-sm ${s.isAddon ? "italic text-[#4B5C6B]" : "font-medium"}`}>
+                            <p className={`text-sm ${s.isAddon ? "italic text-[#4A4238]" : "font-medium"}`}>
                               {s.isAddon ? "+ " : ""}
                               {s.description}
                             </p>
-                            <p className="text-xs text-[#8899A6]">{s.category}</p>
+                            <p className="text-xs text-[#8A8072]">{s.category}</p>
                           </div>
                           <p className="shrink-0 text-sm font-semibold">${money(s.estimatedPrice)}</p>
                         </div>
@@ -852,18 +852,18 @@ export default function QuoteWizard() {
                   </button>
                 </div>
                 {draft.lineItems.length > 0 && (
-                  <p className="text-center text-xs text-[#8899A6]">
+                  <p className="text-center text-xs text-[#8A8072]">
                     Building the quote again replaces your edited line items with these prices.
                   </p>
                 )}
               </>
             ) : (
               <div className={`${cardCls} py-10 text-center`}>
-                <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-[4px] bg-[#EDF7FC]">
-                  <Sparkles className="h-6 w-6 text-[#62C4EB]" aria-hidden />
+                <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-[4px] bg-[#E3ECE6]">
+                  <Sparkles className="h-6 w-6 text-[#2F6B66]" aria-hidden />
                 </div>
                 <h2 className="font-display text-base font-semibold">Ready to analyze</h2>
-                <p className="mx-auto mt-2 max-w-sm text-sm text-[#4B5C6B]">
+                <p className="mx-auto mt-2 max-w-sm text-sm text-[#4A4238]">
                   {Math.min(draft.photos.length, 8)} photo{draft.photos.length !== 1 ? "s" : ""} plus your notes go to
                   the AI, which prices every surface off the approved rate table.
                 </p>
@@ -891,7 +891,7 @@ export default function QuoteWizard() {
             <div className={`${cardCls} p-0 sm:p-0`}>
               <div className="border-b border-retro-line px-5 py-3">
                 <h2 className="font-display text-base font-semibold">Quote editor</h2>
-                <p className="text-xs text-[#8899A6]">Tap any field to edit. Prices are per unit.</p>
+                <p className="text-xs text-[#8A8072]">Tap any field to edit. Prices are per unit.</p>
               </div>
 
               {pricingNoteItem && (
@@ -902,16 +902,16 @@ export default function QuoteWizard() {
               )}
 
               {pricedItems.length === 0 ? (
-                <p className="px-5 py-8 text-center text-sm text-[#8899A6]">
+                <p className="px-5 py-8 text-center text-sm text-[#8A8072]">
                   No line items yet — run the analysis (step 3) or add a custom line below.
                 </p>
               ) : (
-                <div className="divide-y divide-[#EFF4F7]">
+                <div className="divide-y divide-[#E2D6BF]">
                   {draft.lineItems.map((item) =>
                     item.category === "Pricing Note" ? null : (
                       <div key={item.id} className={`px-5 py-4 ${item.isAddon ? "bg-retro-paper" : ""}`}>
                         <div className="mb-2 flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-bold uppercase tracking-wide text-[#8899A6]">
+                          <span className="text-[10px] font-bold uppercase tracking-wide text-[#8A8072]">
                             {item.category}
                             {item.isAddon ? " · add-on" : ""}
                           </span>
@@ -919,7 +919,7 @@ export default function QuoteWizard() {
                             type="button"
                             onClick={() => removeItem(item.id)}
                             aria-label="Remove line item"
-                            className="grid h-9 w-9 place-items-center rounded-lg text-[#8899A6] hover:bg-[#FDF2EF] hover:text-[#B3341C]"
+                            className="grid h-9 w-9 place-items-center rounded-lg text-[#8A8072] hover:bg-[#FDF2EF] hover:text-[#B3341C]"
                           >
                             <Trash2 className="h-4 w-4" aria-hidden />
                           </button>
@@ -931,7 +931,7 @@ export default function QuoteWizard() {
                           onChange={(e) => updateItem(item.id, { description: e.target.value })}
                         />
                         <div className="mt-2 flex items-center gap-2">
-                          <label className="flex flex-1 items-center gap-1.5 text-xs text-[#8899A6]">
+                          <label className="flex flex-1 items-center gap-1.5 text-xs text-[#8A8072]">
                             Qty
                             <input
                               type="number"
@@ -942,7 +942,7 @@ export default function QuoteWizard() {
                               onChange={(e) => updateItem(item.id, { qty: Math.max(0, parseFloat(e.target.value) || 0) })}
                             />
                           </label>
-                          <label className="flex flex-1 items-center gap-1.5 text-xs text-[#8899A6]">
+                          <label className="flex flex-1 items-center gap-1.5 text-xs text-[#8A8072]">
                             $
                             <input
                               type="number"
@@ -983,14 +983,14 @@ export default function QuoteWizard() {
                     onClick={() => patch({ discountPct: pct, ...(pct === 0 ? { discountReason: "" } : {}) })}
                     className={`min-h-11 rounded-xl border px-4 text-sm font-medium ${
                       draft.discountPct === pct
-                        ? "border-[#62C4EB] bg-[#EDF7FC] font-semibold"
-                        : "border-retro-line bg-white hover:border-[#62C4EB]"
+                        ? "border-[#2F6B66] bg-[#E3ECE6] font-semibold"
+                        : "border-retro-line bg-white hover:border-[#2F6B66]"
                     }`}
                   >
                     {pct === 0 ? "None" : `${pct}%`}
                   </button>
                 ))}
-                <label className="flex min-h-11 items-center gap-1.5 text-sm text-[#4B5C6B]">
+                <label className="flex min-h-11 items-center gap-1.5 text-sm text-[#4A4238]">
                   Custom
                   <input
                     type="number"
@@ -1030,7 +1030,7 @@ export default function QuoteWizard() {
 
             {/* Totals */}
             <div className={`${cardCls} p-0 sm:p-0`}>
-              <div className="flex justify-between px-5 py-3 text-sm text-[#4B5C6B]">
+              <div className="flex justify-between px-5 py-3 text-sm text-[#4A4238]">
                 <span>Subtotal</span>
                 <span>${money(subtotal)}</span>
               </div>
@@ -1042,7 +1042,7 @@ export default function QuoteWizard() {
                   <span>-${money(discountAmt)}</span>
                 </div>
               )}
-              <div className="flex items-center justify-between rounded-b-2xl bg-[#0C1215] px-5 py-4 text-white">
+              <div className="flex items-center justify-between rounded-b-2xl bg-[#26211B] px-5 py-4 text-white">
                 <span className="text-sm font-bold">TOTAL DUE</span>
                 <span className="text-xl font-bold">${money(total)}</span>
               </div>
@@ -1071,20 +1071,20 @@ export default function QuoteWizard() {
               <h2 className="font-display text-base font-semibold">Quote {draft.quoteNumber}</h2>
               <dl className="mt-3 space-y-1.5 text-sm">
                 <div className="flex justify-between gap-4">
-                  <dt className="text-[#8899A6]">Contact</dt>
+                  <dt className="text-[#8A8072]">Contact</dt>
                   <dd className="text-right font-medium">{draft.contact.name}</dd>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <dt className="text-[#8899A6]">Property</dt>
+                  <dt className="text-[#8A8072]">Property</dt>
                   <dd className="min-w-0 truncate text-right font-medium">{draft.contact.address}</dd>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <dt className="text-[#8899A6]">Line items</dt>
+                  <dt className="text-[#8A8072]">Line items</dt>
                   <dd className="text-right font-medium">{pricedItems.length}</dd>
                 </div>
                 {draft.discountPct > 0 && (
                   <div className="flex justify-between gap-4">
-                    <dt className="text-[#8899A6]">Discount</dt>
+                    <dt className="text-[#8A8072]">Discount</dt>
                     <dd className="text-right font-medium">
                       {draft.discountPct}% — {draft.discountReason}
                     </dd>
@@ -1100,7 +1100,7 @@ export default function QuoteWizard() {
             {/* PDF exports */}
             <div className={cardCls}>
               <h3 className="font-display text-sm font-semibold">Print / PDF</h3>
-              <p className="mt-1 text-xs text-[#8899A6]">
+              <p className="mt-1 text-xs text-[#8A8072]">
                 Opens a print window — choose &quot;Save as PDF&quot; as the destination.
               </p>
               <div className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -1116,7 +1116,7 @@ export default function QuoteWizard() {
             {/* Send to GHL */}
             <div className={cardCls}>
               <h3 className="font-display text-sm font-semibold">Send to GHL</h3>
-              <p className="mt-1 text-xs leading-relaxed text-[#8899A6]">
+              <p className="mt-1 text-xs leading-relaxed text-[#8A8072]">
                 Upserts the contact, files the opportunity, creates the estimate with a 50% deposit due on acceptance,
                 and sends it by text and email. GHL becomes the system of record.
               </p>
@@ -1154,7 +1154,7 @@ export default function QuoteWizard() {
                           r.status === "ok"
                             ? "bg-[#E7F6EE] text-[#16a34a]"
                             : r.status === "skip"
-                              ? "bg-retro-pool text-[#8899A6]"
+                              ? "bg-retro-pool text-[#8A8072]"
                               : "bg-[#FDF2EF] text-[#B3341C]"
                         }`}
                       >
@@ -1162,7 +1162,7 @@ export default function QuoteWizard() {
                       </span>
                       <span className="min-w-0">
                         <span className="font-medium">{label}</span>
-                        {r.detail && <span className="block text-xs text-[#8899A6]">{r.detail}</span>}
+                        {r.detail && <span className="block text-xs text-[#8A8072]">{r.detail}</span>}
                       </span>
                     </li>
                   ))}

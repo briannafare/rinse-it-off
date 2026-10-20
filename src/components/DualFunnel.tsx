@@ -37,7 +37,7 @@ export function DualFunnel() {
           <a
             key={f.title}
             href={f.href}
-            className="frame group flex flex-col overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-retro-paper"
+            className="frame group flex flex-col overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-retro-paper"
           >
             <div className="relative aspect-[3/2] overflow-hidden">
               <Image
@@ -48,12 +48,12 @@ export function DualFunnel() {
                 className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
               />
             </div>
-            <div className={`flex flex-1 flex-col p-7 md:p-9 ${i === 0 ? "bg-brand-blue text-[#0C1215]" : "bg-[#0C1215] text-white"}`}>
+            <div className={`flex flex-1 flex-col p-7 md:p-9 ${i === 0 ? "bg-brand-blue text-[#F5EDDC]" : "bg-[#26211B] text-white"}`}>
               <h2 className="text-[2.2rem] leading-none md:text-[2.8rem]">{f.title}</h2>
-              <p className={`mt-3 max-w-md ${i === 0 ? "text-[#0C1215]/85" : "text-white/80"}`}>{f.body}</p>
+              <p className={`mt-3 max-w-md ${i === 0 ? "text-[#F5EDDC]/90" : "text-white/80"}`}>{f.body}</p>
               <span
-                className={`mt-6 inline-flex items-center gap-2 self-start rounded-full px-5 py-3 text-sm font-semibold transition-transform duration-300 group-hover:-translate-y-0.5 motion-reduce:transition-none ${
-                  i === 0 ? "bg-[#0C1215] text-white" : "bg-white text-[#0C1215]"
+                className={`btn-print mt-6 inline-flex items-center gap-2 self-start px-5 py-3 transition-transform duration-300 group-hover:-translate-y-0.5 motion-reduce:transition-none ${
+                  i === 0 ? "bg-[#F5EDDC] text-[#26211B]" : "bg-[#E4A33C] text-[#26211B]"
                 }`}
               >
                 {f.cta}

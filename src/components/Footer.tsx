@@ -3,7 +3,7 @@ import { Phone, Mail, MapPin, ArrowRight, ShieldCheck } from "lucide-react";
 import { AI_PAGES, visibleHere } from "@/lib/ai-pages";
 
 const linkClass =
-  "block rounded-sm py-1 text-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none";
+  "block rounded-sm py-1 text-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none";
 
 // Slugs map to the six method-matched services at /services/[slug]
 // (single source of truth: src/lib/services.ts → SERVICE_SLUGS).
@@ -73,21 +73,21 @@ export function Footer() {
             <div className="space-y-1.5">
               <a
                 href="tel:+19716264146"
-                className="flex min-h-11 items-center gap-2.5 rounded-sm py-1 text-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+                className="flex min-h-11 items-center gap-2.5 rounded-sm py-1 text-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
               >
-                <Phone className="w-4 h-4 text-[#62C4EB]" /> (971) 626-4146
+                <Phone className="w-4 h-4 text-[#2F6B66]" /> (971) 626-4146
               </a>
               <a
                 href="mailto:hello@rinseitoff.com"
-                className="flex min-h-11 items-center gap-2.5 rounded-sm py-1 text-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+                className="flex min-h-11 items-center gap-2.5 rounded-sm py-1 text-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
               >
-                <Mail className="w-4 h-4 text-[#62C4EB]" /> hello@rinseitoff.com
+                <Mail className="w-4 h-4 text-[#2F6B66]" /> hello@rinseitoff.com
               </a>
               <div className="flex items-center gap-2.5 py-1 text-sm text-white/70">
-                <MapPin className="w-4 h-4 text-[#62C4EB]" /> Portland, Oregon &amp; surrounding metro
+                <MapPin className="w-4 h-4 text-[#2F6B66]" /> Portland, Oregon &amp; surrounding metro
               </div>
               <div className="flex items-center gap-2.5 py-1 text-sm text-white/70">
-                <ShieldCheck className="w-4 h-4 text-[#62C4EB]" /> Insured
+                <ShieldCheck className="w-4 h-4 text-[#2F6B66]" /> Insured
               </div>
             </div>
           </div>
@@ -143,7 +143,7 @@ export function Footer() {
             </p>
             <a
               href="/assessment"
-              className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+              className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3.5 text-sm font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
             >
               Free Assessment
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" />
@@ -161,19 +161,19 @@ export function Footer() {
               href="https://www.facebook.com/profile.php?id=61594392927890"
               target="_blank"
               rel="noopener"
-              className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB]"
+              className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66]"
             >
               Facebook
             </a>
             <a
               href="/terms"
-              className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+              className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
             >
               Terms
             </a>
             <a
               href="/privacy"
-              className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+              className="rounded-sm text-sm text-white/65 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
             >
               Privacy
             </a>
@@ -183,7 +183,7 @@ export function Footer() {
                 href="https://eighty5labs.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+                className="rounded-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
               >
                 eighty5labs
               </a>

@@ -47,12 +47,12 @@ const typeConfig: Record<string, { icon: React.ReactNode; label: string; color: 
   audio:    { icon: Icons.headphones, label: 'Audio',    color: '#d4508c', bg: 'rgba(244,111,168,0.08)' },
   pdf:      { icon: Icons.file,     label: 'PDF',        color: '#d86843', bg: 'rgba(255,138,107,0.08)' },
   doc:      { icon: Icons.file,     label: 'Document',   color: '#457BF1', bg: 'rgba(69,123,241,0.08)' },
-  image:    { icon: Icons.image,    label: 'Visual',     color: '#2a9d5c', bg: 'rgba(77,255,166,0.08)' },
-  spreadsheet: { icon: Icons.table, label: 'Reference',  color: '#2a9d5c', bg: 'rgba(77,255,166,0.08)' },
+  image:    { icon: Icons.image,    label: 'Visual',     color: '#2a9d5c', bg: 'rgba(228,163,60,0.08)' },
+  spreadsheet: { icon: Icons.table, label: 'Reference',  color: '#2a9d5c', bg: 'rgba(228,163,60,0.08)' },
   reference: { icon: Icons.notebook, label: 'Guide',     color: '#98A2A8', bg: '#F2F2EE' },
-  checklist: { icon: Icons.checkSquare, label: 'Checklist', color: '#2a9d5c', bg: 'rgba(77,255,166,0.08)' },
+  checklist: { icon: Icons.checkSquare, label: 'Checklist', color: '#2a9d5c', bg: 'rgba(228,163,60,0.08)' },
   practice:  { icon: Icons.mic,    label: 'Practice',   color: '#8E7BFF', bg: 'rgba(142,123,255,0.08)' },
-  quiz:      { icon: Icons.sparkle, label: 'Quiz',       color: '#2a9d5c', bg: 'rgba(77,255,166,0.08)' },
+  quiz:      { icon: Icons.sparkle, label: 'Quiz',       color: '#2a9d5c', bg: 'rgba(228,163,60,0.08)' },
 };
 
 function getDriveLink(lesson: Lesson): string | null {

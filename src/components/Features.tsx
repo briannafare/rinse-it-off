@@ -179,7 +179,7 @@ function CursorScheduler() {
           style={{ left: cursorPos.x - 6, top: cursorPos.y - 2, transform: phase === "clicking" ? "scale(0.85)" : "scale(1)" }}
           width="20" height="24" viewBox="0 0 20 24" fill="none"
         >
-          <path d="M4 1L4 16L8 12L12 19L15 17.5L11 10.5L16 10L4 1Z" fill="white" stroke="#0C1215" strokeWidth="1.5" strokeLinejoin="round" />
+          <path d="M4 1L4 16L8 12L12 19L15 17.5L11 10.5L16 10L4 1Z" fill="white" stroke="#26211B" strokeWidth="1.5" strokeLinejoin="round" />
         </svg>
       )}
     </div>

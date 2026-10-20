@@ -44,7 +44,7 @@ export function WorkGallery() {
   }, []);
 
   return (
-    <section id="work" className="bg-[#0C1215] py-16 text-white md:py-24">
+    <section id="work" className="bg-[#26211B] py-16 text-white md:py-24">
       <div className="container-site flex items-end justify-between gap-6">
         <header className="max-w-2xl">
           <h2
@@ -54,7 +54,7 @@ export function WorkGallery() {
             Straight off the truck.
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-white/75">
-            Phone photos from real jobs around the Portland metro. Driveways and homes,
+            Phone photos from real jobs. Driveways and homes,
             clubhouses, parking lots and event grounds.
           </p>
         </header>
@@ -65,7 +65,7 @@ export function WorkGallery() {
               type="button"
               onClick={() => step(d)}
               aria-label={d === 1 ? "Next photo" : "Previous photo"}
-              className="flex h-11 w-11 items-center justify-center rounded-full ring-1 ring-white/30 transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB]"
+              className="flex h-11 w-11 items-center justify-center rounded-full ring-1 ring-white/30 transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66]"
             >
               <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} className={`h-4 w-4 ${d === -1 ? "rotate-180" : ""}`}>
                 <path d="M4 10h12M11 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />

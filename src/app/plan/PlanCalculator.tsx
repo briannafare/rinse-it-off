@@ -37,32 +37,32 @@ const DS = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --ink:           #0C1215;
-    --blue:          #62C4EB;
-    --blue-deep:     #3AA8D4;
-    --blue-wash:     #EDF7FC;
-    --mint:          #4DFFA6;
+    --ink:           #26211B;
+    --blue:          #2F6B66;
+    --blue-deep:     #2F6B66;
+    --blue-wash:     #E3ECE6;
+    --mint:          #E4A33C;
     --surface:       #FFFFFF;
-    --surface-alt:   #F4F7F8;
-    --text-primary:  #0C1215;
-    --text-secondary:#4B5C6B;
-    --text-muted:    #8C9AA5;
-    --border:        #E4ECF1;
-    --border-light:  #EFF4F7;
+    --surface-alt:   #EDE2CB;
+    --text-primary:  #26211B;
+    --text-secondary:#4A4238;
+    --text-muted:    #8A8072;
+    --border:        #E2D6BF;
+    --border-light:  #E2D6BF;
     --font-display: "neue-haas-grotesk-display", system-ui, -apple-system, sans-serif;
     --font-body:    "neue-haas-grotesk-text", system-ui, -apple-system, sans-serif;
     --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 24px; --r-2xl: 32px;
-    --shadow-soft: 0 2px 16px rgba(12,18,21,0.05);
+    --shadow-soft: 0 2px 16px rgba(38,33,27,0.05);
     --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
     --aura-water:
-      radial-gradient(120% 120% at 12% 10%, #DDF1FB 0%, transparent 55%),
+      radial-gradient(120% 120% at 12% 10%, #E3ECE6 0%, transparent 55%),
       radial-gradient(120% 120% at 88% 22%, #E9F6FC 0%, transparent 55%),
-      radial-gradient(140% 130% at 55% 100%, #EEF5FB 0%, transparent 60%);
+      radial-gradient(140% 130% at 55% 100%, #E3ECE6 0%, transparent 60%);
   }
 
   html { -webkit-font-smoothing: antialiased; }
   body { font-family: var(--font-body); color: var(--text-primary); background: var(--surface); }
-  ::selection { background: rgba(77,255,166,0.25); }
+  ::selection { background: rgba(228,163,60,0.25); }
 
   .plan { font-family: var(--font-body); color: var(--text-primary); background: var(--surface); min-height: 100vh; width: 100%; max-width: 100vw; overflow-x: hidden; }
   .plan * { min-width: 0; }
@@ -137,8 +137,8 @@ const DS = `
   .choice .sub { display: block; font-size: 0.8125rem; color: var(--text-muted); font-weight: 400; margin-top: 2px; }
 
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 56px; padding: 16px 24px; border: none; border-radius: var(--r-md); font-family: var(--font-display); font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.01em; cursor: pointer; transition: transform 0.2s var(--ease-out-expo), background 0.2s; }
-  .btn-ink { background: var(--ink); color: #fff; }
-  .btn-ink:hover { background: #1a232a; }
+  .btn-ink { background: #2F6B66; color: #F5EDDC; border: 2px solid #26211B; border-radius: 14px; box-shadow: 4px 4px 0 #26211B; font-family: var(--font-label); font-weight: 700; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+  .btn-ink:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #26211B; }
   .btn-ink:disabled { opacity: 0.45; cursor: not-allowed; }
   .btn-ghost { background: transparent; color: var(--text-secondary); font-family: var(--font-body); font-weight: 500; font-size: 0.9375rem; min-height: 44px; }
   .btn-ghost:hover { color: var(--ink); }
@@ -284,7 +284,7 @@ const DS = `
   .sms-terms a { color: var(--blue-deep); text-decoration: underline; }
 
   .done { text-align: center; padding: 8px 0; }
-  .safe { background: var(--surface, #F4F7F8); border: 1px solid var(--line, #D9E1E5); border-radius: var(--r-lg); padding: 18px 20px; margin-top: 24px; text-align: left; }
+  .safe { background: var(--surface, #EDE2CB); border: 1px solid var(--line, #D9E1E5); border-radius: var(--r-lg); padding: 18px 20px; margin-top: 24px; text-align: left; }
   .safe h3 { font-size: 1rem; margin: 0 0 6px; }
   .safe p { margin: 0 0 12px; font-size: 0.9375rem; line-height: 1.5; }
   .safe .btn { display: inline-flex; width: auto; }

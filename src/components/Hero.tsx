@@ -43,7 +43,7 @@ export function Hero() {
             <span className="relative inline-block">
               <span className="relative z-10">Dirty</span>
               <svg className="absolute -bottom-1 left-0 w-full h-3 z-0" viewBox="0 0 200 12" fill="none" preserveAspectRatio="none">
-                <path d="M2 8 C40 3, 80 10, 120 5 S180 9, 198 6" stroke="#4DFFA6" strokeWidth="3" strokeLinecap="round" fill="none" />
+                <path d="M2 8 C40 3, 80 10, 120 5 S180 9, 198 6" stroke="#E4A33C" strokeWidth="3" strokeLinecap="round" fill="none" />
               </svg>
             </span>{" "}Buildings<br />
             <span className="font-serif font-normal italic text-brand-blue">Clean.</span>

@@ -51,7 +51,7 @@ const SLIDES: Slide[] = [
   {
     key: "home",
     tab: "For your home",
-    eyebrow: "Exterior cleaning across the Portland metro",
+    eyebrow: "Exterior cleaning for homes and businesses",
     headline: "Free window cleaning,",
     accent: "four times a year.",
     body: (
@@ -64,15 +64,15 @@ const SLIDES: Slide[] = [
       </>
     ),
     cta: { label: "Get my home price", href: "/plan?src=home-hero" },
-    img: "/brand/retro/r6-07-pnw-glasswall-wfp.webp",
+    img: "/brand/retro/hero-home.webp",
     pos: "object-[46%_38%] md:object-[40%_40%]",
-    alt: "Two Rinse It Off cleaners washing the tall windows of a mid-century Portland house from the ground with a water-fed pole",
+    alt: "Two Rinse It Off cleaners at a mid-century house with a wall of tall windows, one washing the high glass from the ground with a water-fed pole",
     priority: true,
   },
   {
     key: "commercial",
     tab: "For your business",
-    eyebrow: "Exterior cleaning across the Portland metro",
+    eyebrow: "Exterior cleaning for homes and businesses",
     headline: "A free 21-point inspection",
     accent: "of your whole property.",
     body: (
@@ -83,9 +83,9 @@ const SLIDES: Slide[] = [
       </>
     ),
     cta: { label: "Book my free inspection", href: "/assessment?type=commercial" },
-    img: "/brand/retro/b4-shopping.webp",
+    img: "/brand/retro/hero-biz.webp",
     pos: "object-[38%_50%] md:object-[45%_50%]",
-    alt: "A Rinse It Off cleaner running a surface cleaner along a shopping-center walkway as shoppers pass, the service truck at the curb",
+    alt: "Two Rinse It Off cleaners at a mid-century storefront at golden hour, one running a surface cleaner across the entry walk, one rinsing the glass",
     priority: false,
   },
 ];
@@ -183,24 +183,24 @@ export function CinematicHero() {
                 <H
                   key={`${s.key}-h1-${active}`}
                   {...rise(0.08)}
-                  className="font-title text-[clamp(2.6rem,10vw,5.2rem)] leading-[1] text-brand-black [text-shadow:0.055em_0.055em_0_#62C4EB] [text-wrap:balance] md:text-[clamp(2.9rem,5.2vw,5.4rem)]"
+                  className="font-title text-[clamp(2.6rem,10vw,5.2rem)] leading-[1] text-brand-black [text-wrap:balance] md:text-[clamp(2.9rem,5.2vw,5.4rem)]"
                 >
-                  {s.headline} <span className="title-accent text-[#2E9BC6]">{s.accent}</span>
+                  {s.headline} <span className="title-accent text-[#2F6B66]">{s.accent}</span>
                 </H>
               );
             })()}
 
-            <motion.p key={`${s.key}-body-${active}`} {...rise(0.16)} className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-[#3B4650] md:text-lg">
+            <motion.p key={`${s.key}-body-${active}`} {...rise(0.16)} className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-[#4A4238] md:text-lg">
               {s.body}
             </motion.p>
 
             <motion.div key={`${s.key}-cta-${active}`} {...rise(0.24)} className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <RetroButton href={s.cta.href} tone="sun" signature>
+              <RetroButton href={s.cta.href} signature>
                 {s.cta.label}
               </RetroButton>
               <a
                 href={PHONE_TEL}
-                className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-base font-semibold text-brand-black hover:text-[#2E9BC6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue"
+                className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-base font-semibold text-brand-black hover:text-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue"
               >
                 <Phone className="h-4 w-4" aria-hidden />
                 {PHONE_DISPLAY}

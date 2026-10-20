@@ -10,16 +10,16 @@ import { RetroButton } from "@/components/retro/Bits";
  *  next step instead of reaching for a line. */
 export function FinalCTA() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="relative flex min-h-[70vh] flex-col">
+    <section className="relative overflow-hidden bg-retro-paper p-3 md:p-5">
+      <div className="frame relative flex min-h-[70vh] flex-col overflow-hidden">
         <Image
-          src="/brand/retro/r6-06-pnw-wave.webp"
-          alt="A Rinse It Off cleaner waving from the service truck to a neighbor on her lawn in a Portland neighborhood"
+          src="/brand/retro/final-truck.webp"
+          alt="A Rinse It Off crew gearing up beside their work truck on a leafy street of mid-century houses"
           fill
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0C1215]/85 via-black/30 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#26211B]/85 via-black/30 to-black/10" />
 
         <div className="container-site relative flex flex-1 flex-col items-start justify-end pb-16 pt-28 md:pb-20">
           <h2
@@ -28,7 +28,7 @@ export function FinalCTA() {
           >
             Free walkthrough.
             <br />
-            <span style={{ color: "#62C4EB" }}>Firm price the same day.</span>
+            <span>Firm price the same day.</span>
           </h2>
           <p className="mt-4 max-w-lg text-lg text-white/85">
             We walk the property with you, note every surface that needs work, and
@@ -37,12 +37,12 @@ export function FinalCTA() {
             clean isn&rsquo;t right, we come back and re-rinse it free within 48 hours.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-6">
-            <RetroButton href="/assessment" tone="sun" signature>
+            <RetroButton href="/assessment" tone="gold" signature>
               Get your same-day quote
             </RetroButton>
             <a
               href="tel:+19716264146"
-              className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-[#26211B] motion-reduce:transition-none"
             >
               <Phone className="h-4 w-4" aria-hidden />
               (971) 626-4146
