@@ -83,9 +83,9 @@ const SLIDES: Slide[] = [
       </>
     ),
     cta: { label: "Book my free inspection", href: "/assessment?type=commercial" },
-    img: "/brand/retro/r6-12-com-shopping-center.webp",
+    img: "/brand/retro/b4-shopping.webp",
     pos: "object-[38%_50%] md:object-[45%_50%]",
-    alt: "A Rinse It Off cleaner running a surface cleaner along a shopping-center walkway, the service truck parked at the curb",
+    alt: "A Rinse It Off cleaner running a surface cleaner along a shopping-center walkway as shoppers pass, the service truck at the curb",
     priority: false,
   },
 ];

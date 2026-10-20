@@ -13,16 +13,16 @@ const FUNNELS = [
     body: "Driveway, siding, roof, gutters, deck. We walk it with you, then hand you a firm price the same day, itemized so you can take part of it or all of it.",
     cta: "Get my home quote",
     href: "/assessment?type=residential",
-    img: "/brand/retro/r6-10-pnw-crew-lineup.webp",
-    alt: "The Rinse It Off crew lined up in front of their truck outside a mid-century Portland house",
+    img: "/brand/retro/i-home-wide.webp",
+    alt: "A flat 1960s-style illustration of a cleaner washing a house's tall windows with a water-fed pole while the homeowners watch",
   },
   {
     title: "For my business",
     body: "Storefronts, offices, HOAs, multifamily, clubhouses. Start with the free 21-point audit and you get photos of every problem area, which is the part ownership actually reads.",
     cta: "Book a property audit",
     href: "/assessment?type=commercial",
-    img: "/brand/retro/r6-14-com-inspection.webp",
-    alt: "A Rinse It Off inspector walking a property manager through the 21-point inspection outside a mid-century office",
+    img: "/brand/retro/i-biz-wide.webp",
+    alt: "A flat 1960s-style illustration of two cleaners at a mid-century storefront, one on the walkway with a surface cleaner, one on the glass",
   },
 ];
 
@@ -39,7 +39,7 @@ export function DualFunnel() {
             href={f.href}
             className="group flex flex-col overflow-hidden rounded-[4px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-retro-paper"
           >
-            <div className="film-grain relative aspect-[3/2] overflow-hidden">
+            <div className="relative aspect-[3/2] overflow-hidden">
               <Image
                 src={f.img}
                 alt={f.alt}

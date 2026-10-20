@@ -345,7 +345,7 @@ export default function CommercialPage() {
         <section className="relative overflow-hidden">
           <div className="relative h-[70vh] min-h-[480px]">
             <Image
-              src="/brand/retro/r6-13-com-apartments.webp"
+              src="/brand/retro/b5-apartments.webp"
               alt="Two Rinse It Off cleaners washing the walkways of a mid-century garden apartment complex"
               fill
               sizes="100vw"
