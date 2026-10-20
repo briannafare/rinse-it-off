@@ -85,7 +85,7 @@ export const ABOUT_PROMISES: { title: string; body: string; link?: { href: strin
   },
   {
     title: "The 48-hour re-rinse guarantee",
-    body: "Tell us within 24 hours of your service and we'll re-rinse it free within 48.",
+    body: "If there's a spot you're not happy with, tell us and we'll re-rinse it free within 48 hours of your service.",
     link: { href: "/terms", label: "The details are on the terms page" },
   },
   {
