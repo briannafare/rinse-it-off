@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SERVICE_SLUGS } from "@/lib/services";
+import { GUTTER_PATH } from "@/lib/gutters";
 import { AREAS } from "@/lib/areas";
 import { AI_PAGES, isPublishable } from "@/lib/ai-pages";
 import { client } from "@/sanity/lib/client";
@@ -15,7 +16,7 @@ type BlogEntry = { slug: string; date: string; updatedAt?: string };
 /** Date the static pages' copy last changed. A lastmod of "now" on every
  *  request tells crawlers everything changed on every fetch, so they learn to
  *  ignore the field. Bump this when page copy changes. */
-const PAGES_UPDATED = new Date("2026-10-19");
+const PAGES_UPDATED = new Date("2026-10-20");
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = PAGES_UPDATED;
@@ -28,6 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/assessment", priority: 0.9 },
     { path: "/commercial", priority: 0.8 },
     { path: "/services", priority: 0.8 },
+    { path: "/about", priority: 0.6 },
     { path: "/areas", priority: 0.7 },
     { path: "/blog", priority: 0.7 },
     { path: "/contact", priority: 0.6 },
@@ -36,10 +38,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // The six method-matched services → /services/[slug].
-  const servicePages = SERVICE_SLUGS.map((slug) => ({
-    path: `/services/${slug}`,
-    priority: 0.7,
-  }));
+  const servicePages = [
+    ...SERVICE_SLUGS.map((slug) => ({
+      path: `/services/${slug}`,
+      priority: 0.7,
+    })),
+    // Gutters: a service with its own route, not one of the six methods.
+    { path: GUTTER_PATH, priority: 0.7 },
+  ];
 
   // Every service area → /areas/[slug].
   const areaPages = AREAS.map((a) => ({

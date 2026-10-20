@@ -25,7 +25,7 @@ export type Service = Method & {
 const EXTRA: Record<string, Omit<Service, keyof Method>> = {
   roof: {
     slug: "roof-soft-wash",
-    h1: "Roof soft washing",
+    h1: "Roof moss removal and soft washing",
     intro:
       "The roof is the most expensive surface on the property and the easiest to ruin with the wrong approach — high pressure strips the protective granules off asphalt shingles. We soft wash instead: a low-pressure application of biodegradable cleaners that kill moss, algae and mildew at the root, then rinse clean. Home or commercial building, the roof reads the same to us — assess first, match the chemistry, never blast.",
     whenYouNeedIt:

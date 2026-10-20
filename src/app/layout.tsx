@@ -129,6 +129,10 @@ const jsonLd = {
           ...SERVICE_OFFERS,
           {
             "@type": "Offer",
+            itemOffered: { "@type": "Service", name: "Gutter cleaning", url: `${SITE_URL}/services/gutter-cleaning`, provider: { "@id": BUSINESS_ID } },
+          },
+          {
+            "@type": "Offer",
             itemOffered: { "@type": "Service", name: "Commercial exterior cleaning", url: `${SITE_URL}/commercial`, provider: { "@id": BUSINESS_ID } },
           },
         ],

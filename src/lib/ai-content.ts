@@ -21,6 +21,36 @@ import {
 } from "@/lib/commercial";
 import { PLAN_BODY, PLAN_EVERY_VISIT, PLAN_HEADLINE, PLAN_META_DESCRIPTION, PLAN_NOTE, PLAN_SEASONS } from "@/lib/plan-copy";
 import { SITE_DESCRIPTION } from "@/lib/site";
+import {
+  ABOUT_H1,
+  ABOUT_HONK,
+  ABOUT_INTRO,
+  ABOUT_META_DESCRIPTION,
+  ABOUT_PRICE_HOME,
+  ABOUT_PRICE_OTHER,
+  ABOUT_PRICE_TITLE,
+  ABOUT_PROMISES,
+  ABOUT_PROMISES_TITLE,
+  ABOUT_REACH,
+  ABOUT_RIG,
+  ABOUT_RIG_INTRO,
+  ABOUT_RIG_TITLE,
+  ABOUT_WHERE,
+  ABOUT_WHERE_TITLE,
+} from "@/lib/about-copy";
+import {
+  GUTTER_FAQS,
+  GUTTER_H1,
+  GUTTER_LEAD,
+  GUTTER_META_DESCRIPTION,
+  GUTTER_OTHER,
+  GUTTER_OTHER_TITLE,
+  GUTTER_PATH,
+  GUTTER_PLAN,
+  GUTTER_PLAN_TITLE,
+  GUTTER_WHEN,
+  GUTTER_WHEN_TITLE,
+} from "@/lib/gutters";
 import { MONTHLY_FLOOR } from "@/app/plan/pricing";
 import { AI_PAGES, isPublishable } from "@/lib/ai-pages";
 import { metadata as servicesMetadata } from "@/app/services/page";
@@ -160,6 +190,69 @@ function serviceMd(slug: string): string {
   ].join("\n");
 }
 
+function gutterMd(): string {
+  return [
+    `# ${GUTTER_H1}`,
+    "",
+    `> ${GUTTER_META_DESCRIPTION}`,
+    "",
+    ...GUTTER_LEAD.flatMap((p) => [p, ""]),
+    `## ${GUTTER_WHEN_TITLE}`,
+    "",
+    ...GUTTER_WHEN.flatMap((p) => [p, ""]),
+    `## ${GUTTER_PLAN_TITLE}`,
+    "",
+    ...GUTTER_PLAN.flatMap((p) => [p, ""]),
+    `Get the monthly price for a house: ${SITE_URL}/plan`,
+    "",
+    `## ${GUTTER_OTHER_TITLE}`,
+    "",
+    GUTTER_OTHER,
+    "",
+    `Book a free walkthrough: ${SITE_URL}/assessment`,
+    "",
+    "## Questions",
+    "",
+    ...GUTTER_FAQS.flatMap((f) => [`### ${f.q}`, "", f.a, ""]),
+    contactBlock(),
+  ].join("\n");
+}
+
+function aboutMd(): string {
+  return [
+    "# About Rinse It Off",
+    "",
+    `> ${ABOUT_META_DESCRIPTION}`,
+    "",
+    `## ${ABOUT_H1}`,
+    "",
+    ...ABOUT_INTRO.flatMap((p) => [p, ""]),
+    `## ${ABOUT_WHERE_TITLE}`,
+    "",
+    ...ABOUT_WHERE.flatMap((p) => [p, ""]),
+    `## ${ABOUT_RIG_TITLE}`,
+    "",
+    ABOUT_RIG_INTRO,
+    "",
+    ...ABOUT_RIG.map((r) => `- ${r.name}: ${r.body}`),
+    "",
+    ABOUT_REACH,
+    "",
+    ABOUT_HONK,
+    "",
+    `## ${ABOUT_PROMISES_TITLE}`,
+    "",
+    ...ABOUT_PROMISES.map((p) => `- ${p.title}: ${p.body}${p.link ? ` Terms: ${SITE_URL}${p.link.href}` : ""}`),
+    "",
+    `## ${ABOUT_PRICE_TITLE}`,
+    "",
+    `- ${ABOUT_PRICE_HOME.title}: ${ABOUT_PRICE_HOME.body} ${SITE_URL}/plan`,
+    `- ${ABOUT_PRICE_OTHER.title}: ${ABOUT_PRICE_OTHER.body} ${SITE_URL}${ABOUT_PRICE_OTHER.href}`,
+    "",
+    contactBlock(),
+  ].join("\n");
+}
+
 function areasMd(): string {
   const link = (a: { slug: string; name: string }) => `- [${a.name}](${SITE_URL}/areas/${a.slug})`;
   return [
@@ -222,6 +315,14 @@ export const MD_PAGES: MdPage[] = [
     body: commercialMd,
   },
   {
+    path: "/about",
+    mdPath: "/about.md",
+    title: "About Rinse It Off",
+    summary: ABOUT_META_DESCRIPTION,
+    section: "Main",
+    body: aboutMd,
+  },
+  {
     path: "/services",
     mdPath: "/services.md",
     title: "Our services",
@@ -237,6 +338,14 @@ export const MD_PAGES: MdPage[] = [
     section: "Services",
     body: () => serviceMd(s.slug),
   })),
+  {
+    path: GUTTER_PATH,
+    mdPath: mdPathFor(GUTTER_PATH),
+    title: GUTTER_H1,
+    summary: GUTTER_META_DESCRIPTION,
+    section: "Services",
+    body: gutterMd,
+  },
   {
     path: "/areas",
     mdPath: "/areas.md",
