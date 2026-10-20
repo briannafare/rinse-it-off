@@ -18,11 +18,11 @@ So the useful question is how often each part of the house needs it, and what ma
 
 | Surface | How often | What changes it | What our plan does |
 |---|---|---|---|
-| Siding | Depends on shade and trees | Shade, trees and which way the wall faces | Washed every spring |
+| Siding | Depends on the house | Shade, trees and which way the wall faces | Washed every spring |
 | Roof | Under firs on a north slope, it usually needs looking at every year. In full sun, it can go longer. | Shade, overhanging branches, debris | Moss treatment and soft wash every spring, and we check it each visit |
-| Driveway and walkways | Depends on shade and foot traffic | Shade, foot traffic, how long water sits | Driveway and walkways every summer, plus walkways again in winter |
+| Driveway and walkways | Depends on the house | Shade, foot traffic, how long water sits | Driveway and walkways every summer, plus walkways again in winter |
 | Gutters | Once the leaves are down, in November or December | When your trees finish dropping | Cleared and downspouts flushed in fall. If your trees run late, you can add a second cleaning in January or February. |
-| Steps, entries and patios | Depends on shade and foot traffic | Shade and foot traffic, since moss on steps is slick when wet | Every winter |
+| Steps, entries and patios | Depends on the house | Shade and foot traffic, since moss on steps is slick when wet | Every winter |
 | Windows | Four times a year on the plan | | Free window cleaning four times a year comes with the plan |
 
 Businesses run on a different schedule, because entrances get far more foot traffic. That's covered in [how often to pressure wash a commercial property](/blog/how-often-pressure-wash-commercial-property).

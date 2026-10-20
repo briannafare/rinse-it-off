@@ -87,7 +87,7 @@ These are general safety steps from the sources listed below, not our method.
 3. Keep the spray off the roof. Oregon State University Extension says poor technique can damage shingles, and suggests a long-handled scrub brush or a professional when in doubt.
 4. Don't look for a pressure number for siding online. The figures out there disagree. Follow your siding maker's guidance instead.
 5. Soak the plants along the walls with plain water before you start.
-6. Keep the wash water out of the street and the storm drain. Portland City Code 17.39 prohibits wash water from pressure washing from going into the stormwater system.
+6. Keep the wash water out of the street and the storm drain. Portland City Code 17.39 doesn't allow pressure washing water into the stormwater system.
 
 ## If you decide to hire
 

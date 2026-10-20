@@ -58,7 +58,7 @@ So the plan doesn't win on one pass of each job. It wins on the windows, on the 
 - Three stories or a steep lot get priced by hand instead of online.
 - Our crews work from the ground, so tall walls aren't part of it.
 - If one surface needs one wash, a one-off job is the cheaper way to get it done.
-- It's a 12-month membership, as the plan page says.
+- It's a 12-month membership.
 
 **Hiring a one-off company**
 - You rebook every time, and you're the one who remembers when.

@@ -54,7 +54,7 @@ One house wash costs the numbers above, and it covers the siding once. Our yearl
 
 If you only want the siding washed once, a one-off job is the cheaper way to do it. If you want to compare the two properly, the math is in [subscription vs one-off](/compare/subscription-vs-one-off-pressure-washing).
 
-We walk the property, then hand you a firm, itemized price the same day.
+For a one-off house wash, we walk the property, then hand you a firm, itemized price the same day.
 
 ## How to get a clean quote from any company
 
@@ -93,4 +93,3 @@ The north wall will go green again eventually. It's a wall, and that's what wall
 - Portland-area house washing cost guide, published 2026-03-11: https://www.seasonscleaningservices.com/blog-posts/house-washing-cost-portland-or-2026-price-guide
 - Portland-area house washing price table, page says cross-checked 2026-09-30: https://green-tree-services.com/house-washing-portland-oregon
 - Window Genie, soft washing vs pressure washing (no date on page): https://windowgenie.com/blog/soft-washing-vs-pressure-washing
-

@@ -93,4 +93,3 @@ Our pressure washer still gets plenty of work. Concrete can handle it, and it ne
 - Asphalt Roofing Manufacturers Association, algae and moss on asphalt roofs (dated February 22, 2012): https://www.asphaltroofing.org/algae-moss-prevention-cleaning-asphalt-roofing-systems
 - Oregon State University Extension, "How to control roof moss" (published February 2023, reviewed 2025): https://extension.oregonstate.edu/news/how-control-roof-moss-prevent-long-term-damage
 - Rinse It Off methods: rinseitoff.com /services/house-washing, /services/roof-soft-wash, /services/concrete-surface-cleaning
-

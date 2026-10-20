@@ -43,7 +43,6 @@ Since a license isn't the test, insurance and references carry more weight. Ask 
 
 The City of Portland runs a Mobile Washer Program. Under it, wash water from commercial mobile washing can't go into the storm system, the street or the right-of-way. The work has to happen on the customer's site with the water contained. To send water to the sanitary or combined sewer, a washer needs a Mobile Washer Discharge Authorization, with a yearly certification of compliance (City Code 17.32 and 17.34). Other cities have their own rules, so ask your vendor what they do at your address.
 
-
 ## What a vendor agreement should cover
 
 This is a checklist, not legal advice. Have your own counsel review any contract.
@@ -118,4 +117,3 @@ As a starting point, entrances every one to three months and parking lots once o
 - NerdWallet, "What is pressure washing insurance?", updated June 16, 2026: https://www.nerdwallet.com/business/insurance/learn/what-is-pressure-washing-insurance
 - City of Portland, Mobile Washer Program: https://www.portland.gov/bes/preventing-pollution/alternative-discharge-control-mechanisms/mobile-washer-program
 - Rinse It Off commercial services, inspection and terms: rinseitoff.com /commercial and /terms
-
