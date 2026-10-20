@@ -24,7 +24,7 @@ const SERVICES = [
   {
     icon: "/brand/icons/concrete-deck.png",
     title: "Driveway & Concrete",
-    method: "Hot water, 180°F",
+    method: "Hot water, 200°F+",
     body: "Rotary surface cleaner, even passes, no zebra stripes. The machine in our photos — that's this.",
   },
   {
