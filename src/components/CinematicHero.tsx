@@ -98,6 +98,14 @@ export function CinematicHero() {
   // Once someone picks a side themselves, stop moving it under them.
   const [held, setHeld] = useState(false);
 
+  // The second slide's photo waits until the first one is on screen, so the two don't split the
+  // bandwidth the phone needs for the first paint (Lighthouse, 2026-10-20).
+  const [later, setLater] = useState(false);
+  useEffect(() => {
+    const id = setTimeout(() => setLater(true), 2500);
+    return () => clearTimeout(id);
+  }, []);
+
   const pick = useCallback((i: number) => {
     setActive(i);
     setHeld(true);
@@ -135,7 +143,9 @@ export function CinematicHero() {
             style={{ opacity: i === active ? 1 : 0 }}
             aria-hidden={i !== active}
           >
-            <Image src={s.img} alt={i === active ? s.alt : ""} fill priority={s.priority} sizes="100vw" className={`object-cover ${s.pos}`} />
+            {(i === 0 || later || i === active) && (
+              <Image src={s.img} alt={i === active ? s.alt : ""} fill priority={s.priority} sizes="100vw" className={`object-cover ${s.pos}`} />
+            )}
           </div>
         ))}
         {/* a pale cream wash over the sky so ink type reads; light, never a dark overlay */}
