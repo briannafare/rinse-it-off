@@ -3,19 +3,20 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { Sparkle } from "@/components/retro/Bits";
 
-/** The seasonal strip at the top of every page (inside the fixed Navbar header).
+/** The seasonal strip at the top of every page (inside the fixed Navbar header). It folds away
+ *  once the page scrolls, so it never sits over a headline or a button.
  *  ponytail: one boolean is the on/off switch; flip it after the season. */
 export const PROMO_ON = true;
 
-export function PromoBar() {
+export function PromoBar({ collapsed = false }: { collapsed?: boolean }) {
   const [hidden, setHidden] = useState(false);
   useEffect(() => {
     try { if (sessionStorage.getItem("rio-promo-hide") === "1") setHidden(true); } catch {}
   }, []);
   if (!PROMO_ON) return null;
   return (
-    <div id="promo-bar" hidden={hidden} className="relative h-9 bg-[#62C4EB] text-[#0C1215]">
-      <p className="flex h-full items-center justify-center gap-2 px-12 text-[13px] sm:text-sm">
+    <div id="promo-bar" hidden={hidden} className={`relative overflow-hidden bg-[#62C4EB] text-[#0C1215] transition-[height] duration-300 motion-reduce:transition-none ${collapsed ? "h-0" : "h-9"}`}>
+      <p className="flex h-9 items-center justify-center gap-2 px-12 text-sm">
         <Sparkle className="h-3 w-3 shrink-0" fill="#F2B632" />
         <span className="truncate">
           <span className="font-semibold text-[#0C1215] sm:hidden">Holiday lights</span>

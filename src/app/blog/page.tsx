@@ -99,8 +99,8 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
           sizes="100vw"
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/20" aria-hidden />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/35" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#FBF8F2]/95 via-[#FBF8F2]/85 via-50% to-transparent" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#FBF8F2]/40 via-transparent to-transparent" aria-hidden />
         <div className="container-site relative z-10 flex flex-col justify-end pb-14 pt-32 md:pb-20 md:pt-40">
           <div className="max-w-2xl">
             <p className="mb-4 text-sm font-medium text-[#0C1215]/85">The Rinse It Off blog</p>

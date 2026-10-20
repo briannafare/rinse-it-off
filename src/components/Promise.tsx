@@ -39,31 +39,25 @@ export function Promise() {
 
       <div className="container-site relative">
         <div className="flex items-center gap-4">
-          <Droplets className="h-9 w-9 shrink-0 text-[#1A6E93]" aria-hidden />
-          <h2
-            className="text-3xl font-medium text-[#0C1215] md:text-4xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
+          <Droplets className="hidden h-14 w-14 shrink-0 text-[#1A6E93] md:block" aria-hidden />
+          <h2 className="text-[#0C1215]">
             No surprises, no padding, no fine print.
           </h2>
         </div>
 
-        <div ref={gridRef} className="mt-10 grid gap-5 md:grid-cols-3 md:mt-14">
+        <div ref={gridRef} className="mt-12 grid gap-6 md:mt-16 md:grid-cols-3 md:gap-8">
           {POINTS.map((p) => (
             <div
               key={p.title}
-              className="frame group bg-retro-paper p-7"
+              className="group bg-white px-6 py-10 md:px-8"
             >
               <div className="flex items-center justify-between">
-                <p.icon className="h-6 w-6 text-[#1A6E93]" aria-hidden />
+                <p.icon className="h-10 w-10 text-[#1A6E93]" aria-hidden />
               </div>
-              <h3
-                className="mt-5 text-lg font-medium text-[#0C1215]"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
+              <h3 className="mt-6 text-[#0C1215]">
                 {p.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#3B4247]">{p.body}</p>
+              <p className="mt-3 text-lg leading-relaxed text-[#3B4247]">{p.body}</p>
             </div>
           ))}
         </div>

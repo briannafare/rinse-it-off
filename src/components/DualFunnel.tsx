@@ -30,16 +30,16 @@ export function DualFunnel() {
   const ref = useStaggerReveal(0.12);
 
   return (
-    <section className="bg-retro-paper py-16 md:py-24">
+    <section className="bg-retro-paper">
       {/* Photo on top, a flat block of color underneath: the 1967 magazine-ad layout. */}
-      <div ref={ref} className="container-site grid gap-6 md:grid-cols-2 md:gap-8">
+      <div ref={ref} className="grid md:grid-cols-2">
         {FUNNELS.map((f, i) => (
           <a
             key={f.title}
             href={f.href}
-            className="frame group flex flex-col overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-retro-paper"
+            className="group flex flex-col overflow-hidden focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-[#D6336C]"
           >
-            <div className="relative aspect-[3/2] overflow-hidden">
+            <div className="relative aspect-[4/3] overflow-hidden">
               <Image
                 src={f.img}
                 alt={f.alt}
@@ -48,16 +48,16 @@ export function DualFunnel() {
                 className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
               />
             </div>
-            <div className={`flex flex-1 flex-col p-7 md:p-9 ${i === 0 ? "bg-brand-blue text-[#0C1215]" : "bg-[#62C4EB] text-[#0C1215]"}`}>
-              <h2 className="text-[2.2rem] leading-none md:text-[2.8rem]">{f.title}</h2>
-              <p className={`mt-3 max-w-md ${i === 0 ? "text-[#0C1215]/90" : "text-[#0C1215]/80"}`}>{f.body}</p>
+            <div className={`flex flex-1 flex-col px-4 pb-14 pt-10 sm:px-8 md:px-12 md:pb-16 md:pt-12 ${i === 0 ? "bg-brand-blue text-[#0C1215]" : "bg-[#62C4EB] text-[#0C1215]"}`}>
+              <h2>{f.title}</h2>
+              <p className={`mt-4 max-w-xl text-lg ${i === 0 ? "text-[#0C1215]/90" : "text-[#0C1215]/80"}`}>{f.body}</p>
               <span
-                className={`btn-print mt-6 inline-flex items-center gap-2 self-start px-5 py-3 transition-transform duration-300 group-hover:-translate-y-0.5 motion-reduce:transition-none ${
+                className={`btn-print mt-8 self-start transition-transform duration-300 group-hover:-translate-y-0.5 motion-reduce:transition-none ${
                   "bg-[#F2B632] text-[#0C1215]"
                 }`}
               >
                 {f.cta}
-                <ArrowRight className="h-4 w-4" aria-hidden />
+                <ArrowRight className="h-6 w-6" aria-hidden />
               </span>
             </div>
           </a>

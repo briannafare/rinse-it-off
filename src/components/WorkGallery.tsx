@@ -45,14 +45,11 @@ export function WorkGallery() {
   return (
     <section id="work" className="bg-[#62C4EB] py-16 text-[#0C1215] md:py-24">
       <div className="container-site flex items-end justify-between gap-6">
-        <header className="max-w-2xl">
-          <h2
-            className="text-[clamp(2.3rem,6vw,3.6rem)] leading-[1] text-[#0C1215]"
-            style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
-          >
+        <header className="max-w-4xl">
+          <h2 className="text-[#0C1215]">
             Straight off the truck.
           </h2>
-          <p className="mt-4 text-lg leading-relaxed text-[#0C1215]/75">
+          <p className="mt-5 text-lg leading-relaxed text-[#0C1215]/85">
             Phone photos from real jobs. Driveways and homes,
             clubhouses, parking lots and event grounds.
           </p>
@@ -64,9 +61,9 @@ export function WorkGallery() {
               type="button"
               onClick={() => step(d)}
               aria-label={d === 1 ? "Next photo" : "Previous photo"}
-              className="flex h-11 w-11 items-center justify-center rounded-full ring-1 ring-white/30 transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]"
+              className="flex h-16 w-16 items-center justify-center rounded-full border-[3px] border-[#0C1215] bg-[#FBF8F2] transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]"
             >
-              <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} className={`h-4 w-4 ${d === -1 ? "rotate-180" : ""}`}>
+              <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} className={`h-6 w-6 ${d === -1 ? "rotate-180" : ""}`}>
                 <path d="M4 10h12M11 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
@@ -80,18 +77,18 @@ export function WorkGallery() {
         aria-label="Photos of recent jobs"
       >
         {SHOTS.map((s, i) => (
-          <figure key={s.src} className="w-[82vw] shrink-0 snap-start sm:w-[420px]">
-            <div className="frame frame-light relative aspect-[4/5] overflow-hidden bg-white/5">
+          <figure key={s.src} className="w-[85vw] shrink-0 snap-start md:w-[56vw] lg:w-[44vw]">
+            <div className="relative aspect-[4/5] overflow-hidden md:aspect-[4/3]">
               <Image
                 src={`/brand/photos/work/${s.src}.webp`}
                 alt={s.alt}
                 fill
-                sizes="(min-width: 640px) 420px, 82vw"
+                sizes="(min-width: 1024px) 44vw, (min-width: 768px) 56vw, 85vw"
                 priority={i < 2}
                 className="object-cover"
               />
             </div>
-            <figcaption className="label-caps mt-3 !tracking-[0.12em] text-[#0C1215]">{s.caption}</figcaption>
+            <figcaption className="mt-4 text-lg font-semibold text-[#0C1215]">{s.caption}</figcaption>
           </figure>
         ))}
       </div>

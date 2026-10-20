@@ -378,7 +378,7 @@ export default async function AreaPage({
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   className="object-cover"
                 />
-                <span className="absolute bottom-4 left-4 rounded-lg bg-black/55 px-3 py-1.5 text-sm font-medium text-[#0C1215] backdrop-blur-sm">
+                <span className="absolute bottom-4 left-4 rounded-lg bg-[#FBF8F2]/75 px-3 py-1.5 text-sm font-medium text-[#0C1215] backdrop-blur-sm">
                   Real RIO job · before / after in one frame
                 </span>
               </div>
@@ -500,7 +500,7 @@ export default async function AreaPage({
               sizes="100vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0C1215]/90 via-black/40 to-black/15" aria-hidden />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#FBF8F2]/95 via-[#FBF8F2]/60 to-transparent" aria-hidden />
             <div className="container-site relative flex h-full flex-col items-start justify-end pb-16 md:pb-20">
               <h2
                 className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-[#0C1215] md:text-6xl"

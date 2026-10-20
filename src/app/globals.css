@@ -35,14 +35,23 @@
     --soap-gold: rgba(255, 214, 138, 1);
   }
   html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-  body { @apply bg-retro-paper text-text-primary font-body; font-size: 17px; line-height: 1.55; }
+  body { @apply bg-retro-paper text-text-primary font-body; font-size: clamp(19px, calc(13.5px + 1.4vw), 23px); line-height: 1.55; overflow-x: clip; }
+  html { overflow-x: clip; }
+  /* Type scale (2026-10-20): subheads and card titles big, one headline family. Section titles
+     (TitleCard) and the hero set their own, larger sizes. Long-form article headings are left alone. */
+  main h2:not(article h2):not(.prose h2):not(.title-xl) { font-size: clamp(2.1rem, 8.5vw, 5.4rem) !important; line-height: 1.02 !important; }
+  main h3:not(article h3):not(.prose h3) { font-size: clamp(1.7rem, 8vw, 3.2rem) !important; line-height: 1.08 !important; }
+  @media (min-width: 768px) {
+    main h2:not(article h2):not(.prose h2):not(.title-xl) { font-size: clamp(2.6rem, 4vw, 5.4rem) !important; }
+    main h3:not(article h3):not(.prose h3) { font-size: clamp(1.9rem, 2.6vw, 3.2rem) !important; }
+  }
   ::selection { background: rgba(98,196,235,0.45); }
   /* the holiday strip sits inside the fixed header; push the page down only while it shows */
   body:has(#promo-bar:not([hidden])) { padding-top: 2.25rem; }
   @keyframes bulb { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
   /* ponytail: one rule sets every page title, including the ones that set font-family inline.
      Headlines are one solid color each: ink on light sections, cream on dark bands. */
-  h1, h2, .font-title { font-family: var(--font-title) !important; font-weight: 900 !important; font-style: normal !important; letter-spacing: -0.012em !important; font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 144; }
+  h1, h2, main h3:not(article h3), .font-title { font-family: var(--font-title) !important; font-weight: 900 !important; font-style: normal !important; letter-spacing: -0.012em !important; font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 144; }
   .title-accent { color: inherit !important; }
   /* yellow only as a highlight: a sun-yellow marker swipe behind one key phrase, type stays ink */
   .offer-accent { color: inherit !important; background: linear-gradient(transparent 58%, var(--sun) 58% 92%, transparent 92%); -webkit-box-decoration-break: clone; box-decoration-break: clone; padding-inline: .06em; }
@@ -56,28 +65,29 @@
 @layer components {
   .container-site { @apply max-w-7xl mx-auto px-5 sm:px-6 lg:px-8; }
 
-  /* print button: sun yellow, ink Futura caps, 14px corners, ink outline, hard 4px ink shadow;
-     white on a yellow ground. .btn-retro = RetroButton, .btn-print = older inline buttons. */
-  .btn-retro, .btn-print { font-family: var(--font-label) !important; font-weight: 700 !important; font-size: 13px !important; letter-spacing: .1em !important; text-transform: uppercase;
-    border-radius: 14px !important; border: 2px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); transition: transform .15s ease, box-shadow .15s ease; }
-  .btn-retro:hover, .btn-print:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
-  .btn-retro:active, .btn-print:active { transform: translate(4px,4px); box-shadow: 0 0 0 var(--ink); }
+  /* Buttons (scale brief 2026-10-20): big enough to want to press. Sun yellow, ink type at
+     22-24px, heavy ink outline, hard offset shadow; full width on phone. White on a yellow ground.
+     .btn-retro = RetroButton, .btn-print = older inline buttons, .btn-ghost = the secondary, same size. */
+  .btn-retro, .btn-print, .btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 60px; padding: 0 28px !important;
+    font-family: var(--font-text) !important; font-weight: 700 !important; font-size: 22px !important; line-height: 1.1 !important; letter-spacing: 0 !important; text-transform: none !important;
+    border-radius: 14px !important; border: 3px solid var(--ink) !important; box-shadow: 5px 5px 0 var(--ink); transition: transform .15s ease, box-shadow .15s ease; }
+  .btn-ghost { background: transparent; color: var(--ink); box-shadow: none; }
+  @media (min-width: 768px) { .btn-retro, .btn-print, .btn-ghost { min-height: 64px; font-size: 24px !important; padding: 0 34px !important; } }
+  @media (max-width: 767px) { main .btn-retro, main .btn-print, main .btn-ghost { width: 100%; } }
+  .btn-retro:hover, .btn-print:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--ink); }
+  .btn-retro:active, .btn-print:active { transform: translate(5px,5px); box-shadow: 0 0 0 var(--ink); }
+  .btn-ghost:hover { background: rgba(255,255,255,.5); }
   .bg-\[\#F2B632\] .btn-retro, .bg-\[\#F2B632\] .btn-print { background: #FFFFFF !important; color: var(--ink) !important; }
   @media (prefers-reduced-motion: reduce) { .btn-retro, .btn-retro:hover, .btn-retro:active, .btn-print, .btn-print:hover { transition: none; transform: none; } }
-  /* a printed photo or card: 14px corners and a 1.5px ink outline */
-  .frame { border-radius: 14px; box-shadow: 0 0 0 1.5px var(--ink); }
-  .frame-light { box-shadow: 0 0 0 1.5px #FFFFFF; }
-  /* photos: white mat, ink keyline, hard ink offset */
-  .mat { border: 6px solid #FFFFFF; border-radius: 16px; box-shadow: 0 0 0 1.5px var(--ink), 5px 5px 0 1.5px var(--ink); }
-  /* the three stripes, magenta over sky over yellow, 4px each */
-  .stripes, .mat::before { background: linear-gradient(var(--magenta) 0 33.34%, var(--sky) 0 66.67%, var(--sun) 0); }
-  /* as an icon: a short horizontal mark with slanted ends */
-  .stripes { display: inline-block; flex-shrink: 0; clip-path: polygon(22% 0, 100% 0, 78% 100%, 0 100%); }
-  /* as a line entering a photo from one edge and stopping partway in. Each image sets its own
-     height with --streak-y (and .streak-r to come in from the right) so they don't line up. */
-  .mat::before { content: ""; position: absolute; z-index: 1; left: 0; top: var(--streak-y, 22%); width: var(--streak-len, 34%); height: 12px; pointer-events: none;
-    clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%); }
-  .mat.streak-r::before { left: auto; right: 0; clip-path: polygon(0 0, 100% 0, 100% 100%, 12px 100%); }
+  /* No boxes: separation comes from colour grounds, whitespace and the stripe band, not outlines,
+     rounded cards or drop shadows. (.frame and .mat stay as hooks; they no longer draw anything.) */
+  .frame, .frame-light, .mat { border: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+  /* THE STRIPE (StripeBand in retro/Bits.tsx): three bands side by side with no gaps, magenta,
+     sky, sun, in that order, 10-22px each, run edge to edge on the same slight tilt everywhere.
+     It sits on a seam (height 0) so it never adds layout. */
+  .stripe-band { --band: clamp(10px, 1.45vw, 22px); position: relative; z-index: 15; height: 0; pointer-events: none; }
+  .stripe-band::before { content: ""; position: absolute; left: -3%; right: -3%; top: calc(var(--band) * -1.5); height: calc(var(--band) * 3);
+    background: linear-gradient(var(--magenta) 0 33.34%, var(--sky) 0 66.67%, var(--sun) 0); transform: rotate(-2deg); }
   /* real photos, staged photos and video: one shared grade (see --photo-grade). Matched by path so
      every photo on every page gets it; illustrations, Hal and the logo are left alone. */
   .mat img, video,
@@ -87,7 +97,7 @@
   .bg-stars { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' fill='%230C1215' fill-opacity='.06'%3E%3Cpath transform='translate(24 30) scale(.5)' d='M20 1 L23 14 L34 6 L26 17 L39 20 L26 23 L34 34 L23 26 L20 39 L17 26 L6 34 L14 23 L1 20 L14 17 L6 6 L17 14Z'/%3E%3Cpath transform='translate(118 104) scale(.34)' d='M20 1 L23 14 L34 6 L26 17 L39 20 L26 23 L34 34 L23 26 L20 39 L17 26 L6 34 L14 23 L1 20 L14 17 L6 6 L17 14Z'/%3E%3Ccircle cx='140' cy='38' r='2'/%3E%3Ccircle cx='52' cy='140' r='2'/%3E%3C/svg%3E"); }
 
   /* Futura spaced capitals: chapter numbers, eyebrows, nav. */
-  .label-caps { font-family: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; line-height: 1.3; }
+  .label-caps { font-family: var(--font-text); font-weight: 700; letter-spacing: 0; font-size: 18px !important; line-height: 1.35; }
 
   /* Film grain over staged photos (pointer-events off, sits above the image). */
   .film-grain::after {

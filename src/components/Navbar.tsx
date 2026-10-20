@@ -63,8 +63,8 @@ export function Navbar() {
             : "border-b border-[#0C1215]/15 bg-white/10 backdrop-blur-md"
         }`}
       >
-        <PromoBar />
-        <nav className="container-site flex h-16 items-center justify-between md:h-[72px]">
+        <PromoBar collapsed={scrolledDown} />
+        <nav className="container-site flex h-16 items-center justify-between md:h-24">
           <a
             href="/"
             className={`flex-shrink-0 rounded ${focusRing} ${offset}`}
@@ -76,7 +76,7 @@ export function Navbar() {
               width={706}
               height={438}
               priority
-              className="h-8 w-auto md:h-9"
+              className="h-9 w-auto md:h-12"
             />
           </a>
 
@@ -85,7 +85,7 @@ export function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
-                className={`label-caps !text-[0.8rem] !font-semibold rounded px-1 transition-colors duration-300 ${ink} hover:!text-[#1A6E93] ${focusRing} ${offset} motion-reduce:transition-none`}
+                className={`label-caps rounded px-1 transition-colors duration-300 ${ink} hover:!text-[#1A6E93] ${focusRing} ${offset} motion-reduce:transition-none`}
               >
                 {l.label}
               </a>
@@ -95,14 +95,14 @@ export function Navbar() {
           <div className="hidden items-center gap-5 md:flex">
             <a
               href={PHONE_TEL}
-              className={`flex items-center gap-2 rounded px-1 text-sm font-medium transition-colors duration-300 ${ink} opacity-80 hover:opacity-100 ${focusRing} ${offset} motion-reduce:transition-none`}
+              className={`hidden items-center gap-2 rounded px-1 text-lg font-bold xl:flex transition-colors duration-300 ${ink} opacity-80 hover:opacity-100 ${focusRing} ${offset} motion-reduce:transition-none`}
             >
-              <Phone className="h-3.5 w-3.5" aria-hidden />
+              <Phone className="h-5 w-5" aria-hidden />
               {PHONE_DISPLAY}
             </a>
             <a
               href="/assessment"
-              className={`btn-print inline-flex items-center px-5 py-3 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 motion-reduce:transition-none ${
+              className={`btn-print transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 motion-reduce:transition-none ${
                 scrolled
                   ? "bg-[#F2B632] text-[#0C1215] hover:bg-[#F6C451] focus-visible:ring-offset-white"
                   : "bg-[#F2B632] text-[#0C1215] hover:bg-[#F6C451] focus-visible:ring-offset-white"
@@ -115,12 +115,12 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
-            className={`flex min-h-11 min-w-11 items-center justify-center rounded md:hidden ${ink} ${focusRing} ${offset}`}
+            className={`flex min-h-14 min-w-14 items-center justify-center rounded md:hidden ${ink} ${focusRing} ${offset}`}
             aria-label="Open menu"
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
           >
-            <Menu className="h-6 w-6" />
+            <Menu className="h-8 w-8" />
           </button>
         </nav>
       </header>

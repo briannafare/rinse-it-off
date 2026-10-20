@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Phone } from "lucide-react";
 import { HalFlyIn } from "@/components/retro/HalFlyIn";
-import { RetroButton, Seal } from "@/components/retro/Bits";
+import { RetroButton, Seal, StripeBand } from "@/components/retro/Bits";
 
 /** Full-bleed rotating hero: one slide for homes, one for properties.
  *
@@ -23,9 +23,11 @@ import { RetroButton, Seal } from "@/components/retro/Bits";
  *  Slide 0 renders visible from the server and copy animates POSITION only.
  *  Nothing may depend on JS to become visible (see src/lib/gsap.ts).
  *
- *  LATE-60s LAYER (2026-10-19): staged photographs framed like a film still, the title
- *  set like opening credits, and Hal flying in once. Hal is the only one in this
- *  viewport; he stays put when the slides change. */
+ *  SCALE (2026-10-20): the photo runs edge to edge, full screen on a phone and 92vh on
+ *  desktop, unboxed. The headline (15vw phone, 8.5vw desktop) and the main button sit over its
+ *  sky on a pale cream wash (never a dark overlay). The photo's lower edge is cut on the stripe
+ *  band's tilt and the band runs along it. The body copy follows below the photo, full size.
+ *  Hal flies in once and stays put when the slides change. */
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const PHONE_DISPLAY = "(971) 626-4146";
@@ -120,11 +122,12 @@ export function CinematicHero() {
           transition: { duration: 0.6, delay: d, ease: EASE },
         };
 
+  const CLIP = { clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 3.5vw), 0 100%)" };
+
   return (
-    <section className="relative w-full overflow-hidden bg-retro-pool md:grid md:min-h-[100svh] md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
-      {/* The photograph, set like a print: rounded corners and an ink outline, inset on the cream. */}
-      <div className="relative h-[58svh] min-h-[380px] px-3 pb-3 pt-[76px] md:order-2 md:h-auto md:min-h-0 md:py-5 md:pl-0 md:pr-5 md:pt-[92px]">
-      <div className="mat film-grain relative h-full overflow-hidden" style={{ "--streak-y": "66%", "--streak-len": "30%" } as React.CSSProperties}>
+    <section className="relative w-full bg-retro-paper">
+      <div className="relative">
+      <div className="mat film-grain relative h-[100svh] min-h-[640px] w-full overflow-hidden md:h-[92vh] md:min-h-[720px]" style={CLIP}>
         {SLIDES.map((s, i) => (
           <div
             key={s.key}
@@ -132,84 +135,73 @@ export function CinematicHero() {
             style={{ opacity: i === active ? 1 : 0 }}
             aria-hidden={i !== active}
           >
-            <Image src={s.img} alt={i === active ? s.alt : ""} fill priority={s.priority} sizes="(min-width: 768px) 55vw, 100vw" className={`object-cover ${s.pos}`} />
+            <Image src={s.img} alt={i === active ? s.alt : ""} fill priority={s.priority} sizes="100vw" className={`object-cover ${s.pos}`} />
           </div>
         ))}
-      </div>
-      <Seal text="Free window cleaning ★ four times a year ★ " className="absolute left-1 top-[64px] z-10 w-24 -rotate-6 md:bottom-1 md:left-[-2.75rem] md:top-auto md:w-32" />
-      </div>
+        {/* a pale cream wash over the sky so ink type reads; light, never a dark overlay */}
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[#FBF8F2]/90 via-[#FBF8F2]/55 via-45% to-transparent to-75% md:bg-gradient-to-r md:from-[#FBF8F2]/92 md:via-[#FBF8F2]/50 md:via-40% md:to-transparent md:to-65%" />
 
-      {/* Hal: settles on the seam between the photo and the cream, never on a person. */}
-      <HalFlyIn className="pointer-events-none absolute right-[2%] top-[calc(58svh-80px)] z-20 w-[30vw] max-w-[140px] md:left-[calc(46%-130px)] md:right-auto md:top-[13%] md:w-[13vw] md:max-w-[210px]" />
-
-      {/* The title block: flat cream, like the page of a 1967 magazine ad. */}
-      <div className="relative z-10 flex flex-col justify-center px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-8 sm:px-8 md:order-1 md:px-12 md:pb-16 md:pt-28 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:pr-14">
-        <div className="mb-6 flex items-end gap-6 md:mb-8" role="tablist" aria-label="Who is this for?">
-          {SLIDES.map((s, i) => (
-            <button
-              key={s.key}
-              type="button"
-              role="tab"
-              aria-selected={i === active}
-              onClick={() => pick(i)}
-              className="group relative min-h-11 pb-2 text-left focus-visible:outline-none"
-            >
-              <span
+        <div className="relative z-10 flex h-full flex-col px-4 pt-[112px] sm:px-8 md:px-12 md:pt-[176px] lg:pl-[max(3rem,calc((100vw-90rem)/2+3rem))]">
+          <div className="mb-4 flex gap-2 md:mb-7" role="tablist" aria-label="Who is this for?">
+            {SLIDES.map((s, i) => (
+              <button
+                key={s.key}
+                type="button"
+                role="tab"
+                aria-selected={i === active}
+                onClick={() => pick(i)}
                 className={[
-                  "label-caps !tracking-[0.14em] transition-colors duration-300 motion-reduce:transition-none",
-                  i === active ? "text-[#1A6E93]" : "text-[#5F676C] group-hover:text-[#0C1215]",
+                  "min-h-11 whitespace-nowrap rounded-full border-[3px] border-[#0C1215] px-3 text-sm font-bold md:min-h-14 md:px-6 md:text-xl transition-colors duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#D6336C] motion-reduce:transition-none",
+                  i === active ? "bg-[#0C1215] text-[#FBF8F2]" : "bg-[#FBF8F2]/80 text-[#0C1215] hover:bg-white",
                 ].join(" ")}
               >
                 {s.tab}
-              </span>
-              {i === active && (
-                <motion.span
-                  layoutId={reduce ? undefined : "hero-tab-marker"}
-                  className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-brand-blue"
-                  transition={{ duration: 0.45, ease: EASE }}
-                  aria-hidden
-                />
-              )}
-            </button>
+              </button>
+            ))}
+          </div>
+
+          {SLIDES.map((s, i) => (
+            <div key={s.key} className={i === active ? "max-w-[92vw] md:max-w-[62vw]" : "hidden"}>
+              {(() => {
+                // one h1 on the page: the other slide's headline is a plain paragraph
+                const H = i === active ? motion.h1 : motion.p;
+                return (
+                  <H
+                    key={`${s.key}-h1-${active}`}
+                    {...rise(0.08)}
+                    className="font-title text-[15vw] leading-[0.9] text-brand-black [text-wrap:balance] md:text-[8.5vw] md:leading-[0.88]"
+                  >
+                    {s.headline} <span className="offer-accent">{s.accent}</span>
+                  </H>
+                );
+              })()}
+
+              <motion.div key={`${s.key}-cta-${active}`} {...rise(0.2)} className="mt-6 flex flex-col gap-3 md:mt-10 md:flex-row md:items-center md:gap-5">
+                <RetroButton href={s.cta.href}>{s.cta.label}</RetroButton>
+                <a href={PHONE_TEL} className="btn-ghost !hidden bg-[#FBF8F2]/85 md:!inline-flex focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#D6336C]">
+                  <Phone className="h-5 w-5" aria-hidden />
+                  {PHONE_DISPLAY}
+                </a>
+              </motion.div>
+            </div>
           ))}
         </div>
 
-        {SLIDES.map((s, i) => (
-          <div key={s.key} className={i === active ? "" : "hidden"}>
-            {(() => {
-              // one h1 on the page: the other slide's headline is a plain paragraph
-              const H = i === active ? motion.h1 : motion.p;
-              return (
-                <H
-                  key={`${s.key}-h1-${active}`}
-                  {...rise(0.08)}
-                  className="font-title text-[clamp(2.6rem,10vw,5.2rem)] leading-[1] text-brand-black [text-wrap:balance] md:text-[clamp(2.9rem,5.2vw,5.4rem)]"
-                >
-                  {s.headline} <span className="offer-accent">{s.accent}</span>
-                </H>
-              );
-            })()}
-
-            <motion.p key={`${s.key}-body-${active}`} {...rise(0.16)} className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-[#3B4247] md:text-lg">
-              {s.body}
-            </motion.p>
-
-            <motion.div key={`${s.key}-cta-${active}`} {...rise(0.24)} className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <RetroButton href={s.cta.href} signature>
-                {s.cta.label}
-              </RetroButton>
-              <a
-                href={PHONE_TEL}
-                className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-base font-semibold text-brand-black hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue"
-              >
-                <Phone className="h-4 w-4" aria-hidden />
-                {PHONE_DISPLAY}
-              </a>
-            </motion.div>
-            <p className="label-caps mt-8 !tracking-[0.14em] text-retro-muted">{s.eyebrow}</p>
-          </div>
-        ))}
+        <Seal text="Free window cleaning ★ four times a year ★ " className="absolute bottom-[calc(3.5vw+28px)] right-10 z-10 hidden w-36 -rotate-6 md:block" />
+        {/* Hal: settles over the open sky, never on a person or on the headline. */}
+        <HalFlyIn className="pointer-events-none absolute bottom-[74px] left-[4%] z-20 w-[20vw] max-w-[110px] md:bottom-auto md:left-auto md:right-[6%] md:top-[19%] md:w-[11vw] md:max-w-[200px]" />
       </div>
+      {/* the stripe band along the photo's tilted lower edge (the centre of the cut sits 1.75vw up) */}
+      <StripeBand className="absolute inset-x-0 bottom-[1.75vw]" />
+      </div>
+
+      {SLIDES.map((s, i) => (
+        <div key={s.key} className={i === active ? "container-site pb-14 pt-10 md:pb-20 md:pt-14" : "hidden"}>
+          <motion.p key={`${s.key}-body-${active}`} {...rise(0.1)} className="max-w-4xl text-xl leading-relaxed text-[#3B4247]">
+            {s.body}
+          </motion.p>
+        </div>
+      ))}
     </section>
   );
 }

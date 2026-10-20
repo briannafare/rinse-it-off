@@ -1,18 +1,17 @@
-// Late-60s brand layer: the small kit every page shares (2026-10-20 finish brief: a bright 1968
-// print ad on cream paper; sky is the calm ground, sun yellow marks decisions, magenta is the spark,
-// and the three-stripe mark is the through-line). Modern structure; the period feel comes from type,
-// frames and these accents.
+// Late-60s brand layer: the small kit every page shares (2026-10-20 briefs: a bright 1968 print ad
+// on cream paper; sky is the calm ground, sun yellow marks decisions, magenta is the spark, and the
+// three-stripe band is the one big brand gesture). Scale is confident: big type, big buttons, no boxes.
 import clsx from "clsx";
 import type { ReactNode } from "react";
 
-/** Print button: Futura caps, 14px corners, ink outline, hard offset shadow (CSS .btn-retro).
- *  Sun yellow by default (yellow marks decisions); "gold" = white, for use on a yellow ground.
- *  `signature` = the three-stripe icon before the label, for a page's main buttons. */
+/** Print button (CSS .btn-retro): 60-64px tall, 22-24px bold type, heavy ink outline, hard offset
+ *  shadow, full width on phone. Sun yellow by default; "gold" = white, for use on a yellow ground.
+ *  `signature` is kept for callers and no longer draws anything (the stripe is never a small mark). */
 export function RetroButton({
   href,
   children,
   tone = "teal",
-  signature = false,
+  signature: _signature = false,
   className,
 }: {
   href: string;
@@ -25,24 +24,24 @@ export function RetroButton({
     <a
       href={href}
       className={clsx(
-        "btn-retro group relative isolate inline-flex min-h-[52px] items-center justify-center gap-2 overflow-hidden px-7 py-4 leading-none focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-[#0C1215]",
+        "btn-retro group relative isolate focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-[#0C1215]",
         tone === "teal" && "bg-[#F2B632] text-[#0C1215]",
         tone === "cream" && "bg-[#FBF8F2] text-[#0C1215]",
         tone === "gold" && "bg-white text-[#0C1215]",
         className,
       )}
     >
-      {signature && <Stripes className="h-3 w-7" />}
       <span className="relative">{children}</span>
     </a>
   );
 }
 
-/** The brand mark as an icon: three thin horizontal stripes, magenta over sky over yellow, with
- *  slanted ends (CSS .stripes). Bri 2026-10-20: the stripes run horizontally, either as this icon or
- *  as a line entering an image (.mat::before). Never diagonal, never a full-width band. */
-export function Stripes({ className }: { className?: string }) {
-  return <span aria-hidden className={clsx("stripes block", className)} />;
+/** THE stripe, defined once: three bands side by side with no gaps (magenta, sky, sun, in that
+ *  order), 10-22px each, running edge to edge on the same slight tilt (CSS .stripe-band). It has no
+ *  height of its own, so it sits on the seam it is placed at: the hero's lower edge and the chapter
+ *  breaks. Never shrink it, never use it as a corner ornament, never split the colours. */
+export function StripeBand({ className }: { className?: string }) {
+  return <div aria-hidden className={clsx("stripe-band", className)} />;
 }
 
 /** Small four-point sparkle, one accent colour. */
@@ -54,22 +53,26 @@ export function Sparkle({ className, fill = "#D6336C" }: { className?: string; f
   );
 }
 
-/** Motel-sign starburst badge, for FREE and prices only: magenta spark, white type, ink outline, tilted -6°. */
+/** The big offer starburst: three stacked bursts in the stripe colours (magenta outside, then sky,
+ *  then sun), ink outline, ink type, tilted -6°. For the free window cleaning offer. */
 export function Starburst({ className, top, bottom }: { className?: string; top: string; bottom?: string }) {
-  const pts = Array.from({ length: 32 }, (_, i) => {
-    const r = i % 2 === 0 ? 96 : 80,
-      a = (Math.PI * i) / 16 - Math.PI / 2;
-    return `${(100 + r * Math.cos(a)).toFixed(1)},${(100 + r * Math.sin(a)).toFixed(1)}`;
-  }).join(" ");
+  const burst = (outer: number, inner: number) =>
+    Array.from({ length: 32 }, (_, i) => {
+      const r = i % 2 === 0 ? outer : inner,
+        a = (Math.PI * i) / 16 - Math.PI / 2;
+      return `${(100 + r * Math.cos(a)).toFixed(1)},${(100 + r * Math.sin(a)).toFixed(1)}`;
+    }).join(" ");
   return (
     <svg viewBox="0 0 200 200" className={clsx("-rotate-6", className)} role="img" aria-label={`${top} ${bottom ?? ""}`.trim()}>
-      <polygon points={pts} fill="#D6336C" stroke="#0C1215" strokeWidth="1.5" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
-      <text x="100" y={bottom ? 100 : 114} textAnchor="middle" style={{ fontFamily: "var(--font-title)" }} fontWeight="900" fontSize="44" fill="#FFFFFF">
+      <polygon points={burst(98, 84)} fill="#D6336C" stroke="#0C1215" strokeWidth="2" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+      <polygon points={burst(84, 72)} fill="#62C4EB" />
+      <polygon points={burst(72, 61)} fill="#F2B632" />
+      <text x="100" y={bottom ? 102 : 116} textAnchor="middle" style={{ fontFamily: "var(--font-title)" }} fontWeight="900" fontSize="40" fill="#0C1215">
         {top}
       </text>
       {bottom && (
-        <text x="100" y="130" textAnchor="middle" fontFamily="futura-pt, sans-serif" fontWeight="700" fontSize="14" letterSpacing="2" fill="#FFFFFF">
-          {bottom.toUpperCase()}
+        <text x="100" y="126" textAnchor="middle" style={{ fontFamily: "var(--font-text)" }} fontWeight="700" fontSize="13" fill="#0C1215">
+          {bottom}
         </text>
       )}
     </svg>
@@ -85,28 +88,22 @@ export function Squiggle({ className, color = "#D6336C" }: { className?: string;
   );
 }
 
-/** Chapter title card between sections, centered like a film card. */
-export function TitleCard({ chapter, title, tone = "pool" }: { chapter: string; title: string; tone?: "pool" | "paper" | "blue" | "ink" | "tealtint" | "sky" }) {
-  const dark = tone === "ink" || tone === "blue";
+/** Chapter title card between sections: one huge title on its own ground, with the stripe band
+ *  on its top edge as the section break. `chapter` is kept for callers but no longer printed (no
+ *  small eyebrow labels). Pass stripe={false} where the band already sits just above. */
+export function TitleCard({ title, tone = "pool", stripe = true }: { chapter?: string; title: string; tone?: "pool" | "paper" | "tealtint" | "sky"; stripe?: boolean }) {
   return (
     <div
       className={clsx(
-        "pb-8 pt-14 text-center md:pb-10 md:pt-20",
-        tone === "pool" && "bg-stars bg-retro-pool text-brand-black",
-        tone === "paper" && "bg-stars bg-retro-paper text-brand-black",
-        tone === "blue" && "bg-brand-blue text-[#0C1215]",
-        tone === "ink" && "bg-brand-black text-[#0C1215]",
-        tone === "tealtint" && "bg-stars bg-[#E6F5FC] text-[#0C1215]",
-        tone === "sky" && "bg-stars bg-[#E6F5FC] text-[#0C1215]",
+        "relative pb-10 pt-20 text-center text-[#0C1215] md:pb-14 md:pt-28",
+        tone === "pool" && "bg-retro-pool",
+        tone === "paper" && "bg-retro-paper",
+        (tone === "tealtint" || tone === "sky") && "bg-[#E6F5FC]",
       )}
     >
-      <div className="container-site flex flex-col items-center">
-        <p className="flex items-center gap-2 font-label text-[12px] font-bold uppercase tracking-[0.14em]">
-          {chapter}
-          <Sparkle className="h-3 w-3" fill={dark ? "#F2B632" : "#D6336C"} />
-        </p>
-        <p className="mt-3 font-title text-[clamp(2.6rem,9vw,4.6rem)] leading-[0.95]">{title}</p>
-        <Stripes className="mt-5 h-3 w-10" />
+      {stripe && <StripeBand className="absolute inset-x-0 top-0" />}
+      <div className="container-site">
+        <p className="font-title text-[13vw] leading-[0.9] [text-wrap:balance] md:text-[7.5vw]">{title}</p>
       </div>
     </div>
   );

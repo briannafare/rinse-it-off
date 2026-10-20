@@ -36,47 +36,50 @@ export function HolidayLights() {
         </div>
       </div>
 
-      <div className="container-site grid gap-8 pb-16 pt-20 md:grid-cols-[1.05fr_1fr] md:items-center md:gap-14 md:pb-24 md:pt-24">
-        <div className="mat film-grain streak-r relative aspect-[3/2] overflow-hidden md:order-2" style={{ "--streak-y": "18%" } as React.CSSProperties}>
+      <div className="pb-20 pt-10 md:pb-28">
+        <div className="mat film-grain relative aspect-[4/3] w-full overflow-hidden md:aspect-[21/9]">
           <Image
             src="/brand/retro/holiday-install.webp"
             alt="Two Rinse It Off crew members adding the last strand of big colored bulbs to a mid-century house covered in holiday lights, light-up carolers in the yard and a family watching from the lawn"
             fill
-            sizes="(min-width: 768px) 48vw, 100vw"
+            sizes="100vw"
             className="object-cover"
           />
         </div>
-        <div>
-          <p className="label-caps text-[#0C1215]">Holiday lights · Now booking</p>
-          <h2 className="mt-3 text-[2.2rem] leading-[1] [text-wrap:balance] md:text-[3.1rem]">
+        <div className="container-site mt-12 grid gap-10 md:mt-16 md:grid-cols-2 md:gap-16">
+          <div>
+          <h2 className="[text-wrap:balance]">
             We put up your holiday lights, take them down after the season, and you never climb a ladder.
           </h2>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#0C1215]/80">
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#0C1215]/85">
             Every December someone on the block spends a Saturday on a ladder with a tangle of lights, half of them
             out. This year it doesn&rsquo;t have to be you. We plan the layout with you, cut pro-grade lights to fit your
             roofline, and have them glowing before Thanksgiving. After the holidays we take them down and store them
             for next year.
           </p>
-          <ul className="mt-6 grid gap-2.5">
+          </div>
+          <div>
+          <ul className="grid gap-4 text-lg">
             {INCLUDED.map((x) => (
               <li key={x} className="flex gap-3">
-                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#0C1215]" aria-hidden />
+                <Check className="mt-1 h-6 w-6 shrink-0 text-[#0C1215]" aria-hidden />
                 <span>{x}</span>
               </li>
             ))}
           </ul>
-          <p className="mt-6 max-w-xl text-[#0C1215]/75">
+          <p className="mt-8 max-w-xl text-lg text-[#0C1215]/85">
             Every house is different, so we price lights by the foot after that visit. Install dates before
             Thanksgiving go first, so the sooner you book the visit, the more dates you can pick from.
           </p>
-          <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <RetroButton href="/assessment?type=residential&src=holiday-lights" tone="gold" signature>
+          <div className="mt-8 flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center md:gap-4">
+            <RetroButton href="/assessment?type=residential&src=holiday-lights" tone="gold">
               Book my lights visit
             </RetroButton>
-            <a href="tel:+19716264146" className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 font-semibold text-[#0C1215] hover:text-[#0C1215]/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0C1215]">
-              <Phone className="h-4 w-4" aria-hidden />
+            <a href="tel:+19716264146" className="btn-ghost focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0C1215]">
+              <Phone className="h-5 w-5" aria-hidden />
               Call or text (971) 626-4146
             </a>
+          </div>
           </div>
         </div>
       </div>

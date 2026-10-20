@@ -370,7 +370,7 @@ export default function CommercialPage() {
               sizes="100vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0C1215]/85 via-black/30 to-black/10" aria-hidden />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#FBF8F2]/95 via-[#FBF8F2]/60 to-transparent" aria-hidden />
 
             <div className="container-site relative flex h-full flex-col items-start justify-end pb-16 md:pb-20">
               <h2

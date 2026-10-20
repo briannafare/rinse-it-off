@@ -57,21 +57,21 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
 
 export function AquaStats() {
   return (
-    <section className="relative overflow-hidden bg-[#62C4EB] py-14 text-center md:py-20">
+    <section className="relative overflow-hidden bg-[#62C4EB] py-20 text-center md:py-28">
       {/* set like the closing credits of a film, on the pink tint: magenta-deep figures, ink notes */}
 
-      <div className="container-site relative grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
+      <div className="container-site relative grid gap-y-16 md:grid-cols-2 md:gap-x-10 md:gap-y-20">
         {STATS.map((s) => (
           <div key={s.label}>
-            <div className="font-title text-5xl font-bold text-[#0C1215] md:text-6xl">
+            <div className="font-title text-[22vw] leading-[0.9] text-[#0C1215] md:text-[9vw]">
               {"text" in s ? (
                 <span className="tabular-nums">{s.text}</span>
               ) : (
                 <CountUp target={s.value} suffix={s.suffix} />
               )}
             </div>
-            <p className="label-caps mt-3 text-[#0C1215]">{s.label}</p>
-            <p className="mx-auto mt-2 max-w-[22ch] text-sm text-[#0C1215]">{s.note}</p>
+            <p className="mt-4 text-xl font-bold text-[#0C1215]">{s.label}</p>
+            <p className="mx-auto mt-2 max-w-[28ch] text-lg text-[#0C1215]">{s.note}</p>
           </div>
         ))}
       </div>
