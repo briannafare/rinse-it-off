@@ -127,7 +127,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
               <Link
                 href="/assessment"
-                className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-4 text-base font-semibold text-[#0C1215] shadow-[0_10px_28px_-8px_rgba(98,196,235,0.55)] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+                className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-4 text-base font-semibold text-[#0C1215] shadow-[0_10px_28px_-8px_rgba(98,196,235,0.55)] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Get your free assessment
@@ -151,7 +151,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
       </section>
 
       {/* ── Method explanation + what's included ────────────────────── */}
-      <section className="bg-white py-16 md:py-24">
+      <section className="bg-retro-paper py-16 md:py-24">
         <div className="container-site grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
             <h2
@@ -163,7 +163,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             <p className="mt-5 text-lg leading-relaxed text-[#4B5C6B]">{service.intro}</p>
 
             {/* When you need it */}
-            <div className="mt-8 rounded-2xl border border-[#E4ECF1] bg-[#EDF7FC] p-6">
+            <div className="mt-8 rounded-2xl border border-retro-line bg-[#EDF7FC] p-6">
               <h3
                 className="flex items-center gap-2 text-base font-semibold text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)" }}
@@ -177,7 +177,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
 
           {/* What's included card */}
           <div className="lg:pt-2">
-            <div className="rounded-3xl border border-[#E4ECF1] bg-[#F8FBFE] p-6 shadow-soft md:p-8">
+            <div className="rounded-3xl border border-retro-line bg-retro-paper p-6 shadow-soft md:p-8">
               <h3
                 className="text-lg font-semibold text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)" }}
@@ -194,14 +194,14 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                   </li>
                 ))}
               </ul>
-              <div className="mt-7 border-t border-[#E4ECF1] pt-6">
+              <div className="mt-7 border-t border-retro-line pt-6">
                 <p className="text-sm leading-relaxed text-[#4B5C6B]">
                   Every job starts with a free 21-point property audit — we walk the property and
                   hand you a firm, itemized quote the same day, no guesswork.
                 </p>
                 <Link
                   href="/assessment"
-                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F8FBFE] motion-reduce:transition-none"
+                  className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F8FBFE] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Book your free audit
@@ -214,9 +214,9 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
       </section>
 
       {/* ── Proof + Clean Water Promise ─────────────────────────────── */}
-      <section className="bg-[#F4F7F8] py-16 md:py-24">
+      <section className="bg-retro-pool py-16 md:py-24">
         <div className="container-site grid gap-5 md:grid-cols-2 md:gap-6">
-          <div className="rounded-3xl border border-[#E4ECF1] bg-white p-6 shadow-soft md:p-8">
+          <div className="rounded-3xl border border-retro-line bg-white p-6 shadow-soft md:p-8">
             <Droplets className="h-6 w-6 text-[#62C4EB]" aria-hidden />
             <h2
               className="mt-4 text-xl font-semibold text-[#0C1215]"
@@ -238,7 +238,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             </Link>
           </div>
 
-          <div className="rounded-3xl border border-[#E4ECF1] bg-white p-6 shadow-soft md:p-8">
+          <div className="rounded-3xl border border-retro-line bg-white p-6 shadow-soft md:p-8">
             <ShieldCheck className="h-6 w-6 text-[#62C4EB]" aria-hidden />
             <h2
               className="mt-4 text-xl font-semibold text-[#0C1215]"
@@ -257,7 +257,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
       </section>
 
       {/* ── Mini FAQ ────────────────────────────────────────────────── */}
-      <section className="bg-white py-16 md:py-24">
+      <section className="bg-retro-paper py-16 md:py-24">
         <div className="container-site grid gap-12 lg:grid-cols-5 lg:gap-16">
           <div className="lg:col-span-2">
             <h2
@@ -284,7 +284,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
       </section>
 
       {/* ── Explore the other methods ───────────────────────────────── */}
-      <section className="bg-[#F4F7F8] py-16 md:py-24">
+      <section className="bg-retro-pool py-16 md:py-24">
         <div className="container-site">
           <h2
             className="text-[clamp(1.6rem,3vw,2.25rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
@@ -297,7 +297,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
               <Link
                 key={o.key}
                 href={`/services/${o.slug}`}
-                className="group flex items-center gap-4 rounded-2xl bg-white p-3 ring-1 ring-[#E4ECF1] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_-20px_rgba(20,45,60,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+                className="group flex items-center gap-4 rounded-2xl bg-white p-3 ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_-20px_rgba(20,45,60,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
               >
                 <div className="relative h-16 w-20 flex-shrink-0 overflow-hidden rounded-xl">
                   <Image
@@ -348,7 +348,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
               href="/assessment"
-              className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+              className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Get your free assessment

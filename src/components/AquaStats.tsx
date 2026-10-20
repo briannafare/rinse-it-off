@@ -56,36 +56,22 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
 }
 
 export function AquaStats() {
-  const reduced = useReducedMotion();
   return (
-    <section className="relative overflow-hidden bg-white py-16 md:py-20">
-      {/* water aura */}
-      <div
-        className="aura-blob left-[-8%] top-[-30%] h-[420px] w-[420px] bg-[#EDF7FC]"
-        style={reduced ? { animation: "none" } : undefined}
-        aria-hidden
-      />
-      <div
-        className="aura-blob right-[-6%] bottom-[-40%] h-[380px] w-[380px] bg-[#E6F4FC]"
-        style={reduced ? { animation: "none" } : { animationDelay: "-8s" }}
-        aria-hidden
-      />
+    <section className="relative overflow-hidden bg-[#0C1215] py-14 text-center md:py-20">
+      {/* set like the closing credits of a film: white on ink, centered */}
 
       <div className="container-site relative grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
         {STATS.map((s) => (
           <div key={s.label}>
-            <div
-              className="text-5xl font-medium tracking-tight text-[#0C1215] md:text-6xl"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
+            <div className="font-title text-5xl font-bold text-white md:text-6xl">
               {"text" in s ? (
                 <span className="tabular-nums">{s.text}</span>
               ) : (
                 <CountUp target={s.value} suffix={s.suffix} />
               )}
             </div>
-            <p className="mt-2 text-sm font-medium text-[#0C1215]">{s.label}</p>
-            <p className="mt-1 text-sm text-[#4B5C6B]">{s.note}</p>
+            <p className="label-caps mt-3 text-retro-sun">{s.label}</p>
+            <p className="mx-auto mt-2 max-w-[22ch] text-sm text-white/70">{s.note}</p>
           </div>
         ))}
       </div>

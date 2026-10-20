@@ -14,7 +14,7 @@ const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";
 
 const cardBase =
-  "block rounded-2xl bg-white p-6 ring-1 ring-[#E4ECF1] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none";
+  "block rounded-2xl bg-white p-6 ring-1 ring-retro-line transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none";
 const cardLink = `group ${cardBase} hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none`;
 const label = "text-sm font-semibold text-[#5A6B78]";
 
@@ -39,7 +39,7 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="bg-[#F4F7F8] py-16 md:py-24">
+        <section className="bg-retro-pool py-16 md:py-24">
           <div className="container-site">
             <div className="grid gap-5 sm:grid-cols-2">
               {/* Phone */}
@@ -129,7 +129,7 @@ export default function ContactPage() {
               <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
                 <a
                   href="/assessment"
-                  className="group inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+                  className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Book your free assessment

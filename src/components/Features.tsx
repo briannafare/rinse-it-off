@@ -212,7 +212,7 @@ export function Features() {
   ];
 
   return (
-    <section className="py-24 md:py-32 bg-white">
+    <section className="py-24 md:py-32 bg-retro-paper">
       <div className="container-site">
         <div ref={headingRef} className="max-w-xl mb-14">
           <h2 className="font-display font-semibold text-display-lg text-text-primary mb-3">

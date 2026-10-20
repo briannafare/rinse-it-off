@@ -104,9 +104,9 @@ function Blocks({ blocks }: { blocks: Block[] }) {
             );
           case "table":
             return (
-              <div key={i} className="mb-8 overflow-x-auto rounded-2xl ring-1 ring-[#E4ECF1]">
+              <div key={i} className="mb-8 overflow-x-auto rounded-2xl ring-1 ring-retro-line">
                 <table className="w-full min-w-[34rem] border-collapse text-left text-[0.975rem] leading-relaxed">
-                  <thead className="bg-[#F4F7F8] text-[#0C1215]">
+                  <thead className="bg-retro-pool text-[#0C1215]">
                     <tr>
                       {b.head.map((c, j) => (
                         <th key={j} scope="col" className="px-4 py-3 font-semibold" style={display}>
@@ -130,7 +130,7 @@ function Blocks({ blocks }: { blocks: Block[] }) {
               </div>
             );
           case "hr":
-            return <hr key={i} className="my-10 border-[#E4ECF1]" />;
+            return <hr key={i} className="my-10 border-retro-line" />;
           case "faq":
             return null; // shown in the Common questions section below
         }

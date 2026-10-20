@@ -83,7 +83,7 @@ export function Residential() {
   const listRef = useStaggerReveal(0.08);
 
   return (
-    <section className="py-24 md:py-32 bg-white">
+    <section className="py-24 md:py-32 bg-retro-paper">
       <div className="container-site">
         <div ref={headRef} className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
           <h2 className="font-display font-semibold text-display-lg text-text-primary max-w-md">

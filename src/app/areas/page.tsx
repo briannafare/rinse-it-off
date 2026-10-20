@@ -34,7 +34,7 @@ function AreaCard({ slug, name }: { slug: string; name: string }) {
     <li>
       <Link
         href={`/areas/${slug}`}
-        className="group flex min-h-[44px] items-center justify-between gap-2 rounded-xl bg-white px-5 py-3.5 text-sm font-semibold text-[#0C1215] ring-1 ring-[#E4ECF1] transition-colors hover:bg-[#EDF7FC] hover:ring-[#62C4EB]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8]"
+        className="group flex min-h-[44px] items-center justify-between gap-2 rounded-xl bg-white px-5 py-3.5 text-sm font-semibold text-[#0C1215] ring-1 ring-retro-line transition-colors hover:bg-[#EDF7FC] hover:ring-[#62C4EB]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8]"
         style={{ fontFamily: "var(--font-display)" }}
       >
         {name}
@@ -86,7 +86,7 @@ export default function AreasIndexPage() {
               <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
                 <a
                   href="/assessment"
-                  className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] shadow-[0_10px_28px_-8px_rgba(98,196,235,0.55)] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
+                  className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] shadow-[0_10px_28px_-8px_rgba(98,196,235,0.55)] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Get your free assessment
@@ -106,7 +106,7 @@ export default function AreasIndexPage() {
         </section>
 
         {/* Cities — the strongest pages */}
-        <section className="bg-[#F4F7F8] py-16 md:py-24">
+        <section className="bg-retro-pool py-16 md:py-24">
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
@@ -129,7 +129,7 @@ export default function AreasIndexPage() {
         </section>
 
         {/* Neighborhoods */}
-        <section className="bg-white py-16 md:py-24">
+        <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
@@ -149,7 +149,7 @@ export default function AreasIndexPage() {
                 <li key={a.slug}>
                   <Link
                     href={`/areas/${a.slug}`}
-                    className="group flex min-h-[44px] items-center justify-between gap-2 rounded-xl bg-[#F8FBFE] px-5 py-3.5 text-sm font-semibold text-[#0C1215] ring-1 ring-[#EFF4F7] transition-colors hover:bg-[#EDF7FC] hover:ring-[#62C4EB]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                    className="group flex min-h-[44px] items-center justify-between gap-2 rounded-xl bg-retro-paper px-5 py-3.5 text-sm font-semibold text-[#0C1215] ring-1 ring-retro-line transition-colors hover:bg-[#EDF7FC] hover:ring-[#62C4EB]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     {a.name}
@@ -162,7 +162,7 @@ export default function AreasIndexPage() {
         </section>
 
         {/* Closing CTA */}
-        <section className="bg-[#F4F7F8] pb-20 md:pb-28">
+        <section className="bg-retro-pool pb-20 md:pb-28">
           <div className="container-site">
             <div className="flex flex-col items-start gap-5 rounded-3xl bg-[#0C1215] p-8 md:flex-row md:items-center md:justify-between md:p-12">
               <div className="max-w-xl">
@@ -176,7 +176,7 @@ export default function AreasIndexPage() {
               </div>
               <a
                 href="/assessment"
-                className="inline-flex flex-shrink-0 items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+                className="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Book your free property audit

@@ -33,7 +33,7 @@ export function BeforeAfter() {
   const y = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? ["0%", "0%"] : ["-12%", "12%"]);
 
   return (
-    <section id="proof" className="bg-[#F4F7F8] pb-16 md:pb-24">
+    <section id="proof" className="bg-retro-pool pb-16 md:pb-24">
       {/* full-bleed parallax band */}
       <div ref={bandRef} className="relative h-[52vh] min-h-[380px] overflow-hidden">
         <motion.div className="absolute -inset-y-[14%] inset-x-0" style={{ y }}>
@@ -78,7 +78,7 @@ export function BeforeAfter() {
         <div ref={gridRef} className="mt-10 grid gap-5 md:mt-12 md:grid-cols-3">
           {SHOTS.map((s) => (
             <figure key={s.src} className="group">
-              <div className="relative aspect-[3/4] overflow-hidden rounded-3xl border border-[#E4ECF1]">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-3xl border border-retro-line">
                 <Image
                   src={s.src}
                   alt={s.alt}
@@ -107,7 +107,7 @@ export function BeforeAfter() {
         <div className="mt-12 flex flex-col items-start gap-4 md:mt-14 sm:flex-row sm:items-center">
           <a
             href="/assessment"
-            className="group inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none"
+            className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none"
           >
             Book your free 21-point property audit
             <svg

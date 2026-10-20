@@ -11,7 +11,7 @@ const display = { fontFamily: "var(--font-display)" } as const;
 
 const calloutTone: Record<string, string> = {
   note: "bg-[#EDF7FC] ring-[#62C4EB]/30",
-  warning: "bg-[#F4F7F8] ring-[#0C1215]/15",
+  warning: "bg-retro-pool ring-[#0C1215]/15",
   stat: "bg-[#0C1215] ring-[#0C1215] [&_p]:!text-white/85 [&_.callout-heading]:!text-white",
 };
 
@@ -108,7 +108,7 @@ const components: PortableTextComponents = {
     figure: ({ value }) =>
       value?.asset ? (
         <figure className="my-12">
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-[#F4F7F8]">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-retro-pool">
             <Image
               src={imageUrl(value, 1440)}
               alt={value.alt || ""}
@@ -154,7 +154,7 @@ const components: PortableTextComponents = {
         ) : null}
         <Link
           href={value?.buttonHref ?? "/assessment"}
-          className="inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2"
+          className="inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2"
           style={display}
         >
           {value?.buttonLabel} <span aria-hidden>&rarr;</span>

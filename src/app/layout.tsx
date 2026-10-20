@@ -105,12 +105,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/asf7gwn.css" />
+        {/* Reiher Headline (titles) + Futura PT (labels): the late-60s layer */}
+        <link rel="stylesheet" href="https://use.typekit.net/zlw7xqi.css" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="bg-white text-text-primary font-body antialiased overflow-x-hidden">
+      <body className="bg-retro-paper text-text-primary font-body antialiased overflow-x-hidden">
         <MetaPixel />
         {children}
       </body>

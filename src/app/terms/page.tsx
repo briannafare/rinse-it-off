@@ -50,7 +50,7 @@ export default function TermsPage() {
           </div>
         </section>
 
-        <section className="bg-white py-16 md:py-24">
+        <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site">
             <div className="mx-auto max-w-3xl space-y-12 md:space-y-14">
               {/* Clean Water Promise */}
@@ -199,7 +199,7 @@ export default function TermsPage() {
               </article>
 
               {/* Questions / contact */}
-              <article className="rounded-2xl bg-[#F4F7F8] p-6 ring-1 ring-[#E4ECF1] md:p-8">
+              <article className="rounded-2xl bg-retro-pool p-6 ring-1 ring-retro-line md:p-8">
                 <h2
                   className="text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
@@ -213,7 +213,7 @@ export default function TermsPage() {
                 <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
                   <a
                     href="/assessment"
-                    className="group inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none"
+                    className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     Get your free assessment

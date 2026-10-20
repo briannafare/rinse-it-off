@@ -130,7 +130,7 @@ export default function CommercialPage() {
               <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
                 <a
                   href={ASSESS_HREF}
-                  className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-base font-semibold text-[#0C1215] shadow-[0_10px_28px_-8px_rgba(98,196,235,0.55)] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+                  className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-base font-semibold text-[#0C1215] shadow-[0_10px_28px_-8px_rgba(98,196,235,0.55)] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Book your free property audit
@@ -157,7 +157,7 @@ export default function CommercialPage() {
         </section>
 
         {/* ── THE WEDGE — free 21-point property audit ── */}
-        <section className="bg-white py-16 md:py-24">
+        <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <div>
               <h2
@@ -195,7 +195,7 @@ export default function CommercialPage() {
               <div className="mt-8">
                 <a
                   href={ASSESS_HREF}
-                  className="group inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                  className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Book your free property audit
@@ -207,7 +207,7 @@ export default function CommercialPage() {
               </div>
             </div>
 
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl ring-1 ring-[#E4ECF1] shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)]">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl ring-1 ring-retro-line shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)]">
               <Image
                 src="/brand/photos/window-purewater.webp"
                 alt="A technician cleaning a tall commercial glass storefront with a water-fed pole"
@@ -220,7 +220,7 @@ export default function CommercialPage() {
         </section>
 
         {/* ── METHOD-MATCHING — commercial surfaces ── */}
-        <section id="services" className="bg-[#F4F7F8] py-16 md:py-24">
+        <section id="services" className="bg-retro-pool py-16 md:py-24">
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
@@ -240,7 +240,7 @@ export default function CommercialPage() {
               {COMMERCIAL_METHODS.map((m) => (
                 <article
                   key={m.key}
-                  className="group overflow-hidden rounded-2xl bg-white ring-1 ring-[#E4ECF1] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+                  className="group overflow-hidden rounded-2xl bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
@@ -270,7 +270,7 @@ export default function CommercialPage() {
             <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3">
               <a
                 href={ASSESS_HREF}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none"
+                className="inline-flex items-center gap-2 rounded-full bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Get your free property audit
@@ -284,7 +284,7 @@ export default function CommercialPage() {
         </section>
 
         {/* ── WHO IT'S FOR ── */}
-        <section className="bg-white py-16 md:py-24">
+        <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
@@ -303,7 +303,7 @@ export default function CommercialPage() {
               {AUDIENCES.map((a) => (
                 <div
                   key={a.title}
-                  className="rounded-2xl border border-[#E4ECF1] bg-[#FAFCFD] p-7 transition-colors duration-300 hover:border-[#62C4EB]/40 hover:bg-white motion-reduce:transition-none"
+                  className="rounded-2xl border border-retro-line bg-retro-paper p-7 transition-colors duration-300 hover:border-[#62C4EB]/40 hover:bg-white motion-reduce:transition-none"
                 >
                   <a.icon className="h-6 w-6 text-[#62C4EB]" aria-hidden />
                   <h3
@@ -320,7 +320,7 @@ export default function CommercialPage() {
         </section>
 
         {/* ── TRUST ── */}
-        <section className="relative overflow-hidden bg-[#F4F7F8] py-16 md:py-24">
+        <section className="relative overflow-hidden bg-retro-pool py-16 md:py-24">
           <div className="aura-blob left-[-10%] top-[-35%] h-[500px] w-[500px] bg-[#62C4EB]/12 motion-reduce:animate-none" aria-hidden />
           <div
             className="aura-blob right-[-8%] bottom-[-45%] h-[440px] w-[440px] bg-[#62C4EB]/10 motion-reduce:animate-none"
@@ -342,7 +342,7 @@ export default function CommercialPage() {
               {TRUST.map((t) => (
                 <div
                   key={t.title}
-                  className="group rounded-2xl border border-[#E4ECF1] bg-white p-7 transition-colors duration-300 hover:border-[#62C4EB]/40 motion-reduce:transition-none"
+                  className="group rounded-2xl border border-retro-line bg-white p-7 transition-colors duration-300 hover:border-[#62C4EB]/40 motion-reduce:transition-none"
                 >
                   <t.icon className="h-6 w-6 text-[#62C4EB]" aria-hidden />
                   <h3
@@ -385,7 +385,7 @@ export default function CommercialPage() {
               <div className="mt-8 flex flex-wrap items-center gap-6">
                 <a
                   href={ASSESS_HREF}
-                  className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+                  className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Book your free property audit

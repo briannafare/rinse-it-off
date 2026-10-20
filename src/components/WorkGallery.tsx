@@ -44,7 +44,7 @@ export function WorkGallery() {
   }, []);
 
   return (
-    <section id="work" className="bg-white py-16 md:py-24">
+    <section id="work" className="bg-retro-paper py-16 md:py-24">
       <div className="container-site flex items-end justify-between gap-6">
         <header className="max-w-2xl">
           <h2
@@ -65,7 +65,7 @@ export function WorkGallery() {
               type="button"
               onClick={() => step(d)}
               aria-label={d === 1 ? "Next photo" : "Previous photo"}
-              className="flex h-11 w-11 items-center justify-center rounded-xl ring-1 ring-[#E4ECF1] transition-colors hover:bg-[#F4F7F8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB]"
+              className="flex h-11 w-11 items-center justify-center rounded-xl ring-1 ring-retro-line transition-colors hover:bg-retro-pool focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB]"
             >
               <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} className={`h-4 w-4 ${d === -1 ? "rotate-180" : ""}`}>
                 <path d="M4 10h12M11 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
@@ -82,7 +82,7 @@ export function WorkGallery() {
       >
         {SHOTS.map((s, i) => (
           <figure key={s.src} className="w-[82vw] shrink-0 snap-start sm:w-[420px]">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-[#E4ECF1] bg-[#F4F7F8]">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-retro-line bg-retro-pool">
               <Image
                 src={`/brand/photos/work/${s.src}.webp`}
                 alt={s.alt}

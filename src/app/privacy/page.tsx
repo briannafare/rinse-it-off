@@ -46,7 +46,7 @@ export default function PrivacyPage() {
           </div>
         </section>
 
-        <section className="bg-white py-16 md:py-24">
+        <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site">
             <div className="mx-auto max-w-3xl space-y-12 md:space-y-14">
               {/* Who we are */}
@@ -148,7 +148,7 @@ export default function PrivacyPage() {
               </article>
 
               {/* Your choices */}
-              <article className="rounded-2xl bg-[#F4F7F8] p-6 ring-1 ring-[#E4ECF1] md:p-8">
+              <article className="rounded-2xl bg-retro-pool p-6 ring-1 ring-retro-line md:p-8">
                 <h2
                   className="text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}

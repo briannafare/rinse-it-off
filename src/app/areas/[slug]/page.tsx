@@ -237,7 +237,7 @@ export default async function AreaPage({
               <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
                 <a
                   href="/assessment"
-                  className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] shadow-[0_10px_28px_-8px_rgba(98,196,235,0.55)] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
+                  className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] shadow-[0_10px_28px_-8px_rgba(98,196,235,0.55)] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Get your free assessment
@@ -261,7 +261,7 @@ export default async function AreaPage({
         </section>
 
         {/* ── Localized intro — the substantive, area-specific body ────────── */}
-        <section className="bg-white py-16 md:py-24">
+        <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site max-w-3xl">
             <h2
               className="mt-3 text-[clamp(1.7rem,3.6vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-[#0C1215]"
@@ -286,7 +286,7 @@ export default async function AreaPage({
               </a>
               <a
                 href="/assessment?type=commercial"
-                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl px-5 py-3 font-semibold text-[#0C1215] ring-1 ring-[#E4ECF1] transition-colors hover:ring-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl px-5 py-3 font-semibold text-[#0C1215] ring-1 ring-retro-line transition-colors hover:ring-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Business or property manager? Book a property audit
@@ -297,7 +297,7 @@ export default async function AreaPage({
         </section>
 
         {/* ── Method-matching services ─────────────────────────────────────── */}
-        <section className="bg-[#F4F7F8] py-16 md:py-24">
+        <section className="bg-retro-pool py-16 md:py-24">
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
@@ -316,7 +316,7 @@ export default async function AreaPage({
               {METHODS.map((m, i) => (
                 <article
                   key={m.key}
-                  className="group overflow-hidden rounded-2xl bg-white ring-1 ring-[#E4ECF1] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+                  className="group overflow-hidden rounded-2xl bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
@@ -343,10 +343,10 @@ export default async function AreaPage({
         </section>
 
         {/* ── Real before/after mention ────────────────────────────────────── */}
-        <section className="bg-white py-16 md:py-24">
+        <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <figure className="order-2 lg:order-1">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-[#E4ECF1] shadow-[0_30px_60px_-30px_rgba(20,45,60,0.3)]">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-retro-line shadow-[0_30px_60px_-30px_rgba(20,45,60,0.3)]">
                 <Image
                   src="/brand/photos/before-after-concrete.webp"
                   alt="A Portland-metro sidewalk half black with grime, half freshly surface-cleaned, the machine still in frame"
@@ -374,7 +374,7 @@ export default async function AreaPage({
               </p>
               <a
                 href="/assessment"
-                className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 See what your surfaces could look like
@@ -385,8 +385,8 @@ export default async function AreaPage({
         </section>
 
         {/* ── Clean Water Promise strip ────────────────────────────────────── */}
-        <section className="bg-[#F4F7F8] py-14 md:py-16">
-          <div className="container-site flex flex-col gap-6 rounded-3xl bg-white p-8 ring-1 ring-[#E4ECF1] md:flex-row md:items-center md:justify-between md:p-10">
+        <section className="bg-retro-pool py-14 md:py-16">
+          <div className="container-site flex flex-col gap-6 rounded-3xl bg-white p-8 ring-1 ring-retro-line md:flex-row md:items-center md:justify-between md:p-10">
             <div className="flex items-start gap-4">
               <Droplets className="mt-0.5 h-8 w-8 flex-shrink-0 text-[#62C4EB]" aria-hidden />
               <div>
@@ -412,7 +412,7 @@ export default async function AreaPage({
 
         {/* ── Nearby areas — internal linking ──────────────────────────────── */}
         {nearby.length > 0 && (
-          <section className="bg-white py-16 md:py-20">
+          <section className="bg-retro-paper py-16 md:py-20">
             <div className="container-site">
               <h2
                 className="text-[clamp(1.4rem,3vw,2rem)] leading-[1.1] tracking-[-0.02em] text-[#0C1215]"
@@ -428,7 +428,7 @@ export default async function AreaPage({
                   <li key={a.slug}>
                     <Link
                       href={`/areas/${a.slug}`}
-                      className="group flex min-h-[44px] items-center justify-between gap-2 rounded-xl bg-[#F4F7F8] px-5 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#EDF7FC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                      className="group flex min-h-[44px] items-center justify-between gap-2 rounded-xl bg-retro-pool px-5 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#EDF7FC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                       style={{ fontFamily: "var(--font-display)" }}
                     >
                       {a.name}
@@ -474,7 +474,7 @@ export default async function AreaPage({
               <div className="mt-8 flex flex-wrap items-center gap-6">
                 <a
                   href="/assessment"
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Get your same-day quote

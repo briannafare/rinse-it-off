@@ -31,12 +31,13 @@ const companyLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-brand-dark text-white rounded-t-[3rem] md:rounded-t-[4rem] -mt-8 relative z-10 overflow-hidden">
-      {/* Single water-blue hairline at top edge */}
-      <div
-        className="h-px w-full"
-        style={{ background: "linear-gradient(90deg, transparent, #62C4EB 50%, transparent)", opacity: 0.4 }}
-      />
+    <footer className="relative z-10 overflow-hidden bg-brand-dark pb-16 text-white md:pb-0">
+      {/* The livery stripe, once, along the top edge */}
+      <div className="flex h-1.5 w-full" aria-hidden>
+        <span className="flex-1 bg-retro-bloom" />
+        <span className="flex-1 bg-brand-blue" />
+        <span className="flex-1 bg-retro-sun" />
+      </div>
       <div className="container-site pt-16 md:pt-20 pb-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
           {/* Brand */}
@@ -75,7 +76,7 @@ export function Footer() {
 
           {/* Residential services */}
           <div>
-            <h4 className="text-sm font-display font-bold uppercase tracking-wider text-white/70 mb-4">Residential</h4>
+            <h4 className="label-caps mb-4 text-retro-sun">Residential</h4>
             <nav className="space-y-1">
               {residentialServices.map((s) => (
                 <a key={s.label} href={`/services/${s.slug}`} className={linkClass}>
@@ -87,7 +88,7 @@ export function Footer() {
 
           {/* Commercial services */}
           <div>
-            <h4 className="text-sm font-display font-bold uppercase tracking-wider text-white/70 mb-4">Commercial</h4>
+            <h4 className="label-caps mb-4 text-retro-sun">Commercial</h4>
             <nav className="space-y-1">
               {commercialServices.map((s) => (
                 <a key={s.label} href={`/services/${s.slug}`} className={linkClass}>
@@ -99,7 +100,7 @@ export function Footer() {
 
           {/* Company + CTA */}
           <div>
-            <h4 className="text-sm font-display font-bold uppercase tracking-wider text-white/70 mb-4">Company</h4>
+            <h4 className="label-caps mb-4 text-retro-sun">Company</h4>
             <nav className="space-y-1 mb-6">
               {companyLinks.map((l) => (
                 <a key={l.label} href={l.href} className={linkClass}>
@@ -112,7 +113,7 @@ export function Footer() {
             </p>
             <a
               href="/assessment"
-              className="group inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
+              className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
             >
               Free Assessment
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" />
@@ -122,7 +123,9 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
-          <p className="text-sm text-white/65">&copy; {new Date().getFullYear()} Fresh Rinse, LLC dba Rinse It Off &middot; Tigard, Oregon</p>
+          <p className="flex items-center gap-3 text-sm text-white/65">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/hal/hal-mark-outline.svg" alt="" aria-hidden width={40} height={40} className="h-9 w-9" />&copy; {new Date().getFullYear()} Fresh Rinse, LLC dba Rinse It Off &middot; Tigard, Oregon</p>
           <div className="flex items-center gap-4">
             <a
               href="https://www.facebook.com/profile.php?id=61594392927890"

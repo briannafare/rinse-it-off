@@ -34,7 +34,7 @@ export default function ServicesIndexPage() {
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
             <Link
               href="/assessment"
-              className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+              className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Get your free assessment
@@ -52,14 +52,14 @@ export default function ServicesIndexPage() {
       </section>
 
       {/* ── Service grid ────────────────────────────────────────────── */}
-      <section className="bg-[#F4F7F8] py-16 md:py-24">
+      <section className="bg-retro-pool py-16 md:py-24">
         <div className="container-site">
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((s, i) => (
               <Link
                 key={s.key}
                 href={`/services/${s.slug}`}
-                className="group flex flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-[#E4ECF1] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+                className="group flex flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
@@ -91,7 +91,7 @@ export default function ServicesIndexPage() {
           </div>
 
           {/* Reassurance + dual funnel */}
-          <div className="mt-12 flex flex-col items-start gap-6 rounded-2xl border border-[#E4ECF1] bg-white p-6 shadow-soft md:mt-14 md:flex-row md:items-center md:justify-between md:p-8">
+          <div className="mt-12 flex flex-col items-start gap-6 rounded-2xl border border-retro-line bg-white p-6 shadow-soft md:mt-14 md:flex-row md:items-center md:justify-between md:p-8">
             <div className="flex items-start gap-3">
               <ShieldCheck className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#62C4EB]" aria-hidden />
               <p className="max-w-xl text-sm leading-relaxed text-[#4B5C6B]">
@@ -106,14 +106,14 @@ export default function ServicesIndexPage() {
             <div className="flex flex-shrink-0 flex-wrap gap-3">
               <Link
                 href="/assessment"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                className="inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Free assessment
               </Link>
               <Link
                 href="/assessment?type=residential"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                className="inline-flex items-center gap-2 rounded-full bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Get a home quote

@@ -46,7 +46,7 @@ export function ServicesGrid() {
   const gridRef = useStaggerReveal(0.08);
 
   return (
-    <section id="services" className="bg-white py-16 md:py-24">
+    <section id="services" className="bg-retro-paper py-16 md:py-24">
       <div className="container-site">
         <div ref={headRef} className="flex flex-wrap items-end justify-between gap-6">
           <h2
@@ -65,7 +65,7 @@ export function ServicesGrid() {
           {SERVICES.map((s) => (
             <div
               key={s.title}
-              className="group relative overflow-hidden rounded-2xl border border-[#E4ECF1] bg-[#FAFCFD] p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)]"
+              className="group relative overflow-hidden rounded-2xl border border-retro-line bg-retro-paper p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)]"
             >
               {/* hairline turns water-blue on hover */}
               <span className="absolute inset-x-0 top-0 h-[2px] bg-transparent transition-colors duration-300 group-hover:bg-[#62C4EB]" />

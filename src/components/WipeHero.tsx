@@ -30,7 +30,7 @@ export function WipeHero() {
         };
 
   return (
-    <section className="relative overflow-hidden bg-white">
+    <section className="relative overflow-hidden bg-retro-paper">
       {/* water-aura mesh + two slow drifting brand blobs = light, alive */}
       <div className="absolute inset-0" style={{ background: AURA }} aria-hidden />
       <div className="aura-blob left-[-6%] top-[6%] h-[460px] w-[460px] bg-[#CFEBFA]" aria-hidden />

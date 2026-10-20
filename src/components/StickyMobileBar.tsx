@@ -15,7 +15,7 @@ export function StickyMobileBar() {
       <a href={`sms:${PHONE}`} className="flex min-h-11 items-center justify-center gap-2 py-3.5 text-sm font-medium text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#62C4EB]">
         <MessageSquare className="h-4 w-4" aria-hidden /> Text
       </a>
-      <a href="/assessment" className="flex min-h-11 items-center justify-center gap-2 bg-[#62C4EB] py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0C1215] motion-reduce:transition-none">
+      <a href="/assessment" className="flex min-h-11 items-center justify-center gap-2 bg-retro-sun py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0C1215] motion-reduce:transition-none">
         Free quote <ArrowRight className="h-4 w-4" aria-hidden />
       </a>
     </nav>

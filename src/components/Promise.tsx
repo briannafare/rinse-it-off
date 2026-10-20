@@ -32,7 +32,7 @@ export function Promise() {
   const gridRef = useStaggerReveal(0.12);
 
   return (
-    <section className="relative overflow-hidden bg-white py-16 md:py-24">
+    <section className="relative overflow-hidden bg-retro-paper py-16 md:py-24">
       {/* soft water aura on the clean-water canvas */}
       <div className="aura-blob left-[-10%] top-[-35%] h-[500px] w-[500px] bg-[#62C4EB]/12 motion-reduce:animate-none" aria-hidden />
       <div className="aura-blob right-[-8%] bottom-[-45%] h-[440px] w-[440px] bg-[#62C4EB]/10 motion-reduce:animate-none" style={{ animationDelay: "-7s" }} aria-hidden />
@@ -52,7 +52,7 @@ export function Promise() {
           {POINTS.map((p) => (
             <div
               key={p.title}
-              className="group rounded-2xl border border-[#E4ECF1] bg-[#FAFCFD] p-7 transition-colors duration-300 hover:border-[#62C4EB]/40 hover:bg-white motion-reduce:transition-none"
+              className="group rounded-2xl border border-retro-line bg-retro-paper p-7 transition-colors duration-300 hover:border-[#62C4EB]/40 hover:bg-white motion-reduce:transition-none"
             >
               <div className="flex items-center justify-between">
                 <p.icon className="h-6 w-6 text-[#62C4EB]" aria-hidden />

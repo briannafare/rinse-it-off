@@ -11,6 +11,7 @@ import { FAQ } from "@/components/FAQ";
 import { FAQS } from "@/lib/faqs";
 import { FinalCTA } from "@/components/FinalCTA";
 import { StickyMobileBar } from "@/components/StickyMobileBar";
+import { TitleCard } from "@/components/retro/Bits";
 import Script from "next/script";
 
 const faqSchema = {
@@ -31,11 +32,14 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <CinematicHero />
+      <TitleCard chapter="Chapter one" title="The Yearly Plan" tone="paper" />
       <PlanSection />
       <AquaStats />
       <DualFunnel />
+      <TitleCard chapter="Chapter two" title="How We Clean" />
       <Methods />
       <ProcessSection />
+      <TitleCard chapter="Chapter three" title="Real Jobs" />
       <BeforeAfter />
       <WorkGallery />
       <PromiseSection />

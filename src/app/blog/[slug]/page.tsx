@@ -200,7 +200,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       {post.heroImage?.asset ? (
         <div className="bg-white pt-10 md:pt-14">
           <div className="container-site">
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl bg-[#F4F7F8] md:aspect-[21/9]">
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl bg-retro-pool md:aspect-[21/9]">
               <Image
                 src={imageUrl(post.heroImage, 1800)}
                 alt={post.heroImage.alt || ""}
@@ -225,9 +225,9 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       <FaqSection faqs={post.faqs} />
 
       {post.author?.bio ? (
-        <section className="bg-white py-14">
+        <section className="bg-retro-paper py-14">
           <div className="container-site">
-            <div className="mx-auto flex max-w-[720px] items-start gap-5 rounded-2xl p-6 ring-1 ring-[#E4ECF1] md:p-7">
+            <div className="mx-auto flex max-w-[720px] items-start gap-5 rounded-2xl p-6 ring-1 ring-retro-line md:p-7">
               {post.author.headshot?.asset ? (
                 <Image
                   src={imageUrl(post.author.headshot, 160, 160)}
@@ -253,7 +253,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       ) : null}
 
       {related.length ? (
-        <section className="bg-[#F4F7F8] py-16 md:py-20">
+        <section className="bg-retro-pool py-16 md:py-20">
           <div className="container-site">
             <h2
               className="mb-8 text-[clamp(1.6rem,3.2vw,2.2rem)] leading-[1.1] tracking-[-0.02em] text-[#0C1215]"

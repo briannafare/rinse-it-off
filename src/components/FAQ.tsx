@@ -11,7 +11,7 @@ export function FAQ() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="faq" className="py-24 md:py-32 bg-surface-alt">
+    <section id="faq" className="py-24 md:py-32 bg-retro-pool">
       <div className="container-site">
         <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
           <div className="lg:col-span-2" ref={headRef}>

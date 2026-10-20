@@ -25,11 +25,11 @@ export default async function QuoteToolPage({
   if (authed) return <QuoteWizard />;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#F4F7F8] px-5 font-body text-[#0C1215]">
+    <div className="flex min-h-screen items-center justify-center bg-retro-pool px-5 font-body text-[#0C1215]">
       <div className="w-full max-w-sm">
         <form
           action={unlockQuoteTool}
-          className="rounded-2xl border border-[#EFF4F7] bg-white p-6 shadow-soft-md sm:p-8"
+          className="rounded-2xl border border-retro-line bg-white p-6 shadow-soft-md sm:p-8"
         >
           <div className="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-[#EDF7FC]">
             <Lock className="h-5 w-5 text-[#62C4EB]" aria-hidden />
@@ -45,7 +45,7 @@ export default async function QuoteToolPage({
             autoFocus
             autoComplete="current-password"
             placeholder="Passcode"
-            className="mt-5 min-h-11 w-full rounded-xl border border-[#E4ECF1] bg-white px-4 py-3 text-sm text-[#0C1215] placeholder:text-[#8899A6] focus:border-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="mt-5 min-h-11 w-full rounded-xl border border-retro-line bg-white px-4 py-3 text-sm text-[#0C1215] placeholder:text-[#8899A6] focus:border-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           />
           {error === "wrong" && (
             <p className="mt-2 text-sm font-medium text-[#DC4B2A]">Wrong passcode — try again.</p>
@@ -57,7 +57,7 @@ export default async function QuoteToolPage({
           )}
           <button
             type="submit"
-            className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-[#62C4EB] px-6 py-3 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+            className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-full bg-[#62C4EB] px-6 py-3 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
           >
             Unlock
           </button>

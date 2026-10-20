@@ -51,7 +51,7 @@ function FilterLink({
       className={`inline-flex min-h-11 shrink-0 items-center rounded-lg px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 ${
         active
           ? "bg-[#0C1215] text-white"
-          : "bg-white text-[#4B5C6B] ring-1 ring-[#E4ECF1] hover:text-[#0C1215] hover:ring-[#62C4EB]/50"
+          : "bg-white text-[#4B5C6B] ring-1 ring-retro-line hover:text-[#0C1215] hover:ring-[#62C4EB]/50"
       }`}
       style={display}
     >
@@ -119,7 +119,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
       {hasPosts ? (
         <>
           {/* Filter */}
-          <section className="border-b border-[#E4ECF1] bg-white py-6">
+          <section className="border-b border-retro-line bg-retro-paper py-6">
             <nav aria-label="Filter articles by category" className="container-site">
               <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
                 <FilterLink href="/blog" active={!activeCategory}>
@@ -136,11 +136,11 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
 
           {/* Featured */}
           {featured ? (
-            <section className="bg-white pt-12 md:pt-16">
+            <section className="bg-retro-paper pt-12 md:pt-16">
               <div className="container-site">
                 <Link
                   href={`/blog/${featured.slug}`}
-                  className="group grid overflow-hidden rounded-3xl bg-[#F4F7F8] ring-1 ring-[#E4ECF1] transition-shadow hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 md:grid-cols-2"
+                  className="group grid overflow-hidden rounded-3xl bg-retro-pool ring-1 ring-retro-line transition-shadow hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 md:grid-cols-2"
                 >
                   {featured.heroImage?.asset ? (
                     <div className="relative aspect-[16/10] md:aspect-auto md:min-h-[360px]">
@@ -169,7 +169,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
           ) : null}
 
           {/* Grid */}
-          <section className="bg-white py-12 md:py-16">
+          <section className="bg-retro-paper py-12 md:py-16">
             <div className="container-site">
               {rest.length ? (
                 <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -191,7 +191,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
         </>
       ) : (
         /* Empty state — reads as "coming", not "broken" */
-        <section className="bg-[#F4F7F8] py-16 md:py-24">
+        <section className="bg-retro-pool py-16 md:py-24">
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
@@ -207,7 +207,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
             </header>
             <ul className="mt-10 grid gap-4 md:grid-cols-3">
               {categories.map((c) => (
-                <li key={c._id} className="rounded-2xl bg-white p-6 ring-1 ring-[#E4ECF1] md:p-7">
+                <li key={c._id} className="rounded-2xl bg-white p-6 ring-1 ring-retro-line md:p-7">
                   <p className="mb-2 text-xl text-[#0C1215]" style={{ ...display, fontWeight: 600 }}>
                     {c.title}
                   </p>
@@ -218,7 +218,7 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
               <a
                 href={PHONE_TEL}
-                className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8]"
+                className="group inline-flex items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8]"
                 style={display}
               >
                 <Phone className="h-4 w-4" aria-hidden />

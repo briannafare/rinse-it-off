@@ -6,7 +6,7 @@ export function CTA() {
   const ref = useScrollReveal();
 
   return (
-    <section id="contact" className="py-24 md:py-32 bg-white">
+    <section id="contact" className="py-24 md:py-32 bg-retro-paper">
       <div className="container-site" ref={ref}>
         <div className="relative rounded-[2rem] overflow-hidden bg-brand-dark p-10 md:p-16 lg:p-20">
           {/* Subtle grid bg */}

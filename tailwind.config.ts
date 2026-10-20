@@ -25,8 +25,8 @@ const config: Config = {
         },
         surface: {
           DEFAULT: "#FFFFFF",
-          alt: "#F5F7F4",
-          warm: "#FAFAF7",
+          alt: "#F3EDE2",
+          warm: "#FBF8F2",
           blue: "#EDF7FC",
           card: "#F8FBFE",
           mint: "#F0FFF6",
@@ -38,12 +38,17 @@ const config: Config = {
           inverse: "#FFFFFF",
         },
         border: { DEFAULT: "#E4ECF1", light: "#EFF4F7" },
+        // Late-60s brand layer (2026-10-19 rebrand): paper and cream carry the page,
+        // sun = "look here" (FREE, prices), bloom = Hal and the stripe only.
+        retro: { paper: "#FBF8F2", pool: "#F3EDE2", sun: "#F2B632", bloom: "#D6336C", line: "#E7E0D3", muted: "#5B6770" },
       },
       fontFamily: {
         display: ["var(--font-display)", "system-ui", "sans-serif"],
         serif: ["var(--font-display)", "system-ui", "sans-serif"],
         body: ["var(--font-text)", "system-ui", "sans-serif"],
         mono: ["var(--font-text)", "system-ui", "sans-serif"],
+        title: ["var(--font-title)", "Georgia", "serif"],
+        label: ["var(--font-label)", "system-ui", "sans-serif"],
       },
       fontSize: {
         hero: ["clamp(3rem, 8vw, 5.5rem)", { lineHeight: "1.0", letterSpacing: "-0.03em" }],
@@ -75,11 +80,21 @@ const config: Config = {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        // Signature button: the stripe sweeps across once, then a star twinkles on the top edge.
+        "retro-sweep": { "0%,62%": { backgroundPosition: "170% 0" }, "92%,100%": { backgroundPosition: "-70% 0" } },
+        "retro-twinkle": {
+          "0%,90%": { opacity: "0", transform: "scale(.2) rotate(0deg)" },
+          "94%": { opacity: "1", transform: "scale(1.1) rotate(40deg)" },
+          "97%": { opacity: "1", transform: "scale(.9) rotate(70deg)" },
+          "100%": { opacity: "0", transform: "scale(.3) rotate(95deg)" },
+        },
       },
       animation: {
         float: "float-gentle 5s ease-in-out infinite",
         "spin-slow": "spin-slow 25s linear infinite",
         "scroll-x": "scroll-x 30s linear infinite",
+        "retro-sweep": "retro-sweep 16s ease-in-out infinite",
+        "retro-twinkle": "retro-twinkle 16s ease-out infinite",
       },
     },
   },

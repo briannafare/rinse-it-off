@@ -41,7 +41,7 @@ export function ProcessSection() {
   }, []);
 
   return (
-    <section id="process" className="bg-white py-16 md:py-24">
+    <section id="process" className="bg-retro-paper py-16 md:py-24">
       <div className="container-site">
         <div ref={headRef}>
           <h2
@@ -54,7 +54,7 @@ export function ProcessSection() {
 
         <div className="mt-10 grid items-center gap-10 md:mt-14 lg:grid-cols-2 lg:gap-16">
           {/* real footage — the rotary cleaner mid-pass */}
-          <div className="relative overflow-hidden rounded-3xl border border-[#E4ECF1] shadow-[0_30px_60px_-30px_rgba(20,45,60,0.3)]">
+          <div className="relative overflow-hidden rounded-3xl border border-retro-line shadow-[0_30px_60px_-30px_rgba(20,45,60,0.3)]">
             <video
               src="/brand/video/surface-cleaning.mp4"
               poster="/brand/photos/work/surface-cleaning-poster.webp"
@@ -97,7 +97,7 @@ export function ProcessSection() {
         <div className="mt-12 flex md:mt-16">
           <a
             href="/assessment"
-            className="group inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+            className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
           >
             Book your free 21-point audit
           </a>

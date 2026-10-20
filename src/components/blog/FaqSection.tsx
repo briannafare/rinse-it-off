@@ -4,7 +4,7 @@ import type { Faq } from "@/sanity/lib/types";
 export function FaqSection({ faqs, heading = "Common questions", renderAnswer }: { faqs?: Faq[]; heading?: string; renderAnswer?: (answer: string) => React.ReactNode }) {
   if (!faqs?.length) return null;
   return (
-    <section className="bg-[#F4F7F8] py-16 md:py-20">
+    <section className="bg-retro-pool py-16 md:py-20">
       <div className="container-site">
         <div className="mx-auto max-w-3xl">
           <h2
@@ -13,7 +13,7 @@ export function FaqSection({ faqs, heading = "Common questions", renderAnswer }:
           >
             {heading}
           </h2>
-          <div className="divide-y divide-[#E4ECF1] rounded-2xl bg-white px-6 ring-1 ring-[#E4ECF1] md:px-8">
+          <div className="divide-y divide-[#E4ECF1] rounded-2xl bg-white px-6 ring-1 ring-retro-line md:px-8">
             {faqs.map((f, i) => (
               <details key={i} className="group py-5" open={i === 0}>
                 <summary

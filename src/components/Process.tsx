@@ -52,7 +52,7 @@ export function Process() {
   };
 
   return (
-    <section id="process" className="py-24 md:py-32 bg-white">
+    <section id="process" className="py-24 md:py-32 bg-retro-paper">
       <div className="container-site">
         <div ref={headRef} className="max-w-xl mb-10">
           <h2 className="font-display font-semibold text-display-lg text-text-primary mb-3">

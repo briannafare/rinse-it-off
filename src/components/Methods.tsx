@@ -9,7 +9,7 @@ import { METHODS } from "@/lib/methods";
  *  the training material; no invented claims. One accent only (water-blue). */
 export function Methods() {
   return (
-    <section id="services" className="bg-[#F4F7F8] py-16 md:py-24">
+    <section id="services" className="bg-retro-pool pb-16 md:pb-24">
       <div className="container-site">
         <header className="max-w-2xl">
           <h2
@@ -29,7 +29,7 @@ export function Methods() {
           {METHODS.map((m) => (
             <article
               key={m.key}
-              className="group overflow-hidden rounded-2xl bg-white ring-1 ring-[#E4ECF1] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+              className="group overflow-hidden rounded-2xl bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
@@ -59,7 +59,7 @@ export function Methods() {
         <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3">
           <a
             href="/assessment"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="inline-flex items-center gap-2 rounded-full bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Get your free property assessment
