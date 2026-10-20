@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import {
   ShieldCheck,
   MessageSquare,
@@ -11,12 +12,12 @@ import {
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Privacy Policy",
   description:
-    "How Rinse It Off collects, uses, and protects your information — including phone number and text messaging data.",
-  alternates: { canonical: "https://rinseitoff.com/privacy" },
-};
+    "How Rinse It Off collects, uses, and protects your information, including phone numbers and text messaging data.",
+  path: "/privacy",
+});
 
 const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";

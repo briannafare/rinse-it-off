@@ -12,13 +12,19 @@ export const revalidate = 300;
 
 type BlogEntry = { slug: string; date: string; updatedAt?: string };
 
+/** Date the static pages' copy last changed. A lastmod of "now" on every
+ *  request tells crawlers everything changed on every fetch, so they learn to
+ *  ignore the field. Bump this when page copy changes. */
+const PAGES_UPDATED = new Date("2026-10-19");
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const lastModified = new Date();
+  const lastModified = PAGES_UPDATED;
 
   // Top-level routes. NOTE: /quote is the internal audit tool — intentionally
   // excluded (noindex + robots disallow), same as /flyer and /training.
   const pages = [
     { path: "/", priority: 1 },
+    { path: "/plan", priority: 0.9 },
     { path: "/assessment", priority: 0.9 },
     { path: "/commercial", priority: 0.8 },
     { path: "/services", priority: 0.8 },
@@ -26,6 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/blog", priority: 0.7 },
     { path: "/contact", priority: 0.6 },
     { path: "/terms", priority: 0.3 },
+    { path: "/privacy", priority: 0.2 },
   ];
 
   // The six method-matched services → /services/[slug].

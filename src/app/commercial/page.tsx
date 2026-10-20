@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { OG, breadcrumbLd, pageMeta } from "@/lib/seo";
 import Image from "next/image";
+import Link from "next/link";
 import { RetroButton } from "@/components/retro/Bits";
 import {
   Phone,
@@ -27,10 +29,15 @@ import {
   TRUST as TRUST_COPY,
 } from "@/lib/commercial";
 
-export const metadata: Metadata = {
-  title: "Commercial & Property Manager Exterior Cleaning",
-  description: COMMERCIAL_META_DESCRIPTION,
-};
+// The canonical was missing here, so the root layout's home-page canonical
+// leaked in and told Google /commercial was a copy of the home page.
+export const metadata: Metadata = pageMeta({
+  title: "Commercial Pressure Washing in Portland, OR",
+  description:
+    "Parking lots, trash pads, storefronts, siding and roofs for Portland-area property managers, HOAs and businesses. Starts with a free 21-point inspection.",
+  path: "/commercial",
+  image: OG.commercial,
+});
 
 const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";
@@ -70,7 +77,8 @@ const jsonLd = {
       description: COMMERCIAL_META_DESCRIPTION,
       url: `${BASE_URL}/commercial`,
       provider: { "@id": `${BASE_URL}/#business` },
-      areaServed: { "@type": "City", name: "Portland" },
+      image: `${BASE_URL}${OG.commercial.url}`,
+      areaServed: { "@type": "AdministrativeArea", name: "Portland, Oregon metropolitan area" },
       audience: AUDIENCE_COPY.map((a) => ({ "@type": "Audience", audienceType: a.title })),
       hasOfferCatalog: {
         "@type": "OfferCatalog",
@@ -81,6 +89,7 @@ const jsonLd = {
         })),
       },
     },
+    breadcrumbLd([{ name: "Commercial", path: "/commercial" }]),
   ],
 };
 
@@ -168,7 +177,7 @@ export default function CommercialPage() {
                 <Droplets className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#62C4EB]" aria-hidden />
                 <p className="text-sm leading-relaxed text-[#4B5C6B]">
                   <span className="font-semibold text-[#0C1215]">
-                    About 164 rainy days a year in Portland
+                    About 157 days of rain a year in Portland
                   </span>{" "}
                   keep moss, algae and grime coming back. The audit is where we map what your property
                   needs to stay ahead of it &mdash; at no charge.
@@ -193,7 +202,7 @@ export default function CommercialPage() {
             <div className="relative aspect-[4/3] overflow-hidden rounded-[4px] ring-1 ring-retro-line">
               <Image
                 src="/brand/photos/window-purewater.webp"
-                alt="A technician cleaning a tall commercial glass storefront with a water-fed pole"
+                alt="A Rinse It Off cleaner washing a tall window with a water-fed pole, the service truck behind her"
                 fill
                 sizes="(min-width: 1024px) 45vw, 100vw"
                 className="object-cover"
@@ -338,6 +347,16 @@ export default function CommercialPage() {
                 </div>
               ))}
             </div>
+            <p className="mt-8 max-w-2xl text-base leading-relaxed text-[#4B5C6B]">
+              Comparing contractors for a board or an owner? Here&apos;s{" "}
+              <Link
+                href="/commercial/hiring-a-pressure-washing-company"
+                className="font-semibold text-[#0C1215] underline decoration-[#62C4EB] decoration-2 underline-offset-4 hover:text-[#3AA8D4]"
+              >
+                what to check before you hire a pressure washing company
+              </Link>
+              .
+            </p>
           </div>
         </section>
 

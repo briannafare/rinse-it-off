@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { Phone, Mail, MapPin, Clock, ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-export const metadata: Metadata = {
-  title: "Contact",
+export const metadata: Metadata = pageMeta({
+  title: "Contact Rinse It Off | Portland Exterior Cleaning",
+  absoluteTitle: true,
   description:
-    "Reach Rinse It Off for residential and commercial exterior cleaning across the Portland metro. Call (971) 626-4146, email hello@rinseitoff.com, or book your free property assessment.",
-  alternates: { canonical: "https://rinseitoff.com/contact" },
-};
+    "Call (971) 626-4146 or email hello@rinseitoff.com about exterior cleaning anywhere in the Portland metro. Rinse It Off is based in Tigard, Oregon.",
+  path: "/contact",
+});
 
 const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";

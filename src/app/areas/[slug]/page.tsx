@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OG, breadcrumbLd, pageMeta } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -6,6 +7,7 @@ import { Phone, ArrowRight, ArrowUpRight, Check, Droplets, MapPin } from "lucide
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { METHODS } from "@/lib/methods";
+import { SERVICES } from "@/lib/services";
 import { AREAS, getAreaBySlug, getNearbyAreas, type Area } from "@/lib/areas";
 import { getAreaFacts } from "@/lib/area-facts";
 
@@ -13,14 +15,19 @@ const BASE_URL = "https://rinseitoff.com";
 const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";
 
-// ── Local imagery only (all present in /public/brand/photos) ─────────────────
+// Each method card links to its service page (area pages linked to no service page before).
+const SLUG_BY_KEY: Record<string, string> = Object.fromEntries(SERVICES.map((s) => [s.key, s.slug]));
+
+// ── Local imagery only (all present in /public/brand/photos). Round 10 of the
+// rebrand overwrote several of these files with new art; the alts describe the
+// current files, so check them again whenever a file is swapped. ──────────────
 const HERO_PHOTOS = [
-  { src: "/brand/photos/house-softwash.webp", alt: "A technician soft-washing the siding of a Pacific Northwest home from the ground" },
+  { src: "/brand/photos/house-softwash.webp", alt: "A flat 1960s-style illustration of a cleaner washing the tall windows of a mid-century house with a water-fed pole while the owners watch" },
   { src: "/brand/photos/work/clubhouse-entry.webp", alt: "A clubhouse entry with the concrete freshly cleaned" },
-  { src: "/brand/photos/roof-softwash.webp", alt: "A technician on a moss-covered shingle roof applying white soft-wash foam" },
+  { src: "/brand/photos/roof-softwash.webp", alt: "A flat 1960s-style illustration of a cleaner on a shingle roof spraying soft wash over green moss" },
   { src: "/brand/photos/walkway-split.webp", alt: "A walkway mid-clean, the finished half bright against the dark, dirty half" },
-  { src: "/brand/photos/masonry-coldwater.webp", alt: "A technician rinsing dirt off a red-brick wall with a wide fan of water" },
-  { src: "/brand/photos/window-purewater.webp", alt: "A technician cleaning a tall glass storefront with a water-fed pole" },
+  { src: "/brand/photos/masonry-coldwater.webp", alt: "Two Rinse It Off cleaners running surface cleaners along the walkways of a mid-century garden apartment complex" },
+  { src: "/brand/photos/window-purewater.webp", alt: "A Rinse It Off cleaner washing a tall window with a water-fed pole, the service truck behind her" },
 ] as const;
 
 // ── Copy variation — anti-thin-content ───────────────────────────────────────
@@ -60,7 +67,7 @@ const OPENERS = [
   (n: string) => `In ${n}, the same Northwest weather that keeps everything green also keeps a slow film of moss and algae creeping across roofs, siding, walkways, and concrete.`,
   (n: string) => `Exterior surfaces around ${n} take a beating from Portland's damp climate — north-facing walls, shaded walkways, and shingle roofs all grow the same green haze.`,
   (n: string) => `Across ${n}, the wet season does its quiet damage: black streaks down the roof, a slick green layer on the driveway, and grime settling into the siding.`,
-  (n: string) => `With Portland averaging about 164 rainy days a year, ${n} gets plenty of the steady moisture that moss, algae, and mildew need to take hold.`,
+  (n: string) => `With Portland getting measurable rain on about 157 days a year, ${n} gets plenty of the steady moisture that moss, algae, and mildew need to take hold.`,
 ] as const;
 
 const METHOD_LINES = [
@@ -97,7 +104,8 @@ type IntroCopy = { hero: string; paragraphs: string[] };
 
 function buildIntro(area: Area): IntroCopy {
   const seed = hashSlug(area.slug);
-  // The "164 rainy days" opener (last in OPENERS) contradicts the sourced
+  // The "157 days" opener (last in OPENERS, NOAA 1991-2020 normals for Portland
+  // airport) would contradict the sourced
   // rain-day counts on pages that state their own, so those pages skip it.
   const openers = getAreaFacts(area.slug).some((f) => /\bdays\b/.test(f.text)) ? OPENERS.slice(0, -1) : OPENERS;
   const near = joinNames(getNearbyAreas(area).slice(0, 3).map((a) => a.name));
@@ -118,6 +126,12 @@ export function generateStaticParams() {
   return AREAS.map((a) => ({ slug: a.slug }));
 }
 
+/** "Beaverton, OR" for a city, "Sellwood-Moreland, Portland" for a neighborhood.
+ *  (The old "Beaverton, Portland OR" put every suburb inside Portland.) */
+function placeSuffix(area: Area): string {
+  return area.type === "city" ? "OR" : "Portland";
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -127,22 +141,12 @@ export async function generateMetadata({
   const area = getAreaBySlug(slug);
   if (!area) return { title: "Service Area Not Found" };
 
-  const title = `Pressure Washing & Exterior Cleaning in ${area.name}, Portland OR`;
-  const description = `Method-matched pressure washing, soft washing, and exterior cleaning for homes and businesses in ${area.name}. Free 21-point property audit, a firm itemized quote the same day we walk your property, and our Clean Water Promise. Licensed & insured.`;
+  // Under 60 characters with " | Rinse It Off"; long neighborhood names drop the suffix.
+  const full = `Pressure Washing in ${area.name}, ${placeSuffix(area)}`;
+  const title = full.length > 45 ? `Pressure Washing in ${area.name}` : full;
+  const description = `Pressure washing, soft washing and window cleaning for homes and businesses in ${area.name}. Insured, with a 48-hour re-rinse guarantee.`;
 
-  return {
-    title,
-    description,
-    alternates: { canonical: `${BASE_URL}/areas/${area.slug}` },
-    openGraph: {
-      title: `${title} | Rinse It Off`,
-      description,
-      type: "website",
-      locale: "en_US",
-      siteName: "Rinse It Off",
-      url: `${BASE_URL}/areas/${area.slug}`,
-    },
-  };
+  return pageMeta({ title, description, path: `/areas/${area.slug}`, image: OG.areas });
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -160,44 +164,31 @@ export default async function AreaPage({
   const nearby = getNearbyAreas(area);
   const hero = pick(HERO_PHOTOS, hashSlug(area.slug));
 
+  // One business entity site-wide (the root layout's #business). Each area page
+  // describes the service offered in that place instead of a second business
+  // with a different @id and a Portland address, which split the entity 67 ways.
+  const place =
+    area.type === "city"
+      ? { "@type": "City", name: area.name, containedInPlace: { "@type": "State", name: "Oregon" } }
+      : { "@type": "Place", name: `${area.name}, Portland`, containedInPlace: { "@type": "City", name: "Portland" } };
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "LocalBusiness",
-        "@id": `${BASE_URL}/areas/${area.slug}#business`,
-        name: "Rinse It Off",
-        description: `Method-matched exterior cleaning — pressure washing, soft washing, hot-water degreasing, and pure-water window cleaning — for residential and commercial properties in ${area.name}, ${area.type === "city" ? "Oregon" : "Portland OR"}.`,
+        "@type": "Service",
+        "@id": `${BASE_URL}/areas/${area.slug}#service`,
+        name: `Exterior cleaning in ${area.name}`,
+        serviceType: "Exterior cleaning",
+        description: `Pressure washing, soft washing, roof moss removal, hot-water degreasing and pure-water window cleaning for homes and commercial properties in ${area.name}, ${area.type === "city" ? "Oregon" : "Portland, Oregon"}.`,
         url: `${BASE_URL}/areas/${area.slug}`,
-        telephone: "+1-971-626-4146",
-        email: "hello@rinseitoff.com",
         image: `${BASE_URL}${hero.src}`,
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: "Portland",
-          addressRegion: "OR",
-          addressCountry: "US",
-        },
-        areaServed: { "@type": area.type === "city" ? "City" : "Place", name: area.name },
-        serviceType: [
-          "Pressure Washing",
-          "Soft Washing",
-          "House Washing",
-          "Roof Cleaning",
-          "Building Exterior Washing",
-          "Parking Lot Cleaning",
-          "Hot Water Pressure Washing",
-          "Window Cleaning",
-        ],
-        priceRange: "$$",
+        provider: { "@id": `${BASE_URL}/#business` },
+        areaServed: place,
       },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Service Areas", item: `${BASE_URL}/areas` },
-          { "@type": "ListItem", position: 2, name: area.name, item: `${BASE_URL}/areas/${area.slug}` },
-        ],
-      },
+      breadcrumbLd([
+        { name: "Service Areas", path: "/areas" },
+        { name: area.name, path: `/areas/${area.slug}` },
+      ]),
     ],
   };
 
@@ -235,7 +226,7 @@ export default async function AreaPage({
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
                 Pressure Washing &amp; Exterior Cleaning in{" "}
-                <span className="text-[#2E9BC6]">{area.name}</span>, Portland OR
+                <span className="text-[#2E9BC6]">{area.name}</span>, {placeSuffix(area)}
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#3B4650]">{intro.hero}</p>
 
@@ -340,7 +331,7 @@ export default async function AreaPage({
               {METHODS.map((m, i) => (
                 <article
                   key={m.key}
-                  className="group overflow-hidden rounded-[4px] bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                  className="group relative overflow-hidden rounded-[4px] bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
@@ -356,7 +347,16 @@ export default async function AreaPage({
                   </div>
                   <div className="p-6">
                     <h3 className="mt-1 text-lg font-semibold text-[#0C1215]" style={{ fontFamily: "var(--font-display)" }}>
-                      {m.surface}
+                      {SLUG_BY_KEY[m.key] ? (
+                        <Link
+                          href={`/services/${SLUG_BY_KEY[m.key]}`}
+                          className="rounded after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB]"
+                        >
+                          {m.surface}
+                        </Link>
+                      ) : (
+                        m.surface
+                      )}
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed text-[#4B5C6B]">{m.what}</p>
                   </div>
@@ -468,6 +468,23 @@ export default async function AreaPage({
                 >
                   See every Portland-metro area we serve
                 </Link>
+              </p>
+              <p className="mt-3 text-sm text-[#4B5C6B]">
+                Own a house in {area.name}?{" "}
+                <Link
+                  href="/plan"
+                  className="rounded font-semibold text-[#0C1215] underline decoration-[#62C4EB] decoration-2 underline-offset-4 hover:text-[#4B5C6B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                >
+                  See the yearly plan price for it
+                </Link>{" "}
+                or read{" "}
+                <Link
+                  href="/blog/how-often-wash-a-portland-house"
+                  className="rounded font-semibold text-[#0C1215] underline decoration-[#62C4EB] decoration-2 underline-offset-4 hover:text-[#4B5C6B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                >
+                  how often a Portland house needs washing
+                </Link>
+                .
               </p>
             </div>
           </section>

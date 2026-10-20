@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Phone, Mail, MapPin, ArrowRight, ShieldCheck } from "lucide-react";
+import { AI_PAGES, visibleHere } from "@/lib/ai-pages";
 
 const linkClass =
   "block rounded-sm py-1 text-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none";
@@ -21,6 +22,7 @@ const commercialServices = [
 ];
 
 const companyLinks = [
+  { label: "Yearly Plan", href: "/plan" },
   { label: "How It Works", href: "/#process" },
   { label: "Commercial", href: "/commercial" },
   { label: "Areas We Serve", href: "/areas" },
@@ -28,6 +30,22 @@ const companyLinks = [
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
+
+// The answer pages, linked from every page so none is an orphan. Short labels;
+// a page drops out here whenever it is held back from production.
+const GUIDE_LABELS: Record<string, string> = {
+  "/blog/house-washing-cost-portland": "House washing cost",
+  "/blog/how-often-wash-a-portland-house": "How often to wash a house",
+  "/blog/soft-wash-vs-pressure-wash": "Soft wash vs pressure wash",
+  "/blog/roof-moss-removal-cost-and-method": "Roof moss removal",
+  "/compare/subscription-vs-one-off-pressure-washing": "Yearly plan vs one-off",
+  "/compare/rinse-it-off-vs-diy-rented-pressure-washer": "Renting a pressure washer",
+  "/commercial/hiring-a-pressure-washing-company": "Hiring a contractor (HOAs)",
+};
+const guideLinks = AI_PAGES.filter((p) => GUIDE_LABELS[p.path] && visibleHere(p)).map((p) => ({
+  label: GUIDE_LABELS[p.path],
+  href: p.path,
+}));
 
 export function Footer() {
   return (
@@ -39,7 +57,7 @@ export function Footer() {
         <span className="flex-1 bg-retro-sun" />
       </div>
       <div className="container-site pt-16 md:pt-20 pb-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
           {/* Brand */}
           <div>
             <Image
@@ -76,8 +94,8 @@ export function Footer() {
 
           {/* Residential services */}
           <div>
-            <h4 className="label-caps mb-4 text-retro-sun">Residential</h4>
-            <nav className="space-y-1">
+            <p className="label-caps mb-4 text-retro-sun">Residential</p>
+            <nav aria-label="Residential services" className="space-y-1">
               {residentialServices.map((s) => (
                 <a key={s.label} href={`/services/${s.slug}`} className={linkClass}>
                   {s.label}
@@ -88,8 +106,8 @@ export function Footer() {
 
           {/* Commercial services */}
           <div>
-            <h4 className="label-caps mb-4 text-retro-sun">Commercial</h4>
-            <nav className="space-y-1">
+            <p className="label-caps mb-4 text-retro-sun">Commercial</p>
+            <nav aria-label="Commercial services" className="space-y-1">
               {commercialServices.map((s) => (
                 <a key={s.label} href={`/services/${s.slug}`} className={linkClass}>
                   {s.label}
@@ -98,10 +116,22 @@ export function Footer() {
             </nav>
           </div>
 
+          {/* Answers */}
+          <div>
+            <p className="label-caps mb-4 text-retro-sun">Answers</p>
+            <nav aria-label="Answers" className="space-y-1">
+              {guideLinks.map((l) => (
+                <a key={l.href} href={l.href} className={linkClass}>
+                  {l.label}
+                </a>
+              ))}
+            </nav>
+          </div>
+
           {/* Company + CTA */}
           <div>
-            <h4 className="label-caps mb-4 text-retro-sun">Company</h4>
-            <nav className="space-y-1 mb-6">
+            <p className="label-caps mb-4 text-retro-sun">Company</p>
+            <nav aria-label="Company" className="space-y-1 mb-6">
               {companyLinks.map((l) => (
                 <a key={l.label} href={l.href} className={linkClass}>
                   {l.label}

@@ -8,7 +8,7 @@ import QuoteWizard from "./QuoteWizard";
  *  Passcode-gated, noindex, and deliberately absent from sitemap.ts and nav. */
 
 export const metadata: Metadata = {
-  title: "Audit Tool — Rinse It Off",
+  title: "Audit Tool",
   robots: { index: false, follow: false },
 };
 

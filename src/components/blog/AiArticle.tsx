@@ -3,7 +3,8 @@ import { ArrowLeft } from "lucide-react";
 import { FinalCTA } from "@/components/FinalCTA";
 import { FaqSection } from "@/components/blog/FaqSection";
 import { BASE_URL } from "@/components/blog/format";
-import type { AiPage, Block } from "@/lib/ai-pages";
+import { AI_PAGES, isPublishable, type AiPage, type Block } from "@/lib/ai-pages";
+import { OG } from "@/lib/seo";
 
 const display = { fontFamily: "var(--font-display)" } as const;
 const linkClass =
@@ -139,6 +140,47 @@ function Blocks({ blocks }: { blocks: Block[] }) {
   );
 }
 
+/** Where each piece points next: the page that sells what it explains. */
+const NEXT_STEP: Record<AiPage["kind"], { href: string; label: string }> = {
+  blog: { href: "/plan", label: "See the yearly plan price for your house" },
+  compare: { href: "/plan", label: "See the yearly plan price for your house" },
+  commercial: { href: "/commercial", label: "How we work with property managers and HOAs" },
+};
+
+/** Links to the other answer pages, so none of them is an orphan and the set
+ *  reads to a crawler as one connected body of answers. */
+function RelatedReading({ page }: { page: AiPage }) {
+  const others = AI_PAGES.filter((p) => p.path !== page.path && isPublishable(p))
+    .sort((a, b) => Number(b.kind === page.kind) - Number(a.kind === page.kind))
+    .slice(0, 4);
+  const next = NEXT_STEP[page.kind];
+  return (
+    <nav aria-labelledby="related-reading" className="bg-white pb-12 md:pb-16">
+      <div className="container-site">
+        <div className="mx-auto max-w-[720px] border-t border-[#E7E0D3] pt-8">
+          <h2 id="related-reading" className="text-xl font-semibold text-[#0C1215]" style={display}>
+            More straight answers
+          </h2>
+          <ul className="mt-4 space-y-2">
+            {others.map((p) => (
+              <li key={p.path}>
+                <Link href={p.path} className={linkClass}>
+                  {p.h1}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link href={next.href} className={linkClass}>
+                {next.label}
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
 /** Page template for the AI-search pieces. Same title band, article column,
  *  FAQ section and closing CTA as /blog/[slug]; the copy is printed as written. */
 export function AiArticle({ page }: { page: AiPage }) {
@@ -148,7 +190,7 @@ export function AiArticle({ page }: { page: AiPage }) {
       ? { name: "Blog", href: "/blog" }
       : page.kind === "commercial"
         ? { name: "Commercial", href: "/commercial" }
-        : { name: "Compare", href: "/services" };
+        : { name: "Services", href: "/services" };
 
   // Body: everything before the FAQ heading, then the FAQs, then what follows them.
   const faqStart = page.blocks.findIndex((b) => b.t === "faq");
@@ -164,7 +206,10 @@ export function AiArticle({ page }: { page: AiPage }) {
     "@type": page.kind === "blog" ? "BlogPosting" : "Article",
     headline: page.h1,
     description: page.description,
+    datePublished: page.checked,
     dateModified: page.checked,
+    image: [`${BASE_URL}${page.kind === "commercial" ? OG.commercial.url : OG.blog.url}`],
+    inLanguage: "en-US",
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     url,
     author: { "@id": `${BASE_URL}/#business` },
@@ -243,6 +288,8 @@ export function AiArticle({ page }: { page: AiPage }) {
           </div>
         </article>
       ) : null}
+
+      <RelatedReading page={page} />
 
       <FinalCTA />
     </>
