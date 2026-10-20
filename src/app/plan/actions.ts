@@ -74,7 +74,7 @@ export interface PlanQuoteData {
   partnerName?: string;
   billing?: "monthly" | "annual";
   term?: 1 | 2 | 3; // years the price is locked for
-  springGutters?: boolean; // membership upgrade: second gutter cleaning in spring
+  springGutters?: boolean; // membership upgrade: second gutter cleaning, date of their choosing
   src: string; // from ?src= on the URL, carried through the form
 }
 
@@ -215,7 +215,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
       "Price",
       `  Membership, billed monthly: $${price.memberMonthly}/mo ($${price.memberAnnual}/yr)`,
       `  Prepaid year: $${price.prepaidAnnual} ($${price.prepaidMonthlyEquivalent}/mo equivalent)`,
-      `  Spring gutters upgrade: ${springGutters ? `YES, +$${eff.upgradeMonthly}/mo (gutters line $${eff.upgradeValue.toFixed(0)} x 0.80 / 12), effective $${eff.monthly}/mo, $${eff.annual}/yr, prepaid $${eff.prepaid}` : "no"}`,
+      `  Second gutter cleaning: ${springGutters ? `YES, +$${eff.upgradeMonthly}/mo (gutters line $${eff.upgradeValue.toFixed(0)} x 0.80 / 12), effective $${eff.monthly}/mo, $${eff.annual}/yr, prepaid $${eff.prepaid}` : "no"}`,
       `  Deposit schedule (monthly): ${depositSchedule(eff, "monthly")}`,
       `  Deposit schedule (annual): ${depositSchedule(eff, "annual")}`,
       `  Billing chosen: ${billing}`,

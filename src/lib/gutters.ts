@@ -6,7 +6,7 @@
  *  method page's "other methods" row at six.
  *
  *  Locked facts (brand brain, Bri 2026-09-26): cleaned once the leaves are down, in
- *  November or December; a second cleaning in January or February is an optional add-on.
+ *  November or December; a second cleaning is an optional add-on on the date they choose (we suggest January or February).
  *  Never "twice every fall", never October timing, never lifts or high reach. Gutters are
  *  the fall visit of the yearly plan (plan-copy.ts). The opening is Sample A on the
  *  Rinse It Off style sheet, approved by Bri 2026-10-08. */
@@ -30,7 +30,7 @@ export const GUTTER_LEAD = [
 export const GUTTER_WHEN_TITLE = "When we clean them";
 
 export const GUTTER_WHEN = [
-  "We do gutters once the leaves are down, in November or December, so one cleaning does it. If your trees run late, you can add a second one in January or February.",
+  "We do gutters once the leaves are down, in November or December, so one cleaning does it. You can add a second cleaning whenever you want one. We suggest January or February, after the late trees finish dropping.",
   "We scoop out the leaves and needles and flush the downspouts, so the rain has somewhere to go all winter.",
   "The black streaks down the outside of a gutter are a separate job called gutter whitening. You can add it when you get your price.",
 ];
@@ -50,7 +50,7 @@ export const GUTTER_OTHER =
 export const GUTTER_FAQS: FAQItem[] = [
   {
     q: "When should gutters be cleaned in the Portland area?",
-    a: "Once the leaves are down, which is usually November or December. Gutters cleaned in October tend to fill up again when the last leaves fall. If your trees drop late, a second cleaning in January or February catches the rest.",
+    a: "Once the leaves are down, which is usually November or December. Gutters cleaned in October tend to fill up again when the last leaves fall. If your trees drop late, a second cleaning catches the rest. You pick the date; we suggest January or February.",
   },
   {
     q: "Do I need the yearly plan to get my gutters cleaned?",

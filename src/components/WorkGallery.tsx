@@ -13,8 +13,7 @@ const SHOTS = [
   { src: "proshop-driveway", w: 1200, h: 1600, alt: "Curving driveway past a pro shop with the cleaned section still wet", caption: "Cart path and driveway by the pro shop." },
   { src: "tech-cone", w: 1200, h: 1600, alt: "Technician washing a curb edge behind an orange traffic cone", caption: "Curb and gutter line, coned off while we work." },
   { src: "curb-gleam", w: 1200, h: 1600, alt: "Close view of a wet, freshly cleaned concrete curb and walkway", caption: "Curb detail after rinse." },
-  { src: "event-floor", w: 1600, h: 1200, alt: "Black event flooring rinsed and gleaming inside a temporary structure", caption: "Event flooring, LIV Golf Portland build-out." },
-  { src: "event-path", w: 1200, h: 1600, alt: "Asphalt walkway lined with event signage being rinsed down", caption: "Spectator path, same event." },
+  { src: "event-floor", w: 1600, h: 1200, alt: "Black event flooring rinsed and gleaming inside a temporary structure", caption: "Event flooring in a temporary build-out, rinsed before opening." },
   { src: "concrete-closeup", w: 1200, h: 1600, alt: "Close-up of concrete where two clean arcs meet untouched grime", caption: "Where the surface cleaner has and hasn't been." },
 ];
 
