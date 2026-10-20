@@ -18,7 +18,7 @@ export function aiPageMetadata(page: AiPage): Metadata {
       description: page.description,
       siteName: "Rinse It Off",
       modifiedTime: page.checked,
-      authors: ["Bri Lindley"],
+      authors: ["Rinse It Off"],
     },
     twitter: { card: "summary", title: page.title, description: page.description },
   };

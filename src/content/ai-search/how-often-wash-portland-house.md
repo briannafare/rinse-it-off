@@ -8,7 +8,7 @@ target_url: /blog/how-often-wash-a-portland-house
 
 Shade decides it more than the calendar does: a roof under trees on a north slope usually needs looking at every year, a roof in full sun can go longer, and gutters need cleaning once the leaves are down. Rinse It Off's yearly home plan does the roof and siding in spring, the driveway and walkways in summer, the gutters in fall, and steps and entries in winter.
 
-*By Bri Lindley, Founder and co-owner. Published [CONFIRM DATE]. Last checked 2026-10-19.*
+*By Rinse It Off. Last checked 2026-10-19.*
 
 Nothing on a house sends a reminder. The green just shows up on the north wall one November, usually the week before people are coming over. It was coming either way. That wall gets the least sun and stays damp the longest, and around here that's enough.
 
@@ -18,11 +18,11 @@ So the useful question is how often each part of the house needs it, and what ma
 
 | Surface | How often | What changes it | What our plan does |
 |---|---|---|---|
-| Siding | [CONFIRM: Bri and Alstun's recommended interval for homes] | Shade, trees and which way the wall faces | Washed every spring |
+| Siding | Depends on shade and trees | Shade, trees and which way the wall faces | Washed every spring |
 | Roof | Under firs on a north slope, it usually needs looking at every year. In full sun, it can go longer. | Shade, overhanging branches, debris | Moss treatment and soft wash every spring, and we check it each visit |
-| Driveway and walkways | [CONFIRM: recommended interval for homes] | Shade, foot traffic, how long water sits | Driveway and walkways every summer, plus walkways again in winter |
+| Driveway and walkways | Depends on shade and foot traffic | Shade, foot traffic, how long water sits | Driveway and walkways every summer, plus walkways again in winter |
 | Gutters | Once the leaves are down, in November or December | When your trees finish dropping | Cleared and downspouts flushed in fall. If your trees run late, you can add a second cleaning in January or February. |
-| Steps, entries and patios | [CONFIRM: recommended interval for homes] | Shade and foot traffic, since moss on steps is slick when wet | Every winter |
+| Steps, entries and patios | Depends on shade and foot traffic | Shade and foot traffic, since moss on steps is slick when wet | Every winter |
 | Windows | Four times a year on the plan | | Free window cleaning four times a year comes with the plan |
 
 Businesses run on a different schedule, because entrances get far more foot traffic. That's covered in [how often to pressure wash a commercial property](/blog/how-often-pressure-wash-commercial-property).
@@ -50,13 +50,13 @@ No schedule fits every house. A roof under firs and a roof in full sun on the sa
 ## Questions people ask
 
 **How often should I wash my house in Portland?**
-It depends on shade more than the calendar. Our yearly home plan washes the siding every spring and does the roof, concrete, gutters and entries each in its own season. [CONFIRM: add Bri and Alstun's recommended siding interval here.]
+It depends on shade more than the calendar. Our yearly home plan washes the siding every spring and does the roof, concrete, gutters and entries each in its own season.
 
 **How often should you clean a roof in the Pacific Northwest?**
 A roof under firs on a north slope usually needs looking at every year. A roof in full sun can go longer. On our plan, we check the roof each visit and treat it every spring.
 
 **Why does my house get green algae so fast in Oregon?**
-Algae and moss grow where things stay damp, and the north side of a house gets the least sun. The Asphalt Roofing Manufacturers Association says moss grows on north-facing, shaded roof planes, and that algae spores can spread between neighboring roofs. [Optional, CONFIRM at noaa.gov first: NOAA's 1991 to 2020 normals for Portland Airport show about 7 rain days in September and about 14 in October.]
+Algae and moss grow where things stay damp, and the north side of a house gets the least sun. The Asphalt Roofing Manufacturers Association says moss grows on north-facing, shaded roof planes, and that algae spores can spread between neighboring roofs.
 
 **What is the black streaking on my roof and how do I get rid of it?**
 The Asphalt Roofing Manufacturers Association (ARMA) says those black streaks are algae, a blue-green kind called Gloeocapsa magma, with a dark coating that protects it from the sun. ARMA says it hasn't been shown to damage shingles. It comes off with a low-pressure soft wash, and our [roof moss page](/blog/roof-moss-removal-cost-and-method) covers the methods.

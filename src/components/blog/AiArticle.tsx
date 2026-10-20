@@ -167,7 +167,7 @@ export function AiArticle({ page }: { page: AiPage }) {
     dateModified: page.checked,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     url,
-    author: { "@type": "Person", name: "Bri Lindley", jobTitle: "Founder and co-owner", worksFor: { "@id": `${BASE_URL}/#business` } },
+    author: { "@id": `${BASE_URL}/#business` },
     publisher: { "@id": `${BASE_URL}/#business` },
   };
   const breadcrumb = {

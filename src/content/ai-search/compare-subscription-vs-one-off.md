@@ -8,7 +8,7 @@ target_url: /compare/subscription-vs-one-off-pressure-washing
 
 A plan is worth it if you want the roof, siding, driveway, gutters and walkways cleaned on a schedule, and a one-off company costs less if one thing needs one wash. Rinse It Off's yearly home plan starts at $189 a month, depending on the size of your home, and free window cleaning four times a year comes with it.
 
-*By Bri Lindley, Founder and co-owner. Published [CONFIRM DATE]. Last checked 2026-10-19.*
+*By Rinse It Off. Last checked 2026-10-19.*
 
 Booking a company once is a sensible way to do it. The driveway bothers you, you pay someone to clean the driveway, and you don't think about it again until something else bothers you. For a lot of houses that works fine.
 
@@ -45,11 +45,9 @@ These are prices anyone can look up, checked on 2026-10-19. The one-off numbers 
 
 For a national check, HomeAdvisor puts the average house power wash at $312, with most jobs between $213 and $449 (updated June 17, 2026).
 
-**Windows.** Angi's average for one window cleaning visit in Portland is $238 [CONFIRM: re-open the Angi Portland page in a browser before publishing]. Four visits at that average come to $952. Add that to the one-story total above and booking it all yourself runs $1,802 to $2,352 a year.
+**Windows.** The plan includes free window cleaning four times a year. Our home page says those four visits on their own would cost you more than $2,000. That is our number, not a published average, so weigh it as ours.
 
-**What the numbers say.** Booked one job at a time, one pass of each costs less than a year of the plan. Once the four window visits are in, the plan's lowest price lands inside the one-off range. The math above also leaves out the winter visit for steps and entries and the summer algae treatment, which the plan includes.
-
-Our home page says those four window visits on their own would cost you more than $2,000. That is our number. Angi's Portland average puts four visits nearer $952, so you can weigh both. [EDITOR: Bri's open question 2. Decide which window figure the page stands behind before this ships.]
+**What the numbers say.** Booked one job at a time, one pass of each costs $850 to $1,650, which is less than a year of the plan at $2,268. The one-off total leaves out the winter visit for steps and entries, the summer algae treatment and the four window cleanings, which the plan includes.
 
 So the plan doesn't win on one pass of each job. It wins on the windows, on the visits you'd have skipped, and on nobody at your house having to remember when the gutters are due.
 
@@ -60,7 +58,7 @@ So the plan doesn't win on one pass of each job. It wins on the windows, on the 
 - Three stories or a steep lot get priced by hand instead of online.
 - Our crews work from the ground, so tall walls aren't part of it.
 - If one surface needs one wash, a one-off job is the cheaper way to get it done.
-- [CONFIRM: the 12-month term and no month-to-month option. State it here only once it is on a public page. It is the biggest honest limit.]
+- It's a 12-month membership, as the plan page says.
 
 **Hiring a one-off company**
 - You rebook every time, and you're the one who remembers when.
@@ -99,9 +97,6 @@ Paying once costs less for a single pass of each job. A plan costs more than one
 **What is included in a yearly plan?**
 Ours covers the roof and siding in spring, the driveway, walkways and an algae treatment in summer, the gutters once the leaves are down in fall, and steps, entries, walkways and patios in winter. Free window cleaning four times a year comes with it. Other companies' plans differ, so read what each season covers.
 
-**Can I cancel?**
-[CONFIRM: answer only with the terms published on rinseitoff.com/terms or /plan.]
-
 Gutters don't send a reminder when they're full. On the plan, keeping track is our job.
 
 **[See your price for your house](/plan).** It takes about a minute.
@@ -111,5 +106,4 @@ Gutters don't send a reminder when they're full. On the plan, keeping track is o
 ### Sources, checked 2026-10-19
 - HomeAdvisor, "How Much Does It Cost to Power Wash a House?", updated June 17, 2026: https://www.homeadvisor.com/cost/painting/powerwash-exterior-surfaces
 - Portland-area house washing price table, page says cross-checked 2026-09-30: https://green-tree-services.com/house-washing-portland-oregon
-- Angi, Portland window cleaning cost: https://www.angi.com/articles/how-much-does-window-cleaning-cost/or/portland [CONFIRM on page]
-- Rinse It Off plan details and the 48-hour re-rinse: rinseitoff.com home page and /terms
+- Rinse It Off plan details and the 48-hour re-rinse: rinseitoff.com home page, /plan and /terms

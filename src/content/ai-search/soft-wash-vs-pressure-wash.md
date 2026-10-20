@@ -8,7 +8,7 @@ target_url: /blog/soft-wash-vs-pressure-wash
 
 Soft washing uses low pressure and a cleaning solution that kills what's growing, then a gentle rinse, so it suits siding, stucco, wood and roofs, while pressure washing uses force and suits concrete. Rinse It Off uses both and picks by surface: soft wash on siding and roofs, and hot water under pressure on driveways and walkways.
 
-*By Bri Lindley, Founder and co-owner. Published [CONFIRM DATE]. Last checked 2026-10-19.*
+*By Rinse It Off. Last checked 2026-10-19.*
 
 If a quote says "pressure wash the house," it's fair to wonder what that means for your siding. Soft wash and pressure wash get used as if they meant the same job. They don't.
 
@@ -94,4 +94,3 @@ Our pressure washer still gets plenty of work. Concrete can handle it, and it ne
 - Oregon State University Extension, "How to control roof moss" (published February 2023, reviewed 2025): https://extension.oregonstate.edu/news/how-control-roof-moss-prevent-long-term-damage
 - Rinse It Off methods: rinseitoff.com /services/house-washing, /services/roof-soft-wash, /services/concrete-surface-cleaning
 
-<!-- EDITOR: Consumer Reports' "surfaces safe to clean with a pressure washer" page is left out because it couldn't be read on fetch. Open it in a browser and quote it, or keep it out. Chemistry (Bri's open question 7) is untouched: the page says "cleaning solution" only. -->

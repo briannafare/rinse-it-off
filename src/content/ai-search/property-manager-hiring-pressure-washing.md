@@ -8,7 +8,7 @@ target_url: /commercial/hiring-a-pressure-washing-company
 
 Look for three things: a certificate of insurance that names you, a method matched to each surface, and a plan for where the wash water goes. Rinse It Off cleans the outside of properties for property managers, from walkways and parking lots to trash pads, storefronts and building faces, and we start with a free 21-point inspection whose photo report is yours to keep whether or not you hire us.
 
-*By Bri Lindley, Founder and co-owner. Published [CONFIRM DATE]. Last checked 2026-10-19.*
+*By Rinse It Off. Last checked 2026-10-19.*
 
 Most of what goes wrong with an exterior cleaning vendor shows up later. It's a slip on a walkway that was supposed to be done, a tenant email about the smell from the trash pad, or an owner walkthrough on a day the north wall is green. The questions below are the ones that catch those problems before you sign anything.
 
@@ -31,7 +31,7 @@ NerdWallet's guide to pressure washing insurance (updated June 16, 2026) lists w
 
 The same guide cites Insureon's median prices for pressure washing businesses: $75 a month for general liability and $133 a month for workers' compensation. Coverage isn't expensive for a vendor to carry, so it's reasonable to expect it.
 
-We carry full general liability and workers' compensation. Ask and we'll send the certificate the same day. [CONFIRM: coverage limits, whether we add clients as additional insured on request, and NetVendor status. None of these go on the page until Bri confirms them.]
+We carry full general liability and workers' compensation. Ask and we'll send the certificate the same day.
 
 ## Licensing in Oregon
 
@@ -43,7 +43,6 @@ Since a license isn't the test, insurance and references carry more weight. Ask 
 
 The City of Portland runs a Mobile Washer Program. Under it, wash water from commercial mobile washing can't go into the storm system, the street or the right-of-way. The work has to happen on the customer's site with the water contained. To send water to the sanitary or combined sewer, a washer needs a Mobile Washer Discharge Authorization, with a yearly certification of compliance (City Code 17.32 and 17.34). Other cities have their own rules, so ask your vendor what they do at your address.
 
-[CONFIRM WITH BRI BEFORE PUBLISHING: we don't hold the Portland authorization yet. Decide whether this section stays neutral, as written, adds a line on our practice outside the City of Portland, or waits until the authorization is in hand. Also confirm on https://www.portland.gov/bes/preventing-pollution/guide-mobile-washer-program whether a hiring property can be held responsible for a prohibited discharge before saying so.]
 
 ## What a vendor agreement should cover
 
@@ -62,7 +61,7 @@ This is a checklist, not legal advice. Have your own counsel review any contract
 
 Our post on [how often to pressure wash a commercial property](/blog/how-often-pressure-wash-commercial-property) goes surface by surface. In short: entrances every one to three months, parking lots once or twice a year, and walls once a year as a starting point. Trash pads run monthly for restaurants and every one to two months for apartment buildings. There's more on trash pads, the concrete pads where dumpsters sit, in [dumpster pad cleaning](/blog/dumpster-pad-cleaning).
 
-For a reserve plan or an annual budget, start from the inspection report, which comes with an itemized price. We run recurring plans monthly, quarterly or by season. [CONFIRM PRICE: a commercial figure to anchor this section, or leave numbers out. Outside commercial price ranges from homeguide.com and mbcleansolutions.com have not been fetched yet and need a URL and date before use.]
+For a reserve plan or an annual budget, start from the inspection report, which comes with an itemized price. We run recurring plans monthly, quarterly or by season.
 
 ## If someone slips
 
@@ -89,7 +88,6 @@ Your own crew can work from it. It's yours to keep either way.
 
 - We work from the ground, so tall building walls aren't part of it today.
 - The inspection report is also a quote, and it comes with our price.
-- [CONFIRM: multi-property contracts, and NetVendor approval status.]
 
 ## Questions people ask
 
@@ -121,4 +119,3 @@ As a starting point, entrances every one to three months and parking lots once o
 - City of Portland, Mobile Washer Program: https://www.portland.gov/bes/preventing-pollution/alternative-discharge-control-mechanisms/mobile-washer-program
 - Rinse It Off commercial services, inspection and terms: rinseitoff.com /commercial and /terms
 
-<!-- EDITOR: FAQ has six printed answers. Add FAQPage schema only after the phone decision, and keep the markup word-for-word with the visible text. -->

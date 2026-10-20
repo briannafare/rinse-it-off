@@ -8,7 +8,7 @@ target_url: /blog/house-washing-cost-portland
 
 Portland-area price guides put a standard house wash at about $250 to $600, depending on size and stories, and a two-story house at about $350 to $500 (checked 2026-10-19). Rinse It Off washes siding with a low-pressure soft wash, and our yearly home plan, which includes the house wash, starts at $189 a month.
 
-*By Bri Lindley, Founder and co-owner. Published [CONFIRM DATE]. Prices checked 2026-10-19.*
+*By Rinse It Off. Prices checked 2026-10-19.*
 
 Most people who look this up have walked past the north wall a few times and decided the green was a shadow. It isn't a shadow. It's what damp does to a wall that doesn't get much sun, and around here that's most north walls.
 
@@ -54,7 +54,7 @@ One house wash costs the numbers above, and it covers the siding once. Our yearl
 
 If you only want the siding washed once, a one-off job is the cheaper way to do it. If you want to compare the two properly, the math is in [subscription vs one-off](/compare/subscription-vs-one-off-pressure-washing).
 
-**What a one-off house wash costs with us.** [CONFIRM PRICE] We walk the property, then hand you a firm, itemized price the same day.
+We walk the property, then hand you a firm, itemized price the same day.
 
 ## How to get a clean quote from any company
 
@@ -94,4 +94,3 @@ The north wall will go green again eventually. It's a wall, and that's what wall
 - Portland-area house washing price table, page says cross-checked 2026-09-30: https://green-tree-services.com/house-washing-portland-oregon
 - Window Genie, soft washing vs pressure washing (no date on page): https://windowgenie.com/blog/soft-washing-vs-pressure-washing
 
-<!-- EDITOR: HomeAdvisor's Portland page (average $400, typical $258-$593) was seen only in a search result. Re-open https://www.homeadvisor.com/tloc/Portland-OR/Exterior-Surfaces-Powerwashing/ in a browser; if it confirms, it can replace the national row as the lead figure. -->

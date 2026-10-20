@@ -8,7 +8,7 @@ target_url: /blog/roof-moss-removal-cost-and-method
 
 Portland-area price guides put cleaning a composition roof at about $300 to $600 (checked 2026-10-19), and the method that doesn't damage shingles is a low-pressure soft wash, not a pressure washer. Rinse It Off soft washes roofs to kill moss at the root, and our yearly home plan includes a spring roof moss treatment and soft wash.
 
-*By Bri Lindley, Founder and co-owner. Published [CONFIRM DATE]. Prices checked 2026-10-19.*
+*By Rinse It Off. Prices checked 2026-10-19.*
 
 The north slope is usually where it starts. That side gets the least sun and stays damp the longest, and a roof under firs gets even less. Moss there is the roof doing what roofs do in this climate.
 
@@ -21,11 +21,8 @@ The tempting plan is a free afternoon and a rented machine. It looks fast, and t
 | Composition roof cleaning, Portland area | $300 to $600 | Portland-area price table, cross-checked 2026-09-30 |
 | Renting a pressure washer for a day, national | $50 to $250 | HomeAdvisor, updated June 19, 2026 |
 | Rinse It Off, inside the yearly home plan | From $189 a month for the whole plan, depending on the size of your home | rinseitoff.com |
-| Rinse It Off, a roof on its own | [CONFIRM PRICE] | |
 
 What moves the price: how many stories, how steep the roof is, how easy it is to reach, how much is growing, and how many trees hang over it. Three stories or a steep lot get priced by hand with us.
-
-[CONFIRM: HomeAdvisor's Portland roof cleaning figures, average $548 and typical $390 to $722, were seen only in a search result. Re-open https://homeadvisor.com/tloc/Portland-OR/Roof-Clean in a browser. If they confirm, add a row; if not, leave them out.]
 
 ## Does moss actually damage a roof?
 
@@ -48,7 +45,7 @@ If you treat it yourself, these are the sources' methods, not ours. ARMA's metho
 
 1. Look from the ground first. Check the north slope and anything under trees.
 2. Trim back the branches so sun reaches the roof. OSU calls this the main long-term fix. Clear off the debris too.
-3. Pick a dry stretch. Late summer and early fall have the most dry days here. NOAA's 1991 to 2020 normals for Portland Airport show about 7 rain days in September and about 14 in October. [CONFIRM: re-check at noaa.gov before publishing.]
+3. Pick a dry stretch.
 4. Treat it with one of the methods above, or hire it out.
 5. Rinse at low pressure. ARMA's method ends that way.
 6. Give it a few weeks. Moss lets go slowly once it's dead.
@@ -63,7 +60,6 @@ If you're doing steps 4 and 5 yourself, OSU says the ladder should reach 3 feet 
 - It isn't instant. The treatment kills the moss, but it takes a few rains to wash off.
 - A roof under firs grows moss again. One on a north slope usually needs looking at every year.
 - Three stories or a steep lot get priced by hand.
-- [CONFIRM: how our crews reach and work a roof, and whether they walk roofs. Ground-level work only is all the page can say until Bri answers.]
 
 **Doing it yourself**
 - Moss is slick, and wet moss on a pitched roof is worse.
@@ -88,7 +84,7 @@ It can. ARMA says moss can lift or curl shingle edges and, in bad cases, let moi
 Ask the roofer doing the replacement, because it's their call on their job. The guidance we've cited here is about moss on a roof you're keeping.
 
 **Will roof cleaning void my shingle warranty?**
-Check your shingle maker's warranty before anyone cleans the roof. ARMA, the trade group for asphalt shingle makers, recommends cleaning with a treatment and a low-pressure rinse. [CONFIRM: cite one shingle maker's warranty or technical bulletin wording before publishing.]
+Check your shingle maker's warranty before anyone cleans the roof. ARMA, the trade group for asphalt shingle makers, recommends cleaning with a treatment and a low-pressure rinse.
 
 The moss will be back eventually. It lives here too.
 
@@ -101,4 +97,3 @@ The moss will be back eventually. It lives here too.
 - Oregon State University Extension, "How to control roof moss" by Kym Pokorny, with Jay W. Pscheidt (published February 2023, reviewed 2025): https://extension.oregonstate.edu/news/how-control-roof-moss-prevent-long-term-damage
 - Portland-area price table, page says cross-checked 2026-09-30: https://green-tree-services.com/house-washing-portland-oregon
 - HomeAdvisor, cost to rent a pressure washer, updated June 19, 2026: https://www.homeadvisor.com/cost/painting/rent-a-pressure-washer
-- NOAA 1991 to 2020 climate normals, Portland International Airport: noaa.gov [CONFIRM link and figures]

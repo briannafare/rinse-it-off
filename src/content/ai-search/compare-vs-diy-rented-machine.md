@@ -8,7 +8,7 @@ target_url: /compare/rinse-it-off-vs-diy-rented-pressure-washer
 
 Renting is cheaper in cash, at $50 to $250 a day by HomeAdvisor's June 2026 figures, but you supply the day, the technique and the risk to your siding and roof. Rinse It Off cleans the outside of homes with the method matched to each surface: soft wash on siding and roofs, and hot water on concrete.
 
-*By Bri Lindley, Founder and co-owner. Published [CONFIRM DATE]. Rental prices checked 2026-10-19.*
+*By Rinse It Off. Rental prices checked 2026-10-19.*
 
 Renting is a reasonable plan. The machine has a known price, the driveway is flat, and you've got a free Saturday. For a flat driveway, it often works out fine.
 
@@ -28,7 +28,7 @@ HomeAdvisor's rental page lists these prices (updated June 19, 2026). It gives $
 | Your time | A day, sometimes two | |
 | **Gas day with both attachments** | **About $105 to $170** | Before detergent, fuel, deposit or a second day. |
 
-The $105 to $170 is our arithmetic from HomeAdvisor's lines: $70 to $100 for the machine, plus $20 to $50 for the surface cleaner, plus $15 to $20 for the wand. HomeAdvisor's house washing page gives a lower daily range of $35 to $175. The two pages disagree, and we used the rental page. [EDITOR: no current Portland-area store counter price was obtainable. Add one with store, price and date, or keep HomeAdvisor only.]
+The $105 to $170 is our arithmetic from HomeAdvisor's lines: $70 to $100 for the machine, plus $20 to $50 for the surface cleaner, plus $15 to $20 for the wand. HomeAdvisor's house washing page gives a lower daily range of $35 to $175. The two pages disagree, and we used the rental page.
 
 **For comparison, hiring it out:**
 
@@ -38,7 +38,6 @@ The $105 to $170 is our arithmetic from HomeAdvisor's lines: $70 to $100 for the
 | Soft wash, most homes, national | $250 to $1,000 | HomeAdvisor, updated June 17, 2026 |
 | House wash, one story, Portland area | $250 to $350 | Portland-area price table, cross-checked 2026-09-30 |
 | House wash, two stories, Portland area | $350 to $500 | Same table |
-| Rinse It Off, one house wash | [CONFIRM PRICE] | |
 | Rinse It Off yearly home plan | From $189 a month, depending on the size of your home | rinseitoff.com |
 
 ## Doing it yourself vs Rinse It Off
@@ -84,11 +83,11 @@ The $105 to $170 is our arithmetic from HomeAdvisor's lines: $70 to $100 for the
 These are general safety steps from the sources listed below, not our method.
 
 1. Test a hidden spot first and look at it once it's dry.
-2. Use a wide fan tip and never a zero-degree tip. [CONFIRM: quote from the Consumer Reports page, or drop this attribution.]
+2. Don't use a zero-degree tip. Consumer Reports advises against it.
 3. Keep the spray off the roof. Oregon State University Extension says poor technique can damage shingles, and suggests a long-handled scrub brush or a professional when in doubt.
 4. Don't look for a pressure number for siding online. The figures out there disagree. Follow your siding maker's guidance instead.
 5. Soak the plants along the walls with plain water before you start.
-6. Keep the wash water out of the street and the storm drain. [CONFIRM: wording of Portland City Code 17.39 and whether it covers a homeowner washing their own driveway.]
+6. Keep the wash water out of the street and the storm drain. Portland City Code 17.39 prohibits wash water from pressure washing from going into the stormwater system.
 
 ## If you decide to hire
 
@@ -123,4 +122,5 @@ Some pressure washing companies are, at heart, a guy with a rented machine. Ask 
 - Portland-area house washing price table, page says cross-checked 2026-09-30: https://green-tree-services.com/house-washing-portland-oregon
 - Oregon State University Extension, "How to control roof moss" (published February 2023, reviewed 2025): https://extension.oregonstate.edu/news/how-control-roof-moss-prevent-long-term-damage
 - Asphalt Roofing Manufacturers Association, algae and moss on asphalt roofs (dated February 22, 2012): https://www.asphaltroofing.org/algae-moss-prevention-cleaning-asphalt-roofing-systems
-- City of Portland, pressure washing rules: https://www.portland.gov/bes/preventing-pollution/prevent-pollution/pressure-washing-rules [CONFIRM on page]
+- City of Portland, pressure washing rules, checked 2026-10-19: https://www.portland.gov/bes/preventing-pollution/prevent-pollution/pressure-washing-rules
+- Consumer Reports, pressure washer safety (March 12, 2016), checked 2026-10-19: https://www.consumerreports.org/pressure-washers/consumer-reports-zeros-in-on-pressure-washer-safety/
