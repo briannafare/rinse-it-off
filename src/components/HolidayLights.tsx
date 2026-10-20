@@ -75,7 +75,7 @@ export function HolidayLights() {
             <RetroButton href="/assessment?type=residential&src=holiday-lights" tone="gold">
               Book my lights visit
             </RetroButton>
-            <a href="tel:+19716264146" className="btn-ghost focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0C1215]">
+            <a href="tel:+19716264146" className="link-plain focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0C1215]">
               <Phone className="h-5 w-5" aria-hidden />
               Call or text (971) 626-4146
             </a>

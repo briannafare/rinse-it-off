@@ -127,7 +127,7 @@ export function CinematicHero() {
   return (
     <section className="relative w-full bg-retro-paper">
       <div className="relative">
-      <div className="mat film-grain relative h-[100svh] min-h-[640px] w-full overflow-hidden md:h-[92vh] md:min-h-[720px]" style={CLIP}>
+      <div className="mat film-grain relative h-[100svh] min-h-[640px] w-full overflow-hidden md:h-[86vh] md:min-h-[640px]" style={CLIP}>
         {SLIDES.map((s, i) => (
           <div
             key={s.key}
@@ -141,8 +141,8 @@ export function CinematicHero() {
         {/* a pale cream wash over the sky so ink type reads; light, never a dark overlay */}
         <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[#FBF8F2]/90 via-[#FBF8F2]/55 via-45% to-transparent to-75% md:bg-gradient-to-r md:from-[#FBF8F2]/92 md:via-[#FBF8F2]/50 md:via-40% md:to-transparent md:to-65%" />
 
-        <div className="relative z-10 flex h-full flex-col px-4 pt-[112px] sm:px-8 md:px-12 md:pt-[176px] lg:pl-[max(3rem,calc((100vw-90rem)/2+3rem))]">
-          <div className="mb-4 flex gap-2 md:mb-7" role="tablist" aria-label="Who is this for?">
+        <div className="relative z-10 flex h-full flex-col px-4 pt-[112px] sm:px-8 md:px-12 md:pt-[150px] lg:pl-[max(3rem,calc((100vw-90rem)/2+3rem))]">
+          <div className="mb-5 flex items-end gap-6 md:mb-7" role="tablist" aria-label="Who is this for?">
             {SLIDES.map((s, i) => (
               <button
                 key={s.key}
@@ -150,18 +150,30 @@ export function CinematicHero() {
                 role="tab"
                 aria-selected={i === active}
                 onClick={() => pick(i)}
-                className={[
-                  "min-h-11 whitespace-nowrap rounded-full border-[3px] border-[#0C1215] px-3 text-sm font-bold md:min-h-14 md:px-6 md:text-xl transition-colors duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#D6336C] motion-reduce:transition-none",
-                  i === active ? "bg-[#0C1215] text-[#FBF8F2]" : "bg-[#FBF8F2]/80 text-[#0C1215] hover:bg-white",
-                ].join(" ")}
+                className="group relative min-h-11 pb-2 text-left focus-visible:outline-none"
               >
-                {s.tab}
+                <span
+                  className={[
+                    "label-caps !tracking-[0.14em] transition-colors duration-300 motion-reduce:transition-none",
+                    i === active ? "text-[#1A6E93]" : "text-[#5F676C] group-hover:text-[#0C1215]",
+                  ].join(" ")}
+                >
+                  {s.tab}
+                </span>
+                {i === active && (
+                  <motion.span
+                    layoutId={reduce ? undefined : "hero-tab-marker"}
+                    className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-brand-blue"
+                    transition={{ duration: 0.45, ease: EASE }}
+                    aria-hidden
+                  />
+                )}
               </button>
             ))}
           </div>
 
           {SLIDES.map((s, i) => (
-            <div key={s.key} className={i === active ? "max-w-[92vw] md:max-w-[62vw]" : "hidden"}>
+            <div key={s.key} className={i === active ? "max-w-[92vw] md:max-w-[52vw]" : "hidden"}>
               {(() => {
                 // one h1 on the page: the other slide's headline is a plain paragraph
                 const H = i === active ? motion.h1 : motion.p;
@@ -169,7 +181,7 @@ export function CinematicHero() {
                   <H
                     key={`${s.key}-h1-${active}`}
                     {...rise(0.08)}
-                    className="font-title text-[15vw] leading-[0.9] text-brand-black [text-wrap:balance] md:text-[8.5vw] md:leading-[0.88]"
+                    className="font-title text-[15vw] leading-[0.9] text-brand-black [text-wrap:balance] md:text-[clamp(3.2rem,5.6vw,6.2rem)] md:leading-[0.92]"
                   >
                     {s.headline} <span className="offer-accent">{s.accent}</span>
                   </H>
@@ -178,7 +190,7 @@ export function CinematicHero() {
 
               <motion.div key={`${s.key}-cta-${active}`} {...rise(0.2)} className="mt-6 flex flex-col gap-3 md:mt-10 md:flex-row md:items-center md:gap-5">
                 <RetroButton href={s.cta.href}>{s.cta.label}</RetroButton>
-                <a href={PHONE_TEL} className="btn-ghost !hidden bg-[#FBF8F2]/85 md:!inline-flex focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#D6336C]">
+                <a href={PHONE_TEL} className="link-plain !hidden text-lg md:!inline-flex focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]">
                   <Phone className="h-5 w-5" aria-hidden />
                   {PHONE_DISPLAY}
                 </a>
@@ -189,7 +201,7 @@ export function CinematicHero() {
 
         <Seal text="Free window cleaning ★ four times a year ★ " className="absolute bottom-[calc(3.5vw+28px)] right-10 z-10 hidden w-36 -rotate-6 md:block" />
         {/* Hal: settles over the open sky, never on a person or on the headline. */}
-        <HalFlyIn className="pointer-events-none absolute bottom-[74px] left-[4%] z-20 w-[20vw] max-w-[110px] md:bottom-auto md:left-auto md:right-[6%] md:top-[19%] md:w-[11vw] md:max-w-[200px]" />
+        <HalFlyIn className="pointer-events-none absolute bottom-[74px] left-[4%] z-20 w-[20vw] max-w-[110px] md:bottom-auto md:left-auto md:right-[6%] md:top-[19%] md:w-[10vw] md:max-w-[180px]" />
       </div>
       {/* the stripe band along the photo's tilted lower edge (the centre of the cut sits 1.75vw up) */}
       <StripeBand className="absolute inset-x-0 bottom-[1.75vw]" />
@@ -197,7 +209,7 @@ export function CinematicHero() {
 
       {SLIDES.map((s, i) => (
         <div key={s.key} className={i === active ? "container-site pb-14 pt-10 md:pb-20 md:pt-14" : "hidden"}>
-          <motion.p key={`${s.key}-body-${active}`} {...rise(0.1)} className="max-w-4xl text-xl leading-relaxed text-[#3B4247]">
+          <motion.p key={`${s.key}-body-${active}`} {...rise(0.1)} className="max-w-3xl text-lg leading-relaxed text-[#3B4247]">
             {s.body}
           </motion.p>
         </div>

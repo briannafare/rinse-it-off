@@ -54,9 +54,9 @@ const config: Config = {
       fontSize: {
         xs: ["16px", { lineHeight: "1.45" }],
         sm: ["18px", { lineHeight: "1.5" }],
-        base: ["clamp(19px, calc(13.5px + 1.4vw), 23px)", { lineHeight: "1.55" }],
-        lg: ["clamp(20px, calc(14px + 1.5vw), 25px)", { lineHeight: "1.5" }],
-        xl: ["clamp(22px, calc(15px + 1.6vw), 28px)", { lineHeight: "1.4" }],
+        base: ["19px", { lineHeight: "1.55" }],
+        lg: ["20px", { lineHeight: "1.5" }],
+        xl: ["clamp(21px, calc(17px + .5vw), 23px)", { lineHeight: "1.45" }],
         hero: ["clamp(3rem, 8vw, 5.5rem)", { lineHeight: "1.0", letterSpacing: "-0.03em" }],
         "display-lg": ["clamp(2.25rem, 5vw, 3.5rem)", { lineHeight: "1.0", letterSpacing: "-0.025em" }],
         display: ["clamp(1.75rem, 3.5vw, 2.75rem)", { lineHeight: "1.05", letterSpacing: "-0.02em" }],

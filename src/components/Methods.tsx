@@ -22,7 +22,7 @@ export function Methods() {
           </p>
         </header>
 
-        <div className="mt-12 grid gap-x-10 gap-y-14 md:mt-16 md:grid-cols-2">
+        <div className="mt-12 grid gap-x-8 gap-y-12 md:mt-16 md:grid-cols-2 lg:grid-cols-3">
           {METHODS.map((m) => (
             <div
               key={m.key}
@@ -33,7 +33,7 @@ export function Methods() {
                   src={m.img}
                   alt={m.alt}
                   fill
-                  sizes="(min-width: 768px) 50vw, 100vw"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
               </div>

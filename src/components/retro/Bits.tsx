@@ -90,12 +90,12 @@ export function Squiggle({ className, color = "#D6336C" }: { className?: string;
 
 /** Chapter title card between sections: one huge title on its own ground, with the stripe band
  *  on its top edge as the section break. `chapter` is kept for callers but no longer printed (no
- *  small eyebrow labels). Pass stripe={false} where the band already sits just above. */
-export function TitleCard({ title, tone = "pool", stripe = true }: { chapter?: string; title: string; tone?: "pool" | "paper" | "tealtint" | "sky"; stripe?: boolean }) {
+ *  small eyebrow labels). The stripe is an accent (Bri 2026-10-20), so it is off by default here. */
+export function TitleCard({ title, tone = "pool", stripe = false }: { chapter?: string; title: string; tone?: "pool" | "paper" | "tealtint" | "sky"; stripe?: boolean }) {
   return (
     <div
       className={clsx(
-        "relative pb-10 pt-20 text-center text-[#0C1215] md:pb-14 md:pt-28",
+        "relative pb-8 pt-16 text-center text-[#0C1215] md:pb-10 md:pt-20",
         tone === "pool" && "bg-retro-pool",
         tone === "paper" && "bg-retro-paper",
         (tone === "tealtint" || tone === "sky") && "bg-[#E6F5FC]",
@@ -103,7 +103,7 @@ export function TitleCard({ title, tone = "pool", stripe = true }: { chapter?: s
     >
       {stripe && <StripeBand className="absolute inset-x-0 top-0" />}
       <div className="container-site">
-        <p className="font-title text-[13vw] leading-[0.9] [text-wrap:balance] md:text-[7.5vw]">{title}</p>
+        <p className="font-title text-[13vw] leading-[0.9] [text-wrap:balance] md:text-[clamp(3rem,4.6vw,5rem)]">{title}</p>
       </div>
     </div>
   );

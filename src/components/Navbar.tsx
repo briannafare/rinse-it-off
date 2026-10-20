@@ -64,7 +64,7 @@ export function Navbar() {
         }`}
       >
         <PromoBar collapsed={scrolledDown} />
-        <nav className="container-site flex h-16 items-center justify-between md:h-24">
+        <nav className="container-site flex h-16 items-center justify-between md:h-[76px]">
           <a
             href="/"
             className={`flex-shrink-0 rounded ${focusRing} ${offset}`}
@@ -76,7 +76,7 @@ export function Navbar() {
               width={706}
               height={438}
               priority
-              className="h-9 w-auto md:h-12"
+              className="h-9 w-auto md:h-10"
             />
           </a>
 
@@ -85,7 +85,7 @@ export function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
-                className={`label-caps rounded px-1 transition-colors duration-300 ${ink} hover:!text-[#1A6E93] ${focusRing} ${offset} motion-reduce:transition-none`}
+                className={`label-caps !text-[0.8rem] !font-semibold rounded px-1 transition-colors duration-300 ${ink} hover:!text-[#1A6E93] ${focusRing} ${offset} motion-reduce:transition-none`}
               >
                 {l.label}
               </a>
@@ -95,9 +95,9 @@ export function Navbar() {
           <div className="hidden items-center gap-5 md:flex">
             <a
               href={PHONE_TEL}
-              className={`hidden items-center gap-2 rounded px-1 text-lg font-bold xl:flex transition-colors duration-300 ${ink} opacity-80 hover:opacity-100 ${focusRing} ${offset} motion-reduce:transition-none`}
+              className={`flex items-center gap-2 rounded px-1 text-base font-semibold transition-colors duration-300 ${ink} opacity-80 hover:opacity-100 ${focusRing} ${offset} motion-reduce:transition-none`}
             >
-              <Phone className="h-5 w-5" aria-hidden />
+              <Phone className="h-4 w-4" aria-hidden />
               {PHONE_DISPLAY}
             </a>
             <a

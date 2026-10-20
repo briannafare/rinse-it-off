@@ -102,7 +102,7 @@ export function ProcessSection() {
           <div ref={stepsRef} className="grid gap-10 md:grid-cols-2 md:gap-x-16 md:gap-y-12">
             {STEPS.map((s) => (
               <div key={s.n} className="flex gap-5">
-                <span className="font-title text-[2.6rem] leading-none text-[#1A6E93] md:text-[3.2rem]">
+                <span className="font-title text-[2.6rem] leading-none text-[#1A6E93] md:text-[2.4rem]">
                   {s.n}
                 </span>
                 <div>

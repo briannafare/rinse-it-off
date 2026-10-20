@@ -61,7 +61,7 @@ export function WorkGallery() {
               type="button"
               onClick={() => step(d)}
               aria-label={d === 1 ? "Next photo" : "Previous photo"}
-              className="flex h-16 w-16 items-center justify-center rounded-full border-[3px] border-[#0C1215] bg-[#FBF8F2] transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]"
+              className="flex h-12 w-12 items-center justify-center rounded-full border-[3px] border-[#0C1215] bg-[#FBF8F2] transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]"
             >
               <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} className={`h-6 w-6 ${d === -1 ? "rotate-180" : ""}`}>
                 <path d="M4 10h12M11 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
@@ -77,13 +77,13 @@ export function WorkGallery() {
         aria-label="Photos of recent jobs"
       >
         {SHOTS.map((s, i) => (
-          <figure key={s.src} className="w-[85vw] shrink-0 snap-start md:w-[56vw] lg:w-[44vw]">
+          <figure key={s.src} className="w-[85vw] shrink-0 snap-start md:w-[48vw] lg:w-[32vw]">
             <div className="relative aspect-[4/5] overflow-hidden md:aspect-[4/3]">
               <Image
                 src={`/brand/photos/work/${s.src}.webp`}
                 alt={s.alt}
                 fill
-                sizes="(min-width: 1024px) 44vw, (min-width: 768px) 56vw, 85vw"
+                sizes="(min-width: 1024px) 32vw, (min-width: 768px) 48vw, 85vw"
                 priority={i < 2}
                 className="object-cover"
               />

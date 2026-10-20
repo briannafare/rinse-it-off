@@ -48,7 +48,7 @@ export function BeforeAfter() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#FBF8F2]/90 via-[#FBF8F2]/30 to-transparent" />
         <div className="container-site relative flex h-full items-end pb-10">
           <blockquote
-            className="max-w-5xl font-title text-[12vw] leading-[0.95] text-[#0C1215] md:text-[6.5vw]"
+            className="max-w-5xl font-title text-[12vw] leading-[0.95] text-[#0C1215] md:text-[clamp(2.6rem,4vw,4.4rem)]"
           >
             The line isn&apos;t an effect.
             <br />

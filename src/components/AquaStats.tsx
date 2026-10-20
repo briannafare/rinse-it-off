@@ -57,13 +57,13 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
 
 export function AquaStats() {
   return (
-    <section className="relative overflow-hidden bg-[#62C4EB] py-20 text-center md:py-28">
+    <section className="relative overflow-hidden bg-[#62C4EB] py-16 text-center md:py-20">
       {/* set like the closing credits of a film, on the pink tint: magenta-deep figures, ink notes */}
 
-      <div className="container-site relative grid gap-y-16 md:grid-cols-2 md:gap-x-10 md:gap-y-20">
+      <div className="container-site relative grid gap-y-16 md:grid-cols-2 md:gap-x-10 md:gap-y-14 lg:grid-cols-4">
         {STATS.map((s) => (
           <div key={s.label}>
-            <div className="font-title text-[22vw] leading-[0.9] text-[#0C1215] md:text-[9vw]">
+            <div className="font-title text-[22vw] leading-[0.9] text-[#0C1215] md:text-[8vw] lg:text-[4.4vw]">
               {"text" in s ? (
                 <span className="tabular-nums">{s.text}</span>
               ) : (
