@@ -1,1469 +1,1433 @@
 {
- "portland": {
-  "facts": [
-   {
-    "text": "About 63 percent of Portland's homes were built before 1980, and 45 percent before 1960.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4159000"
-   },
-   {
-    "text": "Portland's tree canopy covers 32.4 percent of the city's land area as of 2025, down from a high of 33.4 percent in 2015, and the city's goal is 45 percent in 40 years.",
-    "source_url": "https://www.portland.gov/trees/news/2026/7/21/portland-tree-canopy-cover-update"
-   },
-   {
-    "text": "Rain at Portland International Airport averages 36.92 inches a year, while downtown averages 44.07 inches, and both see rain on about 157 days a year (1991-2020 normals).",
-    "source_url": "https://en.wikipedia.org/wiki/Portland,_Oregon"
-   },
-   {
-    "text": "About 25 percent of Portland's housing units are in buildings of five or more units.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4159000"
-   }
-  ],
-  "status": "ok"
- },
- "tigard": {
-  "facts": [
-   {
-    "text": "Tigard's median home was built in 1988, and only 5 percent of its homes date from before 1960.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4173650"
-   },
-   {
-    "text": "About 62 percent of Tigard households own their home, and 57 percent of homes are single detached houses.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4173650"
-   },
-   {
-    "text": "The median owner-occupied home in Tigard is worth $610,500.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4173650"
-   },
-   {
-    "text": "Tigard's urban forestry plan sets a goal of 40 percent citywide tree canopy by 2047, with new development required to provide canopy on each lot.",
-    "source_url": "https://www.planning.org/awards/2014/urbanforestrycode.htm"
-   },
-   {
-    "text": "The railroad renamed the town Tigard in 1907 to tell it apart from nearby Wilsonville, after it had been called Tigardville since 1886.",
-    "source_url": "https://en.wikipedia.org/wiki/Tigard,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "beaverton": {
-  "facts": [
-   {
-    "text": "Beaverton's median home was built in 1987, and 38 percent of its homes predate 1980.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4105350"
-   },
-   {
-    "text": "Only 42 percent of Beaverton's housing units are single detached houses, and about 16 percent are in buildings of five or more units.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4105350"
-   },
-   {
-    "text": "Beaverton averages 39.05 inches of precipitation a year on about 151 days.",
-    "source_url": "https://en.wikipedia.org/wiki/Beaverton,_Oregon"
-   },
-   {
-    "text": "Beaverton Transit Center is TriMet's busiest transit center, and seven MAX stations serve the city.",
-    "source_url": "https://en.wikipedia.org/wiki/Beaverton,_Oregon"
-   },
-   {
-    "text": "Nike is Beaverton's largest employer with 6,019 employees, according to the city's 2024 financial report.",
-    "source_url": "https://en.wikipedia.org/wiki/Beaverton,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "lake-oswego": {
-  "facts": [
-   {
-    "text": "The median owner-occupied home in Lake Oswego is worth $932,200.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4140550"
-   },
-   {
-    "text": "About 69 percent of Lake Oswego households own their home, and 61 percent of homes are single detached houses.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4140550"
-   },
-   {
-    "text": "About 46 percent of Lake Oswego's homes were built before 1980, with a median build year of 1982.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4140550"
-   },
-   {
-    "text": "Oswego Lake covers 405 acres and is run by the Lake Oswego Corporation, and public access to the water has been disputed in court as recently as April 2024.",
-    "source_url": "https://en.wikipedia.org/wiki/Lake_Oswego,_Oregon"
-   },
-   {
-    "text": "A restored 1866 iron blast furnace, the first on the West Coast, stands in George Rogers Park.",
-    "source_url": "https://en.wikipedia.org/wiki/Lake_Oswego,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "tualatin": {
-  "facts": [
-   {
-    "text": "Tualatin's median home was built in 1992, and only 26 percent of its homes date from before 1980 and 2 percent from before 1960.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4174950"
-   },
-   {
-    "text": "About 55 percent of Tualatin households own their home, and 15 percent of homes are in buildings of five or more units.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4174950"
-   },
-   {
-    "text": "The median owner-occupied home in Tualatin is worth $628,200.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4174950"
-   },
-   {
-    "text": "The Tualatin River runs along most of the city's northern boundary.",
-    "source_url": "https://en.wikipedia.org/wiki/Tualatin,_Oregon"
-   },
-   {
-    "text": "Bridgeport Village opened in early 2005 on the site of a former quarry, mostly inside Tualatin.",
-    "source_url": "https://en.wikipedia.org/wiki/Tualatin,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "west-linn": {
-  "facts": [
-   {
-    "text": "About 83 percent of West Linn households own their home.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4180150"
-   },
-   {
-    "text": "Seventy-six percent of West Linn's homes are single detached houses and only 3 percent are in buildings of five or more units.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4180150"
-   },
-   {
-    "text": "The median owner-occupied home in West Linn is worth $770,200, with a median build year of 1988.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4180150"
-   },
-   {
-    "text": "The Willamette Falls Locks, finished in 1873, sit in West Linn and closed in 2011.",
-    "source_url": "https://en.wikipedia.org/wiki/West_Linn,_Oregon"
-   },
-   {
-    "text": "Camassia Natural Area is a 26-acre Nature Conservancy preserve in West Linn on a rocky plateau left by the Bretz Floods.",
-    "source_url": "https://en.wikipedia.org/wiki/West_Linn,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "hillsboro": {
-  "facts": [
-   {
-    "text": "Hillsboro's median home was built in 1997, and only 24 percent of its homes predate 1980.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4134100"
-   },
-   {
-    "text": "About 50 percent of Hillsboro households own their home, and 19 percent of homes are in buildings of five or more units.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4134100"
-   },
-   {
-    "text": "Intel is Hillsboro's largest employer, with 20,000 employees, or 30.6 percent of the jobs in the city, according to the 2022 city financial report.",
-    "source_url": "https://en.wikipedia.org/wiki/Hillsboro,_Oregon"
-   },
-   {
-    "text": "Hillsboro's 1991-2020 normal precipitation is 35.93 inches a year, with the wettest period from November through March.",
-    "source_url": "https://en.wikipedia.org/wiki/Hillsboro,_Oregon"
-   },
-   {
-    "text": "Orenco Station was built as a compact mixed-use neighborhood around the MAX light rail line, which reached Hillsboro on September 12, 1998.",
-    "source_url": "https://en.wikipedia.org/wiki/Hillsboro,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "gresham": {
-  "facts": [
-   {
-    "text": "About 48 percent of Gresham's homes were built before 1980, with a median build year of 1981.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4131250"
-   },
-   {
-    "text": "Fifty-three percent of Gresham's homes are single detached houses and 56 percent of households own their home.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4131250"
-   },
-   {
-    "text": "Gresham averages 47.78 inches of precipitation and 5.8 inches of snow a year, noticeably more than Portland's airport at 36.92 inches.",
-    "source_url": "https://en.wikipedia.org/wiki/Gresham,_Oregon"
-   },
-   {
-    "text": "Gresham was named for Walter Quintin Gresham and incorporated on February 11, 1905, when it had 365 residents.",
-    "source_url": "https://en.wikipedia.org/wiki/Gresham,_Oregon"
-   },
-   {
-    "text": "The MAX Blue Line has nine stations in Gresham, from East 162nd Avenue to Cleveland Avenue.",
-    "source_url": "https://en.wikipedia.org/wiki/Gresham,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "milwaukie": {
-  "facts": [
-   {
-    "text": "About 72 percent of Milwaukie's homes were built before 1980 and 37 percent before 1960, with a median build year of 1968.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4148650"
-   },
-   {
-    "text": "About 61 percent of Milwaukie households own their home, and 68 percent of homes are single detached houses.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4148650"
-   },
-   {
-    "text": "The median owner-occupied home in Milwaukie is worth $505,100.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4148650"
-   },
-   {
-    "text": "Lot Whitcomb platted Milwaukie in 1849 and named it after Milwaukee, Wisconsin; the city was incorporated in 1903.",
-    "source_url": "https://en.wikipedia.org/wiki/Milwaukie,_Oregon"
-   },
-   {
-    "text": "MAX Orange Line service reached Milwaukie on September 12, 2015.",
-    "source_url": "https://en.wikipedia.org/wiki/Milwaukie,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "kerns": {
-  "facts": [
-   {
-    "text": "In the census tracts centered on Kerns, 48 percent of homes are in buildings of five or more units and only 15 percent of households own their home.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051002101,14000US41051002002,14000US41051002001,14000US41051002102"
-   },
-   {
-    "text": "In the same tracts, 55 percent of homes were built before 1980 and 42 percent before 1960.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051002101,14000US41051002002,14000US41051002001,14000US41051002102"
-   },
-   {
-    "text": "William Kerns, the area's first homesteader, cleared a 320-acre Donation Land Claim in the 1850s and sold wood shingles.",
-    "source_url": "https://en.wikipedia.org/wiki/Kerns,_Portland,_Oregon"
-   },
-   {
-    "text": "The Fire Alarm Telegraph building at NE 21st and Pacific Avenue was built in 1928 as a communications headquarters.",
-    "source_url": "https://en.wikipedia.org/wiki/Kerns,_Portland,_Oregon"
-   },
-   {
-    "text": "A 2014 street tree inventory counted 3,140 trees of 91 types in Kerns.",
-    "source_url": "https://en.wikipedia.org/wiki/Kerns,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "buckman": {
-  "facts": [
-   {
-    "text": "In the census tracts centered on Buckman, 67 percent of homes were built before 1980 and 55 percent before 1960.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001204,14000US41051001203,14000US41051001101"
-   },
-   {
-    "text": "In the same tracts, 42 percent of homes are in buildings of five or more units and 17 percent of households own their home.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001204,14000US41051001203,14000US41051001101"
-   },
-   {
-    "text": "Buckman runs from the Willamette River east to SE 28th Avenue and from E Burnside south to SE Hawthorne Boulevard.",
-    "source_url": "https://en.wikipedia.org/wiki/Buckman,_Portland,_Oregon"
-   },
-   {
-    "text": "Washington High School in Buckman was built in 1924, and Lone Fir Cemetery dates to 1855.",
-    "source_url": "https://en.wikipedia.org/wiki/Buckman,_Portland,_Oregon"
-   },
-   {
-    "text": "Buckman was the center of the City of East Portland before it merged with Portland, and the East Portland Grand Avenue Historic District marks that center.",
-    "source_url": "https://en.wikipedia.org/wiki/Buckman,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "sunnyside": {
-  "facts": [
-   {
-    "text": "In the census tract covering Sunnyside, 72 percent of homes were built before 1980 and 59 percent before 1960.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001301"
-   },
-   {
-    "text": "In that tract, 35 percent of households own their home, 38 percent of homes are single-unit and 16 percent are in buildings of five or more units.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001301"
-   },
-   {
-    "text": "Sunnyside runs from SE Stark Street to SE Hawthorne Boulevard and from SE 28th to SE 49th Avenue.",
-    "source_url": "https://en.wikipedia.org/wiki/Sunnyside,_Portland,_Oregon"
-   },
-   {
-    "text": "Peacock Lane, between Stark and Belmont, is known for elaborate Christmas displays.",
-    "source_url": "https://en.wikipedia.org/wiki/Sunnyside,_Portland,_Oregon"
-   },
-   {
-    "text": "Residents have repainted the Sunnyside Piazza intersection at SE 33rd and Yamhill every Memorial Day weekend since 2000.",
-    "source_url": "https://en.wikipedia.org/wiki/Sunnyside,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "laurelhurst": {
-  "facts": [
-   {
-    "text": "In the census tract covering Laurelhurst, 93 percent of homes were built before 1960 and 96 percent before 1980.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001900"
-   },
-   {
-    "text": "In that tract, 87 percent of households own their home and 90 percent of homes are single-unit.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001900"
-   },
-   {
-    "text": "The Laurelhurst Company platted the neighborhood in 1909 on the Ladd Estate's 462-acre Hazel Fern Farm, with landscape architect John Charles Olmsted as co-investor.",
-    "source_url": "https://en.wikipedia.org/wiki/Laurelhurst,_Portland,_Oregon"
-   },
-   {
-    "text": "The Laurelhurst Historic District, covering 392 acres, was added to the National Register of Historic Places on March 18, 2019.",
-    "source_url": "https://en.wikipedia.org/wiki/Laurelhurst,_Portland,_Oregon"
-   },
-   {
-    "text": "Laurelhurst Park began as 31 acres bought by the city for $92,000 while the first houses were being built.",
-    "source_url": "https://en.wikipedia.org/wiki/Laurelhurst,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "hosford-abernethy": {
-  "facts": [
-   {
-    "text": "In the census tracts centered on Hosford-Abernethy, 80 percent of homes were built before 1980 and 76 percent before 1960.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001202,14000US41051001102"
-   },
-   {
-    "text": "In the same tracts, 53 percent of households own their home and 60 percent of homes are single-unit.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001202,14000US41051001102"
-   },
-   {
-    "text": "Ladd's Addition, in the north-central part of the neighborhood, is known for its X-shaped street pattern.",
-    "source_url": "https://en.wikipedia.org/wiki/Hosford-Abernethy,_Portland,_Oregon"
-   },
-   {
-    "text": "The neighborhood was named in the 1970s for two local schools, Hosford Middle School and Abernethy Elementary School.",
-    "source_url": "https://en.wikipedia.org/wiki/Hosford-Abernethy,_Portland,_Oregon"
-   },
-   {
-    "text": "The Oregon Museum of Science and Industry sits on the riverfront at the southern end of the Vera Katz Eastbank Esplanade.",
-    "source_url": "https://en.wikipedia.org/wiki/Hosford-Abernethy,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "brooklyn": {
-  "facts": [
-   {
-    "text": "In the census tracts centered on Brooklyn, 70 percent of homes were built before 1980 and 56 percent before 1960.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051000102,14000US41051001000"
-   },
-   {
-    "text": "In the same tracts, 47 percent of households own their home and 64 percent of homes are single-unit.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051000102,14000US41051001000"
-   },
-   {
-    "text": "Giddeon Tibbets arrived in 1851 and called the place Brookland; it became Brooklyn in 1868 when he let the Oregon Central Railroad cross his land.",
-    "source_url": "https://en.wikipedia.org/wiki/Brooklyn,_Portland,_Oregon"
-   },
-   {
-    "text": "Construction of the Ross Island Bridge in the 1920s destroyed the neighborhood's town square at Powell and Milwaukie.",
-    "source_url": "https://en.wikipedia.org/wiki/Brooklyn,_Portland,_Oregon"
-   },
-   {
-    "text": "The MAX Orange Line, completed in September 2015, improved Brooklyn's transit access to downtown.",
-    "source_url": "https://en.wikipedia.org/wiki/Brooklyn,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "lloyd": {
-  "facts": [
-   {
-    "text": "In the census tracts centered on Lloyd, 66 percent of homes are in buildings of five or more units and only 17 percent of households own their home.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051002303,14000US41051002402"
-   },
-   {
-    "text": "In the same tracts, 42 percent of homes were built before 1980 and 22 percent before 1960.",
-    "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051002303,14000US41051002402"
-   },
-   {
-    "text": "Lloyd is bounded by the Willamette River, NE Broadway, NE 18th Avenue and Interstate 84, and covers 0.43 square miles.",
-    "source_url": "https://en.wikipedia.org/wiki/Lloyd_District,_Portland,_Oregon"
-   },
-   {
-    "text": "All four MAX lines serve the Lloyd District.",
-    "source_url": "https://en.wikipedia.org/wiki/Lloyd_District,_Portland,_Oregon"
-   },
-   {
-    "text": "Hassalo on Eighth, with 657 apartments in three buildings, was completed in October 2015.",
-    "source_url": "https://en.wikipedia.org/wiki/Lloyd_District,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "irvington": {
-  "facts": [
-   {
-    "text": "Irvington was platted in 1887 and built up in the 1890s as a middle- to upper-class residential district, and its historic district holds homes built between 1891 and 1948.",
-    "source_url": "https://en.wikipedia.org/wiki/Irvington,_Portland,_Oregon"
-   },
-   {
-    "text": "The Irvington Historic District was added to the National Register of Historic Places on October 22, 2010, and covers 583 acres between NE 7th and NE 26th Avenues, north of Broadway.",
-    "source_url": "https://en.wikipedia.org/wiki/Irvington,_Portland,_Oregon"
-   },
-   {
-    "text": "Many Irvington blocks have a full canopy of street trees over the road, and some rows of the original street trees were planted more than a hundred years ago.",
-    "source_url": "https://www.irvingtonpdx.com/neighborhood-trees"
-   },
-   {
-    "text": "Irvington is one of seven Portland neighborhoods where lab testing confirmed Dutch elm disease, and about 10 percent of the city's nearly 300 Heritage Trees stand there.",
-    "source_url": "https://www.irvingtonpdx.com/neighborhood-trees"
-   }
-  ],
-  "status": "ok"
- },
- "eliot": {
-  "facts": [
-   {
-    "text": "Eliot holds the old center of the former City of Albina, which Portland annexed in the late 19th century.",
-    "source_url": "https://en.wikipedia.org/wiki/Eliot,_Portland,_Oregon"
-   },
-   {
-    "text": "Eliot is bounded by the Willamette River, I-405, NE Fremont Street, NE 7th Avenue and Broadway, and covers 0.84 square miles.",
-    "source_url": "https://en.wikipedia.org/wiki/Eliot,_Portland,_Oregon"
-   },
-   {
-    "text": "In the 2020 census about 75 percent of Eliot households rented, 2,043 of 2,724 households.",
-    "source_url": "https://en.wikipedia.org/wiki/Eliot,_Portland,_Oregon"
-   },
-   {
-    "text": "The Wonder Ballroom on NE Russell Street was completed in 1914 as a lodge meeting hall and was listed on the National Register of Historic Places in 2004.",
-    "source_url": "https://en.wikipedia.org/wiki/Eliot,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "king": {
-  "facts": [
-   {
-    "text": "King straddles Martin Luther King Jr. Boulevard from Ainsworth Street to Fremont Street and covers 0.64 square miles.",
-    "source_url": "https://en.wikipedia.org/wiki/King,_Portland,_Oregon"
-   },
-   {
-    "text": "King sits at one end of the Alberta Arts District, a commercial strip about 1.5 miles long that runs along NE Alberta Street from MLK Boulevard to NE 33rd Avenue.",
-    "source_url": "https://en.wikipedia.org/wiki/Alberta_Arts_District"
-   },
-   {
-    "text": "Alberta Street's two housing booms were 1905 to 1913 and 1922 to 1928.",
-    "source_url": "https://en.wikipedia.org/wiki/Alberta_Arts_District"
-   },
-   {
-    "text": "King is one of the north and east side neighborhoods where 59 to 77 percent of street tree planting sites are small.",
-    "source_url": "https://www.portland.gov/trees/get-involved/documents/citywide-street-tree-inventory-report-2017/download"
-   }
-  ],
-  "status": "ok"
- },
- "sabin": {
-  "facts": [
-   {
-    "text": "Sabin covers just 0.37 square miles and is bordered by Vernon to the north, King to the west, Irvington to the south and Alameda to the east.",
-    "source_url": "https://en.wikipedia.org/wiki/Sabin,_Portland,_Oregon"
-   },
-   {
-    "text": "Sabin is one of six neighborhoods that sit on the Alameda Ridge, a bar of flood-deposited silt, sand and gravel roughly 100 to 150 feet high.",
-    "source_url": "https://en.wikipedia.org/wiki/Alameda_Ridge"
-   },
-   {
-    "text": "In the 2000 census 72 percent of Sabin households owned their home, 931 of 1,299.",
-    "source_url": "https://en.wikipedia.org/wiki/Sabin,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "alameda": {
-  "facts": [
-   {
-    "text": "The Alameda Land Company laid out the Alameda Park subdivision in 1909, and the neighborhood was then annexed to Portland.",
-    "source_url": "https://en.wikipedia.org/wiki/Alameda,_Portland,_Oregon"
-   },
-   {
-    "text": "Alameda sits on the Alameda Ridge, which the Missoula Floods built about 15,000 to 13,000 years ago, and it has views of downtown, the Willamette and the Cascades.",
-    "source_url": "https://en.wikipedia.org/wiki/Alameda,_Portland,_Oregon"
-   },
-   {
-    "text": "About 80 percent of Alameda households owned their home in the 2020 census, 1,651 of 2,064.",
-    "source_url": "https://en.wikipedia.org/wiki/Alameda,_Portland,_Oregon"
-   },
-   {
-    "text": "Alameda's street tree planting sites are 83 percent stocked with trees, one of the highest rates in Portland.",
-    "source_url": "https://www.portland.gov/trees/get-involved/documents/citywide-street-tree-inventory-report-2017/download"
-   },
-   {
-    "text": "NE Fremont Street is Alameda's main east-west street and NE 33rd Avenue is its main north-south street and eastern boundary.",
-    "source_url": "https://en.wikipedia.org/wiki/Alameda,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "vernon": {
-  "facts": [
-   {
-    "text": "Vernon covers only 0.29 square miles and is bordered by Woodlawn to the north, Concordia to the east, Sabin to the south and King to the west.",
-    "source_url": "https://en.wikipedia.org/wiki/Vernon,_Portland,_Oregon"
-   },
-   {
-    "text": "Vernon holds much of the Alberta Arts District along NE Alberta Street, which runs about 1.5 miles from MLK Boulevard to NE 33rd Avenue.",
-    "source_url": "https://en.wikipedia.org/wiki/Alberta_Arts_District"
-   },
-   {
-    "text": "Alberta Park is in Vernon, with its entrance across the street from Vernon School.",
-    "source_url": "https://en.wikipedia.org/wiki/Vernon,_Portland,_Oregon"
-   },
-   {
-    "text": "In the 2000 census 53 percent of Vernon households owned their home, 546 of 1,036.",
-    "source_url": "https://en.wikipedia.org/wiki/Vernon,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "concordia": {
-  "facts": [
-   {
-    "text": "Concordia is named for Concordia University, which sat in the middle of the neighborhood from 1905 until it closed in 2020.",
-    "source_url": "https://en.wikipedia.org/wiki/Concordia,_Portland,_Oregon"
-   },
-   {
-    "text": "Concordia runs from NE 22nd to NE 42nd Avenue and from NE Prescott to NE Columbia Boulevard, and holds most of the Alberta Arts District.",
-    "source_url": "https://en.wikipedia.org/wiki/Concordia,_Portland,_Oregon"
-   },
-   {
-    "text": "About 71 percent of Concordia households owned their home in the 2020 census, 2,676 of 3,769 occupied households.",
-    "source_url": "https://en.wikipedia.org/wiki/Concordia,_Portland,_Oregon"
-   },
-   {
-    "text": "Tree canopy covers 22 percent of Concordia.",
-    "source_url": "https://en.wikipedia.org/wiki/Concordia,_Portland,_Oregon"
-   },
-   {
-    "text": "Kennedy School, a former elementary school, is now a hotel and restaurant and a landmark in the neighborhood.",
-    "source_url": "https://en.wikipedia.org/wiki/Concordia,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "beaumont-wilshire": {
-  "facts": [
-   {
-    "text": "Beaumont was platted in 1910 as part of the 1907 Rose City Park subdivision, and Wilshire was platted in 1921 around NE 33rd and Skidmore.",
-    "source_url": "https://en.wikipedia.org/wiki/Beaumont-Wilshire,_Portland,_Oregon"
-   },
-   {
-    "text": "South of NE Fremont most homes were built in the early 1900s as Tudors, Craftsman homes and bungalows.",
-    "source_url": "https://en.wikipedia.org/wiki/Beaumont-Wilshire,_Portland,_Oregon"
-   },
-   {
-    "text": "About 87 percent of households owned their home in the 2020 census, and tree canopy covers 26 percent of the neighborhood.",
-    "source_url": "https://en.wikipedia.org/wiki/Beaumont-Wilshire,_Portland,_Oregon"
-   },
-   {
-    "text": "NE Fremont Street between 42nd and 50th Avenues is the commercial strip, known locally as Beaumont Village, and Wilshire Park is 14.83 acres with mature trees.",
-    "source_url": "https://en.wikipedia.org/wiki/Beaumont-Wilshire,_Portland,_Oregon"
-   },
-   {
-    "text": "The neighborhood sits on the Alameda Ridge, a flood-built bar about 100 to 150 feet high.",
-    "source_url": "https://en.wikipedia.org/wiki/Alameda_Ridge"
-   }
-  ],
-  "status": "ok"
- },
- "grant-park": {
-  "facts": [
-   {
-    "text": "Grant Park houses generally date to the early 20th century, and most are Old Portland or Craftsman style.",
-    "source_url": "https://en.wikipedia.org/wiki/Grant_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "In the 2000 census 88 percent of Grant Park households owned their home, 1,205 of 1,364.",
-    "source_url": "https://en.wikipedia.org/wiki/Grant_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "Grant Park is the setting of Beverly Cleary's Klickitat Street books. The neighborhood is bordered by Irvington to the west, Alameda and Beaumont-Wilshire to the north, and Rose City Park to the east.",
-    "source_url": "https://en.wikipedia.org/wiki/Grant_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "Grant Park covers 0.46 square miles and is next to Hollywood, Laurelhurst and Sullivan's Gulch on its south side.",
-    "source_url": "https://en.wikipedia.org/wiki/Grant_Park,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "hollywood": {
-  "facts": [
-   {
-    "text": "The Hollywood Theatre opened July 17, 1926 in Spanish Colonial Revival style and was added to the National Register of Historic Places in 1983.",
-    "source_url": "https://en.wikipedia.org/wiki/Hollywood,_Portland,_Oregon"
-   },
-   {
-    "text": "The land was platted in 1907 as the Rose City Park subdivision after a streetcar line was extended along Sandy Road in 1906.",
-    "source_url": "https://en.wikipedia.org/wiki/Hollywood,_Portland,_Oregon"
-   },
-   {
-    "text": "The Hollywood/NE 42nd Avenue MAX station opened in 1986, and NE Sandy Boulevard follows an old Native trail through the district.",
-    "source_url": "https://en.wikipedia.org/wiki/Hollywood,_Portland,_Oregon"
-   },
-   {
-    "text": "In the 2000 census 85 percent of Hollywood households rented, 643 of 758, in a district of only 0.18 square miles.",
-    "source_url": "https://en.wikipedia.org/wiki/Hollywood,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "roseway": {
-  "facts": [
-   {
-    "text": "Roseway runs from NE Prescott to NE Sacramento and from about NE 65th to NE 82nd Avenue, and covers 0.81 square miles.",
-    "source_url": "https://en.wikipedia.org/wiki/Roseway,_Portland,_Oregon"
-   },
-   {
-    "text": "Roseway is one of six neighborhoods that sit on the Alameda Ridge.",
-    "source_url": "https://en.wikipedia.org/wiki/Alameda_Ridge"
-   },
-   {
-    "text": "Wellington Park was acquired in 1941 and the larger Glenhaven Park in 1948.",
-    "source_url": "https://en.wikipedia.org/wiki/Roseway,_Portland,_Oregon"
-   },
-   {
-    "text": "In the 2000 census 76 percent of Roseway households owned their home, 2,023 of 2,647.",
-    "source_url": "https://en.wikipedia.org/wiki/Roseway,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "boise": {
-  "facts": [
-   {
-    "text": "Boise is named for Reuben P. Boise, a Portland School Board member in the 1850s.",
-    "source_url": "https://en.wikipedia.org/wiki/Boise,_Portland,_Oregon"
-   },
-   {
-    "text": "Boise is bounded by I-5, N Skidmore Street, NE Rodney Avenue, and N Kerby and NE Fremont Streets, and the south end of N Mississippi Avenue is its commercial core.",
-    "source_url": "https://en.wikipedia.org/wiki/Boise,_Portland,_Oregon"
-   },
-   {
-    "text": "Tree canopy covers 21 percent of Boise, and its population grew 41 percent between 2010 and 2020, to 4,660.",
-    "source_url": "https://en.wikipedia.org/wiki/Boise,_Portland,_Oregon"
-   },
-   {
-    "text": "DeNorval Unthank Park is in Boise.",
-    "source_url": "https://en.wikipedia.org/wiki/Boise,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "humboldt": {
-  "facts": [
-   {
-    "text": "Humboldt covers 0.55 square miles and is bordered by Piedmont to the north, King to the east, Boise to the south and Overlook to the west.",
-    "source_url": "https://en.wikipedia.org/wiki/Humboldt,_Portland,_Oregon"
-   },
-   {
-    "text": "In the 2000 census 57 percent of Humboldt households rented, 1,100 of 1,921.",
-    "source_url": "https://en.wikipedia.org/wiki/Humboldt,_Portland,_Oregon"
-   },
-   {
-    "text": "N Williams Avenue runs through Humboldt.",
-    "source_url": "https://en.wikipedia.org/wiki/Humboldt,_Portland,_Oregon"
-   }
-  ],
-  "status": "merge-candidate"
- },
- "overlook": {
-  "facts": [
-   {
-    "text": "Overlook Park, at N Fremont Street and Interstate Avenue, was acquired in 1930, is about 11 acres, and looks out over downtown Portland and the Willamette River.",
-    "source_url": "https://en.wikipedia.org/wiki/Overlook_Park_(Portland,_Oregon)"
-   },
-   {
-    "text": "The park's shelter and comfort station was built in the 1930s as a Works Progress Administration project.",
-    "source_url": "https://en.wikipedia.org/wiki/Overlook_Park_(Portland,_Oregon)"
-   },
-   {
-    "text": "Overlook House, built in 1928, is now a community center.",
-    "source_url": "https://en.wikipedia.org/wiki/Overlook,_Portland,_Oregon"
-   },
-   {
-    "text": "The MAX Yellow Line stops at the Overlook Park, N Prescott Street and N Killingsworth Street stations in the neighborhood.",
-    "source_url": "https://en.wikipedia.org/wiki/Overlook,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "arbor-lodge": {
-  "facts": [
-   {
-    "text": "Arbor Lodge was platted on April 15, 1889, and most of its homes were built between 1910 and 1930.",
-    "source_url": "https://en.wikipedia.org/wiki/Arbor_Lodge,_Portland,_Oregon"
-   },
-   {
-    "text": "Arbor Lodge is bounded by I-5 on the east, Lombard Street on the north and Ainsworth Street on the south.",
-    "source_url": "https://en.wikipedia.org/wiki/Arbor_Lodge,_Portland,_Oregon"
-   },
-   {
-    "text": "About 73 percent of Arbor Lodge households owned their home in the 2020 census, and tree canopy covers 20 percent of the neighborhood.",
-    "source_url": "https://en.wikipedia.org/wiki/Arbor_Lodge,_Portland,_Oregon"
-   },
-   {
-    "text": "Arbor Lodge Park holds Harper's Playground, built in 2012, and the Rosa Parks MAX station opened in 2004.",
-    "source_url": "https://en.wikipedia.org/wiki/Arbor_Lodge,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "kenton": {
-  "facts": [
-   {
-    "text": "Kenton was built as a company town for the Swift Meat Packing Company and was Portland's stockyards district.",
-    "source_url": "https://en.wikipedia.org/wiki/Kenton,_Portland,_Oregon"
-   },
-   {
-    "text": "The Kenton Commercial Historic District, listed on the National Register in 2001, runs about four blocks of N Denver Avenue south of N Interstate and was built mostly between 1910 and 1949.",
-    "source_url": "https://en.wikipedia.org/wiki/Kenton_Commercial_Historic_District"
-   },
-   {
-    "text": "The Kenton district has an unusually high concentration of buildings made with ornamental concrete blocks.",
-    "source_url": "https://en.wikipedia.org/wiki/Kenton_Commercial_Historic_District"
-   },
-   {
-    "text": "Kenton is one of the neighborhoods where 59 to 77 percent of street tree planting sites are small.",
-    "source_url": "https://www.portland.gov/trees/get-involved/documents/citywide-street-tree-inventory-report-2017/download"
-   },
-   {
-    "text": "The Columbia Slough runs through Kenton, and North Portland Harbor forms its northern edge.",
-    "source_url": "https://en.wikipedia.org/wiki/Kenton,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "university-park": {
-  "facts": [
-   {
-    "text": "University Park takes its name from Portland University, a Methodist school founded on the site in 1891 and closed in 1900; the Archdiocese of Portland bought the grounds in 1901, and the school became the University of Portland.",
-    "source_url": "https://en.wikipedia.org/wiki/University_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "About 73 percent of University Park's 1,692 households owned their home at the 2000 census.",
-    "source_url": "https://en.wikipedia.org/wiki/University_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "The neighborhood's streets run northeast-southwest and northwest-southeast rather than on the city grid, and their names follow no order, so you have to know where each street is to find your way.",
-    "source_url": "https://en.wikipedia.org/wiki/University_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "University Park covers 1.20 square miles on the east bank of the Willamette River, between N Lombard Street and the river bluff.",
-    "source_url": "https://en.wikipedia.org/wiki/University_Park,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "cathedral-park": {
-  "facts": [
-   {
-    "text": "Cathedral Park is named for the Gothic arches of the St. Johns Bridge towers, and the bridge, a green steel suspension bridge dedicated June 13, 1931, rises 400 feet over the neighborhood.",
-    "source_url": "https://en.wikipedia.org/wiki/St._Johns_Bridge"
-   },
-   {
-    "text": "Cathedral Park was part of the City of St. Johns until Portland annexed it in 1915.",
-    "source_url": "https://en.wikipedia.org/wiki/Cathedral_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "Tree canopy covers about 15 percent of Cathedral Park, and about 48 percent of its households rent (2020 figures).",
-    "source_url": "https://en.wikipedia.org/wiki/Cathedral_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "Cathedral Park's population grew 24 percent between 2010 and 2020, from 3,338 to 4,130 people.",
-    "source_url": "https://en.wikipedia.org/wiki/Cathedral_Park,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "woodlawn": {
-  "facts": [
-   {
-    "text": "Most Woodlawn homes are small working-class bungalows, which sets it apart from the neighboring King and Piedmont neighborhoods.",
-    "source_url": "https://en.wikipedia.org/wiki/Woodlawn,_Portland,_Oregon"
-   },
-   {
-    "text": "Woodlawn covers 0.73 square miles in Northeast Portland, bordered by Sunderland to the north and Concordia to the east.",
-    "source_url": "https://en.wikipedia.org/wiki/Woodlawn,_Portland,_Oregon"
-   },
-   {
-    "text": "About 66 percent of Woodlawn's 1,854 households owned their home at the 2000 census, and the neighborhood has been described as undergoing gentrification.",
-    "source_url": "https://en.wikipedia.org/wiki/Woodlawn,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "hayden-island": {
-  "facts": [
-   {
-    "text": "Hayden Island is reached by road only from Interstate 5, at the northernmost Oregon exit, and the Interstate Bridge to Vancouver opened in 1917.",
-    "source_url": "https://en.wikipedia.org/wiki/Hayden_Island"
-   },
-   {
-    "text": "Hayden Island has houseboat moorages and marinas on its east end and manufactured-home communities and condominiums near Jantzen Beach.",
-    "source_url": "https://en.wikipedia.org/wiki/Hayden_Island"
-   },
-   {
-    "text": "About 83 percent of Hayden Island's 1,224 households owned their home at the 2000 census, with an average household of 1.74 people.",
-    "source_url": "https://en.wikipedia.org/wiki/Hayden_Island"
-   },
-   {
-    "text": "Jantzen Beach Amusement Park on the island closed in 1970, and Lotus Isle, an earlier amusement park on Tomahawk Island, ran for a few years in the 1930s.",
-    "source_url": "https://en.wikipedia.org/wiki/Hayden_Island"
-   }
-  ],
-  "status": "ok"
- },
- "bridgeton": {
-  "facts": [
-   {
-    "text": "Bridgeton sits on a narrow strip of land around a levee between North Portland Harbor on the Columbia River and Bridgeton Slough, and the area includes floating homes and houseboats.",
-    "source_url": "https://en.wikipedia.org/wiki/Bridgeton,_Portland,_Oregon"
-   },
-   {
-    "text": "Bridgeton covers just 0.27 square miles and had 996 residents at the 2020 census.",
-    "source_url": "https://en.wikipedia.org/wiki/Bridgeton,_Portland,_Oregon"
-   },
-   {
-    "text": "The area was the end of the Vancouver Interurban streetcar line.",
-    "source_url": "https://en.wikipedia.org/wiki/Bridgeton,_Portland,_Oregon"
-   },
-   {
-    "text": "The old Faloma post office, open 1921 to 1935, took its name from the initials of three landowners (Force, Love, Moore) after the post office rejected Bridgeton as too common.",
-    "source_url": "https://en.wikipedia.org/wiki/Bridgeton,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "east-columbia": {
-  "facts": [
-   {
-    "text": "East Columbia sits on the Columbia River floodplain. Much of it is wetlands and industrial space, with more homes toward the east.",
-    "source_url": "https://en.wikipedia.org/wiki/East_Columbia,_Portland,_Oregon"
-   },
-   {
-    "text": "Dikes protecting East Columbia date to 1905 and were strengthened after the 1948 Vanport Flood.",
-    "source_url": "https://en.wikipedia.org/wiki/East_Columbia,_Portland,_Oregon"
-   },
-   {
-    "text": "East Columbia's population grew from 753 in 2000 to 2,205 in 2020, and Portland did not annex it until the early 1970s.",
-    "source_url": "https://en.wikipedia.org/wiki/East_Columbia,_Portland,_Oregon"
-   },
-   {
-    "text": "The Columbia Children's Arboretum, run by Portland Parks and Recreation since 1999, occupies the site of the original 1907 Columbia School.",
-    "source_url": "https://en.wikipedia.org/wiki/East_Columbia,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "sunderland": {
-  "facts": [
-   {
-    "text": "Sunderland covers 1.88 square miles between the Columbia River and Portland International Airport, but had only 718 residents at the 2010 census.",
-    "source_url": "https://en.wikipedia.org/wiki/Sunderland,_Portland,_Oregon"
-   },
-   {
-    "text": "Dignity Village, a city-sanctioned encampment started in December 2000, sits in Sunderland near the airport.",
-    "source_url": "https://en.wikipedia.org/wiki/Dignity_Village"
-   },
-   {
-    "text": "Sunderland borders Woodlawn and Concordia to the south and East Columbia to the west.",
-    "source_url": "https://en.wikipedia.org/wiki/Sunderland,_Portland,_Oregon"
-   }
-  ],
-  "status": "merge-candidate"
- },
- "parkrose": {
-  "facts": [
-   {
-    "text": "The Parkrose plat was filed October 5, 1911, and the area stayed a small farming and residential suburb until the 1920s.",
-    "source_url": "https://en.wikipedia.org/wiki/Parkrose,_Portland,_Oregon"
-   },
-   {
-    "text": "Portland annexed Parkrose in 1980, and about 51 percent of its 2,095 households rented at the 2000 census.",
-    "source_url": "https://en.wikipedia.org/wiki/Parkrose,_Portland,_Oregon"
-   },
-   {
-    "text": "Columbia Pioneer Cemetery, established in 1877, sits at NE 99th Avenue and Sandy Boulevard.",
-    "source_url": "https://en.wikipedia.org/wiki/Parkrose,_Portland,_Oregon"
-   },
-   {
-    "text": "Parkrose has the Parkrose/Sumner Transit Center on TriMet's MAX Red Line, and Sandy Boulevard crosses the neighborhood with industrial land to the north and homes to the south.",
-    "source_url": "https://en.wikipedia.org/wiki/Parkrose,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "parkrose-heights": {
-  "facts": [
-   {
-    "text": "Parkrose Heights covers 0.97 square miles and about 62 percent of its 2,332 households owned their home at the 2000 census.",
-    "source_url": "https://en.wikipedia.org/wiki/Parkrose_Heights,_Portland,_Oregon"
-   },
-   {
-    "text": "Gateway Discovery Park, Knott City Park and Merrifield Park are all inside Parkrose Heights.",
-    "source_url": "https://en.wikipedia.org/wiki/Parkrose_Heights,_Portland,_Oregon"
-   },
-   {
-    "text": "Parts of Parkrose Heights fall inside the Gateway Business District and the Gateway Regional Center Urban Renewal Area.",
-    "source_url": "https://en.wikipedia.org/wiki/Parkrose_Heights,_Portland,_Oregon"
-   },
-   {
-    "text": "Parkrose Heights is part of the Parkrose School District, and Sacramento Elementary School is within its boundaries.",
-    "source_url": "https://en.wikipedia.org/wiki/Parkrose_Heights,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "argay": {
-  "facts": [
-   {
-    "text": "Argay was laid out in 1957 by Art Simonson and Gerhardt Stavney and is described as the largest tract of midcentury development in East Portland.",
-    "source_url": "https://en.wikipedia.org/wiki/Argay,_Portland,_Oregon"
-   },
-   {
-    "text": "Argay homes are mostly one-story ranches and split-level houses on cul-de-sacs and looping streets that do not connect to Portland's street grid.",
-    "source_url": "https://en.wikipedia.org/wiki/Argay,_Portland,_Oregon"
-   },
-   {
-    "text": "Argay is bounded by the Columbia River on the north, NE 122nd Avenue on the west, Interstate 84 on the south and NE 148th Avenue on the east.",
-    "source_url": "https://en.wikipedia.org/wiki/Argay,_Portland,_Oregon"
-   },
-   {
-    "text": "Tree cover in Argay is about 13 percent (2020 figure), and about 58 percent of its 2,390 households own their home.",
-    "source_url": "https://en.wikipedia.org/wiki/Argay,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "wilkes": {
-  "facts": [
-   {
-    "text": "Wilkes is named for William Wilkes, who took a Donation Land Claim on Sandy Road east of Portland in 1850.",
-    "source_url": "https://en.wikipedia.org/wiki/Wilkes,_Portland,_Oregon"
-   },
-   {
-    "text": "Wilkes covers 3.08 square miles, with the Columbia Slough running through its north and business parks and industrial space north of Sandy Boulevard.",
-    "source_url": "https://en.wikipedia.org/wiki/Wilkes,_Portland,_Oregon"
-   },
-   {
-    "text": "Only about 29 percent of Wilkes residents own their home, and its population grew from 7,732 in 2000 to 9,297 in 2020.",
-    "source_url": "https://en.wikipedia.org/wiki/Wilkes,_Portland,_Oregon"
-   },
-   {
-    "text": "Wilkes Park was dedicated August 3, 2004, and the city bought 20 acres at the headwaters of Wilkes Creek in March 2011.",
-    "source_url": "https://en.wikipedia.org/wiki/Wilkes,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "madison-south": {
-  "facts": [
-   {
-    "text": "Madison South is next to Rocky Butte, an extinct cinder cone 613 feet high whose summit is Joseph Wood Hill Park.",
-    "source_url": "https://en.wikipedia.org/wiki/Rocky_Butte"
-   },
-   {
-    "text": "The Grotto, a 62-acre Catholic sanctuary, lies against the north face of Rocky Butte near Madison South.",
-    "source_url": "https://en.wikipedia.org/wiki/Rocky_Butte"
-   },
-   {
-    "text": "Madison South is roughly bounded by Interstate 84, Interstate 205, NE Sandy Boulevard and NE 65th Avenue and covers 1.50 square miles.",
-    "source_url": "https://en.wikipedia.org/wiki/Madison_South,_Portland,_Oregon"
-   },
-   {
-    "text": "About 59 percent of Madison South's 2,538 households owned their home at the 2000 census.",
-    "source_url": "https://en.wikipedia.org/wiki/Madison_South,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "hazelwood": {
-  "facts": [
-   {
-    "text": "Hazelwood covers 4.04 square miles and had 23,462 residents at the 2010 census.",
-    "source_url": "https://en.wikipedia.org/wiki/Hazelwood,_Portland,_Oregon"
-   },
-   {
-    "text": "About 51 percent of Hazelwood's 9,801 households rented at the 2010 census, against 42 percent who owned.",
-    "source_url": "https://en.wikipedia.org/wiki/Hazelwood,_Portland,_Oregon"
-   },
-   {
-    "text": "Before Portland annexed Hazelwood, the census counted it as its own community, and Mall 205 is one of its landmarks.",
-    "source_url": "https://en.wikipedia.org/wiki/Hazelwood,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "glenfair": {
-  "facts": [
-   {
-    "text": "Glenfair covers only 0.34 square miles on Portland's eastern border with Gresham, bounded by NE Glisan Street, 148th Avenue, SE Stark Street and 161st Street.",
-    "source_url": "https://en.wikipedia.org/wiki/Glenfair,_Portland,_Oregon"
-   },
-   {
-    "text": "About 72 percent of Glenfair's 1,012 households rent.",
-    "source_url": "https://en.wikipedia.org/wiki/Glenfair,_Portland,_Oregon"
-   },
-   {
-    "text": "United Airlines Flight 173 crash-landed in Glenfair on December 28, 1978, near NE 157th Avenue and East Burnside Street.",
-    "source_url": "https://en.wikipedia.org/wiki/United_Airlines_Flight_173"
-   },
-   {
-    "text": "Glenfair's population grew 7 percent from 3,417 in 2010 to 3,663 in 2020.",
-    "source_url": "https://en.wikipedia.org/wiki/Glenfair,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "mill-park": {
-  "facts": [
-   {
-    "text": "Mill Park covers 1.06 square miles in outer Southeast Portland, surrounded by Hazelwood on three sides and Powellhurst-Gilbert to the south.",
-    "source_url": "https://en.wikipedia.org/wiki/Mill_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "About 59 percent of Mill Park's 2,589 households owned their home at the 2000 census.",
-    "source_url": "https://en.wikipedia.org/wiki/Mill_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "Mill Park has the East Portland Community Center and the Midland Library, along with Mill Park, Midland Park and Floyd Light Park.",
-    "source_url": "https://en.wikipedia.org/wiki/Mill_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "Mill Park's schools (Mill Park Elementary, Floyd Light Middle School) are part of the David Douglas School District.",
-    "source_url": "https://en.wikipedia.org/wiki/Mill_Park,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "centennial": {
-  "facts": [
-   {
-    "text": "Centennial covers 2.68 square miles on the eastern edge of Southeast Portland and extends into Gresham, and had 25,413 residents at the 2020 census.",
-    "source_url": "https://en.wikipedia.org/wiki/Centennial,_Portland,_Oregon"
-   },
-   {
-    "text": "About 68 percent of Centennial households owned their home.",
-    "source_url": "https://en.wikipedia.org/wiki/Centennial,_Portland,_Oregon"
-   },
-   {
-    "text": "Centennial is served by the Centennial School District rather than Portland Public Schools, and Centennial High School sits inside it.",
-    "source_url": "https://en.wikipedia.org/wiki/Centennial,_Portland,_Oregon"
-   },
-   {
-    "text": "Lynchwood Park, Parklane Park and Verdell Burdine Rutherford Park are Centennial's main parks.",
-    "source_url": "https://en.wikipedia.org/wiki/Centennial,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "powellhurst-gilbert": {
-  "facts": [
-   {
-    "text": "Powellhurst-Gilbert had 32,852 residents in 2020, the most of any Portland neighborhood.",
-    "source_url": "https://en.wikipedia.org/wiki/Powellhurst-Gilbert,_Portland,_Oregon"
-   },
-   {
-    "text": "Rail service to Portland began in 1892 and drew the first suburban housing, and Portland annexed the area in stages from the 1960s until 1994.",
-    "source_url": "https://en.wikipedia.org/wiki/Powellhurst-Gilbert,_Portland,_Oregon"
-   },
-   {
-    "text": "The neighborhood covers 3.44 square miles, and 42 percent of its households rent.",
-    "source_url": "https://en.wikipedia.org/wiki/Powellhurst-Gilbert,_Portland,_Oregon"
-   },
-   {
-    "text": "The Jade District is its commercial and cultural center, and Kelly Butte Natural Area is within its borders.",
-    "source_url": "https://en.wikipedia.org/wiki/Powellhurst-Gilbert,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "creston-kenilworth": {
-  "facts": [
-   {
-    "text": "Kenilworth was platted in 1889, and many of its streets are named after novels by Walter Scott.",
-    "source_url": "https://en.wikipedia.org/wiki/Creston-Kenilworth,_Portland,_Oregon"
-   },
-   {
-    "text": "About 23 percent of Creston-Kenilworth is covered by tree canopy, according to the city's 2020 neighborhood profile.",
-    "source_url": "https://en.wikipedia.org/wiki/Creston-Kenilworth,_Portland,_Oregon"
-   },
-   {
-    "text": "Of 4,103 households in 2020, 54 percent rent, and the neighborhood covers just 0.80 square miles.",
-    "source_url": "https://en.wikipedia.org/wiki/Creston-Kenilworth,_Portland,_Oregon"
-   },
-   {
-    "text": "Kenilworth Park dates to 1909 and Creston Park to 1920. The neighborhood is bounded by Powell Blvd, Holgate Blvd, SE 26th Ave and Foster Rd.",
-    "source_url": "https://en.wikipedia.org/wiki/Creston-Kenilworth,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "south-tabor": {
-  "facts": [
-   {
-    "text": "South Tabor is named for its position just south of Mount Tabor, an extinct volcano that is now a city park.",
-    "source_url": "https://en.wikipedia.org/wiki/South_Tabor,_Portland,_Oregon"
-   },
-   {
-    "text": "The neighborhood is bounded by SE Division, SE Powell, SE 52nd and SE 82nd, and covers 0.80 square miles.",
-    "source_url": "https://en.wikipedia.org/wiki/South_Tabor,_Portland,_Oregon"
-   },
-   {
-    "text": "The eastern edge of South Tabor includes part of the Jade District commercial area.",
-    "source_url": "https://en.wikipedia.org/wiki/South_Tabor,_Portland,_Oregon"
-   },
-   {
-    "text": "In 2000, 61 percent of South Tabor households owned their homes, and Franklin High School and Atkinson Elementary are inside the neighborhood.",
-    "source_url": "https://en.wikipedia.org/wiki/South_Tabor,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "foster-powell": {
-  "facts": [
-   {
-    "text": "Foster-Powell is a triangle bounded by Powell Boulevard, Foster Road and 82nd Avenue, covering 0.89 square miles.",
-    "source_url": "https://en.wikipedia.org/wiki/Foster-Powell,_Portland,_Oregon"
-   },
-   {
-    "text": "Houses followed Portland's first electric streetcar line in the 1890s, and sidewalks were built in 1912.",
-    "source_url": "https://en.wikipedia.org/wiki/Foster-Powell,_Portland,_Oregon"
-   },
-   {
-    "text": "Firland Parkway, a tree-lined median on SE 72nd between Foster and Holgate, runs through the neighborhood.",
-    "source_url": "https://en.wikipedia.org/wiki/Foster-Powell,_Portland,_Oregon"
-   },
-   {
-    "text": "In 2000, 60 percent of Foster-Powell households owned their homes, and Laurelwood, Kern and Essex parks are inside it.",
-    "source_url": "https://en.wikipedia.org/wiki/Foster-Powell,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "mt-scott-arleta": {
-  "facts": [
-   {
-    "text": "The Arleta Park subdivision was platted in 1903 by the Potter-Chapin Realty company.",
-    "source_url": "https://en.wikipedia.org/wiki/Mt._Scott-Arleta,_Portland,_Oregon"
-   },
-   {
-    "text": "The Mt. Scott trolley ran along Foster Road, south on 72nd and east on Woodstock, and connected downtown to Lents by the early 1900s.",
-    "source_url": "https://en.wikipedia.org/wiki/Mt._Scott-Arleta,_Portland,_Oregon"
-   },
-   {
-    "text": "Mt. Scott Community Center began in 1927 as a wood-frame bathhouse for an outdoor pool, and an aquatic center was added in 2000.",
-    "source_url": "https://en.wikipedia.org/wiki/Mt._Scott-Arleta,_Portland,_Oregon"
-   },
-   {
-    "text": "The neighborhood covers 0.86 square miles between Foster Road, SE 60th, SE 82nd and SE Duke, and in 2010 about 57 percent of households owned their homes.",
-    "source_url": "https://en.wikipedia.org/wiki/Mt._Scott-Arleta,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "woodstock": {
-  "facts": [
-   {
-    "text": "Woodstock was platted in 1889 when five men bought 194.5 acres for $48,000 and named it after Walter Scott's novel.",
-    "source_url": "https://en.wikipedia.org/wiki/Woodstock,_Portland,_Oregon"
-   },
-   {
-    "text": "A Queen Anne house built in 1893 on SE 40th Avenue is now a historic landmark.",
-    "source_url": "https://en.wikipedia.org/wiki/Woodstock,_Portland,_Oregon"
-   },
-   {
-    "text": "Johnson Creek forms the southern boundary, and the Village Center runs along Woodstock Boulevard between Cesar Chavez Boulevard and 52nd Avenue.",
-    "source_url": "https://en.wikipedia.org/wiki/Woodstock,_Portland,_Oregon"
-   },
-   {
-    "text": "In 2000, 74 percent of Woodstock households owned their homes, and the neighborhood covers 1.30 square miles.",
-    "source_url": "https://en.wikipedia.org/wiki/Woodstock,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "reed": {
-  "facts": [
-   {
-    "text": "Reed covers only 0.43 square miles, and in 2000 about 64 percent of its households rented.",
-    "source_url": "https://en.wikipedia.org/wiki/Reed,_Portland,_Oregon"
-   },
-   {
-    "text": "Railroad tracks form its western edge, with SE Holgate on the north and SE 39th on the east.",
-    "source_url": "https://en.wikipedia.org/wiki/Reed,_Portland,_Oregon"
-   },
-   {
-    "text": "Lambert Gardens once occupied land in Reed that was replaced by housing in 1968.",
-    "source_url": "https://en.wikipedia.org/wiki/Reed,_Portland,_Oregon"
-   },
-   {
-    "text": "Tucker Maxon School is in the neighborhood, and Reed sits just north of the Reed College campus.",
-    "source_url": "https://en.wikipedia.org/wiki/Reed,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "eastmoreland": {
-  "facts": [
-   {
-    "text": "The Eastmoreland Historic District, 475 acres of homes built between 1910 and 1961, was listed on the National Register of Historic Places on December 7, 2022.",
-    "source_url": "https://en.wikipedia.org/wiki/Eastmoreland,_Portland,_Oregon"
-   },
-   {
-    "text": "In 2000, 90 percent of Eastmoreland households owned their homes, and the neighborhood is almost entirely single-family houses.",
-    "source_url": "https://en.wikipedia.org/wiki/Eastmoreland,_Portland,_Oregon"
-   },
-   {
-    "text": "Crystal Springs Rhododendron Garden opened in 1923 and Eastmoreland Golf Course in 1916, and Johnson Creek forms most of the southern boundary.",
-    "source_url": "https://en.wikipedia.org/wiki/Eastmoreland,_Portland,_Oregon"
-   },
-   {
-    "text": "The neighborhood is bounded on the north by SE Woodstock Boulevard and wraps around the Reed College campus.",
-    "source_url": "https://en.wikipedia.org/wiki/Eastmoreland,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "sellwood-moreland": {
-  "facts": [
-   {
-    "text": "Sellwood was incorporated in 1889 and annexed by Portland in 1893.",
-    "source_url": "https://en.wikipedia.org/wiki/Sellwood-Moreland,_Portland,_Oregon"
-   },
-   {
-    "text": "The Sellwood Bridge, the southernmost of Portland's bridges, connects the neighborhood to Southwest Portland across the Willamette River.",
-    "source_url": "https://en.wikipedia.org/wiki/Sellwood-Moreland,_Portland,_Oregon"
-   },
-   {
-    "text": "Oaks Bottom Wildlife Refuge was established in 1988, and Oaks Park amusement park sits along the river.",
-    "source_url": "https://en.wikipedia.org/wiki/Sellwood-Moreland,_Portland,_Oregon"
-   },
-   {
-    "text": "In 2000, 48 percent of Sellwood-Moreland households rented, and restaurants cluster on Milwaukie Avenue and SE 13th Avenue.",
-    "source_url": "https://en.wikipedia.org/wiki/Sellwood-Moreland,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "brentwood-darlington": {
-  "facts": [
-   {
-    "text": "Tree canopy covers about 22 percent of Brentwood-Darlington, according to the city's 2020 neighborhood profile.",
-    "source_url": "https://en.wikipedia.org/wiki/Brentwood-Darlington,_Portland,_Oregon"
-   },
-   {
-    "text": "Settlement began as single-family homesteads in 1882, and Portland annexed the area in 1986 after attempts in 1961, 1971 and 1977 failed.",
-    "source_url": "https://en.wikipedia.org/wiki/Brentwood-Darlington,_Portland,_Oregon"
-   },
-   {
-    "text": "The neighborhood covers 1.75 square miles from SE 45th Avenue to SE 82nd Avenue, and 67 percent of households own their homes.",
-    "source_url": "https://en.wikipedia.org/wiki/Brentwood-Darlington,_Portland,_Oregon"
-   },
-   {
-    "text": "Brentwood Park dates to 1951, Errol Heights Park to 1966, and the neighborhood reaches the Multnomah-Clackamas county line on its south side.",
-    "source_url": "https://en.wikipedia.org/wiki/Brentwood-Darlington,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "lents": {
-  "facts": [
-   {
-    "text": "Oliver P. Lent platted the Town of Lent in 1892, and Portland annexed it in 1912 when the population was nearing 10,000.",
-    "source_url": "https://en.wikipedia.org/wiki/Lents,_Portland,_Oregon"
-   },
-   {
-    "text": "Interstate 205 was routed through Lents in the 1970s and effectively cut the neighborhood in half.",
-    "source_url": "https://en.wikipedia.org/wiki/Lents,_Portland,_Oregon"
-   },
-   {
-    "text": "The MAX Green Line serves Lents, including the Lents Town Center/SE Foster Road station.",
-    "source_url": "https://en.wikipedia.org/wiki/Lents,_Portland,_Oregon"
-   },
-   {
-    "text": "Lents Park dates to 1914, and the Springwater Corridor trail runs through the neighborhood.",
-    "source_url": "https://en.wikipedia.org/wiki/Lents,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "hillsdale": {
-  "facts": [
-   {
-    "text": "Hillsdale Library reopened in 2004 and was the first LEED-certified building in Portland, earning Gold.",
-    "source_url": "https://en.wikipedia.org/wiki/Hillsdale,_Portland,_Oregon"
-   },
-   {
-    "text": "McMenamins Hillsdale Brewery opened in 1985 as Oregon's first brewpub.",
-    "source_url": "https://en.wikipedia.org/wiki/Hillsdale,_Portland,_Oregon"
-   },
-   {
-    "text": "The retail core runs along SW Capitol Highway between SW Sunset Boulevard and SW Bertha Boulevard.",
-    "source_url": "https://en.wikipedia.org/wiki/Hillsdale,_Portland,_Oregon"
-   },
-   {
-    "text": "In 2020, 65 percent of Hillsdale's 3,559 households owned their homes.",
-    "source_url": "https://en.wikipedia.org/wiki/Hillsdale,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "bridlemile": {
-  "facts": [
-   {
-    "text": "About 50 percent of Bridlemile is covered by tree canopy, according to the city's 2020 neighborhood profile.",
-    "source_url": "https://en.wikipedia.org/wiki/Bridlemile,_Portland,_Oregon"
-   },
-   {
-    "text": "The Portland city boundary along SW Thomas Street splits the neighborhood, and the northern part is unincorporated Multnomah County.",
-    "source_url": "https://en.wikipedia.org/wiki/Bridlemile,_Portland,_Oregon"
-   },
-   {
-    "text": "Fanno Creek Natural Area and the Fanno Creek Greenway Trail run through Bridlemile, and Hamilton Park sits at SW 45th and Hamilton.",
-    "source_url": "https://en.wikipedia.org/wiki/Bridlemile,_Portland,_Oregon"
-   },
-   {
-    "text": "In 2020, 68 percent of Bridlemile's 2,489 households owned their homes, and the median household income was $102,000.",
-    "source_url": "https://en.wikipedia.org/wiki/Bridlemile,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "ashcreek": {
-  "facts": [
-   {
-    "text": "About 48 percent of Ashcreek is covered by tree canopy, according to the city's 2020 neighborhood profile.",
-    "source_url": "https://en.wikipedia.org/wiki/Ashcreek,_Portland,_Oregon"
-   },
-   {
-    "text": "In 2020, 85 percent of Ashcreek's 2,012 households owned their homes.",
-    "source_url": "https://en.wikipedia.org/wiki/Ashcreek,_Portland,_Oregon"
-   },
-   {
-    "text": "Ashcreek extends a short distance into Washington County on its western side, bordering Garden Home-Whitford and Tigard.",
-    "source_url": "https://en.wikipedia.org/wiki/Ashcreek,_Portland,_Oregon"
-   },
-   {
-    "text": "Woods Memorial Natural Area is in Ashcreek, and the neighborhood covers 0.98 square miles.",
-    "source_url": "https://en.wikipedia.org/wiki/Ashcreek,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "markham": {
-  "facts": [
-   {
-    "text": "Markham covers 0.52 square miles in Southwest Portland, and in 2000 about 81 percent of its households owned their homes.",
-    "source_url": "https://en.wikipedia.org/wiki/Markham,_Portland,_Oregon"
-   },
-   {
-    "text": "Part of the Maricara Natural Area, dated 1988, lies within Markham.",
-    "source_url": "https://en.wikipedia.org/wiki/Markham,_Portland,_Oregon"
-   },
-   {
-    "text": "Markham borders Arnold Creek on its south side and West Portland Park on its west.",
-    "source_url": "https://en.wikipedia.org/wiki/Markham,_Portland,_Oregon"
-   },
-   {
-    "text": "Its boundary streets include SW Taylors Ferry Road, SW Lancaster Road and SW 35th Avenue, and the boundary reaches Interstate 5.",
-    "source_url": "https://en.wikipedia.org/wiki/Markham,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "west-portland-park": {
-  "facts": [
-   {
-    "text": "Loll Wildwood, at the headwaters of Arnold Creek, was bought by Metro in 1995 to protect wildlife habitat and water quality.",
-    "source_url": "https://en.wikipedia.org/wiki/West_Portland_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "Holly Farm Park was completed in 2007 through a partnership of the Parks Foundation, Portland Parks & Recreation and the neighborhood association.",
-    "source_url": "https://en.wikipedia.org/wiki/West_Portland_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "The neighborhood runs from I-5 on the north to SW Stephenson Street on the south, and covers 0.73 square miles.",
-    "source_url": "https://en.wikipedia.org/wiki/West_Portland_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "In 2000, 48 percent of households rented, and Capitol Hill Library, Jackson Middle School and Markham Elementary are in the area.",
-    "source_url": "https://en.wikipedia.org/wiki/West_Portland_Park,_Portland,_Oregon"
-   }
-  ],
-  "status": "ok"
- },
- "arnold-creek": {
-  "status": "ok",
-  "facts": [
-   {
-    "text": "Arnold Creek sits in Southwest Portland just north of Lake Oswego, with Tryon Creek State Natural Area on its east side and the Englewood enclave of unincorporated Multnomah County to its south.",
-    "source_url": "https://en.wikipedia.org/wiki/Arnold_Creek,_Portland,_Oregon"
-   },
-   {
-    "text": "In 2020, 976 Arnold Creek households owned their homes and 61 rented, so about 94 percent are owners.",
-    "source_url": "https://en.wikipedia.org/wiki/Arnold_Creek,_Portland,_Oregon"
-   },
-   {
-    "text": "Arnold Creek covers 1.10 square miles and had 3,108 residents in 2020, about 2,825 people per square mile.",
-    "source_url": "https://en.wikipedia.org/wiki/Arnold_Creek,_Portland,_Oregon"
-   },
-   {
-    "text": "Part of the Maricara Natural Area, set aside in 1988, lies inside the neighborhood.",
-    "source_url": "https://en.wikipedia.org/wiki/Arnold_Creek,_Portland,_Oregon"
-   },
-   {
-    "text": "Median household income in Arnold Creek was about $138,000 in 2020, and the median resident age was 46.8.",
-    "source_url": "https://en.wikipedia.org/wiki/Arnold_Creek,_Portland,_Oregon"
-   }
-  ]
- },
- "marshall-park": {
-  "status": "ok",
-  "facts": [
-   {
-    "text": "The Marshall Park neighborhood is named for the adjacent Marshall Park, which Frederick C. and Addie Mae Marshall gave to the City of Portland in 1948.",
-    "source_url": "https://en.wikipedia.org/wiki/Marshall_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "Marshall Park is a small Southwest Portland neighborhood of 0.61 square miles, bordered by Markham, South Burlingame, Collins View and Arnold Creek.",
-    "source_url": "https://en.wikipedia.org/wiki/Marshall_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "In the 2000 census, 90 percent of the neighborhood's 557 households owned their homes and 10 percent rented (499 owners, 58 renters).",
-    "source_url": "https://en.wikipedia.org/wiki/Marshall_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "Besides Marshall Park (1948), the neighborhood holds two city natural areas established in 1996, Jensen Natural Area and Foley-Balmer Natural Area.",
-    "source_url": "https://en.wikipedia.org/wiki/Marshall_Park,_Portland,_Oregon"
-   }
-  ]
- },
- "woodland-park": {
-  "status": "ok",
-  "facts": [
-   {
-    "text": "Woodland Park is Portland's smallest neighborhood, in Northeast Portland east of I-84, west of NE 102nd Avenue and north of NE Halsey Street.",
-    "source_url": "https://www.portland.gov/neighborhoods/woodland-park"
-   },
-   {
-    "text": "Woodland Park covers only 0.05 square miles and had 110 households in the 2000 census, 89 owner-occupied (81 percent) and 21 renting (19 percent).",
-    "source_url": "https://en.wikipedia.org/wiki/Woodland_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "The neighborhood is all houses, with no schools, parks or businesses, roughly between NE 99th and 102nd Avenues and NE Halsey and NE Tillamook Streets.",
-    "source_url": "https://en.wikipedia.org/wiki/Woodland_Park,_Portland,_Oregon"
-   },
-   {
-    "text": "Woodland Park's neighborhood association is listed as inactive by the City of Portland, with Central Northeast Neighbors named as the district office.",
-    "source_url": "https://www.portland.gov/neighborhoods/woodland-park"
-   }
-  ]
- }
+  "portland": {
+    "facts": [
+      {
+        "text": "About 63 percent of Portland's homes were built before 1980, and 45 percent before 1960.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4159000"
+      },
+      {
+        "text": "Portland's tree canopy covers 32.4 percent of the city's land area as of 2025, down from a high of 33.4 percent in 2015, and the city's goal is 45 percent in 40 years.",
+        "source_url": "https://www.portland.gov/trees/news/2026/7/21/portland-tree-canopy-cover-update"
+      },
+      {
+        "text": "Rain at Portland International Airport averages 36.92 inches a year, while downtown averages 44.07 inches, and both see rain on about 157 days a year (1991-2020 normals).",
+        "source_url": "https://en.wikipedia.org/wiki/Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "tigard": {
+    "facts": [
+      {
+        "text": "Tigard's median home was built in 1988, and only 5 percent of its homes date from before 1960.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4173650"
+      },
+      {
+        "text": "About 62 percent of Tigard households own their home, and 57 percent of homes are single detached houses.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4173650"
+      },
+      {
+        "text": "The median owner-occupied home in Tigard is worth $610,500.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4173650"
+      },
+      {
+        "text": "Tigard's urban forestry plan sets a goal of 40 percent citywide tree canopy by 2047, with new development required to provide canopy on each lot.",
+        "source_url": "https://www.planning.org/awards/2014/urbanforestrycode.htm"
+      },
+      {
+        "text": "The railroad renamed the town Tigard in 1907 to tell it apart from nearby Wilsonville, after it had been called Tigardville since 1886.",
+        "source_url": "https://en.wikipedia.org/wiki/Tigard,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "beaverton": {
+    "facts": [
+      {
+        "text": "Beaverton's median home was built in 1987, and 38 percent of its homes predate 1980.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4105350"
+      },
+      {
+        "text": "Beaverton averages 39.05 inches of precipitation a year on about 151 days.",
+        "source_url": "https://en.wikipedia.org/wiki/Beaverton,_Oregon"
+      },
+      {
+        "text": "In 2018, Beaverton Transit Center was TriMet's busiest transit center, and seven MAX stations serve the city.",
+        "source_url": "https://en.wikipedia.org/wiki/Beaverton,_Oregon"
+      },
+      {
+        "text": "Nike is Beaverton's largest employer with 6,019 employees, according to the city's 2024 financial report.",
+        "source_url": "https://en.wikipedia.org/wiki/Beaverton,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "lake-oswego": {
+    "facts": [
+      {
+        "text": "The median owner-occupied home in Lake Oswego is worth $932,200.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4140550"
+      },
+      {
+        "text": "About 69 percent of Lake Oswego households own their home, and 61 percent of homes are single detached houses.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4140550"
+      },
+      {
+        "text": "About 46 percent of Lake Oswego's homes were built before 1980, with a median build year of 1982.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4140550"
+      },
+      {
+        "text": "Oswego Lake covers 405 acres and is run by the Lake Oswego Corporation, and public access to the water has been disputed in court as recently as April 2024.",
+        "source_url": "https://en.wikipedia.org/wiki/Lake_Oswego,_Oregon"
+      },
+      {
+        "text": "A restored 1866 iron blast furnace, the first on the West Coast, stands in George Rogers Park.",
+        "source_url": "https://en.wikipedia.org/wiki/Lake_Oswego,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "tualatin": {
+    "facts": [
+      {
+        "text": "Tualatin's median home was built in 1992, and only 26 percent of its homes date from before 1980 and 2 percent from before 1960.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4174950"
+      },
+      {
+        "text": "The median owner-occupied home in Tualatin is worth $628,200.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4174950"
+      },
+      {
+        "text": "The Tualatin River runs along most of the city's northern boundary.",
+        "source_url": "https://en.wikipedia.org/wiki/Tualatin,_Oregon"
+      },
+      {
+        "text": "Bridgeport Village opened in early 2005 on the site of a former quarry, mostly inside Tualatin.",
+        "source_url": "https://en.wikipedia.org/wiki/Tualatin,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "west-linn": {
+    "facts": [
+      {
+        "text": "About 83 percent of West Linn households own their home.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4180150"
+      },
+      {
+        "text": "The median owner-occupied home in West Linn is worth $770,200, with a median build year of 1988.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4180150"
+      },
+      {
+        "text": "The Willamette Falls Locks, finished in 1873, sit in West Linn and closed in 2011.",
+        "source_url": "https://en.wikipedia.org/wiki/West_Linn,_Oregon"
+      },
+      {
+        "text": "Camassia Natural Area is a 26-acre Nature Conservancy preserve in West Linn on a rocky plateau left by the Bretz Floods.",
+        "source_url": "https://en.wikipedia.org/wiki/West_Linn,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "hillsboro": {
+    "facts": [
+      {
+        "text": "Hillsboro's median home was built in 1997, and only 24 percent of its homes predate 1980.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4134100"
+      },
+      {
+        "text": "Intel is Hillsboro's largest employer, with 20,000 employees, or 30.6 percent of the jobs in the city, according to the 2022 city financial report.",
+        "source_url": "https://en.wikipedia.org/wiki/Hillsboro,_Oregon"
+      },
+      {
+        "text": "Hillsboro's 1991-2020 normal precipitation is 35.93 inches a year, with the wettest period from November through March.",
+        "source_url": "https://en.wikipedia.org/wiki/Hillsboro,_Oregon"
+      },
+      {
+        "text": "Orenco Station was built as a compact mixed-use neighborhood around the MAX light rail line, which reached Hillsboro on September 12, 1998.",
+        "source_url": "https://en.wikipedia.org/wiki/Hillsboro,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "gresham": {
+    "facts": [
+      {
+        "text": "About 48 percent of Gresham's homes were built before 1980, with a median build year of 1981.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4131250"
+      },
+      {
+        "text": "Fifty-three percent of Gresham's homes are single detached houses and 56 percent of households own their home.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4131250"
+      },
+      {
+        "text": "Gresham averages 47.78 inches of precipitation and 5.8 inches of snow a year, noticeably more than Portland's airport at 36.92 inches.",
+        "source_url": "https://en.wikipedia.org/wiki/Gresham,_Oregon"
+      },
+      {
+        "text": "Gresham was named for Walter Quintin Gresham and incorporated on February 11, 1905, when it had 365 residents.",
+        "source_url": "https://en.wikipedia.org/wiki/Gresham,_Oregon"
+      },
+      {
+        "text": "The MAX Blue Line has nine stations in Gresham, from East 162nd Avenue to Cleveland Avenue.",
+        "source_url": "https://en.wikipedia.org/wiki/Gresham,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "milwaukie": {
+    "facts": [
+      {
+        "text": "About 72 percent of Milwaukie's homes were built before 1980 and 37 percent before 1960, with a median build year of 1968.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4148650"
+      },
+      {
+        "text": "About 61 percent of Milwaukie households own their home, and 68 percent of homes are single detached houses.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4148650"
+      },
+      {
+        "text": "The median owner-occupied home in Milwaukie is worth $505,100.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024,B25077&geo_ids=16000US4148650"
+      },
+      {
+        "text": "Lot Whitcomb platted Milwaukie in 1849 and named it after Milwaukee, Wisconsin; the city was incorporated in 1903.",
+        "source_url": "https://en.wikipedia.org/wiki/Milwaukie,_Oregon"
+      },
+      {
+        "text": "MAX Orange Line service reached Milwaukie on September 12, 2015.",
+        "source_url": "https://en.wikipedia.org/wiki/Milwaukie,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "kerns": {
+    "facts": [
+      {
+        "text": "In the same tracts, 55 percent of homes were built before 1980 and 42 percent before 1960.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051002101,14000US41051002002,14000US41051002001,14000US41051002102"
+      },
+      {
+        "text": "William Kerns, the area's first homesteader, cleared a 320-acre Donation Land Claim in the 1850s and sold wood shingles.",
+        "source_url": "https://en.wikipedia.org/wiki/Kerns,_Portland,_Oregon"
+      },
+      {
+        "text": "The Fire Alarm Telegraph building at NE 21st and Pacific Avenue was built in 1928 as a communications headquarters.",
+        "source_url": "https://en.wikipedia.org/wiki/Kerns,_Portland,_Oregon"
+      },
+      {
+        "text": "A 2014 street tree inventory counted 3,140 trees of 91 types in Kerns.",
+        "source_url": "https://en.wikipedia.org/wiki/Kerns,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "buckman": {
+    "facts": [
+      {
+        "text": "In the census tracts centered on Buckman, 67 percent of homes were built before 1980 and 55 percent before 1960.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001204,14000US41051001203,14000US41051001101"
+      },
+      {
+        "text": "Buckman runs from the Willamette River east to SE 28th Avenue and from E Burnside south to SE Hawthorne Boulevard.",
+        "source_url": "https://en.wikipedia.org/wiki/Buckman,_Portland,_Oregon"
+      },
+      {
+        "text": "Washington High School in Buckman was built in 1924, and Lone Fir Cemetery dates to 1855.",
+        "source_url": "https://en.wikipedia.org/wiki/Buckman,_Portland,_Oregon"
+      },
+      {
+        "text": "Buckman was the center of the City of East Portland before it merged with Portland, and the East Portland Grand Avenue Historic District marks that center.",
+        "source_url": "https://en.wikipedia.org/wiki/Buckman,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "sunnyside": {
+    "facts": [
+      {
+        "text": "In the census tract covering Sunnyside, 72 percent of homes were built before 1980 and 59 percent before 1960.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001301"
+      },
+      {
+        "text": "Sunnyside runs from SE Stark Street to SE Hawthorne Boulevard and from SE 28th to SE 49th Avenue.",
+        "source_url": "https://en.wikipedia.org/wiki/Sunnyside,_Portland,_Oregon"
+      },
+      {
+        "text": "Peacock Lane, between Stark and Belmont, is known for elaborate Christmas displays.",
+        "source_url": "https://en.wikipedia.org/wiki/Sunnyside,_Portland,_Oregon"
+      },
+      {
+        "text": "Residents have repainted the Sunnyside Piazza intersection at SE 33rd and Yamhill every Memorial Day weekend since 2000.",
+        "source_url": "https://en.wikipedia.org/wiki/Sunnyside,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "laurelhurst": {
+    "facts": [
+      {
+        "text": "In the census tract covering Laurelhurst, 93 percent of homes were built before 1960 and 96 percent before 1980.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001900"
+      },
+      {
+        "text": "In that tract, 87 percent of households own their home and 90 percent of homes are single-unit.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001900"
+      },
+      {
+        "text": "The Laurelhurst Company platted the neighborhood in 1909 on the Ladd Estate's 462-acre Hazel Fern Farm, with landscape architect John Charles Olmsted as co-investor.",
+        "source_url": "https://en.wikipedia.org/wiki/Laurelhurst,_Portland,_Oregon"
+      },
+      {
+        "text": "The Laurelhurst Historic District, covering 392 acres, was added to the National Register of Historic Places on March 18, 2019.",
+        "source_url": "https://en.wikipedia.org/wiki/Laurelhurst,_Portland,_Oregon"
+      },
+      {
+        "text": "Laurelhurst Park began as 31 acres bought by the city for $92,000 while the first houses were being built.",
+        "source_url": "https://en.wikipedia.org/wiki/Laurelhurst,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "hosford-abernethy": {
+    "facts": [
+      {
+        "text": "In the census tracts centered on Hosford-Abernethy, 80 percent of homes were built before 1980 and 76 percent before 1960.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001202,14000US41051001102"
+      },
+      {
+        "text": "In the same tracts, 53 percent of households own their home and 60 percent of homes are single-unit.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051001202,14000US41051001102"
+      },
+      {
+        "text": "Ladd's Addition, in the north-central part of the neighborhood, is known for its X-shaped street pattern.",
+        "source_url": "https://en.wikipedia.org/wiki/Hosford-Abernethy,_Portland,_Oregon"
+      },
+      {
+        "text": "The neighborhood was named in the 1970s for two local schools, Hosford Middle School and Abernethy Elementary School.",
+        "source_url": "https://en.wikipedia.org/wiki/Hosford-Abernethy,_Portland,_Oregon"
+      },
+      {
+        "text": "The Oregon Museum of Science and Industry sits on the riverfront at the southern end of the Vera Katz Eastbank Esplanade.",
+        "source_url": "https://en.wikipedia.org/wiki/Hosford-Abernethy,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "brooklyn": {
+    "facts": [
+      {
+        "text": "In the census tracts centered on Brooklyn, 70 percent of homes were built before 1980 and 56 percent before 1960.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051000102,14000US41051001000"
+      },
+      {
+        "text": "In the same tracts, 47 percent of households own their home and 64 percent of homes are single-unit.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051000102,14000US41051001000"
+      },
+      {
+        "text": "Giddeon Tibbets arrived in 1851 and called the place Brookland; it became Brooklyn in 1868 when he let the Oregon Central Railroad cross his land.",
+        "source_url": "https://en.wikipedia.org/wiki/Brooklyn,_Portland,_Oregon"
+      },
+      {
+        "text": "Construction of the Ross Island Bridge in the 1920s destroyed the neighborhood's town square at Powell and Milwaukie.",
+        "source_url": "https://en.wikipedia.org/wiki/Brooklyn,_Portland,_Oregon"
+      },
+      {
+        "text": "The MAX Orange Line, completed in September 2015, improved Brooklyn's transit access to downtown.",
+        "source_url": "https://en.wikipedia.org/wiki/Brooklyn,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "lloyd": {
+    "facts": [
+      {
+        "text": "In the same tracts, 42 percent of homes were built before 1980 and 22 percent before 1960.",
+        "source_url": "https://api.censusreporter.org/1.0/data/show/acs2024_5yr?table_ids=B25034,B25035,B25003,B25024&geo_ids=14000US41051002303,14000US41051002402"
+      },
+      {
+        "text": "Lloyd is bounded by the Willamette River, NE Broadway, NE 18th Avenue and Interstate 84, and covers 0.43 square miles.",
+        "source_url": "https://en.wikipedia.org/wiki/Lloyd_District,_Portland,_Oregon"
+      },
+      {
+        "text": "All four MAX lines serve the Lloyd District.",
+        "source_url": "https://en.wikipedia.org/wiki/Lloyd_District,_Portland,_Oregon"
+      },
+      {
+        "text": "Hassalo on Eighth, with 657 apartments in three buildings, was completed in October 2015.",
+        "source_url": "https://en.wikipedia.org/wiki/Lloyd_District,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "irvington": {
+    "facts": [
+      {
+        "text": "Irvington was platted in 1887 and built up in the 1890s as a middle- to upper-class residential district, and its historic district holds homes built between 1891 and 1948.",
+        "source_url": "https://en.wikipedia.org/wiki/Irvington,_Portland,_Oregon"
+      },
+      {
+        "text": "The Irvington Historic District was added to the National Register of Historic Places on October 22, 2010, and covers 583 acres between NE 7th and NE 26th Avenues, north of Broadway.",
+        "source_url": "https://en.wikipedia.org/wiki/Irvington,_Portland,_Oregon"
+      },
+      {
+        "text": "Many Irvington blocks have a full canopy of street trees over the road, and some rows of the original street trees were planted more than a hundred years ago.",
+        "source_url": "https://www.irvingtonpdx.com/neighborhood-trees"
+      },
+      {
+        "text": "Irvington is one of seven Portland neighborhoods where lab testing confirmed Dutch elm disease, and about 10 percent of the city's nearly 300 Heritage Trees stand there.",
+        "source_url": "https://www.irvingtonpdx.com/neighborhood-trees"
+      }
+    ],
+    "status": "ok"
+  },
+  "eliot": {
+    "facts": [
+      {
+        "text": "Eliot holds the old center of the former City of Albina, which Portland annexed in the late 19th century.",
+        "source_url": "https://en.wikipedia.org/wiki/Eliot,_Portland,_Oregon"
+      },
+      {
+        "text": "Eliot is bounded by the Willamette River, I-405, NE Fremont Street, NE 7th Avenue and Broadway, and covers 0.84 square miles.",
+        "source_url": "https://en.wikipedia.org/wiki/Eliot,_Portland,_Oregon"
+      },
+      {
+        "text": "In the 2020 census about 75 percent of Eliot households rented, 2,043 of 2,724 households.",
+        "source_url": "https://en.wikipedia.org/wiki/Eliot,_Portland,_Oregon"
+      },
+      {
+        "text": "The Wonder Ballroom on NE Russell Street was completed in 1914 as a lodge meeting hall and was listed on the National Register of Historic Places in 2004.",
+        "source_url": "https://en.wikipedia.org/wiki/Eliot,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "king": {
+    "facts": [
+      {
+        "text": "King straddles Martin Luther King Jr. Boulevard from Ainsworth Street to Fremont Street and covers 0.64 square miles.",
+        "source_url": "https://en.wikipedia.org/wiki/King,_Portland,_Oregon"
+      },
+      {
+        "text": "King sits at one end of the Alberta Arts District, a commercial strip about 1.5 miles long that runs along NE Alberta Street from MLK Boulevard to NE 33rd Avenue.",
+        "source_url": "https://en.wikipedia.org/wiki/Alberta_Arts_District"
+      },
+      {
+        "text": "Alberta Street's two housing booms were 1905 to 1913 and 1922 to 1928.",
+        "source_url": "https://en.wikipedia.org/wiki/Alberta_Arts_District"
+      },
+      {
+        "text": "King is one of the north and east side neighborhoods where 59 to 77 percent of street tree planting sites are small.",
+        "source_url": "https://www.portland.gov/trees/get-involved/documents/citywide-street-tree-inventory-report-2017/download"
+      }
+    ],
+    "status": "ok"
+  },
+  "sabin": {
+    "facts": [
+      {
+        "text": "Sabin covers just 0.37 square miles and is bordered by Vernon to the north, King to the west, Irvington to the south and Alameda to the east.",
+        "source_url": "https://en.wikipedia.org/wiki/Sabin,_Portland,_Oregon"
+      },
+      {
+        "text": "Sabin is one of six neighborhoods that sit on the Alameda Ridge, a bar of flood-deposited silt, sand and gravel roughly 100 to 150 feet high.",
+        "source_url": "https://en.wikipedia.org/wiki/Alameda_Ridge"
+      },
+      {
+        "text": "In the 2000 census 72 percent of Sabin households owned their home, 931 of 1,299.",
+        "source_url": "https://en.wikipedia.org/wiki/Sabin,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "alameda": {
+    "facts": [
+      {
+        "text": "The Alameda Land Company laid out the Alameda Park subdivision in 1909, and the neighborhood was then annexed to Portland.",
+        "source_url": "https://en.wikipedia.org/wiki/Alameda,_Portland,_Oregon"
+      },
+      {
+        "text": "Alameda sits on the Alameda Ridge, which the Missoula Floods built about 15,000 to 13,000 years ago, and it has views of downtown, the Willamette and the Cascades.",
+        "source_url": "https://en.wikipedia.org/wiki/Alameda,_Portland,_Oregon"
+      },
+      {
+        "text": "About 80 percent of Alameda households owned their home in the 2020 census, 1,651 of 2,064.",
+        "source_url": "https://en.wikipedia.org/wiki/Alameda,_Portland,_Oregon"
+      },
+      {
+        "text": "Alameda's street tree planting sites are 83 percent stocked with trees, one of the highest rates in Portland.",
+        "source_url": "https://www.portland.gov/trees/get-involved/documents/citywide-street-tree-inventory-report-2017/download"
+      },
+      {
+        "text": "NE Fremont Street is Alameda's main east-west street and NE 33rd Avenue is its main north-south street and eastern boundary.",
+        "source_url": "https://en.wikipedia.org/wiki/Alameda,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "vernon": {
+    "facts": [
+      {
+        "text": "Vernon covers only 0.29 square miles and is bordered by Woodlawn to the north, Concordia to the east, Sabin to the south and King to the west.",
+        "source_url": "https://en.wikipedia.org/wiki/Vernon,_Portland,_Oregon"
+      },
+      {
+        "text": "Vernon holds much of the Alberta Arts District along NE Alberta Street, which runs about 1.5 miles from MLK Boulevard to NE 33rd Avenue.",
+        "source_url": "https://en.wikipedia.org/wiki/Alberta_Arts_District"
+      },
+      {
+        "text": "Alberta Park is in Vernon, with its entrance across the street from Vernon School.",
+        "source_url": "https://en.wikipedia.org/wiki/Vernon,_Portland,_Oregon"
+      },
+      {
+        "text": "In the 2000 census 53 percent of Vernon households owned their home, 546 of 1,036.",
+        "source_url": "https://en.wikipedia.org/wiki/Vernon,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "concordia": {
+    "facts": [
+      {
+        "text": "Concordia is named for Concordia University, which sat in the middle of the neighborhood from 1905 until it closed in 2020.",
+        "source_url": "https://en.wikipedia.org/wiki/Concordia,_Portland,_Oregon"
+      },
+      {
+        "text": "Concordia runs from NE 22nd to NE 42nd Avenue and from NE Prescott to NE Columbia Boulevard, and holds most of the Alberta Arts District.",
+        "source_url": "https://en.wikipedia.org/wiki/Concordia,_Portland,_Oregon"
+      },
+      {
+        "text": "About 71 percent of Concordia households owned their home in the 2020 census, 2,676 of 3,769 occupied households.",
+        "source_url": "https://en.wikipedia.org/wiki/Concordia,_Portland,_Oregon"
+      },
+      {
+        "text": "Tree canopy covers 22 percent of Concordia.",
+        "source_url": "https://en.wikipedia.org/wiki/Concordia,_Portland,_Oregon"
+      },
+      {
+        "text": "Kennedy School, a former elementary school, is now a hotel and restaurant and a landmark in the neighborhood.",
+        "source_url": "https://en.wikipedia.org/wiki/Concordia,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "beaumont-wilshire": {
+    "facts": [
+      {
+        "text": "Beaumont was platted in 1910 as part of the 1907 Rose City Park subdivision, and Wilshire was platted in 1921 around NE 33rd and Skidmore.",
+        "source_url": "https://en.wikipedia.org/wiki/Beaumont-Wilshire,_Portland,_Oregon"
+      },
+      {
+        "text": "South of NE Fremont most homes were built in the early 1900s as Tudors, Craftsman homes and bungalows.",
+        "source_url": "https://en.wikipedia.org/wiki/Beaumont-Wilshire,_Portland,_Oregon"
+      },
+      {
+        "text": "About 87 percent of households owned their home in the 2020 census, and tree canopy covers 26 percent of the neighborhood.",
+        "source_url": "https://en.wikipedia.org/wiki/Beaumont-Wilshire,_Portland,_Oregon"
+      },
+      {
+        "text": "NE Fremont Street between 42nd and 50th Avenues is the commercial strip, known locally as Beaumont Village, and Wilshire Park is 14.83 acres with mature trees.",
+        "source_url": "https://en.wikipedia.org/wiki/Beaumont-Wilshire,_Portland,_Oregon"
+      },
+      {
+        "text": "The neighborhood sits on the Alameda Ridge, a flood-built bar about 100 to 150 feet high.",
+        "source_url": "https://en.wikipedia.org/wiki/Alameda_Ridge"
+      }
+    ],
+    "status": "ok"
+  },
+  "grant-park": {
+    "facts": [
+      {
+        "text": "Grant Park houses generally date to the early 20th century, and most are Old Portland or Craftsman style.",
+        "source_url": "https://en.wikipedia.org/wiki/Grant_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "In the 2000 census 88 percent of Grant Park households owned their home, 1,205 of 1,364.",
+        "source_url": "https://en.wikipedia.org/wiki/Grant_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "Grant Park is the setting of Beverly Cleary's Klickitat Street books. The neighborhood is bordered by Irvington to the west, Alameda and Beaumont-Wilshire to the north, and Rose City Park to the east.",
+        "source_url": "https://en.wikipedia.org/wiki/Grant_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "Grant Park covers 0.46 square miles and is next to Hollywood, Laurelhurst and Sullivan's Gulch on its south side.",
+        "source_url": "https://en.wikipedia.org/wiki/Grant_Park,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "hollywood": {
+    "facts": [
+      {
+        "text": "The Hollywood Theatre opened July 17, 1926 in Spanish Colonial Revival style and was added to the National Register of Historic Places in 1983.",
+        "source_url": "https://en.wikipedia.org/wiki/Hollywood,_Portland,_Oregon"
+      },
+      {
+        "text": "The land was platted in 1907 as the Rose City Park subdivision after a streetcar line was extended along Sandy Road in 1906.",
+        "source_url": "https://en.wikipedia.org/wiki/Hollywood,_Portland,_Oregon"
+      },
+      {
+        "text": "The Hollywood/NE 42nd Avenue MAX station opened in 1986, and NE Sandy Boulevard follows an old Native trail through the district.",
+        "source_url": "https://en.wikipedia.org/wiki/Hollywood,_Portland,_Oregon"
+      },
+      {
+        "text": "In the 2000 census 85 percent of Hollywood households rented, 643 of 758, in a district of only 0.18 square miles.",
+        "source_url": "https://en.wikipedia.org/wiki/Hollywood,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "roseway": {
+    "facts": [
+      {
+        "text": "Roseway runs from NE Prescott to NE Sacramento and from about NE 65th to NE 82nd Avenue, and covers 0.81 square miles.",
+        "source_url": "https://en.wikipedia.org/wiki/Roseway,_Portland,_Oregon"
+      },
+      {
+        "text": "Roseway is one of six neighborhoods that sit on the Alameda Ridge.",
+        "source_url": "https://en.wikipedia.org/wiki/Alameda_Ridge"
+      },
+      {
+        "text": "Wellington Park was acquired in 1941 and the larger Glenhaven Park in 1948.",
+        "source_url": "https://en.wikipedia.org/wiki/Roseway,_Portland,_Oregon"
+      },
+      {
+        "text": "In the 2000 census 76 percent of Roseway households owned their home, 2,023 of 2,647.",
+        "source_url": "https://en.wikipedia.org/wiki/Roseway,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "boise": {
+    "facts": [
+      {
+        "text": "Boise is named for Reuben P. Boise, a Portland School Board member in the 1850s.",
+        "source_url": "https://en.wikipedia.org/wiki/Boise,_Portland,_Oregon"
+      },
+      {
+        "text": "Boise is bounded by I-5, N Skidmore Street, NE Rodney Avenue, and N Kerby and NE Fremont Streets, and the south end of N Mississippi Avenue is its commercial core.",
+        "source_url": "https://en.wikipedia.org/wiki/Boise,_Portland,_Oregon"
+      },
+      {
+        "text": "Tree canopy covers 21 percent of Boise, and its population grew 41 percent between 2010 and 2020, to 4,660.",
+        "source_url": "https://en.wikipedia.org/wiki/Boise,_Portland,_Oregon"
+      },
+      {
+        "text": "DeNorval Unthank Park is in Boise.",
+        "source_url": "https://en.wikipedia.org/wiki/Boise,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "humboldt": {
+    "facts": [
+      {
+        "text": "Humboldt covers 0.55 square miles and is bordered by Piedmont to the north, King to the east, Boise to the south and Overlook to the west.",
+        "source_url": "https://en.wikipedia.org/wiki/Humboldt,_Portland,_Oregon"
+      },
+      {
+        "text": "In the 2000 census 57 percent of Humboldt households rented, 1,100 of 1,921.",
+        "source_url": "https://en.wikipedia.org/wiki/Humboldt,_Portland,_Oregon"
+      },
+      {
+        "text": "N Williams Avenue runs through Humboldt.",
+        "source_url": "https://en.wikipedia.org/wiki/Humboldt,_Portland,_Oregon"
+      }
+    ],
+    "status": "merge-candidate"
+  },
+  "overlook": {
+    "facts": [
+      {
+        "text": "Overlook Park, at N Fremont Street and Interstate Avenue, was acquired in 1930, is about 11 acres, and looks out over downtown Portland and the Willamette River.",
+        "source_url": "https://en.wikipedia.org/wiki/Overlook_Park_(Portland,_Oregon)"
+      },
+      {
+        "text": "The park's shelter and comfort station was built in the 1930s as a Works Progress Administration project.",
+        "source_url": "https://en.wikipedia.org/wiki/Overlook_Park_(Portland,_Oregon)"
+      },
+      {
+        "text": "Overlook House, built in 1928, is now a community center.",
+        "source_url": "https://en.wikipedia.org/wiki/Overlook,_Portland,_Oregon"
+      },
+      {
+        "text": "The MAX Yellow Line stops at the Overlook Park, N Prescott Street and N Killingsworth Street stations in the neighborhood.",
+        "source_url": "https://en.wikipedia.org/wiki/Overlook,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "arbor-lodge": {
+    "facts": [
+      {
+        "text": "Arbor Lodge was platted on April 15, 1889, and most of its homes were built between 1910 and 1930.",
+        "source_url": "https://en.wikipedia.org/wiki/Arbor_Lodge,_Portland,_Oregon"
+      },
+      {
+        "text": "Arbor Lodge is bounded by I-5 on the east, Lombard Street on the north and Ainsworth Street on the south.",
+        "source_url": "https://en.wikipedia.org/wiki/Arbor_Lodge,_Portland,_Oregon"
+      },
+      {
+        "text": "About 73 percent of Arbor Lodge households owned their home in the 2020 census, and tree canopy covers 20 percent of the neighborhood.",
+        "source_url": "https://en.wikipedia.org/wiki/Arbor_Lodge,_Portland,_Oregon"
+      },
+      {
+        "text": "Arbor Lodge Park holds Harper's Playground, built in 2012, and the Rosa Parks MAX station opened in 2004.",
+        "source_url": "https://en.wikipedia.org/wiki/Arbor_Lodge,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "kenton": {
+    "facts": [
+      {
+        "text": "Kenton was built as a company town for the Swift Meat Packing Company and was Portland's stockyards district.",
+        "source_url": "https://en.wikipedia.org/wiki/Kenton,_Portland,_Oregon"
+      },
+      {
+        "text": "The Kenton Commercial Historic District, listed on the National Register in 2001, runs about four blocks of N Denver Avenue south of N Interstate and was built mostly between 1910 and 1949.",
+        "source_url": "https://en.wikipedia.org/wiki/Kenton_Commercial_Historic_District"
+      },
+      {
+        "text": "The Kenton district has an unusually high concentration of buildings made with ornamental concrete blocks.",
+        "source_url": "https://en.wikipedia.org/wiki/Kenton_Commercial_Historic_District"
+      },
+      {
+        "text": "Kenton is one of the neighborhoods where 59 to 77 percent of street tree planting sites are small.",
+        "source_url": "https://www.portland.gov/trees/get-involved/documents/citywide-street-tree-inventory-report-2017/download"
+      },
+      {
+        "text": "The Columbia Slough runs through Kenton, and North Portland Harbor forms its northern edge.",
+        "source_url": "https://en.wikipedia.org/wiki/Kenton,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "university-park": {
+    "facts": [
+      {
+        "text": "University Park takes its name from Portland University, a Methodist school founded on the site in 1891 and closed in 1900; the Archdiocese of Portland bought the grounds in 1901, and the school became the University of Portland.",
+        "source_url": "https://en.wikipedia.org/wiki/University_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "About 73 percent of University Park's 1,692 households owned their home at the 2000 census.",
+        "source_url": "https://en.wikipedia.org/wiki/University_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "The neighborhood's streets run northeast-southwest and northwest-southeast rather than on the city grid, and their names follow no order, so you have to know where each street is to find your way.",
+        "source_url": "https://en.wikipedia.org/wiki/University_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "University Park covers 1.20 square miles on the east bank of the Willamette River, between N Lombard Street and the river bluff.",
+        "source_url": "https://en.wikipedia.org/wiki/University_Park,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "cathedral-park": {
+    "facts": [
+      {
+        "text": "Cathedral Park is named for the Gothic arches of the St. Johns Bridge towers, and the bridge, a green steel suspension bridge dedicated June 13, 1931, rises 400 feet over the neighborhood.",
+        "source_url": "https://en.wikipedia.org/wiki/St._Johns_Bridge"
+      },
+      {
+        "text": "Cathedral Park was part of the City of St. Johns until Portland annexed it in 1915.",
+        "source_url": "https://en.wikipedia.org/wiki/Cathedral_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "Tree canopy covers about 15 percent of Cathedral Park, and about 48 percent of its households rent (2020 figures).",
+        "source_url": "https://en.wikipedia.org/wiki/Cathedral_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "Cathedral Park's population grew 24 percent between 2010 and 2020, from 3,338 to 4,130 people.",
+        "source_url": "https://en.wikipedia.org/wiki/Cathedral_Park,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "woodlawn": {
+    "facts": [
+      {
+        "text": "Most Woodlawn homes are small working-class bungalows, which sets it apart from the neighboring King and Piedmont neighborhoods.",
+        "source_url": "https://en.wikipedia.org/wiki/Woodlawn,_Portland,_Oregon"
+      },
+      {
+        "text": "Woodlawn covers 0.73 square miles in Northeast Portland, bordered by Sunderland to the north and Concordia to the east.",
+        "source_url": "https://en.wikipedia.org/wiki/Woodlawn,_Portland,_Oregon"
+      },
+      {
+        "text": "About 66 percent of Woodlawn's 1,854 households owned their home at the 2000 census, and the neighborhood has been described as undergoing gentrification.",
+        "source_url": "https://en.wikipedia.org/wiki/Woodlawn,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "hayden-island": {
+    "facts": [
+      {
+        "text": "Hayden Island is reached by road only from Interstate 5, at the northernmost Oregon exit, and the Interstate Bridge to Vancouver opened in 1917.",
+        "source_url": "https://en.wikipedia.org/wiki/Hayden_Island"
+      },
+      {
+        "text": "Hayden Island has houseboat moorages and marinas on its east end and manufactured-home communities and condominiums near Jantzen Beach.",
+        "source_url": "https://en.wikipedia.org/wiki/Hayden_Island"
+      },
+      {
+        "text": "About 83 percent of Hayden Island's 1,224 households owned their home at the 2000 census, with an average household of 1.74 people.",
+        "source_url": "https://en.wikipedia.org/wiki/Hayden_Island"
+      },
+      {
+        "text": "Jantzen Beach Amusement Park on the island closed in 1970, and Lotus Isle, an earlier amusement park on Tomahawk Island, ran for a few years in the 1930s.",
+        "source_url": "https://en.wikipedia.org/wiki/Hayden_Island"
+      }
+    ],
+    "status": "ok"
+  },
+  "bridgeton": {
+    "facts": [
+      {
+        "text": "Bridgeton sits on a narrow strip of land around a levee between North Portland Harbor on the Columbia River and Bridgeton Slough, and the area includes floating homes and houseboats.",
+        "source_url": "https://en.wikipedia.org/wiki/Bridgeton,_Portland,_Oregon"
+      },
+      {
+        "text": "Bridgeton covers just 0.27 square miles and had 996 residents at the 2020 census.",
+        "source_url": "https://en.wikipedia.org/wiki/Bridgeton,_Portland,_Oregon"
+      },
+      {
+        "text": "The area was the end of the Vancouver Interurban streetcar line.",
+        "source_url": "https://en.wikipedia.org/wiki/Bridgeton,_Portland,_Oregon"
+      },
+      {
+        "text": "The old Faloma post office, open 1921 to 1935, took its name from the initials of three landowners (Force, Love, Moore) after the post office rejected Bridgeton as too common.",
+        "source_url": "https://en.wikipedia.org/wiki/Bridgeton,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "east-columbia": {
+    "facts": [
+      {
+        "text": "East Columbia sits on the Columbia River floodplain. Much of it is wetlands and industrial space, with more homes toward the east.",
+        "source_url": "https://en.wikipedia.org/wiki/East_Columbia,_Portland,_Oregon"
+      },
+      {
+        "text": "Dikes protecting East Columbia date to 1905 and were strengthened after the 1948 Vanport Flood.",
+        "source_url": "https://en.wikipedia.org/wiki/East_Columbia,_Portland,_Oregon"
+      },
+      {
+        "text": "East Columbia's population grew from 753 in 2000 to 2,205 in 2020, and Portland did not annex it until the early 1970s.",
+        "source_url": "https://en.wikipedia.org/wiki/East_Columbia,_Portland,_Oregon"
+      },
+      {
+        "text": "The Columbia Children's Arboretum, run by Portland Parks and Recreation since 1999, occupies the site of the original 1907 Columbia School.",
+        "source_url": "https://en.wikipedia.org/wiki/East_Columbia,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "sunderland": {
+    "facts": [
+      {
+        "text": "Sunderland covers 1.88 square miles between the Columbia River and Portland International Airport, but had only 718 residents at the 2010 census.",
+        "source_url": "https://en.wikipedia.org/wiki/Sunderland,_Portland,_Oregon"
+      },
+      {
+        "text": "Dignity Village, a city-sanctioned encampment started in December 2000, sits in Sunderland near the airport.",
+        "source_url": "https://en.wikipedia.org/wiki/Dignity_Village"
+      },
+      {
+        "text": "Sunderland borders Woodlawn and Concordia to the south and East Columbia to the west.",
+        "source_url": "https://en.wikipedia.org/wiki/Sunderland,_Portland,_Oregon"
+      }
+    ],
+    "status": "merge-candidate"
+  },
+  "parkrose": {
+    "facts": [
+      {
+        "text": "The Parkrose plat was filed October 5, 1911, and the area stayed a small farming and residential suburb until the 1920s.",
+        "source_url": "https://en.wikipedia.org/wiki/Parkrose,_Portland,_Oregon"
+      },
+      {
+        "text": "Portland annexed Parkrose in 1980, and about 51 percent of its 2,095 households rented at the 2000 census.",
+        "source_url": "https://en.wikipedia.org/wiki/Parkrose,_Portland,_Oregon"
+      },
+      {
+        "text": "Columbia Pioneer Cemetery, established in 1877, sits at NE 99th Avenue and Sandy Boulevard.",
+        "source_url": "https://en.wikipedia.org/wiki/Parkrose,_Portland,_Oregon"
+      },
+      {
+        "text": "Parkrose has the Parkrose/Sumner Transit Center on TriMet's MAX Red Line, and Sandy Boulevard crosses the neighborhood with industrial land to the north and homes to the south.",
+        "source_url": "https://en.wikipedia.org/wiki/Parkrose,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "parkrose-heights": {
+    "facts": [
+      {
+        "text": "Parkrose Heights covers 0.97 square miles and about 62 percent of its 2,332 households owned their home at the 2000 census.",
+        "source_url": "https://en.wikipedia.org/wiki/Parkrose_Heights,_Portland,_Oregon"
+      },
+      {
+        "text": "Gateway Discovery Park, Knott City Park and Merrifield Park are all inside Parkrose Heights.",
+        "source_url": "https://en.wikipedia.org/wiki/Parkrose_Heights,_Portland,_Oregon"
+      },
+      {
+        "text": "Parts of Parkrose Heights fall inside the Gateway Business District and the Gateway Regional Center Urban Renewal Area.",
+        "source_url": "https://en.wikipedia.org/wiki/Parkrose_Heights,_Portland,_Oregon"
+      },
+      {
+        "text": "Parkrose Heights is part of the Parkrose School District, and Sacramento Elementary School is within its boundaries.",
+        "source_url": "https://en.wikipedia.org/wiki/Parkrose_Heights,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "argay": {
+    "facts": [
+      {
+        "text": "Argay was laid out in 1957 by Art Simonson and Gerhardt Stavney and is described as the largest tract of midcentury development in East Portland.",
+        "source_url": "https://en.wikipedia.org/wiki/Argay,_Portland,_Oregon"
+      },
+      {
+        "text": "Argay homes are mostly one-story ranches and split-level houses on cul-de-sacs and looping streets that do not connect to Portland's street grid.",
+        "source_url": "https://en.wikipedia.org/wiki/Argay,_Portland,_Oregon"
+      },
+      {
+        "text": "Argay is bounded by the Columbia River on the north, NE 122nd Avenue on the west, Interstate 84 on the south and NE 148th Avenue on the east.",
+        "source_url": "https://en.wikipedia.org/wiki/Argay,_Portland,_Oregon"
+      },
+      {
+        "text": "Tree cover in Argay is about 13 percent (2020 figure), and about 58 percent of its 2,390 households own their home.",
+        "source_url": "https://en.wikipedia.org/wiki/Argay,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "wilkes": {
+    "facts": [
+      {
+        "text": "Wilkes is named for William Wilkes, who took a Donation Land Claim on Sandy Road east of Portland in 1850.",
+        "source_url": "https://en.wikipedia.org/wiki/Wilkes,_Portland,_Oregon"
+      },
+      {
+        "text": "Wilkes covers 3.08 square miles, with the Columbia Slough running through its north and business parks and industrial space north of Sandy Boulevard.",
+        "source_url": "https://en.wikipedia.org/wiki/Wilkes,_Portland,_Oregon"
+      },
+      {
+        "text": "Only about 29 percent of Wilkes residents own their home, and its population grew from 7,732 in 2000 to 9,297 in 2020.",
+        "source_url": "https://en.wikipedia.org/wiki/Wilkes,_Portland,_Oregon"
+      },
+      {
+        "text": "Wilkes Park was dedicated August 3, 2004, and the city bought 20 acres at the headwaters of Wilkes Creek in March 2011.",
+        "source_url": "https://en.wikipedia.org/wiki/Wilkes,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "madison-south": {
+    "facts": [
+      {
+        "text": "Madison South is next to Rocky Butte, an extinct cinder cone 613 feet high whose summit is Joseph Wood Hill Park.",
+        "source_url": "https://en.wikipedia.org/wiki/Rocky_Butte"
+      },
+      {
+        "text": "The Grotto, a 62-acre Catholic sanctuary, lies against the north face of Rocky Butte near Madison South.",
+        "source_url": "https://en.wikipedia.org/wiki/Rocky_Butte"
+      },
+      {
+        "text": "Madison South is roughly bounded by Interstate 84, Interstate 205, NE Sandy Boulevard and NE 65th Avenue and covers 1.50 square miles.",
+        "source_url": "https://en.wikipedia.org/wiki/Madison_South,_Portland,_Oregon"
+      },
+      {
+        "text": "About 59 percent of Madison South's 2,538 households owned their home at the 2000 census.",
+        "source_url": "https://en.wikipedia.org/wiki/Madison_South,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "hazelwood": {
+    "facts": [
+      {
+        "text": "Hazelwood covers 4.04 square miles and had 23,462 residents at the 2010 census.",
+        "source_url": "https://en.wikipedia.org/wiki/Hazelwood,_Portland,_Oregon"
+      },
+      {
+        "text": "About 51 percent of Hazelwood's 9,801 households rented at the 2010 census, against 42 percent who owned.",
+        "source_url": "https://en.wikipedia.org/wiki/Hazelwood,_Portland,_Oregon"
+      },
+      {
+        "text": "Before Portland annexed Hazelwood, the census counted it as its own community, and Mall 205 is one of its landmarks.",
+        "source_url": "https://en.wikipedia.org/wiki/Hazelwood,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "glenfair": {
+    "facts": [
+      {
+        "text": "Glenfair covers only 0.34 square miles on Portland's eastern border with Gresham, bounded by NE Glisan Street, 148th Avenue, SE Stark Street and 161st Street.",
+        "source_url": "https://en.wikipedia.org/wiki/Glenfair,_Portland,_Oregon"
+      },
+      {
+        "text": "About 72 percent of Glenfair's 1,012 households rent.",
+        "source_url": "https://en.wikipedia.org/wiki/Glenfair,_Portland,_Oregon"
+      },
+      {
+        "text": "United Airlines Flight 173 crash-landed in Glenfair on December 28, 1978, near NE 157th Avenue and East Burnside Street.",
+        "source_url": "https://en.wikipedia.org/wiki/United_Airlines_Flight_173"
+      },
+      {
+        "text": "Glenfair's population grew 7 percent from 3,417 in 2010 to 3,663 in 2020.",
+        "source_url": "https://en.wikipedia.org/wiki/Glenfair,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "mill-park": {
+    "facts": [
+      {
+        "text": "Mill Park covers 1.06 square miles in outer Southeast Portland, surrounded by Hazelwood on three sides and Powellhurst-Gilbert to the south.",
+        "source_url": "https://en.wikipedia.org/wiki/Mill_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "About 59 percent of Mill Park's 2,589 households owned their home at the 2000 census.",
+        "source_url": "https://en.wikipedia.org/wiki/Mill_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "Mill Park has the East Portland Community Center and the Midland Library, along with Mill Park, Midland Park and Floyd Light Park.",
+        "source_url": "https://en.wikipedia.org/wiki/Mill_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "Mill Park's schools (Mill Park Elementary, Floyd Light Middle School) are part of the David Douglas School District.",
+        "source_url": "https://en.wikipedia.org/wiki/Mill_Park,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "centennial": {
+    "facts": [
+      {
+        "text": "Centennial covers 2.68 square miles on the eastern edge of Southeast Portland and extends into Gresham, and had 25,413 residents at the 2020 census.",
+        "source_url": "https://en.wikipedia.org/wiki/Centennial,_Portland,_Oregon"
+      },
+      {
+        "text": "About 68 percent of Centennial households owned their home.",
+        "source_url": "https://en.wikipedia.org/wiki/Centennial,_Portland,_Oregon"
+      },
+      {
+        "text": "Centennial is served by the Centennial School District rather than Portland Public Schools, and Centennial High School sits inside it.",
+        "source_url": "https://en.wikipedia.org/wiki/Centennial,_Portland,_Oregon"
+      },
+      {
+        "text": "Lynchwood Park, Parklane Park and Verdell Burdine Rutherford Park are Centennial's main parks.",
+        "source_url": "https://en.wikipedia.org/wiki/Centennial,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "powellhurst-gilbert": {
+    "facts": [
+      {
+        "text": "Powellhurst-Gilbert had 32,852 residents in 2020, the most of any Portland neighborhood.",
+        "source_url": "https://en.wikipedia.org/wiki/Powellhurst-Gilbert,_Portland,_Oregon"
+      },
+      {
+        "text": "Rail service to Portland began in 1892 and drew the first suburban housing, and Portland annexed the area in stages from the 1960s until 1994.",
+        "source_url": "https://en.wikipedia.org/wiki/Powellhurst-Gilbert,_Portland,_Oregon"
+      },
+      {
+        "text": "The neighborhood covers 3.44 square miles, and 42 percent of its households rent.",
+        "source_url": "https://en.wikipedia.org/wiki/Powellhurst-Gilbert,_Portland,_Oregon"
+      },
+      {
+        "text": "The Jade District is its commercial and cultural center, and Kelly Butte Natural Area is within its borders.",
+        "source_url": "https://en.wikipedia.org/wiki/Powellhurst-Gilbert,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "creston-kenilworth": {
+    "facts": [
+      {
+        "text": "Kenilworth was platted in 1889, and many of its streets are named after novels by Walter Scott.",
+        "source_url": "https://en.wikipedia.org/wiki/Creston-Kenilworth,_Portland,_Oregon"
+      },
+      {
+        "text": "About 23 percent of Creston-Kenilworth is covered by tree canopy, according to the city's 2020 neighborhood profile.",
+        "source_url": "https://en.wikipedia.org/wiki/Creston-Kenilworth,_Portland,_Oregon"
+      },
+      {
+        "text": "Of 4,103 households in 2020, 54 percent rent, and the neighborhood covers just 0.80 square miles.",
+        "source_url": "https://en.wikipedia.org/wiki/Creston-Kenilworth,_Portland,_Oregon"
+      },
+      {
+        "text": "Kenilworth Park dates to 1909 and Creston Park to 1920. The neighborhood is bounded by Powell Blvd, Holgate Blvd, SE 26th Ave and Foster Rd.",
+        "source_url": "https://en.wikipedia.org/wiki/Creston-Kenilworth,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "south-tabor": {
+    "facts": [
+      {
+        "text": "South Tabor is named for its position just south of Mount Tabor, an extinct volcano that is now a city park.",
+        "source_url": "https://en.wikipedia.org/wiki/South_Tabor,_Portland,_Oregon"
+      },
+      {
+        "text": "The neighborhood is bounded by SE Division, SE Powell, SE 52nd and SE 82nd, and covers 0.80 square miles.",
+        "source_url": "https://en.wikipedia.org/wiki/South_Tabor,_Portland,_Oregon"
+      },
+      {
+        "text": "The eastern edge of South Tabor includes part of the Jade District commercial area.",
+        "source_url": "https://en.wikipedia.org/wiki/South_Tabor,_Portland,_Oregon"
+      },
+      {
+        "text": "In 2000, 61 percent of South Tabor households owned their homes, and Franklin High School and Atkinson Elementary are inside the neighborhood.",
+        "source_url": "https://en.wikipedia.org/wiki/South_Tabor,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "foster-powell": {
+    "facts": [
+      {
+        "text": "Foster-Powell is a triangle bounded by Powell Boulevard, Foster Road and 82nd Avenue, covering 0.89 square miles.",
+        "source_url": "https://en.wikipedia.org/wiki/Foster-Powell,_Portland,_Oregon"
+      },
+      {
+        "text": "Houses followed Portland's first electric streetcar line in the 1890s, and sidewalks were built in 1912.",
+        "source_url": "https://en.wikipedia.org/wiki/Foster-Powell,_Portland,_Oregon"
+      },
+      {
+        "text": "Firland Parkway, a tree-lined median on SE 72nd between Foster and Holgate, runs through the neighborhood.",
+        "source_url": "https://en.wikipedia.org/wiki/Foster-Powell,_Portland,_Oregon"
+      },
+      {
+        "text": "In 2000, 60 percent of Foster-Powell households owned their homes, and Laurelwood, Kern and Essex parks are inside it.",
+        "source_url": "https://en.wikipedia.org/wiki/Foster-Powell,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "mt-scott-arleta": {
+    "facts": [
+      {
+        "text": "The Arleta Park subdivision was platted in 1903 by the Potter-Chapin Realty company.",
+        "source_url": "https://en.wikipedia.org/wiki/Mt._Scott-Arleta,_Portland,_Oregon"
+      },
+      {
+        "text": "The Mt. Scott trolley ran along Foster Road, south on 72nd and east on Woodstock, and connected downtown to Lents by the early 1900s.",
+        "source_url": "https://en.wikipedia.org/wiki/Mt._Scott-Arleta,_Portland,_Oregon"
+      },
+      {
+        "text": "Mt. Scott Community Center began in 1927 as a wood-frame bathhouse for an outdoor pool, and an aquatic center was added in 2000.",
+        "source_url": "https://en.wikipedia.org/wiki/Mt._Scott-Arleta,_Portland,_Oregon"
+      },
+      {
+        "text": "The neighborhood covers 0.86 square miles between Foster Road, SE 60th, SE 82nd and SE Duke, and in 2010 about 57 percent of households owned their homes.",
+        "source_url": "https://en.wikipedia.org/wiki/Mt._Scott-Arleta,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "woodstock": {
+    "facts": [
+      {
+        "text": "Woodstock was platted in 1889 when five men bought 194.5 acres for $48,000 and named it after Walter Scott's novel.",
+        "source_url": "https://en.wikipedia.org/wiki/Woodstock,_Portland,_Oregon"
+      },
+      {
+        "text": "A Queen Anne house built in 1893 on SE 40th Avenue is now a historic landmark.",
+        "source_url": "https://en.wikipedia.org/wiki/Woodstock,_Portland,_Oregon"
+      },
+      {
+        "text": "Johnson Creek forms the southern boundary, and the Village Center runs along Woodstock Boulevard between Cesar Chavez Boulevard and 52nd Avenue.",
+        "source_url": "https://en.wikipedia.org/wiki/Woodstock,_Portland,_Oregon"
+      },
+      {
+        "text": "In 2000, 74 percent of Woodstock households owned their homes, and the neighborhood covers 1.30 square miles.",
+        "source_url": "https://en.wikipedia.org/wiki/Woodstock,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "reed": {
+    "facts": [
+      {
+        "text": "Reed covers only 0.43 square miles, and in 2000 about 64 percent of its households rented.",
+        "source_url": "https://en.wikipedia.org/wiki/Reed,_Portland,_Oregon"
+      },
+      {
+        "text": "Railroad tracks form its western edge, with SE Holgate on the north and SE 39th on the east.",
+        "source_url": "https://en.wikipedia.org/wiki/Reed,_Portland,_Oregon"
+      },
+      {
+        "text": "Lambert Gardens once occupied land in Reed that was replaced by housing in 1968.",
+        "source_url": "https://en.wikipedia.org/wiki/Reed,_Portland,_Oregon"
+      },
+      {
+        "text": "Tucker Maxon School is in the neighborhood, and Reed sits just north of the Reed College campus.",
+        "source_url": "https://en.wikipedia.org/wiki/Reed,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "eastmoreland": {
+    "facts": [
+      {
+        "text": "The Eastmoreland Historic District, 475 acres of homes built between 1910 and 1961, was listed on the National Register of Historic Places on December 7, 2022.",
+        "source_url": "https://en.wikipedia.org/wiki/Eastmoreland,_Portland,_Oregon"
+      },
+      {
+        "text": "In 2000, 90 percent of Eastmoreland households owned their homes, and the neighborhood is almost entirely single-family houses.",
+        "source_url": "https://en.wikipedia.org/wiki/Eastmoreland,_Portland,_Oregon"
+      },
+      {
+        "text": "Crystal Springs Rhododendron Garden opened in 1923 and Eastmoreland Golf Course in 1916, and Johnson Creek forms most of the southern boundary.",
+        "source_url": "https://en.wikipedia.org/wiki/Eastmoreland,_Portland,_Oregon"
+      },
+      {
+        "text": "The neighborhood is bounded on the north by SE Woodstock Boulevard and wraps around the Reed College campus.",
+        "source_url": "https://en.wikipedia.org/wiki/Eastmoreland,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "sellwood-moreland": {
+    "facts": [
+      {
+        "text": "Sellwood was incorporated in 1889 and annexed by Portland in 1893.",
+        "source_url": "https://en.wikipedia.org/wiki/Sellwood-Moreland,_Portland,_Oregon"
+      },
+      {
+        "text": "The Sellwood Bridge, the southernmost of Portland's bridges, connects the neighborhood to Southwest Portland across the Willamette River.",
+        "source_url": "https://en.wikipedia.org/wiki/Sellwood-Moreland,_Portland,_Oregon"
+      },
+      {
+        "text": "Oaks Bottom Wildlife Refuge was established in 1988, and Oaks Park amusement park sits along the river.",
+        "source_url": "https://en.wikipedia.org/wiki/Sellwood-Moreland,_Portland,_Oregon"
+      },
+      {
+        "text": "In 2000, 48 percent of Sellwood-Moreland households rented, and restaurants cluster on Milwaukie Avenue and SE 13th Avenue.",
+        "source_url": "https://en.wikipedia.org/wiki/Sellwood-Moreland,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "brentwood-darlington": {
+    "facts": [
+      {
+        "text": "Tree canopy covers about 22 percent of Brentwood-Darlington, according to the city's 2020 neighborhood profile.",
+        "source_url": "https://en.wikipedia.org/wiki/Brentwood-Darlington,_Portland,_Oregon"
+      },
+      {
+        "text": "Settlement began as single-family homesteads in 1882, and Portland annexed the area in 1986 after attempts in 1961, 1971 and 1977 failed.",
+        "source_url": "https://en.wikipedia.org/wiki/Brentwood-Darlington,_Portland,_Oregon"
+      },
+      {
+        "text": "The neighborhood covers 1.75 square miles from SE 45th Avenue to SE 82nd Avenue, and 67 percent of households own their homes.",
+        "source_url": "https://en.wikipedia.org/wiki/Brentwood-Darlington,_Portland,_Oregon"
+      },
+      {
+        "text": "Brentwood Park dates to 1951, Errol Heights Park to 1966, and the neighborhood reaches the Multnomah-Clackamas county line on its south side.",
+        "source_url": "https://en.wikipedia.org/wiki/Brentwood-Darlington,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "lents": {
+    "facts": [
+      {
+        "text": "Oliver P. Lent platted the Town of Lent in 1892, and Portland annexed it in 1912 when the population was nearing 10,000.",
+        "source_url": "https://en.wikipedia.org/wiki/Lents,_Portland,_Oregon"
+      },
+      {
+        "text": "Interstate 205 was routed through Lents in the 1970s and effectively cut the neighborhood in half.",
+        "source_url": "https://en.wikipedia.org/wiki/Lents,_Portland,_Oregon"
+      },
+      {
+        "text": "The MAX Green Line serves Lents, including the Lents Town Center/SE Foster Road station.",
+        "source_url": "https://en.wikipedia.org/wiki/Lents,_Portland,_Oregon"
+      },
+      {
+        "text": "Lents Park dates to 1914, and the Springwater Corridor trail runs through the neighborhood.",
+        "source_url": "https://en.wikipedia.org/wiki/Lents,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "hillsdale": {
+    "facts": [
+      {
+        "text": "Hillsdale Library reopened in 2004 and was the first LEED-certified building in Portland, earning Gold.",
+        "source_url": "https://en.wikipedia.org/wiki/Hillsdale,_Portland,_Oregon"
+      },
+      {
+        "text": "McMenamins Hillsdale Brewery opened in 1985 as Oregon's first brewpub.",
+        "source_url": "https://en.wikipedia.org/wiki/Hillsdale,_Portland,_Oregon"
+      },
+      {
+        "text": "The retail core runs along SW Capitol Highway between SW Sunset Boulevard and SW Bertha Boulevard.",
+        "source_url": "https://en.wikipedia.org/wiki/Hillsdale,_Portland,_Oregon"
+      },
+      {
+        "text": "In 2020, 65 percent of Hillsdale's 3,559 households owned their homes.",
+        "source_url": "https://en.wikipedia.org/wiki/Hillsdale,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "bridlemile": {
+    "facts": [
+      {
+        "text": "About 50 percent of Bridlemile is covered by tree canopy, according to the city's 2020 neighborhood profile.",
+        "source_url": "https://en.wikipedia.org/wiki/Bridlemile,_Portland,_Oregon"
+      },
+      {
+        "text": "The Portland city boundary along SW Thomas Street splits the neighborhood, and the northern part is unincorporated Multnomah County.",
+        "source_url": "https://en.wikipedia.org/wiki/Bridlemile,_Portland,_Oregon"
+      },
+      {
+        "text": "Fanno Creek Natural Area and the Fanno Creek Greenway Trail run through Bridlemile, and Hamilton Park sits at SW 45th and Hamilton.",
+        "source_url": "https://en.wikipedia.org/wiki/Bridlemile,_Portland,_Oregon"
+      },
+      {
+        "text": "In 2020, 68 percent of Bridlemile's 2,489 households owned their homes, and the median household income was $102,000.",
+        "source_url": "https://en.wikipedia.org/wiki/Bridlemile,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "ashcreek": {
+    "facts": [
+      {
+        "text": "About 48 percent of Ashcreek is covered by tree canopy, according to the city's 2020 neighborhood profile.",
+        "source_url": "https://en.wikipedia.org/wiki/Ashcreek,_Portland,_Oregon"
+      },
+      {
+        "text": "In 2020, 85 percent of Ashcreek's 2,012 households owned their homes.",
+        "source_url": "https://en.wikipedia.org/wiki/Ashcreek,_Portland,_Oregon"
+      },
+      {
+        "text": "Ashcreek extends a short distance into Washington County on its western side, bordering Garden Home-Whitford and Tigard.",
+        "source_url": "https://en.wikipedia.org/wiki/Ashcreek,_Portland,_Oregon"
+      },
+      {
+        "text": "Woods Memorial Natural Area is in Ashcreek, and the neighborhood covers 0.98 square miles.",
+        "source_url": "https://en.wikipedia.org/wiki/Ashcreek,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "markham": {
+    "facts": [
+      {
+        "text": "Markham covers 0.52 square miles in Southwest Portland, and in 2000 about 81 percent of its households owned their homes.",
+        "source_url": "https://en.wikipedia.org/wiki/Markham,_Portland,_Oregon"
+      },
+      {
+        "text": "Part of the Maricara Natural Area, dated 1988, lies within Markham.",
+        "source_url": "https://en.wikipedia.org/wiki/Markham,_Portland,_Oregon"
+      },
+      {
+        "text": "Markham borders Arnold Creek on its south side and West Portland Park on its west.",
+        "source_url": "https://en.wikipedia.org/wiki/Markham,_Portland,_Oregon"
+      },
+      {
+        "text": "Its boundary streets include SW Taylors Ferry Road, SW Lancaster Road and SW 35th Avenue, and the boundary reaches Interstate 5.",
+        "source_url": "https://en.wikipedia.org/wiki/Markham,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "west-portland-park": {
+    "facts": [
+      {
+        "text": "Loll Wildwood, at the headwaters of Arnold Creek, was bought by Metro in 1995 to protect wildlife habitat and water quality.",
+        "source_url": "https://en.wikipedia.org/wiki/West_Portland_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "Holly Farm Park was completed in 2007 through a partnership of the Parks Foundation, Portland Parks & Recreation and the neighborhood association.",
+        "source_url": "https://en.wikipedia.org/wiki/West_Portland_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "The neighborhood runs from I-5 on the north to SW Stephenson Street on the south, and covers 0.73 square miles.",
+        "source_url": "https://en.wikipedia.org/wiki/West_Portland_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "In 2000, 48 percent of households rented, and Capitol Hill Library, Jackson Middle School and Markham Elementary are in the area.",
+        "source_url": "https://en.wikipedia.org/wiki/West_Portland_Park,_Portland,_Oregon"
+      }
+    ],
+    "status": "ok"
+  },
+  "arnold-creek": {
+    "status": "ok",
+    "facts": [
+      {
+        "text": "Arnold Creek sits in Southwest Portland just north of Lake Oswego, with Tryon Creek State Natural Area on its east side and the Englewood enclave of unincorporated Multnomah County to its south.",
+        "source_url": "https://en.wikipedia.org/wiki/Arnold_Creek,_Portland,_Oregon"
+      },
+      {
+        "text": "In 2020, 976 Arnold Creek households owned their homes and 61 rented, so about 94 percent are owners.",
+        "source_url": "https://en.wikipedia.org/wiki/Arnold_Creek,_Portland,_Oregon"
+      },
+      {
+        "text": "Arnold Creek covers 1.10 square miles and had 3,108 residents in 2020, about 2,825 people per square mile.",
+        "source_url": "https://en.wikipedia.org/wiki/Arnold_Creek,_Portland,_Oregon"
+      },
+      {
+        "text": "Part of the Maricara Natural Area, set aside in 1988, lies inside the neighborhood.",
+        "source_url": "https://en.wikipedia.org/wiki/Arnold_Creek,_Portland,_Oregon"
+      },
+      {
+        "text": "Median household income in Arnold Creek was about $138,000 in 2020, and the median resident age was 46.8.",
+        "source_url": "https://en.wikipedia.org/wiki/Arnold_Creek,_Portland,_Oregon"
+      }
+    ]
+  },
+  "marshall-park": {
+    "status": "ok",
+    "facts": [
+      {
+        "text": "The Marshall Park neighborhood is named for the adjacent Marshall Park, which Frederick C. and Addie Mae Marshall gave to the City of Portland in 1948.",
+        "source_url": "https://en.wikipedia.org/wiki/Marshall_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "Marshall Park is a small Southwest Portland neighborhood of 0.61 square miles, bordered by Markham, South Burlingame, Collins View and Arnold Creek.",
+        "source_url": "https://en.wikipedia.org/wiki/Marshall_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "In the 2000 census, 90 percent of the neighborhood's 557 households owned their homes and 10 percent rented (499 owners, 58 renters).",
+        "source_url": "https://en.wikipedia.org/wiki/Marshall_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "Besides Marshall Park (1948), the neighborhood holds two city natural areas established in 1996, Jensen Natural Area and Foley-Balmer Natural Area.",
+        "source_url": "https://en.wikipedia.org/wiki/Marshall_Park,_Portland,_Oregon"
+      }
+    ]
+  },
+  "woodland-park": {
+    "status": "ok",
+    "facts": [
+      {
+        "text": "Woodland Park is Portland's smallest neighborhood, in Northeast Portland east of I-84, west of NE 102nd Avenue and north of NE Halsey Street.",
+        "source_url": "https://www.portland.gov/neighborhoods/woodland-park"
+      },
+      {
+        "text": "Woodland Park covers only 0.05 square miles and had 110 households in the 2000 census, 89 owner-occupied (81 percent) and 21 renting (19 percent).",
+        "source_url": "https://en.wikipedia.org/wiki/Woodland_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "The neighborhood is all houses, with no schools, parks or businesses, roughly between NE 99th and 102nd Avenues and NE Halsey and NE Tillamook Streets.",
+        "source_url": "https://en.wikipedia.org/wiki/Woodland_Park,_Portland,_Oregon"
+      },
+      {
+        "text": "Woodland Park's neighborhood association is listed as inactive by the City of Portland, with Central Northeast Neighbors named as the district office.",
+        "source_url": "https://www.portland.gov/neighborhoods/woodland-park"
+      }
+    ]
+  }
 }
