@@ -11,8 +11,11 @@ export function Methods() {
   return (
     <section id="services" className="bg-retro-pool pb-16 md:pb-24">
       <div className="container-site">
-        <header className="max-w-4xl">
-          <h2 className="text-[#0C1215]">
+        <header className="max-w-2xl">
+          <h2
+            className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
+            style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
+          >
             Six methods, matched to what you actually have.
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-[#3B4247]">
@@ -22,39 +25,47 @@ export function Methods() {
           </p>
         </header>
 
-        <div className="mt-12 grid gap-x-8 gap-y-12 md:mt-16 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 md:mt-14">
           {METHODS.map((m) => (
-            <div
+            <article
               key={m.key}
-              className="group"
+              className="frame group overflow-hidden bg-white transition-all duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
                   src={m.img}
                   alt={m.alt}
                   fill
-                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
+                <span className="label-caps absolute left-0 top-4 bg-[#62C4EB] px-3 py-2 !tracking-[0.14em] text-[#0C1215]">
+                  {m.method}
+                </span>
               </div>
-              <div className="pt-5">
-                <h3 className="text-[#0C1215]">{m.surface}</h3>
-                <p className="mt-2 text-lg font-bold text-[#1A6E93]">{m.method}</p>
-                <p className="mt-2 text-lg leading-relaxed text-[#3B4247]">{m.what}</p>
+              <div className="p-6">
+                <h3
+                  className="text-lg font-semibold text-[#0C1215]"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {m.surface}
+                </h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-[#3B4247]">{m.what}</p>
               </div>
-            </div>
+            </article>
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col gap-4 md:flex-row md:items-center md:gap-6">
+        <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3">
           <a
             href="/assessment"
-            className="btn-print bg-[#F2B632] text-[#0C1215] hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#1A6E93]"
+            className="inline-flex items-center gap-2 rounded-full bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            style={{ fontFamily: "var(--font-display)" }}
           >
             Get your free property assessment
-            <ArrowRight className="h-6 w-6" aria-hidden />
+            <ArrowRight className="h-4 w-4" aria-hidden />
           </a>
-          <span className="text-lg text-[#3B4247]">
+          <span className="text-sm text-[#5F676C]">
             Not sure which your property needs? That&apos;s what the assessment is for.
           </span>
         </div>

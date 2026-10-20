@@ -6,16 +6,16 @@ import { useEffect, useRef } from "react";
  *  native scrolling on touch, arrows + gentle auto-advance on desktop.
  *  ponytail: no carousel lib; CSS scroll-snap + scrollBy is the whole engine. */
 const SHOTS = [
-  { src: "surface-cleaner-steam", alt: "Technician guiding a surface cleaner through a cloud of steam on a clubhouse walkway", caption: "Hot-water surface cleaning, clubhouse walkway." },
-  { src: "driveway-before", alt: "Residential driveway covered in moss and grit in front of a cedar garage", caption: "Moss and grit on a driveway apron, before we started." },
-  { src: "driveway-after", alt: "A residential driveway in the trees, washed clean and still wet", caption: "A driveway under the firs, finished." },
-  { src: "lot-steam-wide", alt: "Wide view of a parking lot with a technician surface cleaning under low clouds", caption: "Parking lot, early morning pass." },
-  { src: "proshop-driveway", alt: "Curving driveway past a pro shop with the cleaned section still wet", caption: "Cart path and driveway by the pro shop." },
-  { src: "tech-cone", alt: "Technician washing a curb edge behind an orange traffic cone", caption: "Curb and gutter line, coned off while we work." },
-  { src: "curb-gleam", alt: "Close view of a wet, freshly cleaned concrete curb and walkway", caption: "Curb detail after rinse." },
-  { src: "event-floor", alt: "Black event flooring rinsed and gleaming inside a temporary structure", caption: "Event flooring, LIV Golf Portland build-out." },
-  { src: "event-path", alt: "Asphalt walkway lined with event signage being rinsed down", caption: "Spectator path, same event." },
-  { src: "concrete-closeup", alt: "Close-up of concrete where two clean arcs meet untouched grime", caption: "Where the surface cleaner has and hasn't been." },
+  { src: "surface-cleaner-steam", w: 1600, h: 1200, alt: "Technician guiding a surface cleaner through a cloud of steam on a clubhouse walkway", caption: "Hot-water surface cleaning, clubhouse walkway." },
+  { src: "driveway-before", w: 1600, h: 1200, alt: "Residential driveway covered in moss and grit in front of a cedar garage", caption: "Moss and grit on a driveway apron, before we started." },
+  { src: "driveway-after", w: 1200, h: 1600, alt: "A residential driveway in the trees, washed clean and still wet", caption: "A driveway under the firs, finished." },
+  { src: "lot-steam-wide", w: 1600, h: 1200, alt: "Wide view of a parking lot with a technician surface cleaning under low clouds", caption: "Parking lot, early morning pass." },
+  { src: "proshop-driveway", w: 1200, h: 1600, alt: "Curving driveway past a pro shop with the cleaned section still wet", caption: "Cart path and driveway by the pro shop." },
+  { src: "tech-cone", w: 1200, h: 1600, alt: "Technician washing a curb edge behind an orange traffic cone", caption: "Curb and gutter line, coned off while we work." },
+  { src: "curb-gleam", w: 1200, h: 1600, alt: "Close view of a wet, freshly cleaned concrete curb and walkway", caption: "Curb detail after rinse." },
+  { src: "event-floor", w: 1600, h: 1200, alt: "Black event flooring rinsed and gleaming inside a temporary structure", caption: "Event flooring, LIV Golf Portland build-out." },
+  { src: "event-path", w: 1200, h: 1600, alt: "Asphalt walkway lined with event signage being rinsed down", caption: "Spectator path, same event." },
+  { src: "concrete-closeup", w: 1200, h: 1600, alt: "Close-up of concrete where two clean arcs meet untouched grime", caption: "Where the surface cleaner has and hasn't been." },
 ];
 
 export function WorkGallery() {
@@ -45,11 +45,14 @@ export function WorkGallery() {
   return (
     <section id="work" className="bg-[#62C4EB] py-16 text-[#0C1215] md:py-24">
       <div className="container-site flex items-end justify-between gap-6">
-        <header className="max-w-4xl">
-          <h2 className="text-[#0C1215]">
+        <header className="max-w-2xl">
+          <h2
+            className="text-[clamp(2.3rem,6vw,3.6rem)] leading-[1] text-[#0C1215]"
+            style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
+          >
             Straight off the truck.
           </h2>
-          <p className="mt-5 text-lg leading-relaxed text-[#0C1215]/85">
+          <p className="mt-4 text-lg leading-relaxed text-[#0C1215]/75">
             Phone photos from real jobs. Driveways and homes,
             clubhouses, parking lots and event grounds.
           </p>
@@ -61,9 +64,9 @@ export function WorkGallery() {
               type="button"
               onClick={() => step(d)}
               aria-label={d === 1 ? "Next photo" : "Previous photo"}
-              className="flex h-12 w-12 items-center justify-center rounded-full border-[3px] border-[#0C1215] bg-[#FBF8F2] transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]"
+              className="flex h-11 w-11 items-center justify-center rounded-full ring-1 ring-white/30 transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]"
             >
-              <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} className={`h-6 w-6 ${d === -1 ? "rotate-180" : ""}`}>
+              <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} className={`h-4 w-4 ${d === -1 ? "rotate-180" : ""}`}>
                 <path d="M4 10h12M11 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
@@ -77,18 +80,19 @@ export function WorkGallery() {
         aria-label="Photos of recent jobs"
       >
         {SHOTS.map((s, i) => (
-          <figure key={s.src} className="w-[85vw] shrink-0 snap-start md:w-[48vw] lg:w-[32vw]">
-            <div className="relative aspect-[4/5] overflow-hidden md:aspect-[4/3]">
+          <figure key={s.src} className="w-[82vw] shrink-0 snap-start sm:w-min">
+            <div className="frame frame-light relative overflow-hidden bg-white/5">
               <Image
                 src={`/brand/photos/work/${s.src}.webp`}
                 alt={s.alt}
-                fill
-                sizes="(min-width: 1024px) 32vw, (min-width: 768px) 48vw, 85vw"
+                width={s.w}
+                height={s.h}
+                sizes="(min-width: 640px) 560px, 82vw"
                 priority={i < 2}
-                className="object-cover"
+                className="h-auto w-full sm:h-[440px] sm:w-auto sm:max-w-none"
               />
             </div>
-            <figcaption className="mt-4 text-lg font-semibold text-[#0C1215]">{s.caption}</figcaption>
+            <figcaption className="label-caps mt-3 !tracking-[0.12em] text-[#0C1215]">{s.caption}</figcaption>
           </figure>
         ))}
       </div>

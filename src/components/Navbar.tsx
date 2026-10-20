@@ -95,7 +95,7 @@ export function Navbar() {
           <div className="hidden items-center gap-5 md:flex">
             <a
               href={PHONE_TEL}
-              className={`flex items-center gap-2 rounded px-1 text-base font-semibold transition-colors duration-300 ${ink} opacity-80 hover:opacity-100 ${focusRing} ${offset} motion-reduce:transition-none`}
+              className={`hidden items-center gap-2 whitespace-nowrap rounded px-1 text-base font-semibold lg:flex transition-colors duration-300 ${ink} opacity-80 hover:opacity-100 ${focusRing} ${offset} motion-reduce:transition-none`}
             >
               <Phone className="h-4 w-4" aria-hidden />
               {PHONE_DISPLAY}

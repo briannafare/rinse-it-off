@@ -127,7 +127,7 @@ export function CinematicHero() {
   return (
     <section className="relative w-full bg-retro-paper">
       <div className="relative">
-      <div className="mat film-grain relative h-[100svh] min-h-[640px] w-full overflow-hidden md:h-[86vh] md:min-h-[640px]" style={CLIP}>
+      <div className="film-grain relative h-[100svh] min-h-[640px] w-full overflow-hidden md:h-auto md:aspect-[16/9] md:min-h-[620px]" style={CLIP}>
         {SLIDES.map((s, i) => (
           <div
             key={s.key}

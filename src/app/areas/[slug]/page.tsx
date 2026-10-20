@@ -204,7 +204,7 @@ export default async function AreaPage({
       <main>
         {/* ── Hero — dark image band (matches CinematicHero language) ─────── */}
         <section className="w-full overflow-hidden bg-retro-pool pt-16 md:grid md:min-h-[76svh] md:grid-cols-2 md:pt-[72px]">
-          <div className="mat film-grain relative m-3 h-[40svh] min-h-[260px] overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5 md:h-auto">
+          <div className="mat film-grain relative m-3 aspect-[3/2] overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5 md:self-center">
           <Image
             src={hero.src}
             alt={hero.alt}

@@ -50,13 +50,7 @@ const config: Config = {
         title: ["var(--font-title)", "Georgia", "serif"],
         label: ["var(--font-label)", "system-ui", "sans-serif"],
       },
-      // nothing smaller than 18px except legal text (xs); body copy 19-23px, scaling with the screen
       fontSize: {
-        xs: ["16px", { lineHeight: "1.45" }],
-        sm: ["18px", { lineHeight: "1.5" }],
-        base: ["19px", { lineHeight: "1.55" }],
-        lg: ["20px", { lineHeight: "1.5" }],
-        xl: ["clamp(21px, calc(17px + .5vw), 23px)", { lineHeight: "1.45" }],
         hero: ["clamp(3rem, 8vw, 5.5rem)", { lineHeight: "1.0", letterSpacing: "-0.03em" }],
         "display-lg": ["clamp(2.25rem, 5vw, 3.5rem)", { lineHeight: "1.0", letterSpacing: "-0.025em" }],
         display: ["clamp(1.75rem, 3.5vw, 2.75rem)", { lineHeight: "1.05", letterSpacing: "-0.02em" }],

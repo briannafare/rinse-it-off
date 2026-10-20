@@ -104,7 +104,7 @@ export default function CommercialPage() {
       <main>
         {/* ── HERO: the photograph beside a flat cream title block; Hal with his clipboard at the seam ── */}
         <section className="relative w-full overflow-hidden bg-retro-pool pt-16 md:grid md:min-h-[100svh] md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] md:pt-[72px]">
-          <div className="mat film-grain streak-r relative m-3 h-[46svh] min-h-[300px] overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5 md:h-auto">
+          <div className="mat film-grain relative m-3 aspect-[3/2] overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5 md:self-center">
             <Image
               src="/brand/retro/com-hero.webp"
               alt="A Rinse It Off crew of three at a mid-century office building: one on a short ladder at the canopy, one washing the tall entry glass with a water-fed pole, one coiling a hose by the work truck"

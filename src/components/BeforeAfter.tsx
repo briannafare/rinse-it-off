@@ -1,67 +1,64 @@
 "use client";
 import Image from "next/image";
-import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useStaggerReveal } from "@/lib/gsap";
 
-/** Proof, documentary style. Opens with a full-bleed parallax band, then the
+/** Proof, documentary style. Opens with the clean-line photo beside the line, then the
  *  evidence grid — every photo has its before and after in the same frame. */
 const SHOTS = [
   {
     src: "/brand/photos/before-after-concrete.webp",
     alt: "Sidewalk half black with grime, half freshly cleaned, the surface cleaner still in frame",
+    w: 1400, h: 1867,
     caption: "One pass of the surface cleaner, with the machine still in frame."
   },
   {
     src: "/brand/photos/walkway-split.webp",
     alt: "A clubhouse walkway mid-clean, cleaned slabs bright against the dark untouched ones",
+    w: 1400, h: 1867,
     caption: "Clubhouse walkway, halfway through the job.",
   },
   {
     src: "/brand/photos/walkway-cleaner.webp",
     alt: "A curb and sidewalk showing the clean line where washing stopped",
+    w: 1400, h: 1050,
     caption: "Grime on the left, finished work on the right."
   },
 ];
 
 export function BeforeAfter() {
-  const bandRef = useRef<HTMLDivElement>(null);
   const gridRef = useStaggerReveal(0.1);
-  const prefersReducedMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: bandRef, offset: ["start end", "end start"] });
-  // Reduced-motion guard: hold the parallax band still when the visitor asks for it.
-  const y = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? ["0%", "0%"] : ["-12%", "12%"]);
 
   return (
     <section id="proof" className="bg-[#E6F5FC] pb-16 md:pb-24">
-      {/* full-bleed parallax band */}
-      <div ref={bandRef} className="mat film-grain relative h-[70vh] min-h-[460px] overflow-hidden">
-        <motion.div className="absolute -inset-y-[14%] inset-x-0" style={{ y }}>
+      {/* the line, beside the photo that proves it, at the photo's own tall shape */}
+      <div className="container-site grid items-center gap-8 pt-14 md:grid-cols-[minmax(0,0.8fr)_1fr] md:gap-14 md:pt-20">
+        <div className="mat relative aspect-[3/4] overflow-hidden">
           <Image
             src="/brand/photos/curb-dramatic.webp"
             alt="A long sidewalk with a crisp line between cleaned and weathered concrete"
             fill
-            sizes="100vw"
+            sizes="(min-width: 768px) 40vw, 100vw"
             className="object-cover"
           />
-        </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#FBF8F2]/90 via-[#FBF8F2]/30 to-transparent" />
-        <div className="container-site relative flex h-full items-end pb-10">
-          <blockquote
-            className="max-w-5xl font-title text-[12vw] leading-[0.95] text-[#0C1215] md:text-[clamp(2.6rem,4vw,4.4rem)]"
-          >
-            The line isn&apos;t an effect.
-            <br />
-            It&apos;s where we <span>stopped.</span>
-          </blockquote>
         </div>
+        <blockquote
+          className="max-w-2xl text-3xl font-medium leading-tight text-[#0C1215] md:text-5xl"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          The line isn&apos;t an effect.
+          <br />
+          It&apos;s where we <span>stopped.</span>
+        </blockquote>
       </div>
 
       <div className="container-site mt-14 md:mt-20">
-        <h2 className="max-w-5xl text-[#0C1215]">
+        <h2
+          className="max-w-2xl text-3xl font-medium text-[#0C1215] md:text-4xl"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
           The moment dirt lets go.
         </h2>
-        <p className="mt-5 max-w-3xl text-lg text-[#3B4247]">
+        <p className="mt-3 max-w-xl text-[#3B4247]">
           No staging and no stock photos. Each of these is a real job of ours,
           shot mid-pass, so the before and the after sit in the same frame.
         </p>
@@ -71,19 +68,20 @@ export function BeforeAfter() {
             job pair — still needs distinct BEFORE and AFTER photos from Bri.
             Today's shots are single-frame "same frame" splits, so we ship the
             static grid for now and upgrade once real paired photos land. */}
-        <div ref={gridRef} className="-mx-4 mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 [scrollbar-width:none] sm:-mx-6 sm:px-6 md:mx-0 md:mt-16 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
+        <div ref={gridRef} className="mt-10 grid items-start gap-5 md:mt-12 md:grid-cols-3">
           {SHOTS.map((s) => (
-            <figure key={s.src} className="group w-[85vw] shrink-0 snap-start md:w-auto">
-              <div className="relative aspect-[3/4] overflow-hidden">
+            <figure key={s.src} className="group">
+              <div className="frame relative overflow-hidden">
                 <Image
                   src={s.src}
                   alt={s.alt}
-                  fill
-                  sizes="(min-width: 768px) 33vw, 85vw"
-                  className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                  width={s.w}
+                  height={s.h}
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  className="h-auto w-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
               </div>
-              <figcaption className="mt-4 text-lg text-[#3B4247]">{s.caption}</figcaption>
+              <figcaption className="mt-3 text-sm text-[#3B4247]">{s.caption}</figcaption>
             </figure>
           ))}
         </div>
@@ -103,7 +101,7 @@ export function BeforeAfter() {
         <div className="mt-12 flex flex-col items-start gap-4 md:mt-14 sm:flex-row sm:items-center">
           <a
             href="/assessment"
-            className="group btn-print bg-[#F2B632] text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none"
+            className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none"
           >
             Book your free 21-point property audit
             <svg
