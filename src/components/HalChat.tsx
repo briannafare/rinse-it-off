@@ -32,7 +32,6 @@ const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "+19716264146";
 const K_SESSION = "rio-hal-session-v1";
 const K_MESSAGES = "rio-hal-messages-v1";
-const K_NUDGE = "rio-hal-nudge-v1";
 const SLOW_REPLY_MS = 30000;
 
 const GREETING =
@@ -165,7 +164,6 @@ export default function HalChat({ mobileBarOffset = 52 }: { mobileBarOffset?: nu
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const [unread, setUnread] = useState(false);
-  const [nudge, setNudge] = useState(false);
   const [consentOpen, setConsentOpen] = useState(false);
 
   const session = useRef<Session | null>(null);
@@ -262,8 +260,6 @@ export default function HalChat({ mobileBarOffset = 52 }: { mobileBarOffset?: nu
   const openChat = useCallback(() => {
     setOpen(true);
     setUnread(false);
-    setNudge(false);
-    write(K_NUDGE, "done");
     setMessages((m) => (m.length ? m : [{ id: uid(), from: "hal", text: GREETING }]));
   }, []);
   const closeChat = useCallback(() => {
@@ -277,18 +273,6 @@ export default function HalChat({ mobileBarOffset = 52 }: { mobileBarOffset?: nu
     window.addEventListener("rio:open-chat", h);
     return () => window.removeEventListener("rio:open-chat", h);
   }, [openChat]);
-
-  // One small nudge per tab: only after the visitor has scrolled past the hero and lingered a bit.
-  useEffect(() => {
-    if (read<string>(K_NUDGE, "") === "done") return;
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    const onScroll = () => {
-      if (window.scrollY < 500 || timer) return;
-      timer = setTimeout(() => { if (!openRef.current) setNudge(true); }, 4000);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => { window.removeEventListener("scroll", onScroll); if (timer) clearTimeout(timer); };
-  }, []);
 
   // Open: focus the input, Esc closes, Tab stays inside, the page behind doesn't scroll on phones.
   useEffect(() => {
@@ -322,15 +306,6 @@ export default function HalChat({ mobileBarOffset = 52 }: { mobileBarOffset?: nu
   return (
     <div className="hal-root" style={{ ["--hal-bar" as string]: `${mobileBarOffset}px` }}>
       <style>{CSS}</style>
-
-      {nudge && !open && (
-        <div className="hal-nudge" role="status">
-          <button type="button" className="hal-nudge-open" onClick={openChat}>Got a question? Hal&rsquo;s around.</button>
-          <button type="button" className="hal-nudge-x" aria-label="Dismiss" onClick={() => { setNudge(false); write(K_NUDGE, "done"); }}>
-            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
-          </button>
-        </div>
-      )}
 
       {open && (
         <div ref={panelRef} id={panelId} className="hal-panel" role="dialog" aria-modal="true" aria-labelledby={`${panelId}-title`}>
@@ -539,77 +514,72 @@ function HalFace() {
 }
 
 const CSS = `
-.hal-root{--hal-cream:#F3EDE2;--hal-paper:#FBF8F2;--hal-ink:#0C1215;--hal-water:#62C4EB;--hal-line:#E7E0D3;--hal-muted:#5B6770;--hal-sun:#F2B632;--hal-bloom:#D6336C;
+.hal-root{--hal-cream:#EDE2CB;--hal-paper:#F5EDDC;--hal-ink:#26211B;--hal-teal:#2F6B66;--hal-line:#E2D6BF;--hal-muted:#6B6255;--hal-gold:#E4A33C;--hal-orange:#C2542B;
   --hal-gap:16px;--hal-bottom:calc(var(--hal-gap) + env(safe-area-inset-bottom));--hal-right:calc(var(--hal-gap) + env(safe-area-inset-right))}
-@media (max-width:767px){.hal-root{--hal-bottom:calc(var(--hal-bar) + 12px + env(safe-area-inset-bottom));--hal-right:calc(12px + env(safe-area-inset-right))}}
+@media (max-width:767px){.hal-root{--hal-bottom:calc(var(--hal-bar) + 14px + env(safe-area-inset-bottom));--hal-right:calc(12px + env(safe-area-inset-right))}}
 .hal-root *{box-sizing:border-box}
 .hal-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.hal-launcher{position:fixed;right:var(--hal-right);bottom:var(--hal-bottom);z-index:60;width:60px;height:60px;border-radius:999px;border:2px solid var(--hal-ink);
-  background:var(--hal-paper);box-shadow:3px 3px 0 var(--hal-ink);display:grid;place-items:center;cursor:pointer;padding:0;
-  transition:transform .18s ease,box-shadow .18s ease}
-.hal-launcher:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--hal-ink)}
-.hal-launcher:focus-visible,.hal-chip:focus-visible,.hal-send:focus-visible,.hal-icon-btn:focus-visible,.hal-primary:focus-visible,.hal-foot-btn:focus-visible,.hal-nudge button:focus-visible{outline:3px solid var(--hal-water);outline-offset:2px}
-.hal-launcher-face{width:44px;height:44px;display:block;transform:translateX(-2px)}
+.hal-launcher{position:fixed;right:var(--hal-right);bottom:var(--hal-bottom);z-index:60;width:44px;height:44px;border-radius:999px;border:3px solid var(--hal-teal);
+  background:var(--hal-paper);box-shadow:0 0 0 1.5px var(--hal-ink);display:grid;place-items:center;cursor:pointer;padding:0;
+  transition:transform .18s ease}
+.hal-launcher:hover{transform:translateY(-1px)}
+.hal-launcher:focus-visible,.hal-chip:focus-visible,.hal-send:focus-visible,.hal-icon-btn:focus-visible,.hal-primary:focus-visible,.hal-foot-btn:focus-visible,.hal-launcher-face{width:32px;height:32px;display:block;transform:translateX(-1px)}
 .hal-launcher-face img,.hal-avatar img{width:100%;height:100%;display:block}
-.hal-dot{position:absolute;top:2px;right:2px;width:13px;height:13px;border-radius:999px;background:var(--hal-bloom);border:2px solid var(--hal-paper)}
-.hal-nudge{position:fixed;right:calc(var(--hal-right) + 72px);bottom:calc(var(--hal-bottom) + 12px);z-index:60;display:flex;align-items:center;
-  max-width:min(250px,calc(100vw - 110px));background:var(--hal-paper);border:2px solid var(--hal-ink);border-radius:999px;box-shadow:2px 2px 0 var(--hal-ink);animation:hal-in .25s ease-out}
-.hal-nudge-open{all:unset;cursor:pointer;font-family:var(--font-text);font-size:14px;line-height:1.2;color:var(--hal-ink);padding:9px 4px 9px 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hal-nudge-x{all:unset;cursor:pointer;color:var(--hal-muted);display:grid;place-items:center;width:30px;height:34px;flex:none;border-radius:999px}
-.hal-panel{position:fixed;z-index:61;right:var(--hal-right);bottom:calc(var(--hal-bottom) + 72px);width:min(390px,calc(100vw - 32px));height:min(620px,calc(100dvh - var(--hal-bottom) - 96px));
-  display:flex;flex-direction:column;background:var(--hal-paper);color:var(--hal-ink);border:2px solid var(--hal-ink);border-radius:20px;box-shadow:5px 5px 0 var(--hal-ink);overflow:hidden;
+.hal-dot{position:absolute;top:-3px;right:-3px;width:12px;height:12px;border-radius:999px;background:var(--hal-orange);border:2px solid var(--hal-paper)}
+.hal-panel{position:fixed;z-index:61;right:var(--hal-right);bottom:calc(var(--hal-bottom) + 56px);width:min(390px,calc(100vw - 32px));height:min(620px,calc(100dvh - var(--hal-bottom) - 80px));
+  display:flex;flex-direction:column;background:var(--hal-paper);color:var(--hal-ink);border:1.5px solid var(--hal-ink);border-radius:14px;box-shadow:0 12px 32px rgba(38,33,27,.18);overflow:hidden;
   font-family:var(--font-text);transform-origin:bottom right;animation:hal-pop .22s ease-out}
 @media (max-width:639px){
   .hal-panel{inset:0;width:100%;height:100dvh;border:0;border-radius:0;box-shadow:none;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);animation:hal-up .24s ease-out}
   .hal-launcher-open{display:none}
 }
-.hal-head{display:flex;align-items:center;gap:12px;padding:14px 14px 12px 16px;background:var(--hal-cream);border-bottom:2px solid var(--hal-ink)}
+.hal-head{display:flex;align-items:center;gap:12px;padding:14px 14px 12px 16px;background:var(--hal-cream);border-bottom:1.5px solid var(--hal-ink)}
 .hal-head-text{flex:1;min-width:0}
-.hal-title{margin:0;font-family:var(--font-title)!important;font-weight:900!important;font-size:24px;line-height:1;letter-spacing:-.01em;font-variation-settings:"SOFT" 100,"WONK" 1,"opsz" 72}
-.hal-sub{margin:3px 0 0;font-size:13px;color:var(--hal-muted)}
+.hal-title{margin:0;font-family:var(--font-title)!important;font-weight:900!important;font-size:24px;line-height:1;letter-spacing:-.01em}
+.hal-sub{margin:4px 0 0;font-family:var(--font-label);font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--hal-muted)}
 .hal-avatar{display:grid;place-items:center;flex:none;border-radius:999px;background:var(--hal-paper);border:1.5px solid var(--hal-ink);overflow:hidden}
 .hal-avatar-lg{width:46px;height:46px;padding:4px}
 .hal-avatar-sm{width:30px;height:30px;padding:3px;align-self:flex-end}
 .hal-avatar-ghost{visibility:hidden}
 .hal-icon-btn{all:unset;cursor:pointer;display:grid;place-items:center;width:40px;height:40px;border-radius:999px;color:var(--hal-ink)}
-.hal-icon-btn:hover{background:rgba(12,18,21,.07)}
+.hal-icon-btn:hover{background:rgba(38,33,27,.07)}
 .hal-icon-btn-sm{width:30px;height:30px}
 .hal-log{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:18px 14px 10px;display:flex;flex-direction:column;gap:10px;background:var(--hal-paper)}
 .hal-row{display:flex;gap:8px;align-items:flex-end}
 .hal-row-you{justify-content:flex-end}
-.hal-bubble{margin:0;max-width:82%;padding:10px 14px;font-size:15px;line-height:1.45;border-radius:18px;border:1.5px solid var(--hal-ink);white-space:pre-wrap;overflow-wrap:anywhere}
-.hal-bubble-hal{background:var(--hal-cream);border-bottom-left-radius:6px}
-.hal-bubble-you{background:var(--hal-water);border-bottom-right-radius:6px}
+.hal-bubble{margin:0;max-width:82%;padding:10px 14px;font-size:15px;line-height:1.45;border-radius:14px;border:1.5px solid var(--hal-ink);white-space:pre-wrap;overflow-wrap:anywhere}
+.hal-bubble-hal{background:var(--hal-cream);color:var(--hal-ink);border-bottom-left-radius:4px}
+.hal-bubble-you{background:var(--hal-teal);color:var(--hal-paper);border-bottom-right-radius:4px}
 .hal-link{color:inherit;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1.5px}
 .hal-note{margin:2px 6px;font-size:13px;line-height:1.4;color:var(--hal-muted);text-align:center}
 .hal-typing{display:inline-flex;gap:5px;align-items:center;padding:14px 16px}
 .hal-typing i{width:7px;height:7px;border-radius:999px;background:var(--hal-ink);opacity:.35;animation:hal-dot 1.1s infinite ease-in-out}
 .hal-typing i:nth-child(2){animation-delay:.15s}.hal-typing i:nth-child(3){animation-delay:.3s}
 .hal-quick{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0 0 38px}
-.hal-chip{all:unset;cursor:pointer;font-size:14px;line-height:1.2;padding:8px 13px;border-radius:999px;border:1.5px solid var(--hal-ink);background:var(--hal-paper);color:var(--hal-ink)}
+.hal-chip{all:unset;cursor:pointer;font-size:14px;line-height:1.2;padding:8px 13px;border-radius:14px;border:1.5px solid var(--hal-ink);background:var(--hal-paper);color:var(--hal-ink)}
 .hal-chip:hover{background:var(--hal-cream)}
-.hal-compose{display:flex;align-items:flex-end;gap:8px;padding:10px 12px;border-top:2px solid var(--hal-ink);background:var(--hal-paper)}
-.hal-input{flex:1;resize:none;max-height:120px;min-height:44px;font:inherit;font-size:16px;line-height:1.35;color:var(--hal-ink);background:#fff;border:1.5px solid var(--hal-ink);border-radius:22px;padding:11px 16px;outline:none}
-.hal-input:focus{box-shadow:0 0 0 3px rgba(98,196,235,.55)}
-.hal-send{all:unset;cursor:pointer;flex:none;width:44px;height:44px;border-radius:999px;background:var(--hal-ink);color:var(--hal-paper);display:grid;place-items:center}
-.hal-send:disabled{opacity:.35;cursor:default}
+.hal-compose{display:flex;align-items:flex-end;gap:8px;padding:10px 12px;border-top:1.5px solid var(--hal-ink);background:var(--hal-paper)}
+.hal-input{flex:1;resize:none;max-height:120px;min-height:44px;font:inherit;font-size:16px;line-height:1.35;color:var(--hal-ink);background:#FFFBF2;border:1.5px solid var(--hal-ink);border-radius:14px;padding:11px 14px;outline:none}
+.hal-input:focus{box-shadow:0 0 0 3px rgba(47,107,102,.35)}
+.hal-send{all:unset;box-sizing:border-box;cursor:pointer;flex:none;width:44px;height:44px;border-radius:12px;background:var(--hal-teal);color:var(--hal-paper);border:2px solid var(--hal-ink);box-shadow:4px 4px 0 var(--hal-ink);display:grid;place-items:center;margin:0 4px 4px 0;transition:transform .12s ease,box-shadow .12s ease}
+.hal-send:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--hal-ink)}
+.hal-send:disabled{opacity:.45;cursor:default}
 .hal-foot{margin:0;padding:0 12px 10px;text-align:center;background:var(--hal-paper)}
 .hal-foot-btn{all:unset;cursor:pointer;font-size:13px;color:var(--hal-muted);text-decoration:underline;text-underline-offset:2px;padding:4px 6px}
-.hal-card{margin:4px 0 6px 38px;padding:14px;border:1.5px solid var(--hal-ink);border-radius:16px;background:var(--hal-cream);display:flex;flex-direction:column;gap:10px}
+.hal-card{margin:4px 0 6px 38px;padding:14px;border:1.5px solid var(--hal-ink);border-radius:14px;background:var(--hal-cream);display:flex;flex-direction:column;gap:10px}
 .hal-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-4px -6px -2px 0}
 .hal-card-title{margin:0;font-family:var(--font-title);font-weight:800;font-size:17px;line-height:1.2}
 .hal-field{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:500}
-.hal-field input{font:inherit;font-size:16px;font-weight:400;color:var(--hal-ink);background:#fff;border:1.5px solid var(--hal-ink);border-radius:10px;padding:10px 12px;outline:none;min-height:44px}
-.hal-field input:focus{box-shadow:0 0 0 3px rgba(98,196,235,.55)}
-.hal-check{display:flex;gap:9px;align-items:flex-start;font-size:11.5px;line-height:1.45;color:#3d474e}
+.hal-field input{font:inherit;font-size:16px;font-weight:400;color:var(--hal-ink);background:#FFFBF2;border:1.5px solid var(--hal-ink);border-radius:10px;padding:10px 12px;outline:none;min-height:44px}
+.hal-field input:focus{box-shadow:0 0 0 3px rgba(47,107,102,.35)}
+.hal-check{display:flex;gap:9px;align-items:flex-start;font-size:11.5px;line-height:1.45;color:#4a4238}
 .hal-check input{flex:none;width:20px;height:20px;margin:1px 0 0;accent-color:var(--hal-ink)}
-.hal-err{margin:0;font-size:13px;color:#a3123f}
-.hal-primary{all:unset;cursor:pointer;text-align:center;font-weight:600;font-size:15px;padding:12px 16px;border-radius:999px;background:var(--hal-ink);color:var(--hal-paper);min-height:20px}
+.hal-err{margin:0;font-size:13px;color:#9c3f1d}
+.hal-primary{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;font-family:var(--font-label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:14px;padding:12px 16px;border-radius:14px;background:var(--hal-teal);color:var(--hal-paper);border:2px solid var(--hal-ink);box-shadow:4px 4px 0 var(--hal-ink);margin:0 4px 4px 0}
 .hal-primary:disabled{opacity:.6;cursor:default}
 .hal-card-alt{margin:0;font-size:13px;color:var(--hal-muted);text-align:center}
 @keyframes hal-pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
 @keyframes hal-up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-@keyframes hal-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @keyframes hal-dot{0%,80%,100%{transform:translateY(0);opacity:.35}40%{transform:translateY(-4px);opacity:.9}}
 @media (prefers-reduced-motion:reduce){.hal-root *{animation:none!important;transition:none!important}}
 `;
