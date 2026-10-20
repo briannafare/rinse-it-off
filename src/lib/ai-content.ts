@@ -21,6 +21,7 @@ import {
 } from "@/lib/commercial";
 import { PLAN_BODY, PLAN_EVERY_VISIT, PLAN_HEADLINE, PLAN_NOTE, PLAN_SEASONS } from "@/lib/plan-copy";
 import { SITE_DESCRIPTION } from "@/lib/site";
+import { AI_PAGES, isPublishable } from "@/lib/ai-pages";
 import { metadata as servicesMetadata } from "@/app/services/page";
 import { metadata as areasMetadata } from "@/app/areas/page";
 import { metadata as contactMetadata } from "@/app/contact/page";
@@ -46,7 +47,7 @@ export type MdPage = {
   mdPath: string;
   title: string;
   summary: string;
-  section: "Main" | "Services" | "Service areas" | "Plan and booking" | "Blog";
+  section: "Main" | "Services" | "Service areas" | "Plan and booking" | "Guides and answers" | "Blog";
   body: () => string;
 };
 
@@ -232,6 +233,18 @@ export const MD_PAGES: MdPage[] = [
   },
 ];
 
+// The AI-search answer pages. Their markdown is the source copy, unchanged.
+// Held out until every [CONFIRM] marker is cleared, same rule as the sitemap.
+const AI_MD_PAGES: MdPage[] = AI_PAGES.filter(isPublishable).map((p) => ({
+  path: p.path,
+  mdPath: mdPathFor(p.path),
+  title: p.title,
+  summary: p.description,
+  section: "Guides and answers",
+  body: () => p.markdown,
+}));
+MD_PAGES.push(...AI_MD_PAGES);
+
 export function getMdPage(mdPath: string): MdPage | undefined {
   return MD_PAGES.find((p) => p.mdPath === mdPath);
 }
@@ -273,6 +286,7 @@ export async function buildLlmsTxt(): Promise<string> {
     ...bySection("Plan and booking"),
     `- [Free property assessment](${SITE_URL}/assessment): ${desc(assessmentMetadata)}`,
     "",
+    ...(AI_MD_PAGES.length ? ["## Guides and answers", "", ...bySection("Guides and answers"), ""] : []),
     "## Blog",
     "",
     `- [Blog](${SITE_URL}/blog): ${desc(blogMetadata)}`,

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SERVICE_SLUGS } from "@/lib/services";
 import { AREAS } from "@/lib/areas";
+import { AI_PAGES, isPublishable } from "@/lib/ai-pages";
 import { client } from "@/sanity/lib/client";
 import { sitemapQuery } from "@/sanity/lib/queries";
 
@@ -63,5 +64,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticEntries, ...blogEntries];
+  // AI-search answer pages (src/content/ai-search). Listed only once every
+  // [CONFIRM] marker is cleared; lastmod is the date the copy was checked.
+  const aiEntries: MetadataRoute.Sitemap = AI_PAGES.filter(isPublishable).map((p) => ({
+    url: `${BASE_URL}${p.path}`,
+    lastModified: new Date(p.checked),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [...staticEntries, ...aiEntries, ...blogEntries];
 }

@@ -1,7 +1,7 @@
 import type { Faq } from "@/sanity/lib/types";
 
 /** Article FAQs. Same questions feed the FAQPage JSON-LD on the post page. */
-export function FaqSection({ faqs }: { faqs?: Faq[] }) {
+export function FaqSection({ faqs, heading = "Common questions", renderAnswer }: { faqs?: Faq[]; heading?: string; renderAnswer?: (answer: string) => React.ReactNode }) {
   if (!faqs?.length) return null;
   return (
     <section className="bg-[#F4F7F8] py-16 md:py-20">
@@ -11,7 +11,7 @@ export function FaqSection({ faqs }: { faqs?: Faq[] }) {
             className="mb-8 text-[clamp(1.6rem,3.2vw,2.2rem)] leading-[1.1] tracking-[-0.02em] text-[#0C1215]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
           >
-            Common questions
+            {heading}
           </h2>
           <div className="divide-y divide-[#E4ECF1] rounded-2xl bg-white px-6 ring-1 ring-[#E4ECF1] md:px-8">
             {faqs.map((f, i) => (
@@ -28,7 +28,7 @@ export function FaqSection({ faqs }: { faqs?: Faq[] }) {
                     +
                   </span>
                 </summary>
-                <p className="mt-3 leading-[1.75] text-[#4B5C6B]">{f.answer}</p>
+                <p className="mt-3 leading-[1.75] text-[#4B5C6B]">{renderAnswer ? renderAnswer(f.answer) : f.answer}</p>
               </details>
             ))}
           </div>
