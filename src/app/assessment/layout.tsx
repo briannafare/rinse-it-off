@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
+import { OG, pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Free Property Assessment | Rinse It Off Portland",
+// Indexed since 2026-10-19: every service page sends people here for the free
+// assessment, and it was already in the sitemap while marked noindex.
+export const metadata: Metadata = pageMeta({
+  title: "Free Property Assessment in Portland",
   description:
-    "Get a free on-site property assessment from Rinse It Off. We walk your property, identify every surface that needs attention, and hand you a written quote. No charge, no commitment.",
-  robots: { index: false, follow: false },
-};
+    "We walk your property, photograph every surface that needs attention, and give you a written, itemized quote. Free, with no commitment.",
+  path: "/assessment",
+  image: OG.commercial,
+});
 
 export default function AssessmentLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;

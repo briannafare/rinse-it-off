@@ -54,16 +54,16 @@ const DS = `
 
   :root {
     --ink:          #0C1215;
-    --ink-soft:     #0E1419;
-    --blue:         #62C4EB;
-    --blue-wash:    #EDF7FC;
+    --ink-soft:     #0C1215;
+    --blue:         #2E9BC6;
+    --blue-wash:    #E6F5FC;
     --surface:      #FFFFFF;
-    --surface-alt:  #F4F7F8;
+    --surface-alt:  #FFFFFF;
     --text-primary: #0C1215;
-    --text-secondary:#4B5C6B;
-    --text-muted:   #8C9AA5;
-    --border:       #E4ECF1;
-    --border-light: #EFF4F7;
+    --text-secondary:#3B4247;
+    --text-muted:   #7A8186;
+    --border:       #E4DCCD;
+    --border-light: #E4DCCD;
     --font-display: "neue-haas-grotesk-display", system-ui, -apple-system, sans-serif;
     --font-body:    "neue-haas-grotesk-text", system-ui, -apple-system, sans-serif;
     --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 24px; --r-2xl: 32px;
@@ -71,14 +71,14 @@ const DS = `
     --shadow-card-hover: 0 4px 12px rgba(12,18,21,0.06), 0 22px 50px rgba(12,18,21,0.09);
     --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
     --aura-water:
-      radial-gradient(120% 120% at 12% 10%, #DDF1FB 0%, transparent 55%),
+      radial-gradient(120% 120% at 12% 10%, #E6F5FC 0%, transparent 55%),
       radial-gradient(120% 120% at 88% 22%, #E9F6FC 0%, transparent 55%),
-      radial-gradient(140% 130% at 55% 100%, #EEF5FB 0%, transparent 60%);
+      radial-gradient(140% 130% at 55% 100%, #E6F5FC 0%, transparent 60%);
   }
 
   html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
   body { font-family: var(--font-body); color: var(--text-primary); background: var(--surface); }
-  ::selection { background: rgba(98,196,235,0.25); }
+  ::selection { background: rgba(46,155,198,0.25); }
 
   a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
     outline: 2px solid var(--blue) !important;
@@ -94,84 +94,18 @@ const DS = `
     0%      { transform: translateX(-240%) skewX(-15deg); }
     55%,100%{ transform: translateX(360%)  skewX(-15deg); }
   }
+  /* print button (rebrand 2026-10-19): spruce teal, ink outline, hard offset shadow */
   .btn-glass {
-    position: relative; isolation: isolate; overflow: hidden;
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-    padding: 1rem 2rem; width: 100%;
-    font-family: var(--font-display); font-size: 1rem; font-weight: 600;
-    letter-spacing: -0.01em; line-height: 1; white-space: nowrap;
-    text-decoration: none; cursor: pointer; appearance: none;
-    color: var(--ink); text-shadow: 0 1px 0 rgba(255,255,255,0.7);
-    border: 1px solid rgba(255,255,255,0.8);
-    border-radius: var(--r-lg);
-    -webkit-backdrop-filter: blur(6px) saturate(1.5) brightness(1.1);
-            backdrop-filter: blur(6px) saturate(1.5) brightness(1.1);
-    background:
-      radial-gradient(95% 70% at 50% -12%, rgba(255,255,255,0.9), rgba(255,255,255,0.28) 40%, transparent 68%),
-      radial-gradient(40% 56% at 22% 30%, rgba(98,196,235,0.16), transparent 64%),
-      radial-gradient(44% 60% at 80% 26%, rgba(98,196,235,0.13), transparent 64%),
-      radial-gradient(46% 64% at 80% 80%, rgba(98,196,235,0.14), transparent 66%),
-      linear-gradient(180deg, rgba(255,255,255,0.20), rgba(238,248,255,0.12));
-    background-color: rgba(255,255,255,0.16);
-    box-shadow:
-      inset 0 2px 2px rgba(255,255,255,1),
-      inset 0 0 0 1px rgba(255,255,255,0.30),
-      inset 0 10px 18px -10px rgba(255,255,255,0.9),
-      inset 0 -16px 26px -12px rgba(40,80,110,0.30),
-      inset 0 -2px 3px rgba(255,255,255,0.6),
-      0 6px 14px -4px rgba(20,45,60,0.16),
-      0 20px 38px -14px rgba(20,45,60,0.20),
-      14px 22px 40px -20px rgba(150,210,255,0.26);
-    transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s var(--ease-out-expo);
+    padding: 1rem 2rem; width: 100%; cursor: pointer; appearance: none; text-decoration: none;
+    font-family: var(--font-label); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1;
+    color: #FBF8F2; background: #2E9BC6; border: 2px solid #0C1215; border-radius: 14px;
+    box-shadow: 4px 4px 0 #0C1215; transition: transform .15s ease, box-shadow .15s ease;
   }
-  .btn-glass::before {
-    content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; padding: 1.5px;
-    pointer-events: none;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,1), rgba(255,255,255,0.18) 28%, transparent 55%, rgba(255,255,255,0.5) 100%),
-      linear-gradient(110deg,
-        rgba(98,196,235,0.6) 0%, rgba(98,196,235,0.4) 18%, rgba(98,196,235,0.45) 40%,
-        rgba(98,196,235,0.4) 60%, rgba(98,196,235,0.45) 80%, rgba(98,196,235,0.5) 100%);
-    background-size: 100% 100%, 200% 100%;
-    background-blend-mode: screen;
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor; mask-composite: exclude;
-    opacity: 0.7;
-    animation: bp-rim 16s linear infinite;
-  }
-  .btn-glass::after {
-    content: ""; position: absolute; top: -40%; bottom: -40%; left: 0; width: 38%;
-    z-index: 1; pointer-events: none;
-    background: linear-gradient(100deg, transparent 0%,
-      rgba(255,255,255,0.45) 40%, rgba(255,255,255,0.85) 50%,
-      rgba(255,255,255,0.45) 60%, transparent 100%);
-    filter: blur(5px); mix-blend-mode: screen;
-    transform: translateX(-240%) skewX(-15deg);
-    animation: bp-sweep 7s cubic-bezier(0.55, 0, 0.3, 1) infinite;
-  }
-  .btn-glass:hover::after { animation-duration: 2.8s; }
-  .btn-glass > * { position: relative; z-index: 2; }
-  .btn-glass:hover {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow:
-      inset 0 2px 2px rgba(255,255,255,1),
-      inset 0 0 0 1px rgba(255,255,255,0.42),
-      inset 0 10px 18px -10px rgba(255,255,255,1),
-      inset 0 -16px 28px -12px rgba(40,80,110,0.34),
-      inset 0 -2px 3px rgba(255,255,255,0.7),
-      0 10px 20px -4px rgba(20,45,60,0.20),
-      0 28px 50px -14px rgba(20,45,60,0.26),
-      18px 28px 50px -20px rgba(150,210,255,0.34);
-  }
-  .btn-glass:disabled {
-    opacity: 0.5; cursor: not-allowed; transform: none;
-    animation: none;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .btn-glass::before, .btn-glass::after { animation: none; }
-    .btn-glass, .btn-glass:hover { transform: none; transition: none; }
-  }
+  .btn-glass:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #0C1215; }
+  .btn-glass:active { transform: translate(4px,4px); box-shadow: 0 0 0 #0C1215; }
+  .btn-glass:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .btn-glass, .btn-glass:hover { transform: none; transition: none; } }
 `;
 
 // ─── Main Component ───────────────────────────────────────────────────────────
@@ -282,14 +216,14 @@ export default function AssessmentPage() {
 
       {/* Header */}
       <header style={{ background: "var(--ink)", padding: "18px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
-        <a href="https://www.rinseitoff.com" style={{ display: "inline-block" }}><img src="/logo-white.png" alt="Rinse It Off" style={{ height: 36, width: "auto" }} onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} /></a>
+        <a href="/" style={{ display: "inline-block" }}><img src="/logo-white.png" alt="Rinse It Off" style={{ height: 36, width: "auto" }} onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} /></a>
         <a href="tel:+19716264146" style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "0.9375rem", color: "var(--blue)", textDecoration: "none", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>
           (971) 626-4146
         </a>
       </header>
 
       {/* Hero strip */}
-      <div style={{ background: "var(--aura-water)", backgroundColor: "var(--surface-alt, #F4F7F8)", padding: "40px 24px 36px" }}>
+      <div style={{ background: "var(--aura-water)", backgroundColor: "var(--surface-alt, #FFFFFF)", padding: "40px 24px 36px" }}>
         <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
           <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 12 }}>Portland, OR · Licensed &amp; Insured</div>
           <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(2rem, 6vw, 3rem)", color: "var(--ink)", letterSpacing: "-0.03em", lineHeight: 1.0, marginBottom: 16 }}>
@@ -500,7 +434,7 @@ export default function AssessmentPage() {
 
             {/* Submit — liquid glass CTA over the aura */}
             {propertyType && (
-              <div style={{ background: "var(--aura-water)", backgroundColor: "var(--blue-wash, #EDF7FC)", borderRadius: "var(--r-xl)", padding: "24px", marginTop: 8 }}>
+              <div style={{ background: "var(--aura-water)", backgroundColor: "var(--blue-wash, #E6F5FC)", borderRadius: "var(--r-xl)", padding: "24px", marginTop: 8 }}>
                 <button type="submit" disabled={sending || !form.name || !form.phone} className="btn-glass">
                   <span>{sending ? "Sending your request..." : apptLabel ? "Request My Free Assessment" : "Request My Free Assessment"}</span>
                   {!sending && (

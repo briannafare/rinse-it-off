@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useScrollReveal, useStaggerReveal } from "@/lib/gsap";
 
 /** Show the machine actually working (real footage), beside the four-step
@@ -31,6 +31,35 @@ export function ProcessSection() {
   const headRef = useScrollReveal();
   const stepsRef = useStaggerReveal(0.12);
   const [reduceMotion, setReduceMotion] = useState(false);
+  // The 1.4 MB clip loads only when the section nears the screen. It used to
+  // download with the page and compete with the hero photo on phones.
+  const videoBox = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(false);
+  const video = useRef<HTMLVideoElement>(null);
+  // the source is set late, so the element has to be told to load and play it
+  useEffect(() => {
+    const v = video.current;
+    if (!near || !v) return;
+    v.load();
+    if (!reduceMotion) v.play().catch(() => {});
+  }, [near, reduceMotion]);
+
+  useEffect(() => {
+    const el = videoBox.current;
+    if (!el || near) return;
+    if (!("IntersectionObserver" in window)) return setNear(true);
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setNear(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "400px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [near]);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -41,7 +70,7 @@ export function ProcessSection() {
   }, []);
 
   return (
-    <section id="process" className="bg-white py-16 md:py-24">
+    <section id="process" className="bg-retro-paper py-16 md:py-24">
       <div className="container-site">
         <div ref={headRef}>
           <h2
@@ -52,22 +81,24 @@ export function ProcessSection() {
           </h2>
         </div>
 
-        <div className="mt-10 grid items-center gap-10 md:mt-14 lg:grid-cols-2 lg:gap-16">
+        <div className="mt-10 grid items-center gap-10 md:mt-14 lg:grid-cols-[minmax(0,360px)_1fr] lg:gap-16">
           {/* real footage — the rotary cleaner mid-pass */}
-          <div className="relative overflow-hidden rounded-3xl border border-[#E4ECF1] shadow-[0_30px_60px_-30px_rgba(20,45,60,0.3)]">
+          <div ref={videoBox} className="frame relative mx-auto w-full max-w-[360px] overflow-hidden">
             <video
-              src="/brand/video/surface-cleaning.mp4"
-              poster="/brand/photos/work/surface-cleaning-poster.webp"
+              ref={video}
+              src={near ? "/brand/video/surface-cleaning.mp4" : undefined}
+              preload="none"
+              poster={near ? "/brand/photos/work/surface-cleaning-poster.webp" : undefined}
               autoPlay={!reduceMotion}
               muted
               loop={!reduceMotion}
               controls={reduceMotion}
               playsInline
-              className="aspect-[4/3] w-full object-cover"
+              className="aspect-[9/16] w-full object-cover"
               aria-label="Rotary surface cleaner removing grime in a single pass"
             />
-            <span className="absolute bottom-4 left-4 rounded-lg bg-black/50 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
-              Actual RIO job footage
+            <span className="absolute bottom-4 left-4 rounded-[10px] border-2 border-[#0C1215] bg-[#FBF8F2] px-3 py-1.5 font-label text-[12px] font-bold uppercase tracking-[0.1em] text-[#0C1215]">
+              Real job footage
             </span>
           </div>
 
@@ -75,7 +106,7 @@ export function ProcessSection() {
             {STEPS.map((s) => (
               <div key={s.n} className="flex gap-5">
                 <span
-                  className="text-3xl font-medium leading-none text-[#62C4EB] md:text-4xl"
+                  className="font-label text-lg font-bold leading-snug text-[#1A6E93]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {s.n}
@@ -87,7 +118,7 @@ export function ProcessSection() {
                   >
                     {s.title}
                   </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-[#4B5C6B]">{s.body}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-[#3B4247]">{s.body}</p>
                 </div>
               </div>
             ))}
@@ -97,7 +128,7 @@ export function ProcessSection() {
         <div className="mt-12 flex md:mt-16">
           <a
             href="/assessment"
-            className="group inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+            className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
           >
             Book your free 21-point audit
           </a>

@@ -32,14 +32,14 @@ export function Promise() {
   const gridRef = useStaggerReveal(0.12);
 
   return (
-    <section className="relative overflow-hidden bg-white py-16 md:py-24">
+    <section className="relative overflow-hidden bg-retro-paper py-16 md:py-24">
       {/* soft water aura on the clean-water canvas */}
-      <div className="aura-blob left-[-10%] top-[-35%] h-[500px] w-[500px] bg-[#62C4EB]/12 motion-reduce:animate-none" aria-hidden />
-      <div className="aura-blob right-[-8%] bottom-[-45%] h-[440px] w-[440px] bg-[#62C4EB]/10 motion-reduce:animate-none" style={{ animationDelay: "-7s" }} aria-hidden />
+      <div className="aura-blob left-[-10%] top-[-35%] h-[500px] w-[500px] bg-[#62C4EB]/25 motion-reduce:animate-none" aria-hidden />
+      <div className="aura-blob right-[-8%] bottom-[-45%] h-[440px] w-[440px] bg-[#62C4EB]/25 motion-reduce:animate-none" style={{ animationDelay: "-7s" }} aria-hidden />
 
       <div className="container-site relative">
         <div className="flex items-center gap-4">
-          <Droplets className="h-9 w-9 shrink-0 text-[#62C4EB]" aria-hidden />
+          <Droplets className="h-9 w-9 shrink-0 text-[#1A6E93]" aria-hidden />
           <h2
             className="text-3xl font-medium text-[#0C1215] md:text-4xl"
             style={{ fontFamily: "var(--font-display)" }}
@@ -52,18 +52,10 @@ export function Promise() {
           {POINTS.map((p) => (
             <div
               key={p.title}
-              className="group rounded-2xl border border-[#E4ECF1] bg-[#FAFCFD] p-7 transition-colors duration-300 hover:border-[#62C4EB]/40 hover:bg-white motion-reduce:transition-none"
+              className="frame group bg-retro-paper p-7"
             >
               <div className="flex items-center justify-between">
-                <p.icon className="h-6 w-6 text-[#62C4EB]" aria-hidden />
-                {p.stat && (
-                  <span
-                    className="text-4xl font-medium text-[#0C1215]/10 transition-colors duration-300 group-hover:text-[#62C4EB]/50 motion-reduce:transition-none"
-                    style={{ fontFamily: "var(--font-display)" }}
-                  >
-                    {p.stat}
-                  </span>
-                )}
+                <p.icon className="h-6 w-6 text-[#1A6E93]" aria-hidden />
               </div>
               <h3
                 className="mt-5 text-lg font-medium text-[#0C1215]"
@@ -71,7 +63,7 @@ export function Promise() {
               >
                 {p.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[#4B5C6B]">{p.body}</p>
+              <p className="mt-2 text-sm leading-relaxed text-[#3B4247]">{p.body}</p>
             </div>
           ))}
         </div>

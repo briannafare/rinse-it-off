@@ -50,7 +50,7 @@ export function Philosophy() {
         </h2>
         <div className="flex items-center gap-3 text-white/25 text-sm font-mono">
           <span className="w-8 h-px bg-brand-mint/30" />
-          164 days of rain per year. Your building feels every one.
+          About 157 days of rain a year. Your building feels every one.
         </div>
       </div>
     </section>

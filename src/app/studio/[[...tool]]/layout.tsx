@@ -7,7 +7,7 @@ import type { Metadata } from 'next'
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-  title: 'Rinse It Off Blog Studio',
+  title: 'Blog Studio',
   robots: { index: false, follow: false },
 }
 

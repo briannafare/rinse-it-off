@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import {
   Droplets,
   ClipboardCheck,
@@ -15,12 +16,12 @@ import {
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Terms & the Clean Water Promise",
   description:
-    "How Rinse It Off works, in plain English: the free 21-point property audit, a firm itemized quote the same day we walk your property, and the Clean Water Promise to re-rinse anything free within 48 hours.",
-  alternates: { canonical: "https://rinseitoff.com/terms" },
-};
+    "How Rinse It Off works, in plain English: the free property audit, a firm itemized quote, and the 48-hour re-rinse guarantee.",
+  path: "/terms",
+});
 
 const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";
@@ -31,26 +32,26 @@ export default function TermsPage() {
       <Navbar />
       <main>
         {/* Dark band = punctuation; the body below is light clean-water. */}
-        <section className="relative overflow-hidden bg-[#0C1215] pt-28 pb-14 md:pt-32 md:pb-20">
+        <section className="relative overflow-hidden bg-[#62C4EB] pt-28 pb-14 md:pt-32 md:pb-20">
           <div className="container-site">
-            <p className="flex items-center gap-2 text-sm font-medium text-white/85">
-              <span className="inline-block h-2 w-2 rounded-[3px] bg-[#62C4EB]" aria-hidden />
+            <p className="flex items-center gap-2 text-sm font-medium text-[#0C1215]/85">
+              <span className="inline-block h-2 w-2 rounded-[3px] bg-[#2E9BC6]" aria-hidden />
               The plain-English version
             </p>
             <h1
-              className="mt-3 max-w-3xl text-[clamp(2rem,5vw,3.6rem)] leading-[1.02] tracking-[-0.03em] text-white"
+              className="mt-3 max-w-3xl text-[clamp(2rem,5vw,3.6rem)] leading-[1.02] tracking-[-0.03em] text-[#0C1215]"
               style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
             >
               Terms &amp; the Clean Water Promise
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/80">
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[#0C1215]/80">
               How we work, what we promise, and what to expect — no fine-print games.
               Here&apos;s the honest version of doing business with Rinse It Off.
             </p>
           </div>
         </section>
 
-        <section className="bg-white py-16 md:py-24">
+        <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site">
             <div className="mx-auto max-w-3xl space-y-12 md:space-y-14">
               {/* Clean Water Promise */}
@@ -59,10 +60,10 @@ export default function TermsPage() {
                   className="flex items-center gap-3 text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  <Droplets className="h-5 w-5 shrink-0 text-[#62C4EB]" aria-hidden />
+                  <Droplets className="h-5 w-5 shrink-0 text-[#1A6E93]" aria-hidden />
                   The Clean Water Promise
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4B5C6B]">
+                <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
                   If there&apos;s a spot you&apos;re not happy with, tell us and we&apos;ll
                   re-rinse it free within 48 hours of your service. No debate, no fine
                   print — we&apos;d rather come back and make it right than leave you
@@ -76,10 +77,10 @@ export default function TermsPage() {
                   className="flex items-center gap-3 text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  <ClipboardCheck className="h-5 w-5 shrink-0 text-[#62C4EB]" aria-hidden />
+                  <ClipboardCheck className="h-5 w-5 shrink-0 text-[#1A6E93]" aria-hidden />
                   Your free 21-point property audit
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4B5C6B]">
+                <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
                   Every job starts with a free 21-point property audit. We walk your
                   property, read each surface, and note the material, its condition, and
                   the right method for it. There&apos;s no charge and no obligation — it&apos;s
@@ -93,10 +94,10 @@ export default function TermsPage() {
                   className="flex items-center gap-3 text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  <FileText className="h-5 w-5 shrink-0 text-[#62C4EB]" aria-hidden />
+                  <FileText className="h-5 w-5 shrink-0 text-[#1A6E93]" aria-hidden />
                   Your quote
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4B5C6B]">
+                <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
                   After we walk your property, we hand you a firm, itemized quote{" "}
                   <span className="font-semibold text-[#0C1215]">
                     the same day we walk your property
@@ -113,11 +114,11 @@ export default function TermsPage() {
                   className="flex items-center gap-3 text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  <CalendarClock className="h-5 w-5 shrink-0 text-[#62C4EB]" aria-hidden />
+                  <CalendarClock className="h-5 w-5 shrink-0 text-[#1A6E93]" aria-hidden />
                   Scheduling &amp; the Portland weather
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4B5C6B]">
-                  Portland sees around 164 rainy days a year, and that&apos;s okay — most of
+                <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
+                  Portland gets measurable rain on about 157 days a year, and that&apos;s okay — most of
                   our methods work just fine in the rain, and a fresh rinse isn&apos;t undone
                   by a little weather. If conditions ever genuinely affect the work,
                   we&apos;ll talk it through and reschedule at no penalty.
@@ -130,10 +131,10 @@ export default function TermsPage() {
                   className="flex items-center gap-3 text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  <Wallet className="h-5 w-5 shrink-0 text-[#62C4EB]" aria-hidden />
+                  <Wallet className="h-5 w-5 shrink-0 text-[#1A6E93]" aria-hidden />
                   Deposits
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4B5C6B]">
+                <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
                   Some jobs may require a deposit to reserve your place on the schedule.
                   When one applies, it&apos;s shown on your written quote before you approve
                   anything and is credited toward your final total. It&apos;s simply a
@@ -147,10 +148,10 @@ export default function TermsPage() {
                   className="flex items-center gap-3 text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  <ShieldCheck className="h-5 w-5 shrink-0 text-[#62C4EB]" aria-hidden />
+                  <ShieldCheck className="h-5 w-5 shrink-0 text-[#1A6E93]" aria-hidden />
                   Insured
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4B5C6B]">
+                <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
                   We carry general liability and workers&apos; compensation insurance, and
                   we&apos;re glad to share proof before we start. You&apos;re protected on
                   residential and commercial work alike.
@@ -163,10 +164,10 @@ export default function TermsPage() {
                   className="flex items-center gap-3 text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  <Handshake className="h-5 w-5 shrink-0 text-[#62C4EB]" aria-hidden />
+                  <Handshake className="h-5 w-5 shrink-0 text-[#1A6E93]" aria-hidden />
                   Payment &amp; changes
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4B5C6B]">
+                <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
                   Payment is due on completion unless your written quote says otherwise.
                   Need to reschedule or cancel? Give us a reasonable heads-up and we&apos;ll
                   sort it out — we&apos;re people, not a penalty machine. We may update these
@@ -180,10 +181,10 @@ export default function TermsPage() {
                   className="flex items-center gap-3 text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  <MessageSquare className="h-5 w-5 shrink-0 text-[#62C4EB]" aria-hidden />
+                  <MessageSquare className="h-5 w-5 shrink-0 text-[#1A6E93]" aria-hidden />
                   Calls &amp; text messages
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4B5C6B]">
+                <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
                   By giving us your phone number — through the site, over the phone, or in
                   person — you agree that Rinse It Off (a DBA of Fresh Rinse, LLC) may call or
                   text you about your quote, appointment, or service. Message frequency varies.
@@ -191,7 +192,7 @@ export default function TermsPage() {
                   any time, or <strong>HELP</strong> for help. Carriers aren&apos;t liable for
                   delayed or undelivered messages. Your number is never shared or sold to third
                   parties for their own marketing — see our{" "}
-                  <a href="/privacy" className="font-semibold text-[#3AA8D4] underline">
+                  <a href="/privacy" className="font-semibold text-[#1A6E93] underline">
                     Privacy Policy
                   </a>
                   .
@@ -199,21 +200,21 @@ export default function TermsPage() {
               </article>
 
               {/* Questions / contact */}
-              <article className="rounded-2xl bg-[#F4F7F8] p-6 ring-1 ring-[#E4ECF1] md:p-8">
+              <article className="rounded-[4px] bg-retro-pool p-6 ring-1 ring-retro-line md:p-8">
                 <h2
                   className="text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Questions?
                 </h2>
-                <p className="mt-3 text-base leading-relaxed text-[#4B5C6B]">
+                <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
                   Ask us anything before we start — that&apos;s what the free assessment is
                   for.
                 </p>
                 <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
                   <a
                     href="/assessment"
-                    className="group inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none"
+                    className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     Get your free assessment
@@ -221,18 +222,18 @@ export default function TermsPage() {
                   </a>
                   <a
                     href={PHONE_TEL}
-                    className="inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-semibold text-[#0C1215] hover:text-[#3AA8D4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8]"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-semibold text-[#0C1215] hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF]"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
-                    <Phone className="h-4 w-4 text-[#62C4EB]" aria-hidden />
+                    <Phone className="h-4 w-4 text-[#1A6E93]" aria-hidden />
                     {PHONE_DISPLAY}
                   </a>
                   <a
                     href="mailto:hello@rinseitoff.com"
-                    className="inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-semibold text-[#0C1215] hover:text-[#3AA8D4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8]"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-semibold text-[#0C1215] hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF]"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
-                    <Mail className="h-4 w-4 text-[#62C4EB]" aria-hidden />
+                    <Mail className="h-4 w-4 text-[#1A6E93]" aria-hidden />
                     hello@rinseitoff.com
                   </a>
                 </div>

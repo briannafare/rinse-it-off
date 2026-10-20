@@ -50,7 +50,7 @@ export const TRAINING_MODULES: TrainingModule[] = [
     subtitle: 'Know your tools',
     week: 'Week 1',
     icon: '/training/icons/soft-wash.png',
-    iconBg: '#EDF7FC',
+    iconBg: '#E3ECE6',
     notebookUrl: 'https://notebooklm.google.com/notebook/f48bf774-15b9-4dc2-adaf-df615dff4bb6',
     description: 'Master the equipment, rig configuration, and operational procedures that set RIO apart. Hot water systems, soft wash setup, surface cleaners, and the pure water window system.',
     lessons: [
@@ -77,7 +77,7 @@ export const TRAINING_MODULES: TrainingModule[] = [
     subtitle: 'Find and reach prospects',
     week: 'Week 1',
     icon: '/training/icons/house-wash.png',
-    iconBg: '#F0FFF6',
+    iconBg: '#F5EDDC',
     notebookUrl: 'https://notebooklm.google.com/notebook/2fd3bedb-5211-44b0-9e52-ed1b375b3848',
     description: "Strategic target identification, market positioning, and how to communicate RIO's value to commercial and residential prospects in the Portland metro.",
     lessons: [
@@ -143,7 +143,7 @@ export const TRAINING_MODULES: TrainingModule[] = [
     subtitle: 'The walkthrough that closes',
     week: 'Week 2',
     icon: '/training/icons/roof-cleaning.png',
-    iconBg: '#EDF7FC',
+    iconBg: '#E3ECE6',
     notebookUrl: 'https://notebooklm.google.com/notebook/7224de8b-1dce-437f-9b15-c3bbe4eb069b',
     description: 'The 5-stage property assessment walkthrough — from arrival to documentation. How to turn a free assessment into a signed contract.',
     lessons: [
@@ -165,7 +165,7 @@ export const TRAINING_MODULES: TrainingModule[] = [
     subtitle: "Know who you're selling to",
     week: 'Week 2',
     icon: '/training/icons/house-wash.png',
-    iconBg: '#F0FFF6',
+    iconBg: '#F5EDDC',
     notebookUrl: 'https://notebooklm.google.com/notebook/3cb78c57-060d-4542-898e-789c44663109',
     description: "Detailed buyer personas — facility managers, property managers, homeowners, HOA boards. Their fears, motivations, and the talk tracks that work.",
     lessons: [

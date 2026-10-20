@@ -4,7 +4,7 @@ import type { Faq } from "@/sanity/lib/types";
 export function FaqSection({ faqs, heading = "Common questions", renderAnswer }: { faqs?: Faq[]; heading?: string; renderAnswer?: (answer: string) => React.ReactNode }) {
   if (!faqs?.length) return null;
   return (
-    <section className="bg-[#F4F7F8] py-16 md:py-20">
+    <section className="bg-retro-pool py-16 md:py-20">
       <div className="container-site">
         <div className="mx-auto max-w-3xl">
           <h2
@@ -13,7 +13,7 @@ export function FaqSection({ faqs, heading = "Common questions", renderAnswer }:
           >
             {heading}
           </h2>
-          <div className="divide-y divide-[#E4ECF1] rounded-2xl bg-white px-6 ring-1 ring-[#E4ECF1] md:px-8">
+          <div className="divide-y divide-[#E4DCCD] rounded-[4px] bg-white px-6 ring-1 ring-retro-line md:px-8">
             {faqs.map((f, i) => (
               <details key={i} className="group py-5" open={i === 0}>
                 <summary
@@ -23,12 +23,12 @@ export function FaqSection({ faqs, heading = "Common questions", renderAnswer }:
                   {f.question}
                   <span
                     aria-hidden
-                    className="mt-0.5 shrink-0 text-xl text-[#62C4EB] transition-transform group-open:rotate-45 motion-reduce:transition-none"
+                    className="mt-0.5 shrink-0 text-xl text-[#1A6E93] transition-transform group-open:rotate-45 motion-reduce:transition-none"
                   >
                     +
                   </span>
                 </summary>
-                <p className="mt-3 leading-[1.75] text-[#4B5C6B]">{renderAnswer ? renderAnswer(f.answer) : f.answer}</p>
+                <p className="mt-3 leading-[1.75] text-[#3B4247]">{renderAnswer ? renderAnswer(f.answer) : f.answer}</p>
               </details>
             ))}
           </div>

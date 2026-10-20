@@ -8,7 +8,7 @@ import QuoteWizard from "./QuoteWizard";
  *  Passcode-gated, noindex, and deliberately absent from sitemap.ts and nav. */
 
 export const metadata: Metadata = {
-  title: "Audit Tool — Rinse It Off",
+  title: "Audit Tool",
   robots: { index: false, follow: false },
 };
 
@@ -25,17 +25,17 @@ export default async function QuoteToolPage({
   if (authed) return <QuoteWizard />;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#F4F7F8] px-5 font-body text-[#0C1215]">
+    <div className="flex min-h-screen items-center justify-center bg-retro-pool px-5 font-body text-[#26211B]">
       <div className="w-full max-w-sm">
         <form
           action={unlockQuoteTool}
-          className="rounded-2xl border border-[#EFF4F7] bg-white p-6 shadow-soft-md sm:p-8"
+          className="rounded-[4px] border border-retro-line bg-white p-6 sm:p-8"
         >
-          <div className="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-[#EDF7FC]">
-            <Lock className="h-5 w-5 text-[#62C4EB]" aria-hidden />
+          <div className="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-[#E3ECE6]">
+            <Lock className="h-5 w-5 text-[#2F6B66]" aria-hidden />
           </div>
           <h1 className="font-display text-xl font-semibold tracking-tight">Audit Tool</h1>
-          <p className="mt-1.5 text-sm leading-relaxed text-[#4B5C6B]">
+          <p className="mt-1.5 text-sm leading-relaxed text-[#4A4238]">
             Internal quoting tool. Enter the team passcode to continue.
           </p>
           <input
@@ -45,7 +45,7 @@ export default async function QuoteToolPage({
             autoFocus
             autoComplete="current-password"
             placeholder="Passcode"
-            className="mt-5 min-h-11 w-full rounded-xl border border-[#E4ECF1] bg-white px-4 py-3 text-sm text-[#0C1215] placeholder:text-[#8899A6] focus:border-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="mt-5 min-h-11 w-full rounded-xl border border-retro-line bg-white px-4 py-3 text-sm text-[#26211B] placeholder:text-[#8A8072] focus:border-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           />
           {error === "wrong" && (
             <p className="mt-2 text-sm font-medium text-[#DC4B2A]">Wrong passcode — try again.</p>
@@ -57,12 +57,12 @@ export default async function QuoteToolPage({
           )}
           <button
             type="submit"
-            className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-[#62C4EB] px-6 py-3 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+            className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-[14px] btn-print bg-[#2F6B66] px-6 py-3 text-sm font-semibold text-[#F5EDDC] transition-colors hover:bg-[#3A7C76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
           >
             Unlock
           </button>
         </form>
-        <p className="mt-4 text-center text-xs text-[#8899A6]">
+        <p className="mt-4 text-center text-xs text-[#8A8072]">
           Rinse It Off — internal use only. Not linked from the public site.
         </p>
       </div>

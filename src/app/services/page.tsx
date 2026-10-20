@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import { OG, pageMeta } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Phone, ShieldCheck } from "lucide-react";
 import { SERVICES } from "@/lib/services";
 
-export const metadata: Metadata = {
-  title: "Our Services | Exterior Cleaning Methods",
+export const metadata: Metadata = pageMeta({
+  title: "Exterior Cleaning Services in Portland",
   description:
-    "Six matched methods, one for every surface — roof soft washing, concrete surface cleaning, hot-water degreasing, pure-water window cleaning, and brick & masonry washing across the Portland metro. Residential & commercial. Insured.",
-  alternates: { canonical: "https://rinseitoff.com/services" },
-};
+    "Six cleaning methods, each matched to a surface: roof soft washing, house washing, concrete, windows, hot-water degreasing and brick. Homes and businesses.",
+  path: "/services",
+  image: OG.services,
+});
 
 const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";
@@ -18,15 +20,15 @@ export default function ServicesIndexPage() {
   return (
     <>
       {/* ── Header band ─────────────────────────────────────────────── */}
-      <section className="bg-[#0C1215] pt-28 pb-16 md:pt-36 md:pb-24">
+      <section className="bg-[#62C4EB] pt-28 pb-16 md:pt-36 md:pb-24">
         <div className="container-site">
           <h1
-            className="mt-4 max-w-3xl text-[clamp(2.2rem,5.5vw,4rem)] leading-[1.02] tracking-[-0.03em] text-white"
+            className="mt-4 max-w-3xl text-[clamp(2.2rem,5.5vw,4rem)] leading-[1.02] tracking-[-0.03em] text-[#0C1215]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
           >
             Six methods. The right one for every surface.
           </h1>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/80">
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#0C1215]/80">
             Pressure is a tool, not a default. We assess your property first, then match the
             right pressure, temperature and chemistry to each surface — home or commercial
             building — so it comes clean without being worn down.
@@ -34,7 +36,7 @@ export default function ServicesIndexPage() {
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
             <Link
               href="/assessment"
-              className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+              className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Get your free assessment
@@ -42,7 +44,7 @@ export default function ServicesIndexPage() {
             </Link>
             <a
               href={PHONE_TEL}
-              className="-mx-2 inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-semibold text-white transition-colors hover:text-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+              className="-mx-2 inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-semibold text-[#0C1215] transition-colors hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
             >
               <Phone className="h-4 w-4" aria-hidden />
               {PHONE_DISPLAY}
@@ -52,14 +54,14 @@ export default function ServicesIndexPage() {
       </section>
 
       {/* ── Service grid ────────────────────────────────────────────── */}
-      <section className="bg-[#F4F7F8] py-16 md:py-24">
+      <section className="bg-retro-pool py-16 md:py-24">
         <div className="container-site">
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((s, i) => (
               <Link
                 key={s.key}
                 href={`/services/${s.slug}`}
-                className="group flex flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-[#E4ECF1] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+                className="group flex flex-col overflow-hidden rounded-[4px] bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
@@ -80,10 +82,10 @@ export default function ServicesIndexPage() {
                   >
                     {s.surface}
                   </h2>
-                  <p className="mt-2 text-sm leading-relaxed text-[#4B5C6B]">{s.what}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-[#3B4247]">{s.what}</p>
                   <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#0C1215]">
                     See the method
-                    <ArrowRight className="h-4 w-4 text-[#3AA8D4] transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
+                    <ArrowRight className="h-4 w-4 text-[#1A6E93] transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
                   </span>
                 </div>
               </Link>
@@ -91,10 +93,10 @@ export default function ServicesIndexPage() {
           </div>
 
           {/* Reassurance + dual funnel */}
-          <div className="mt-12 flex flex-col items-start gap-6 rounded-2xl border border-[#E4ECF1] bg-white p-6 shadow-soft md:mt-14 md:flex-row md:items-center md:justify-between md:p-8">
+          <div className="mt-12 flex flex-col items-start gap-6 rounded-[4px] border border-retro-line bg-white p-6 md:mt-14 md:flex-row md:items-center md:justify-between md:p-8">
             <div className="flex items-start gap-3">
-              <ShieldCheck className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#62C4EB]" aria-hidden />
-              <p className="max-w-xl text-sm leading-relaxed text-[#4B5C6B]">
+              <ShieldCheck className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#1A6E93]" aria-hidden />
+              <p className="max-w-xl text-sm leading-relaxed text-[#3B4247]">
                 <span className="font-semibold text-[#0C1215]">
                   Not sure which method your property needs?
                 </span>{" "}
@@ -106,14 +108,14 @@ export default function ServicesIndexPage() {
             <div className="flex flex-shrink-0 flex-wrap gap-3">
               <Link
                 href="/assessment"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                className="inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Free assessment
               </Link>
               <Link
                 href="/assessment?type=residential"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                className="inline-flex items-center gap-2 rounded-full bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Get a home quote

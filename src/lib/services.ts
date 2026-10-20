@@ -6,7 +6,7 @@
  *
  *  Claims are locked: free 21-point property audit → firm itemized quote the
  *  same day we walk your property; Clean Water Promise = re-rinse free within
- *  48 hours; ~164 rainy days/yr; Insured (no license number); NO pricing,
+ *  48 hours; ~157 days with measurable rain/yr (NOAA 1991-2020, PDX); Insured (no license number); NO pricing,
  *  NO reviews. Serves BOTH residential and commercial. */
 import { METHODS, type Method } from "@/lib/methods";
 import type { FAQItem } from "@/lib/faqs";
@@ -29,12 +29,12 @@ const EXTRA: Record<string, Omit<Service, keyof Method>> = {
     intro:
       "The roof is the most expensive surface on the property and the easiest to ruin with the wrong approach — high pressure strips the protective granules off asphalt shingles. We soft wash instead: a low-pressure application of biodegradable cleaners that kill moss, algae and mildew at the root, then rinse clean. Home or commercial building, the roof reads the same to us — assess first, match the chemistry, never blast.",
     whenYouNeedIt:
-      "Black streaks down the slope, green moss cushions along the shingle seams, or a north-facing pitch that never seems to dry out. With around 164 rainy days a year in the Portland metro, roof moss isn't an if but a when — and staying ahead of it protects the roof from real, expensive damage.",
+      "Black streaks down the slope, green moss cushions along the shingle seams, or a north-facing pitch that never seems to dry out. With measurable rain on about 157 days a year in Portland, roof moss isn't an if but a when — and staying ahead of it protects the roof from real, expensive damage.",
     bullets: [
       "Low-pressure soft wash that kills moss and algae at the root — no granule loss, no cracked shingles",
       "Safe for asphalt shingle, composite and low-slope commercial roofing",
       "Biodegradable cleaners rinsed clean; landscaping and gutters protected before we start",
-      "Recurring plans that stay ahead of Portland's year-round regrowth",
+      "Recurring plans that stay ahead of year-round regrowth",
     ],
     faqs: [
       {
@@ -58,7 +58,7 @@ const EXTRA: Record<string, Omit<Service, keyof Method>> = {
     intro:
       "A wand alone leaves zebra stripes on flat concrete. We run a commercial 28-inch surface cleaner — a spinning-bar head that lays down even, overlapping passes for a uniform finish with no wand marks. Driveways, walkways, patios, pool decks and parking lots all come back to an even tone instead of a patchwork.",
     whenYouNeedIt:
-      "Gray-black grime, moss in the control joints, tire marks or oil shadows on a driveway or lot. Flat concrete collects everything Portland's rain washes down onto it, and a surface clean resets it in a single even pass.",
+      "Gray-black grime, moss in the control joints, tire marks or oil shadows on a driveway or lot. Flat concrete collects everything the rain washes down onto it, and a surface clean resets it in a single even pass.",
     bullets: [
       "Commercial 28-inch surface cleaner for a uniform, stripe-free finish",
       "Even overlapping passes on driveways, walkways, patios, pool decks and lots",
@@ -172,7 +172,7 @@ const EXTRA: Record<string, Omit<Service, keyof Method>> = {
     slug: "house-washing",
     h1: "House washing",
     intro:
-      "Siding doesn't get dirty the way concrete does. What builds up on lap siding, stucco and painted trim is a thin green film of algae and mildew that the north side of a Portland house grows all winter. High pressure would drive water behind the boards and strip paint, so we do the opposite: low pressure, the right cleaning solution, and enough dwell time for it to release on its own.",
+      "Siding doesn't get dirty the way concrete does. What builds up on lap siding, stucco and painted trim is a thin green film of algae and mildew that the north side of a house grows all winter. High pressure would drive water behind the boards and strip paint, so we do the opposite: low pressure, the right cleaning solution, and enough dwell time for it to release on its own.",
     whenYouNeedIt:
       "Green or grey film on the shaded walls, dark streaks under the gutters, cobwebs in every eave, or siding that looks tired next to the neighbours. If you're about to list the house or repaint it, this is the step that comes first.",
     bullets: [

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OG } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -86,13 +87,14 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       publishedTime: post.date,
       modifiedTime: post.updatedAt || post.date,
       authors: post.author?.name ? [post.author.name] : undefined,
-      images: og ? [{ url: og, width: 1200, height: 630 }] : undefined,
+      locale: "en_US",
+      images: [{ url: og ?? OG.blog.url, width: 1200, height: 630, alt: og ? post.title : OG.blog.alt }],
     },
     twitter: {
-      card: og ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       title,
       description,
-      images: og ? [og] : undefined,
+      images: [og ?? OG.blog.url],
     },
   };
 }
@@ -112,7 +114,8 @@ function structuredData(post: Post) {
     dateModified: post.updatedAt || post.date,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     url,
-    ...(post.heroImage?.asset ? { image: [imageUrl(post.heroImage, 1200, 630)] } : {}),
+    image: [post.heroImage?.asset ? imageUrl(post.heroImage, 1200, 630) : `${BASE_URL}${OG.blog.url}`],
+    inLanguage: "en-US",
     ...(post.author?.name
       ? {
           author: {
@@ -171,24 +174,24 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       ))}
 
       {/* Title band — dark, so the glass navbar reads the same as every other page */}
-      <section className="bg-[#0C1215]">
+      <section className="bg-[#62C4EB]">
         <div className="container-site pb-12 pt-28 md:pb-16 md:pt-36">
           <div className="max-w-3xl">
             <Link
               href={post.category ? `/blog?category=${post.category}` : "/blog"}
-              className="mb-6 inline-flex min-h-11 items-center gap-2 rounded text-sm font-medium text-white/75 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
+              className="mb-6 inline-flex min-h-11 items-center gap-2 rounded text-sm font-medium text-[#0C1215]/75 transition-colors hover:text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB]"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden />
               {post.categoryLabel ?? "Blog"}
             </Link>
             <h1
-              className="text-[clamp(2rem,4.8vw,3.5rem)] leading-[1.04] tracking-[-0.03em] text-white"
+              className="text-[clamp(2rem,4.8vw,3.5rem)] leading-[1.04] tracking-[-0.03em] text-[#0C1215]"
               style={{ ...display, fontWeight: 600 }}
             >
               {post.title}
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80">{post.excerpt}</p>
-            <p className="mt-6 text-sm text-white/60">
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#0C1215]/80">{post.excerpt}</p>
+            <p className="mt-6 text-sm text-[#0C1215]/60">
               {post.author?.name ? `${post.author.name} · ` : ""}
               {formatDate(post.date)}
               {post.updatedAt ? ` · Updated ${formatDate(post.updatedAt)}` : ""}
@@ -200,7 +203,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       {post.heroImage?.asset ? (
         <div className="bg-white pt-10 md:pt-14">
           <div className="container-site">
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl bg-[#F4F7F8] md:aspect-[21/9]">
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[4px] bg-retro-pool md:aspect-[21/9]">
               <Image
                 src={imageUrl(post.heroImage, 1800)}
                 alt={post.heroImage.alt || ""}
@@ -225,9 +228,9 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       <FaqSection faqs={post.faqs} />
 
       {post.author?.bio ? (
-        <section className="bg-white py-14">
+        <section className="bg-retro-paper py-14">
           <div className="container-site">
-            <div className="mx-auto flex max-w-[720px] items-start gap-5 rounded-2xl p-6 ring-1 ring-[#E4ECF1] md:p-7">
+            <div className="mx-auto flex max-w-[720px] items-start gap-5 rounded-[4px] p-6 ring-1 ring-retro-line md:p-7">
               {post.author.headshot?.asset ? (
                 <Image
                   src={imageUrl(post.author.headshot, 160, 160)}
@@ -238,14 +241,14 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 />
               ) : null}
               <div>
-                <p className="text-sm text-[#8C9AA5]">Written by</p>
+                <p className="text-sm text-[#7A8186]">Written by</p>
                 <p className="mt-1 text-lg text-[#0C1215]" style={{ ...display, fontWeight: 600 }}>
                   {post.author.name}
                   {post.author.title ? (
-                    <span className="font-normal text-[#4B5C6B]"> · {post.author.title}</span>
+                    <span className="font-normal text-[#3B4247]"> · {post.author.title}</span>
                   ) : null}
                 </p>
-                <p className="mt-2 leading-relaxed text-[#4B5C6B]">{post.author.bio}</p>
+                <p className="mt-2 leading-relaxed text-[#3B4247]">{post.author.bio}</p>
               </div>
             </div>
           </div>
@@ -253,7 +256,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
       ) : null}
 
       {related.length ? (
-        <section className="bg-[#F4F7F8] py-16 md:py-20">
+        <section className="bg-retro-pool py-16 md:py-20">
           <div className="container-site">
             <h2
               className="mb-8 text-[clamp(1.6rem,3.2vw,2.2rem)] leading-[1.1] tracking-[-0.02em] text-[#0C1215]"

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { OG, breadcrumbLd, pageMeta } from "@/lib/seo";
 import Image from "next/image";
+import Link from "next/link";
+import { RetroButton } from "@/components/retro/Bits";
 import {
   Phone,
   ArrowRight,
@@ -26,10 +29,15 @@ import {
   TRUST as TRUST_COPY,
 } from "@/lib/commercial";
 
-export const metadata: Metadata = {
-  title: "Commercial & Property Manager Exterior Cleaning",
-  description: COMMERCIAL_META_DESCRIPTION,
-};
+// The canonical was missing here, so the root layout's home-page canonical
+// leaked in and told Google /commercial was a copy of the home page.
+export const metadata: Metadata = pageMeta({
+  title: "Commercial Pressure Washing in Portland, OR",
+  description:
+    "Parking lots, trash pads, storefronts, siding and roofs for Portland-area property managers, HOAs and businesses. Starts with a free 21-point inspection.",
+  path: "/commercial",
+  image: OG.commercial,
+});
 
 const PHONE_DISPLAY = "(971) 626-4146";
 const PHONE_TEL = "tel:+19716264146";
@@ -69,7 +77,8 @@ const jsonLd = {
       description: COMMERCIAL_META_DESCRIPTION,
       url: `${BASE_URL}/commercial`,
       provider: { "@id": `${BASE_URL}/#business` },
-      areaServed: { "@type": "City", name: "Portland" },
+      image: `${BASE_URL}${OG.commercial.url}`,
+      areaServed: { "@type": "AdministrativeArea", name: "Portland, Oregon metropolitan area" },
       audience: AUDIENCE_COPY.map((a) => ({ "@type": "Audience", audienceType: a.title })),
       hasOfferCatalog: {
         "@type": "OfferCatalog",
@@ -80,6 +89,7 @@ const jsonLd = {
         })),
       },
     },
+    breadcrumbLd([{ name: "Commercial", path: "/commercial" }]),
   ],
 };
 
@@ -92,72 +102,54 @@ export default function CommercialPage() {
       />
       <Navbar />
       <main>
-        {/* ── HERO — cinematic commercial band (static, matches CinematicHero at rest) ── */}
-        <section className="relative min-h-[100svh] w-full overflow-hidden bg-[#0C1215]">
-          <Image
-            src="/brand/photos/work/lot-steam-wide.webp"
-            alt="A Rinse It Off technician surface cleaning a commercial parking lot on an overcast morning"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
+        {/* ── HERO: the photograph beside a flat cream title block; Hal with his clipboard at the seam ── */}
+        <section className="relative w-full overflow-hidden bg-retro-pool pt-16 md:grid md:min-h-[100svh] md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] md:pt-[72px]">
+          <div className="mat film-grain relative m-3 aspect-[3/2] overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5 md:self-center">
+            <Image
+              src="/brand/retro/com-hero.webp"
+              alt="A Rinse It Off crew of three at a mid-century office building: one on a short ladder at the canopy, one washing the tall entry glass with a water-fed pole, one coiling a hose by the work truck"
+              fill
+              priority
+              sizes="(min-width: 768px) 55vw, 100vw"
+              className="object-cover object-[55%_50%]"
+            />
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/hal/hal-clipboard.webp"
+            alt=""
+            aria-hidden
+            width={600}
+            height={600}
+            className="pointer-events-none absolute right-[3%] top-[calc(46svh+8px)] z-10 w-[26vw] max-w-[120px] drop-shadow-[4px_10px_8px_rgba(40,30,20,.25)] md:left-[calc(46%-150px)] md:right-auto md:top-[16%] md:w-[11vw] md:max-w-[170px]"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/5" aria-hidden />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/30" aria-hidden />
-
-          <div className="container-site relative z-10 flex min-h-[100svh] flex-col justify-end pb-[calc(6rem+env(safe-area-inset-bottom))] pt-28 md:justify-center md:pb-24">
-            <div className="max-w-2xl">
-              <p className="mb-4 text-pretty text-sm font-medium text-white/85">
-                Commercial &amp; property management &middot; Portland metro
-              </p>
-
-              <h1
-                className="text-[clamp(2.3rem,7vw,5.6rem)] leading-[0.95] tracking-[-0.035em] text-white"
-                style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
+          <div className="relative flex flex-col justify-center px-5 pb-[calc(4rem+env(safe-area-inset-bottom))] pt-8 sm:px-8 md:order-1 md:px-12 md:py-16 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))]">
+            <p className="label-caps mb-4 max-w-[70%] !tracking-[0.14em] text-retro-muted md:max-w-none">Commercial &amp; property management</p>
+            <h1 className="text-[clamp(2.6rem,9vw,5.2rem)] leading-[0.95] text-brand-black [text-wrap:balance]">
+              Every commercial surface <span className="title-accent text-[#1A6E93]">gets its own method.</span>
+            </h1>
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#3B4247]">
+              From parking lots and trash pads to storefronts, siding and roofs, we assess
+              your property first — then match the right{" "}
+              <span className="font-semibold text-brand-black">pressure, temperature, and chemistry</span> to each
+              surface. It starts with a free 21-point property audit.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <RetroButton href={ASSESS_HREF} signature>Book your free property audit</RetroButton>
+              <a
+                href={PHONE_TEL}
+                className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-base font-semibold text-brand-black hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]"
               >
-                Every commercial surface
-                <br />
-                <span className="text-[#62C4EB]">gets its own method.</span>
-              </h1>
-
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/85">
-                From parking lots and trash pads to storefronts, siding and roofs, we assess
-                your property first — then match the right{" "}
-                <span className="text-white">pressure, temperature, and chemistry</span> to each
-                surface. It starts with a free 21-point property audit.
-              </p>
-
-              <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
-                <a
-                  href={ASSESS_HREF}
-                  className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-base font-semibold text-[#0C1215] shadow-[0_10px_28px_-8px_rgba(98,196,235,0.55)] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  Book your free property audit
-                  <ArrowRight
-                    className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
-                    aria-hidden
-                  />
-                </a>
-                <a
-                  href={PHONE_TEL}
-                  className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-sm font-semibold text-white hover:text-[#62C4EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215]"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  <Phone className="h-4 w-4" aria-hidden />
-                  {PHONE_DISPLAY}
-                </a>
-              </div>
-
-              <p className="mt-8 text-sm text-white/85">
-                Insured &middot; Free 21-point property audit &middot; Recurring maintenance plans.
-              </p>
+                <Phone className="h-4 w-4" aria-hidden />
+                {PHONE_DISPLAY}
+              </a>
             </div>
+            <p className="label-caps mt-8 !tracking-[0.12em] text-retro-muted">Insured &middot; Free 21-point property audit &middot; Recurring maintenance plans</p>
           </div>
         </section>
 
         {/* ── THE WEDGE — free 21-point property audit ── */}
-        <section className="bg-white py-16 md:py-24">
+        <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <div>
               <h2
@@ -166,14 +158,14 @@ export default function CommercialPage() {
               >
                 The free 21-point property audit.
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-[#4B5C6B]">
+              <p className="mt-4 text-lg leading-relaxed text-[#3B4247]">
                 {AUDIT_LEAD}
               </p>
 
               <ul className="mt-7 space-y-3">
                 {AUDIT_POINTS.map((point) => (
                   <li key={point} className="flex items-start gap-3 text-[#0C1215]">
-                    <span className="mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-lg bg-[#EDF7FC]">
+                    <span className="mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-lg bg-[#E6F5FC]">
                       <Check className="h-3.5 w-3.5 text-[#0C1215]" strokeWidth={3} aria-hidden />
                     </span>
                     <span className="text-sm leading-relaxed">{point}</span>
@@ -181,11 +173,11 @@ export default function CommercialPage() {
                 ))}
               </ul>
 
-              <div className="mt-7 flex items-start gap-3 rounded-2xl bg-[#EDF7FC] p-4">
-                <Droplets className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#62C4EB]" aria-hidden />
-                <p className="text-sm leading-relaxed text-[#4B5C6B]">
+              <div className="mt-7 flex items-start gap-3 rounded-[4px] bg-[#E6F5FC] p-4">
+                <Droplets className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#1A6E93]" aria-hidden />
+                <p className="text-sm leading-relaxed text-[#3B4247]">
                   <span className="font-semibold text-[#0C1215]">
-                    About 164 rainy days a year in Portland
+                    About 157 days of rain a year in Portland
                   </span>{" "}
                   keep moss, algae and grime coming back. The audit is where we map what your property
                   needs to stay ahead of it &mdash; at no charge.
@@ -195,7 +187,7 @@ export default function CommercialPage() {
               <div className="mt-8">
                 <a
                   href={ASSESS_HREF}
-                  className="group inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+                  className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Book your free property audit
@@ -207,10 +199,10 @@ export default function CommercialPage() {
               </div>
             </div>
 
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl ring-1 ring-[#E4ECF1] shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)]">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[4px] ring-1 ring-retro-line">
               <Image
-                src="/brand/photos/window-purewater.webp"
-                alt="A technician cleaning a tall commercial glass storefront with a water-fed pole"
+                src="/brand/retro/glass-detail.webp"
+                alt="Close-up of a cleaner guiding a water-fed pole brush across a tall window, pure water sheeting down the glass"
                 fill
                 sizes="(min-width: 1024px) 45vw, 100vw"
                 className="object-cover"
@@ -220,7 +212,7 @@ export default function CommercialPage() {
         </section>
 
         {/* ── METHOD-MATCHING — commercial surfaces ── */}
-        <section id="services" className="bg-[#F4F7F8] py-16 md:py-24">
+        <section id="services" className="bg-retro-pool py-16 md:py-24">
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
@@ -229,7 +221,7 @@ export default function CommercialPage() {
               >
                 The right method for every commercial surface.
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-[#4B5C6B]">
+              <p className="mt-4 text-lg leading-relaxed text-[#3B4247]">
                 Pressure is a tool, not a default. Lots, trash pads, siding, storefronts, masonry and
                 roofs &mdash; each gets the method its material calls for, so it comes clean without
                 being worn down.
@@ -240,7 +232,7 @@ export default function CommercialPage() {
               {COMMERCIAL_METHODS.map((m) => (
                 <article
                   key={m.key}
-                  className="group overflow-hidden rounded-2xl bg-white ring-1 ring-[#E4ECF1] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+                  className="group overflow-hidden rounded-[4px] bg-white ring-1 ring-retro-line transition-all duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
@@ -261,7 +253,7 @@ export default function CommercialPage() {
                     >
                       {m.surface}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-[#4B5C6B]">{m.what}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-[#3B4247]">{m.what}</p>
                   </div>
                 </article>
               ))}
@@ -270,13 +262,13 @@ export default function CommercialPage() {
             <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3">
               <a
                 href={ASSESS_HREF}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F7F8] motion-reduce:transition-none"
+                className="inline-flex items-center gap-2 rounded-full bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Get your free property audit
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </a>
-              <span className="text-sm text-[#5A6B78]">
+              <span className="text-sm text-[#5F676C]">
                 Not sure which your property needs? That&apos;s what the audit is for.
               </span>
             </div>
@@ -284,7 +276,7 @@ export default function CommercialPage() {
         </section>
 
         {/* ── WHO IT'S FOR ── */}
-        <section className="bg-white py-16 md:py-24">
+        <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site">
             <header className="max-w-2xl">
               <h2
@@ -293,7 +285,7 @@ export default function CommercialPage() {
               >
                 Built for the people who answer for the property.
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-[#4B5C6B]">
+              <p className="mt-4 text-lg leading-relaxed text-[#3B4247]">
                 Portfolios, communities and facilities across the Portland metro &mdash; one crew, one
                 schedule, documentation you can forward up the chain.
               </p>
@@ -303,16 +295,16 @@ export default function CommercialPage() {
               {AUDIENCES.map((a) => (
                 <div
                   key={a.title}
-                  className="rounded-2xl border border-[#E4ECF1] bg-[#FAFCFD] p-7 transition-colors duration-300 hover:border-[#62C4EB]/40 hover:bg-white motion-reduce:transition-none"
+                  className="rounded-[4px] border border-retro-line bg-retro-paper p-7 transition-colors duration-300 hover:border-[#2E9BC6]/40 hover:bg-white motion-reduce:transition-none"
                 >
-                  <a.icon className="h-6 w-6 text-[#62C4EB]" aria-hidden />
+                  <a.icon className="h-6 w-6 text-[#1A6E93]" aria-hidden />
                   <h3
                     className="mt-5 text-lg font-medium text-[#0C1215]"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     {a.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#4B5C6B]">{a.body}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-[#3B4247]">{a.body}</p>
                 </div>
               ))}
             </div>
@@ -320,10 +312,10 @@ export default function CommercialPage() {
         </section>
 
         {/* ── TRUST ── */}
-        <section className="relative overflow-hidden bg-[#F4F7F8] py-16 md:py-24">
-          <div className="aura-blob left-[-10%] top-[-35%] h-[500px] w-[500px] bg-[#62C4EB]/12 motion-reduce:animate-none" aria-hidden />
+        <section className="relative overflow-hidden bg-retro-pool py-16 md:py-24">
+          <div className="aura-blob left-[-10%] top-[-35%] h-[500px] w-[500px] bg-[#62C4EB]/25 motion-reduce:animate-none" aria-hidden />
           <div
-            className="aura-blob right-[-8%] bottom-[-45%] h-[440px] w-[440px] bg-[#62C4EB]/10 motion-reduce:animate-none"
+            className="aura-blob right-[-8%] bottom-[-45%] h-[440px] w-[440px] bg-[#62C4EB]/25 motion-reduce:animate-none"
             style={{ animationDelay: "-7s" }}
             aria-hidden
           />
@@ -342,19 +334,29 @@ export default function CommercialPage() {
               {TRUST.map((t) => (
                 <div
                   key={t.title}
-                  className="group rounded-2xl border border-[#E4ECF1] bg-white p-7 transition-colors duration-300 hover:border-[#62C4EB]/40 motion-reduce:transition-none"
+                  className="group rounded-[4px] border border-retro-line bg-white p-7 transition-colors duration-300 hover:border-[#2E9BC6]/40 motion-reduce:transition-none"
                 >
-                  <t.icon className="h-6 w-6 text-[#62C4EB]" aria-hidden />
+                  <t.icon className="h-6 w-6 text-[#1A6E93]" aria-hidden />
                   <h3
                     className="mt-5 text-lg font-medium text-[#0C1215]"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     {t.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#4B5C6B]">{t.body}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-[#3B4247]">{t.body}</p>
                 </div>
               ))}
             </div>
+            <p className="mt-8 max-w-2xl text-base leading-relaxed text-[#3B4247]">
+              Comparing contractors for a board or an owner? Here&apos;s{" "}
+              <Link
+                href="/commercial/hiring-a-pressure-washing-company"
+                className="font-semibold text-[#0C1215] underline decoration-[#2E9BC6] decoration-2 underline-offset-4 hover:text-[#1A6E93]"
+              >
+                what to check before you hire a pressure washing company
+              </Link>
+              .
+            </p>
           </div>
         </section>
 
@@ -362,30 +364,30 @@ export default function CommercialPage() {
         <section className="relative overflow-hidden">
           <div className="relative h-[70vh] min-h-[480px]">
             <Image
-              src="/brand/photos/work/lot-steam-wide.webp"
-              alt="A commercial parking lot being surface-cleaned on an overcast morning"
+              src="/brand/retro/com-apartments.webp"
+              alt="Two Rinse It Off cleaners washing the walkways and stair landings of a 1960s garden apartment complex"
               fill
               sizes="100vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0C1215]/85 via-black/30 to-black/10" aria-hidden />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#FBF8F2]/95 via-[#FBF8F2]/60 to-transparent" aria-hidden />
 
             <div className="container-site relative flex h-full flex-col items-start justify-end pb-16 md:pb-20">
               <h2
-                className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl"
+                className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-[#0C1215] md:text-6xl"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Start with the walk-through.
                 <br />
-                <span style={{ color: "#62C4EB" }}>The quote comes same-day.</span>
+                <span>The quote comes same-day.</span>
               </h2>
-              <p className="mt-4 max-w-lg text-lg text-white/85">
+              <p className="mt-4 max-w-lg text-lg text-[#0C1215]/85">
                 {COMMERCIAL_CTA_BODY}
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-6">
                 <a
                   href={ASSESS_HREF}
-                  className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+                  className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Book your free property audit
@@ -396,7 +398,7 @@ export default function CommercialPage() {
                 </a>
                 <a
                   href={PHONE_TEL}
-                  className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1215] motion-reduce:transition-none"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-medium text-[#0C1215]/85 transition-colors hover:text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
                 >
                   <Phone className="h-4 w-4" aria-hidden />
                   {PHONE_DISPLAY} &mdash; talk to the team

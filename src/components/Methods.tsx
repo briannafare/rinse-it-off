@@ -9,7 +9,7 @@ import { METHODS } from "@/lib/methods";
  *  the training material; no invented claims. One accent only (water-blue). */
 export function Methods() {
   return (
-    <section id="services" className="bg-[#F4F7F8] py-16 md:py-24">
+    <section id="services" className="bg-retro-pool pb-16 md:pb-24">
       <div className="container-site">
         <header className="max-w-2xl">
           <h2
@@ -18,7 +18,7 @@ export function Methods() {
           >
             Six methods, matched to what you actually have.
           </h2>
-          <p className="mt-4 text-lg leading-relaxed text-[#4B5C6B]">
+          <p className="mt-4 text-lg leading-relaxed text-[#3B4247]">
             Pressure is a tool, not a default. A mossy roof and a greasy trash pad need
             opposite things, so we look first and then pick the method. Your driveway and a
             client&apos;s parking lot get the same machine and the same care.
@@ -29,7 +29,7 @@ export function Methods() {
           {METHODS.map((m) => (
             <article
               key={m.key}
-              className="group overflow-hidden rounded-2xl bg-white ring-1 ring-[#E4ECF1] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-20px_rgba(20,45,60,0.22)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+              className="frame group overflow-hidden bg-white transition-all duration-300 hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
@@ -39,7 +39,7 @@ export function Methods() {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
-                <span className="absolute left-3 top-3 rounded-lg bg-white/90 px-3 py-1.5 text-sm font-semibold text-[#0C1215] backdrop-blur-sm">
+                <span className="label-caps absolute left-0 top-4 bg-[#62C4EB] px-3 py-2 !tracking-[0.14em] text-[#0C1215]">
                   {m.method}
                 </span>
               </div>
@@ -50,7 +50,7 @@ export function Methods() {
                 >
                   {m.surface}
                 </h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-[#4B5C6B]">{m.what}</p>
+                <p className="mt-2 text-[15px] leading-relaxed text-[#3B4247]">{m.what}</p>
               </div>
             </article>
           ))}
@@ -59,13 +59,13 @@ export function Methods() {
         <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3">
           <a
             href="/assessment"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#0C1215] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2830] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="inline-flex items-center gap-2 rounded-full bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Get your free property assessment
             <ArrowRight className="h-4 w-4" aria-hidden />
           </a>
-          <span className="text-sm text-[#5A6B78]">
+          <span className="text-sm text-[#5F676C]">
             Not sure which your property needs? That&apos;s what the assessment is for.
           </span>
         </div>

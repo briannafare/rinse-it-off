@@ -19,8 +19,9 @@ import {
   COMMERCIAL_METHOD_KEYS,
   TRUST,
 } from "@/lib/commercial";
-import { PLAN_BODY, PLAN_EVERY_VISIT, PLAN_HEADLINE, PLAN_NOTE, PLAN_SEASONS } from "@/lib/plan-copy";
+import { PLAN_BODY, PLAN_EVERY_VISIT, PLAN_HEADLINE, PLAN_META_DESCRIPTION, PLAN_NOTE, PLAN_SEASONS } from "@/lib/plan-copy";
 import { SITE_DESCRIPTION } from "@/lib/site";
+import { MONTHLY_FLOOR } from "@/app/plan/pricing";
 import { AI_PAGES, isPublishable } from "@/lib/ai-pages";
 import { metadata as servicesMetadata } from "@/app/services/page";
 import { metadata as areasMetadata } from "@/app/areas/page";
@@ -66,7 +67,7 @@ function homeMd(): string {
     "",
     PLAN_BODY,
     "",
-    ...PLAN_SEASONS.map((s) => `- ${s.name}: ${s.work}`),
+    ...PLAN_SEASONS.map((s) => `- ${s.name}, ${s.title.toLowerCase()}: ${s.work}`),
     `- Every visit: ${PLAN_EVERY_VISIT}`,
     "",
     PLAN_NOTE,
@@ -178,6 +179,27 @@ function areasMd(): string {
   ].join("\n");
 }
 
+function planMd(): string {
+  return [
+    "# The yearly plan",
+    "",
+    `> ${PLAN_META_DESCRIPTION}`,
+    "",
+    `## ${PLAN_HEADLINE}`,
+    "",
+    PLAN_BODY,
+    "",
+    ...PLAN_SEASONS.map((s) => `- ${s.name}: ${s.work}`),
+    `- Every visit: ${PLAN_EVERY_VISIT}`,
+    "",
+    PLAN_NOTE,
+    "",
+    `Get the monthly price for a house: ${SITE_URL}/plan`,
+    "",
+    contactBlock(),
+  ].join("\n");
+}
+
 function contactMd(): string {
   return ["# Contact", "", `> ${desc(contactMetadata)}`, "", contactBlock()].join("\n");
 }
@@ -224,6 +246,14 @@ export const MD_PAGES: MdPage[] = [
     body: areasMd,
   },
   {
+    path: "/plan",
+    mdPath: "/plan.md",
+    title: "The yearly plan for houses",
+    summary: PLAN_META_DESCRIPTION,
+    section: "Plan and booking",
+    body: planMd,
+  },
+  {
     path: "/contact",
     mdPath: "/contact.md",
     title: "Contact",
@@ -262,6 +292,18 @@ export async function buildLlmsTxt(): Promise<string> {
     `# ${BUSINESS_NAME}`,
     "",
     `> ${SITE_DESCRIPTION}`,
+    "",
+    "## Key facts",
+    "",
+    "- Rinse It Off (legal name Fresh Rinse, LLC) cleans the outside of homes and commercial properties. Based in Tigard, Oregon; serves the Portland metro and the Willamette Valley. Not a storefront.",
+    "- Owned by Bri (founder) and Alstun (co-owner, runs field operations).",
+    `- Phone or text ${PHONE_DISPLAY}. Email ${EMAIL}.`,
+    "- Work: roofs (moss and algae, by soft wash), siding and house washing, windows (water-fed pole with pure water, from the ground), gutters, driveways, walkways and patios, decks and fences, parking lots, trash pads, brick and masonry, holiday light installs, and most other outside surfaces.",
+    `- Yearly home plan: four seasonal visits that keep the roof, siding, driveway, gutters and walkways clean, with window cleaning included free at every visit. From $${MONTHLY_FLOOR} a month, priced by the size of the house. Instant price online at ${SITE_URL}/plan in about a minute.`,
+    `- Businesses, HOAs and multifamily: a free 21-point property inspection with a photo report and an itemized price the same day. Book at ${SITE_URL}/assessment.`,
+    "- 48-hour re-rinse guarantee: anything a customer isn't happy with is redone free within 48 hours.",
+    "- Fully insured for liability; a certificate goes out the same day it's asked for.",
+    "- Holiday lights are priced by the foot after a visit to the house.",
     "",
     "Each page below has a plain markdown copy at the address shown. The same pages as HTML are at the same address without .md (the home page is " +
       `${SITE_URL}/). All of the markdown copies in one file: ${SITE_URL}/llms-full.txt`,

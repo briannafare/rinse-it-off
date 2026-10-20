@@ -1,59 +1,97 @@
 "use client";
-import { ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { Check } from "lucide-react";
 import { useStaggerReveal } from "@/lib/gsap";
-import { PLAN_BODY, PLAN_EVERY_VISIT, PLAN_HEADLINE, PLAN_NOTE, PLAN_SEASONS as SEASONS } from "@/lib/plan-copy";
+import { RetroButton, Starburst } from "@/components/retro/Bits";
+import {
+  PLAN_BODY,
+  PLAN_CTA_NOTE,
+  PLAN_EVERY_VISIT,
+  PLAN_HEADLINE,
+  PLAN_INCLUDED,
+  PLAN_LABEL,
+  PLAN_NOTE,
+  PLAN_SEASONS as SEASONS,
+  PLAN_VALUE,
+} from "@/lib/plan-copy";
 
-/** The yearly plan, on the home page with two ways in: the instant price at
- *  /plan, or reaching us at /contact (Bri 2026-10-19). The paragraph is Bri's
- *  approved plan copy, word for word. Seasons are the plan's real scope. */
+/** The yearly plan, sold: what happens each season (each with its own 1960s illustration),
+ *  the free window cleaning, what else comes with it, the honest value math, then the price.
+ *  Copy and the numbers' sources live in src/lib/plan-copy.ts. Two ways in: the instant price
+ *  at /plan, or a conversation at /contact. */
 export function PlanSection() {
   const ref = useStaggerReveal(0.08);
+  const [free, ...windowsRest] = PLAN_EVERY_VISIT.split(". ");
 
   return (
-    <section id="plan" className="bg-white py-16 md:py-24">
-      <div ref={ref} className="container-site grid gap-10 md:grid-cols-[1.1fr_1fr] md:items-center md:gap-16">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#3AA8D4]">The yearly plan</p>
-          <h2
-            className="mt-3 text-3xl font-medium leading-[1.08] tracking-tight text-[#0C1215] md:text-5xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            {PLAN_HEADLINE}
-          </h2>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#4B5C6B]">
-            {PLAN_BODY}
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a
-              href="/plan?src=home"
-              className="group inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 motion-reduce:transition-none"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Get my price
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden />
-            </a>
-            <a
-              href="/contact"
-              className="inline-flex items-center rounded-xl px-6 py-3.5 text-sm font-semibold text-[#0C1215] ring-1 ring-[#E4ECF1] transition-colors hover:bg-[#F4F7F8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2 motion-reduce:transition-none"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Talk to us first
-            </a>
-          </div>
-          <p className="mt-4 text-sm text-[#5A6B78]">{PLAN_NOTE}</p>
-        </div>
-        <ul className="grid gap-3 sm:grid-cols-2">
+    <section id="plan" className="bg-[#E6F5FC] pb-16 md:pb-24">
+      <div ref={ref} className="container-site">
+        <header className="mx-auto max-w-3xl text-center">
+          <p className="label-caps text-[#0C1215]">{PLAN_LABEL}</p>
+          <h2 className="mt-3 text-[2.1rem] leading-[1.02] text-[#0C1215] [text-wrap:balance] md:text-[3rem]">{PLAN_HEADLINE}</h2>
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-[#0C1215]">{PLAN_BODY}</p>
+        </header>
+
+        {/* The four visits */}
+        <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 md:mt-14">
           {SEASONS.map((s) => (
-            <li key={s.name} className="rounded-2xl bg-[#F4F7F8] p-5 ring-1 ring-[#E4ECF1]">
-              <div className="text-lg font-semibold text-[#0C1215]" style={{ fontFamily: "var(--font-display)" }}>{s.name}</div>
-              <div className="mt-1 text-[0.95rem] leading-snug text-[#4B5C6B]">{s.work}</div>
+            <li key={s.name} className="frame grid grid-cols-[96px_1fr] gap-4 overflow-hidden bg-retro-paper p-4 sm:block sm:p-0">
+              <div className="relative aspect-square overflow-hidden rounded-[10px] sm:rounded-none sm:border-b-2 sm:border-[#0C1215]">
+                <Image src={s.img} alt={`Illustration: ${s.title.toLowerCase()} cleaning in ${s.name.toLowerCase()}`} fill sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 96px" className="object-cover" />
+              </div>
+              <div className="sm:p-5">
+                <p className="label-caps !tracking-[0.14em] text-[#1A6E93]">{s.name}</p>
+                <h3 className="mt-1 font-title text-[1.35rem] font-black leading-tight text-[#0C1215]">{s.title}</h3>
+                <p className="mt-2 text-[0.95rem] leading-snug text-[#3B4247]">{s.work}</p>
+              </div>
             </li>
           ))}
-          <li className="rounded-2xl bg-[#0C1215] p-5 sm:col-span-2">
-            <div className="text-lg font-semibold text-white" style={{ fontFamily: "var(--font-display)" }}>Every visit</div>
-            <div className="mt-1 text-[0.95rem] leading-snug text-white/80">{PLAN_EVERY_VISIT}</div>
-          </li>
-        </ul>
+        </ol>
+
+        {/* Free window cleaning, every visit */}
+        <div className="frame relative mt-4 grid overflow-visible bg-[#F2B632] text-[#0C1215] md:grid-cols-[1fr_1.3fr]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-t-[14px] md:self-start md:rounded-l-[14px] md:rounded-tr-none">
+            <Image src="/brand/retro/mi-glass.webp" alt="Illustration: a cleaner washing a tall picture window from the ground with a water-fed pole" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-cover" />
+          </div>
+          <div className="relative p-6 md:p-10 md:pr-44">
+            <Starburst top="FREE" bottom="window cleaning" className="absolute -top-14 right-3 w-28 rotate-6 md:right-6 md:top-6 md:w-36" />
+            <p className="label-caps !tracking-[0.14em] text-[#0C1215]">Every visit</p>
+            <h3 className="mt-1 font-title text-[1.9rem] font-black leading-tight md:text-[2.3rem]">{free}.</h3>
+            <p className="mt-3 max-w-xl leading-relaxed text-[#0C1215]">{windowsRest.join(". ")}</p>
+          </div>
+        </div>
+
+        {/* What else comes with it, the value, and the price */}
+        <div className="mt-4 grid gap-4 md:grid-cols-[1fr_1.15fr]">
+          <div className="frame bg-retro-paper p-6 md:p-8">
+            <p className="label-caps !tracking-[0.14em] text-retro-muted">Also included</p>
+            <ul className="mt-4 grid gap-3">
+              {PLAN_INCLUDED.map((x) => (
+                <li key={x} className="flex gap-3 text-[#0C1215]">
+                  <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#1A6E93]" aria-hidden />
+                  <span>{x}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="frame bg-[#62C4EB] p-6 text-[#0C1215] md:p-8">
+            <p className="label-caps !tracking-[0.14em] text-[#0C1215]">What it&rsquo;s worth</p>
+            <p className="mt-3 text-[1.05rem] leading-relaxed">{PLAN_VALUE}</p>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <RetroButton href="/plan?src=home" signature>
+                See my price
+              </RetroButton>
+              <a
+                href="/contact"
+                className="inline-flex min-h-[52px] items-center rounded-full px-6 text-[15px] font-semibold text-[#0C1215] ring-2 ring-[#0C1215] transition-colors hover:bg-white/40 focus-visible:outline-none focus-visible:ring-4"
+              >
+                Talk to us first
+              </a>
+            </div>
+            <p className="mt-3 text-sm text-[#0C1215]">{PLAN_CTA_NOTE}</p>
+            <p className="mt-1 text-sm text-[#0C1215]">{PLAN_NOTE}</p>
+          </div>
+        </div>
       </div>
     </section>
   );

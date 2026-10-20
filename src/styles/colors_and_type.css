@@ -28,13 +28,13 @@
      reserved for selection and the iridescent film.
      =========================================================== */
   --ink:           #0C1215;   /* near-black — text, buttons, dark panels */
-  --ink-soft:      #0E1419;   /* dark slate — footer / dark surfaces */
+  --ink-soft:      #0C1215;   /* dark slate — footer / dark surfaces */
 
-  --blue:          #62C4EB;   /* water blue — THE single accent */
-  --blue-deep:     #3AA8D4;   /* hover / on-light text-safe */
-  --blue-wash:     #EDF7FC;   /* faint tint surface / hover wash */
+  --blue:          #2E9BC6;   /* water blue — THE single accent */
+  --blue-deep:     #1A6E93;   /* hover / on-light text-safe */
+  --blue-wash:     #E6F5FC;   /* faint tint surface / hover wash */
 
-  --mint:          #4DFFA6;   /* whisper only: selection + soap film */
+  --mint:          #FCEBC0;   /* whisper only: selection + soap film */
 
   /* legacy aliases kept so older artifacts don't break (point to new) */
   --brand-black:   var(--ink);
@@ -47,20 +47,20 @@
      SURFACES — light is the canvas, always
      =========================================================== */
   --surface:       #FFFFFF;
-  --surface-alt:   #F4F7F8;   /* cool, watery off-white — alternating bands */
-  --surface-card:  #FAFCFD;
+  --surface-alt:   #FFFFFF;   /* cool, watery off-white — alternating bands */
+  --surface-card:  #FBF8F2;
 
   /* ===========================================================
      TEXT
      =========================================================== */
   --text-primary:   #0C1215;
-  --text-secondary: #4B5C6B;
-  --text-muted:     #8C9AA5;
+  --text-secondary: #3B4247;
+  --text-muted:     #7A8186;
   --text-inverse:   #FFFFFF;
 
   /* ---- BORDERS — hairline & quiet ---- */
-  --border:        #E4ECF1;
-  --border-light:  #EFF4F7;
+  --border:        #E4DCCD;
+  --border-light:  #E4DCCD;
 
   /* ===========================================================
      TYPE — ONE family (Adobe Fonts kit asf7gwn)
@@ -118,9 +118,9 @@
      A pale, cool radial mesh for hero bands only. Not a SaaS
      linear gradient; not a rainbow. Just light on water.
      =========================================================== */
-  --aura-water: radial-gradient(120% 120% at 12% 10%, #DDF1FB 0%, transparent 55%),
+  --aura-water: radial-gradient(120% 120% at 12% 10%, #E6F5FC 0%, transparent 55%),
                 radial-gradient(120% 120% at 88% 22%, #E9FBF3 0%, transparent 55%),
-                radial-gradient(140% 130% at 55% 100%, #EEF5FB 0%, transparent 60%);
+                radial-gradient(140% 130% at 55% 100%, #E6F5FC 0%, transparent 60%);
 
   /* ---- FROSTED GLASS (used by the iridescent CTA + glass cards) ---- */
   --glass-light:     rgba(255,255,255,0.55);
@@ -128,7 +128,7 @@
   --glass-blur:      blur(18px) saturate(1.25);
 
   /* ---- DARK VARIANT surfaces (opt in with .theme-dark) ---- */
-  --dk-bg:      #0A0E14;
+  --dk-bg:      #0C1215;
   --dk-surface: #11161D;
   --dk-text:    #FFFFFF;
   --dk-text-2:  rgba(255,255,255,0.62);
@@ -202,7 +202,7 @@
 .num-display { font-family: var(--font-display); font-weight: 300; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
 .num-display .unit { font-weight: 400; opacity: 0.55; font-size: 0.42em; margin-left: 0.12em; }
 
-::selection { background: rgba(77,255,166,0.25); }
+::selection { background: rgba(214,51,108,0.25); }
 
 /* ------------------------------------------------------------
    DEPRECATED — kept as no-op-ish shims so old artifacts that

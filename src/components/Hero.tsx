@@ -43,7 +43,7 @@ export function Hero() {
             <span className="relative inline-block">
               <span className="relative z-10">Dirty</span>
               <svg className="absolute -bottom-1 left-0 w-full h-3 z-0" viewBox="0 0 200 12" fill="none" preserveAspectRatio="none">
-                <path d="M2 8 C40 3, 80 10, 120 5 S180 9, 198 6" stroke="#4DFFA6" strokeWidth="3" strokeLinecap="round" fill="none" />
+                <path d="M2 8 C40 3, 80 10, 120 5 S180 9, 198 6" stroke="#D6336C" strokeWidth="3" strokeLinecap="round" fill="none" />
               </svg>
             </span>{" "}Buildings<br />
             <span className="font-serif font-normal italic text-brand-blue">Clean.</span>
@@ -55,7 +55,7 @@ export function Hero() {
 
           <div data-hero className="flex flex-wrap items-center gap-4">
             {/* Neutral button with chunky neon shadow — like Framer site */}
-            <a href="#contact" className="group inline-flex items-center gap-2 bg-white text-brand-black font-bold text-sm px-7 py-3.5 rounded-full shadow-[0_4px_24px_rgba(77,255,166,0.4),0_0_60px_rgba(77,255,166,0.15)] hover:shadow-[0_4px_32px_rgba(77,255,166,0.55),0_0_80px_rgba(77,255,166,0.2)] transition-all duration-300">
+            <a href="#contact" className="group inline-flex items-center gap-2 bg-white text-brand-black font-bold text-sm px-7 py-3.5 rounded-full transition-all duration-300">
               Get a Free Property Assessment
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </a>

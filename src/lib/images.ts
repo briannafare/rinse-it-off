@@ -7,10 +7,11 @@
 export const IMG = {
   hero:       "/brand/photos/work/surface-cleaner-steam.webp", // real: surface cleaner mid-pass
   parkingLot: "/brand/photos/work/lot-steam-wide.webp",        // real: lot cleaning, wide
-  breezeway:  "/brand/photos/hotwater-degrease.webp",          // placeholder: hot-water degrease
+  breezeway:  "/brand/retro/mi-grease.webp",                  // illustration: hot-water degrease
   walkway:    "/brand/photos/walkway-split.webp",         // real: clean/dirty split
   patio:      "/brand/photos/patio-umbrellas.webp",            // real: finished patio
   driveway:   "/brand/photos/work/driveway-after.webp",        // real: residential driveway
   curb:       "/brand/photos/work/curb-gleam.webp",            // real: curb detail
-  portland:   "/brand/photos/work/clubhouse-entry.webp",       // real: PNW frame
+  // clubhouse-entry.webp was removed: it shows surface-cleaner swirl marks, not a finished job
+  portland:   "/brand/photos/work/proshop-driveway.webp",      // real: PNW frame
 } as const;

@@ -10,13 +10,13 @@ import { imageUrl } from "@/sanity/lib/image";
 const display = { fontFamily: "var(--font-display)" } as const;
 
 const calloutTone: Record<string, string> = {
-  note: "bg-[#EDF7FC] ring-[#62C4EB]/30",
-  warning: "bg-[#F4F7F8] ring-[#0C1215]/15",
-  stat: "bg-[#0C1215] ring-[#0C1215] [&_p]:!text-white/85 [&_.callout-heading]:!text-white",
+  note: "bg-[#E6F5FC] ring-[#1A6E93]/30",
+  warning: "bg-retro-pool ring-[#0C1215]/15",
+  stat: "bg-[#62C4EB] ring-[#0C1215] [&_p]:!text-[#0C1215]/85 [&_.callout-heading]:!text-[#0C1215]",
 };
 
 const linkClass =
-  "text-[#0C1215] underline decoration-[#62C4EB] decoration-2 underline-offset-[3px] transition-colors hover:text-[#3AA8D4]";
+  "text-[#0C1215] underline decoration-[#2E9BC6] decoration-2 underline-offset-[3px] transition-colors hover:text-[#1A6E93]";
 
 function slugify(block: PortableTextBlock) {
   const children = (block?.children ?? []) as { text?: string }[];
@@ -33,7 +33,7 @@ function slugify(block: PortableTextBlock) {
 const components: PortableTextComponents = {
   block: {
     normal: ({ children }) => (
-      <p className="mb-6 text-[1.075rem] leading-[1.8] text-[#4B5C6B]">{children}</p>
+      <p className="mb-6 text-[1.075rem] leading-[1.8] text-[#3B4247]">{children}</p>
     ),
     h2: ({ children, value }) => (
       <h2
@@ -55,7 +55,7 @@ const components: PortableTextComponents = {
     ),
     blockquote: ({ children }) => (
       <blockquote
-        className="my-10 border-l-[3px] border-[#62C4EB] pl-6 text-[1.4rem] leading-[1.4] text-[#0C1215]"
+        className="my-10 border-l-[3px] border-[#2E9BC6] pl-6 text-[1.4rem] leading-[1.4] text-[#0C1215]"
         style={{ ...display, fontWeight: 500 }}
       >
         {children}
@@ -64,20 +64,20 @@ const components: PortableTextComponents = {
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="mb-6 list-disc space-y-2 pl-5 marker:text-[#62C4EB]">{children}</ul>
+      <ul className="mb-6 list-disc space-y-2 pl-5 marker:text-[#1A6E93]">{children}</ul>
     ),
     number: ({ children }) => (
-      <ol className="mb-6 list-decimal space-y-2 pl-5 marker:font-semibold marker:text-[#8C9AA5]">
+      <ol className="mb-6 list-decimal space-y-2 pl-5 marker:font-semibold marker:text-[#7A8186]">
         {children}
       </ol>
     ),
   },
   listItem: {
     bullet: ({ children }) => (
-      <li className="text-[1.075rem] leading-[1.75] text-[#4B5C6B]">{children}</li>
+      <li className="text-[1.075rem] leading-[1.75] text-[#3B4247]">{children}</li>
     ),
     number: ({ children }) => (
-      <li className="text-[1.075rem] leading-[1.75] text-[#4B5C6B]">{children}</li>
+      <li className="text-[1.075rem] leading-[1.75] text-[#3B4247]">{children}</li>
     ),
   },
   marks: {
@@ -108,7 +108,7 @@ const components: PortableTextComponents = {
     figure: ({ value }) =>
       value?.asset ? (
         <figure className="my-12">
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-[#F4F7F8]">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[4px] bg-retro-pool">
             <Image
               src={imageUrl(value, 1440)}
               alt={value.alt || ""}
@@ -118,13 +118,13 @@ const components: PortableTextComponents = {
             />
           </div>
           {value.caption ? (
-            <figcaption className="mt-3 text-sm text-[#8C9AA5]">{value.caption}</figcaption>
+            <figcaption className="mt-3 text-sm text-[#7A8186]">{value.caption}</figcaption>
           ) : null}
         </figure>
       ) : null,
     callout: ({ value }) => (
       <aside
-        className={`my-10 rounded-2xl p-6 ring-1 md:p-7 ${
+        className={`my-10 rounded-[4px] p-6 ring-1 md:p-7 ${
           calloutTone[value?.tone as string] ?? calloutTone.note
         }`}
       >
@@ -142,7 +142,7 @@ const components: PortableTextComponents = {
       </aside>
     ),
     ctaBlock: ({ value }) => (
-      <div className="my-14 rounded-3xl bg-[#EDF7FC] px-8 py-10 text-center ring-1 ring-[#62C4EB]/25">
+      <div className="my-14 rounded-[4px] bg-[#E6F5FC] px-8 py-10 text-center ring-1 ring-[#1A6E93]/25">
         <p
           className="mb-3 text-[1.6rem] leading-tight text-[#0C1215]"
           style={{ ...display, fontWeight: 600 }}
@@ -150,11 +150,11 @@ const components: PortableTextComponents = {
           {value?.heading}
         </p>
         {value?.text ? (
-          <p className="mx-auto mb-6 max-w-md text-[#4B5C6B]">{value.text}</p>
+          <p className="mx-auto mb-6 max-w-md text-[#3B4247]">{value.text}</p>
         ) : null}
         <Link
           href={value?.buttonHref ?? "/assessment"}
-          className="inline-flex items-center gap-2 rounded-xl bg-[#62C4EB] px-6 py-3.5 font-semibold text-[#0C1215] transition-colors hover:bg-[#7CD0EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#62C4EB] focus-visible:ring-offset-2"
+          className="inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2"
           style={display}
         >
           {value?.buttonLabel} <span aria-hidden>&rarr;</span>
