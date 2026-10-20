@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useScrollReveal, useStaggerReveal } from "@/lib/gsap";
 
 /** Show the machine actually working (real footage), beside the four-step
@@ -31,6 +31,27 @@ export function ProcessSection() {
   const headRef = useScrollReveal();
   const stepsRef = useStaggerReveal(0.12);
   const [reduceMotion, setReduceMotion] = useState(false);
+  // The 1.4 MB clip loads only when the section nears the screen. It used to
+  // download with the page and compete with the hero photo on phones.
+  const videoBox = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(false);
+
+  useEffect(() => {
+    const el = videoBox.current;
+    if (!el || near) return;
+    if (!("IntersectionObserver" in window)) return setNear(true);
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setNear(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "400px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [near]);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -54,9 +75,10 @@ export function ProcessSection() {
 
         <div className="mt-10 grid items-center gap-10 md:mt-14 lg:grid-cols-2 lg:gap-16">
           {/* real footage — the rotary cleaner mid-pass */}
-          <div className="relative overflow-hidden rounded-[4px] border border-retro-line">
+          <div ref={videoBox} className="relative overflow-hidden rounded-[4px] border border-retro-line">
             <video
-              src="/brand/video/surface-cleaning.mp4"
+              src={near ? "/brand/video/surface-cleaning.mp4" : undefined}
+              preload="none"
               poster="/brand/photos/work/surface-cleaning-poster.webp"
               autoPlay={!reduceMotion}
               muted
