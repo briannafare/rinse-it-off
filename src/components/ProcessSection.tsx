@@ -88,7 +88,7 @@ export function ProcessSection() {
               ref={video}
               src={near ? "/brand/video/surface-cleaning.mp4" : undefined}
               preload="none"
-              poster="/brand/photos/work/surface-cleaning-poster.webp"
+              poster={near ? "/brand/photos/work/surface-cleaning-poster.webp" : undefined}
               autoPlay={!reduceMotion}
               muted
               loop={!reduceMotion}
