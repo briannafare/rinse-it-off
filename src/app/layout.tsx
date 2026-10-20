@@ -91,7 +91,14 @@ const jsonLd = {
         areaServed: "US-OR",
         availableLanguage: "English",
       },
-      sameAs: ["https://www.facebook.com/profile.php?id=61594392927890"],
+      // the same business everywhere it is listed, so search and AI engines join them into one entity
+      sameAs: [
+        "https://www.facebook.com/profile.php?id=61594392927890",
+        "https://www.instagram.com/rinseitoffofficial/",
+        "https://www.linkedin.com/company/rinse-it-off-llc",
+        "https://www.google.com/maps?cid=17988257302203001929",
+      ],
+      hasMap: "https://www.google.com/maps?cid=17988257302203001929",
       // OPEN: the contact page prints Monday–Saturday 7am–6pm; this says every day,
       // all day (set 2026-09-12 because the AI assistant answers around the clock).
       // Bri decides which one is true for Google; both must then say the same.
