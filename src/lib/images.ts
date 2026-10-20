@@ -12,5 +12,6 @@ export const IMG = {
   patio:      "/brand/photos/patio-umbrellas.webp",            // real: finished patio
   driveway:   "/brand/photos/work/driveway-after.webp",        // real: residential driveway
   curb:       "/brand/photos/work/curb-gleam.webp",            // real: curb detail
-  portland:   "/brand/photos/work/clubhouse-entry.webp",       // real: PNW frame
+  // clubhouse-entry.webp was removed: it shows surface-cleaner swirl marks, not a finished job
+  portland:   "/brand/photos/work/proshop-driveway.webp",      // real: PNW frame
 } as const;

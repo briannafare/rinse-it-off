@@ -24,7 +24,6 @@ const SLUG_BY_KEY: Record<string, string> = Object.fromEntries(SERVICES.map((s) 
 const HERO_PHOTOS = [
   // generated and real alternate (brief 2026-10-19, 4e); every file carries the same warm print grade
   { src: "/brand/retro/siding.webp", alt: "A Rinse It Off cleaner soft-washing the wood siding of a mid-century house from the lawn" },
-  { src: "/brand/photos/work/clubhouse-entry.webp", alt: "A clubhouse entry with the concrete freshly cleaned" },
   { src: "/brand/retro/deck.webp", alt: "A freshly washed cedar deck and railing behind a mid-century house, water still on the boards" },
   { src: "/brand/photos/walkway-split.webp", alt: "A walkway mid-clean, the finished half bright against the dark, dirty half" },
   { src: "/brand/retro/patio.webp", alt: "A clean concrete patio with 1960s outdoor furniture and an umbrella, still wet from washing" },

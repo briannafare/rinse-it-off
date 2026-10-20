@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Phone, Mail, MapPin, ArrowRight, ShieldCheck } from "lucide-react";
 import { AI_PAGES, visibleHere } from "@/lib/ai-pages";
-import { Stripes } from "@/components/retro/Bits";
 
 const linkClass =
   "block rounded-sm py-1 text-sm text-[#0C1215]/70 transition-colors hover:text-[#0C1215] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none";
@@ -51,8 +50,6 @@ const guideLinks = AI_PAGES.filter((p) => GUIDE_LABELS[p.path] && visibleHere(p)
 export function Footer() {
   return (
     <footer className="relative z-10 overflow-hidden bg-[#62C4EB] pb-16 text-[#0C1215] md:pb-0">
-      {/* the three-stripe mark, once, along the top edge */}
-      <Stripes className="h-6 w-full" />
       <div className="container-site pt-16 md:pt-20 pb-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
           {/* Brand */}

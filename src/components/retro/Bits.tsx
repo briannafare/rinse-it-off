@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 
 /** Print button: Futura caps, 14px corners, ink outline, hard offset shadow (CSS .btn-retro).
  *  Sun yellow by default (yellow marks decisions); "gold" = white, for use on a yellow ground.
- *  `signature` = the three-stripe sweep passing across now and then, for a page's main buttons. */
+ *  `signature` = the three-stripe icon before the label, for a page's main buttons. */
 export function RetroButton({
   href,
   children,
@@ -32,29 +32,15 @@ export function RetroButton({
         className,
       )}
     >
-      {signature && (
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 bg-no-repeat motion-safe:animate-retro-sweep"
-          style={{
-            backgroundImage: STRIPES,
-            backgroundSize: "300% 100%",
-            backgroundPosition: "170% 0",
-          }}
-        />
-      )}
+      {signature && <Stripes className="h-3 w-7" />}
       <span className="relative">{children}</span>
     </a>
   );
 }
 
-/** The brand mark: three thin parallel stripes, always magenta, sky, yellow, on a slight diagonal,
- *  like a light sweep. Thin and crisp: never equal colour blocks, never a band. */
-export const STRIPES =
-  "linear-gradient(105deg,transparent 0 43%,#D6336C 43% 47%,#62C4EB 47% 51%,#F2B632 51% 55%,transparent 55% 100%)";
-
-/** The mark as an element (CSS .stripes keeps each stripe 4px wide at any size): a divider between
- *  sections, an underline under a title, the top edge of the footer. Size it with className. */
+/** The brand mark as an icon: three thin horizontal stripes, magenta over sky over yellow, with
+ *  slanted ends (CSS .stripes). Bri 2026-10-20: the stripes run horizontally, either as this icon or
+ *  as a line entering an image (.mat::before). Never diagonal, never a full-width band. */
 export function Stripes({ className }: { className?: string }) {
   return <span aria-hidden className={clsx("stripes block", className)} />;
 }
@@ -120,7 +106,7 @@ export function TitleCard({ chapter, title, tone = "pool" }: { chapter: string; 
           <Sparkle className="h-3 w-3" fill={dark ? "#F2B632" : "#D6336C"} />
         </p>
         <p className="mt-3 font-title text-[clamp(2.6rem,9vw,4.6rem)] leading-[0.95]">{title}</p>
-        <Stripes className="mt-5 h-8 w-24" />
+        <Stripes className="mt-5 h-3 w-10" />
       </div>
     </div>
   );

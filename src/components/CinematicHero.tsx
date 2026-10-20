@@ -124,7 +124,7 @@ export function CinematicHero() {
     <section className="relative w-full overflow-hidden bg-retro-pool md:grid md:min-h-[100svh] md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
       {/* The photograph, set like a print: rounded corners and an ink outline, inset on the cream. */}
       <div className="relative h-[58svh] min-h-[380px] px-3 pb-3 pt-[76px] md:order-2 md:h-auto md:min-h-0 md:py-5 md:pl-0 md:pr-5 md:pt-[92px]">
-      <div className="mat film-grain relative h-full overflow-hidden">
+      <div className="mat film-grain relative h-full overflow-hidden" style={{ "--streak-y": "66%", "--streak-len": "30%" } as React.CSSProperties}>
         {SLIDES.map((s, i) => (
           <div
             key={s.key}

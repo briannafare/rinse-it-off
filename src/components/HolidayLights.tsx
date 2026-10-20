@@ -37,7 +37,7 @@ export function HolidayLights() {
       </div>
 
       <div className="container-site grid gap-8 pb-16 pt-20 md:grid-cols-[1.05fr_1fr] md:items-center md:gap-14 md:pb-24 md:pt-24">
-        <div className="mat film-grain relative aspect-[3/2] overflow-hidden md:order-2">
+        <div className="mat film-grain streak-r relative aspect-[3/2] overflow-hidden md:order-2" style={{ "--streak-y": "18%" } as React.CSSProperties}>
           <Image
             src="/brand/retro/holiday-install.webp"
             alt="Two Rinse It Off crew members adding the last strand of big colored bulbs to a mid-century house covered in holiday lights, light-up carolers in the yard and a family watching from the lawn"

@@ -9,7 +9,6 @@ const SHOTS = [
   { src: "surface-cleaner-steam", alt: "Technician guiding a surface cleaner through a cloud of steam on a clubhouse walkway", caption: "Hot-water surface cleaning, clubhouse walkway." },
   { src: "driveway-before", alt: "Residential driveway covered in moss and grit in front of a cedar garage", caption: "Moss and grit on a driveway apron, before we started." },
   { src: "driveway-after", alt: "A residential driveway in the trees, washed clean and still wet", caption: "A driveway under the firs, finished." },
-  { src: "clubhouse-entry", alt: "Clubhouse porte-cochère with freshly cleaned concrete and a hose still on the ground", caption: "Clubhouse entry, concrete just finished." },
   { src: "lot-steam-wide", alt: "Wide view of a parking lot with a technician surface cleaning under low clouds", caption: "Parking lot, early morning pass." },
   { src: "proshop-driveway", alt: "Curving driveway past a pro shop with the cleaned section still wet", caption: "Cart path and driveway by the pro shop." },
   { src: "tech-cone", alt: "Technician washing a curb edge behind an orange traffic cone", caption: "Curb and gutter line, coned off while we work." },

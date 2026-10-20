@@ -35,7 +35,7 @@ export function BeforeAfter() {
   return (
     <section id="proof" className="bg-[#E6F5FC] pb-16 md:pb-24">
       {/* full-bleed parallax band */}
-      <div ref={bandRef} className="mat relative mx-3 h-[52vh] min-h-[380px] overflow-hidden md:mx-5">
+      <div ref={bandRef} className="mat streak-r relative mx-3 h-[52vh] min-h-[380px] overflow-hidden md:mx-5" style={{ "--streak-y": "34%", "--streak-len": "26%" } as React.CSSProperties}>
         <motion.div className="absolute -inset-y-[14%] inset-x-0" style={{ y }}>
           <Image
             src="/brand/photos/curb-dramatic.webp"

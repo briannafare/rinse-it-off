@@ -67,11 +67,17 @@
   /* a printed photo or card: 14px corners and a 1.5px ink outline */
   .frame { border-radius: 14px; box-shadow: 0 0 0 1.5px var(--ink); }
   .frame-light { box-shadow: 0 0 0 1.5px #FFFFFF; }
-  /* photos: white mat, ink keyline, hard ink offset, the stripe mark across the top-right corner */
+  /* photos: white mat, ink keyline, hard ink offset */
   .mat { border: 6px solid #FFFFFF; border-radius: 16px; box-shadow: 0 0 0 1.5px var(--ink), 5px 5px 0 1.5px var(--ink); }
-  .mat::before { content: ""; position: absolute; top: 0; right: 0; z-index: 1; width: 84px; height: 84px; pointer-events: none; --stripe-angle: 135deg; background: linear-gradient(var(--stripe-angle, 105deg), transparent calc(50% - 6px), #D6336C 0 calc(50% - 2px), #62C4EB 0 calc(50% + 2px), #F2B632 0 calc(50% + 6px), transparent 0); }
-  /* the three-stripe mark (Stripes in retro/Bits.tsx): each stripe 4px at any size, always magenta, sky, yellow */
-  .stripes { background: linear-gradient(var(--stripe-angle, 105deg), transparent calc(50% - 6px), #D6336C 0 calc(50% - 2px), #62C4EB 0 calc(50% + 2px), #F2B632 0 calc(50% + 6px), transparent 0); }
+  /* the three stripes, magenta over sky over yellow, 4px each */
+  .stripes, .mat::before { background: linear-gradient(var(--magenta) 0 33.34%, var(--sky) 0 66.67%, var(--sun) 0); }
+  /* as an icon: a short horizontal mark with slanted ends */
+  .stripes { display: inline-block; flex-shrink: 0; clip-path: polygon(22% 0, 100% 0, 78% 100%, 0 100%); }
+  /* as a line entering a photo from one edge and stopping partway in. Each image sets its own
+     height with --streak-y (and .streak-r to come in from the right) so they don't line up. */
+  .mat::before { content: ""; position: absolute; z-index: 1; left: 0; top: var(--streak-y, 22%); width: var(--streak-len, 34%); height: 12px; pointer-events: none;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%); }
+  .mat.streak-r::before { left: auto; right: 0; clip-path: polygon(0 0, 100% 0, 100% 100%, 12px 100%); }
   /* real photos, staged photos and video: one shared grade (see --photo-grade). Matched by path so
      every photo on every page gets it; illustrations, Hal and the logo are left alone. */
   .mat img, video,

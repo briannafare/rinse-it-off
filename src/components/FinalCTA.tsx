@@ -11,7 +11,7 @@ import { RetroButton } from "@/components/retro/Bits";
 export function FinalCTA() {
   return (
     <section className="relative overflow-hidden bg-retro-paper p-3 md:p-5">
-      <div className="mat relative flex min-h-[70vh] flex-col overflow-hidden">
+      <div className="mat streak-r relative flex min-h-[70vh] flex-col overflow-hidden" style={{ "--streak-y": "10%", "--streak-len": "40%" } as React.CSSProperties}>
         <Image
           src="/brand/retro/final-truck.webp"
           alt="A Rinse It Off crew gearing up beside their work truck on a leafy street of mid-century houses"
