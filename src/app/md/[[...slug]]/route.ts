@@ -16,6 +16,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug?: 
   const page = MD_PAGES.find((p) => p.path === path);
   if (!page) return new Response("Not found", { status: 404 });
   return new Response(`${page.body()}\n`, {
-    headers: { "Content-Type": "text/markdown; charset=utf-8" },
+    headers: {
+      "Content-Type": "text/markdown; charset=utf-8",
+      // The HTML page is the one to rank; this copy is for AI readers.
+      Link: `<https://rinseitoff.com${path === "/" ? "" : path}>; rel="canonical"`,
+    },
   });
 }

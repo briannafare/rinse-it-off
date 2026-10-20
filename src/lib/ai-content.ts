@@ -19,7 +19,7 @@ import {
   COMMERCIAL_METHOD_KEYS,
   TRUST,
 } from "@/lib/commercial";
-import { PLAN_BODY, PLAN_EVERY_VISIT, PLAN_HEADLINE, PLAN_NOTE, PLAN_SEASONS } from "@/lib/plan-copy";
+import { PLAN_BODY, PLAN_EVERY_VISIT, PLAN_HEADLINE, PLAN_META_DESCRIPTION, PLAN_NOTE, PLAN_SEASONS } from "@/lib/plan-copy";
 import { SITE_DESCRIPTION } from "@/lib/site";
 import { AI_PAGES, isPublishable } from "@/lib/ai-pages";
 import { metadata as servicesMetadata } from "@/app/services/page";
@@ -178,6 +178,27 @@ function areasMd(): string {
   ].join("\n");
 }
 
+function planMd(): string {
+  return [
+    "# The yearly plan",
+    "",
+    `> ${PLAN_META_DESCRIPTION}`,
+    "",
+    `## ${PLAN_HEADLINE}`,
+    "",
+    PLAN_BODY,
+    "",
+    ...PLAN_SEASONS.map((s) => `- ${s.name}: ${s.work}`),
+    `- Every visit: ${PLAN_EVERY_VISIT}`,
+    "",
+    PLAN_NOTE,
+    "",
+    `Get the monthly price for a house: ${SITE_URL}/plan`,
+    "",
+    contactBlock(),
+  ].join("\n");
+}
+
 function contactMd(): string {
   return ["# Contact", "", `> ${desc(contactMetadata)}`, "", contactBlock()].join("\n");
 }
@@ -222,6 +243,14 @@ export const MD_PAGES: MdPage[] = [
     summary: desc(areasMetadata),
     section: "Service areas",
     body: areasMd,
+  },
+  {
+    path: "/plan",
+    mdPath: "/plan.md",
+    title: "The yearly plan for houses",
+    summary: PLAN_META_DESCRIPTION,
+    section: "Plan and booking",
+    body: planMd,
   },
   {
     path: "/contact",
