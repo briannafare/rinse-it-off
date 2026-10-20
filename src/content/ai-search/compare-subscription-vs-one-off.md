@@ -20,7 +20,7 @@ The trouble is that on most houses something else always comes up. The roof goes
 |---|---|---|
 | What gets cleaned, and when | In spring we treat the roof for moss, soft wash it and wash the siding. In summer we do the driveway, the walkways and an algae treatment. In fall we clear the gutters and flush the downspouts once the leaves are down. In winter we do steps, entries, walkways and patios. | Whatever you book, whenever you book it. |
 | How you pay | From $189 a month, depending on the size of your home. Three stories or a steep lot are priced by hand. | Per job, per visit. Prices vary from one company to the next. |
-| What you do to start | Get your price online in about a minute, then book the first cleaning or a consult, depending on what you were quoted for. | Ask for a quote for each job you want done. |
+| What you do to start | Get your price online in a couple of minutes, then book the first cleaning or a consult, depending on what you were quoted for. | Ask for a quote for each job you want done. |
 | Windows | Free window cleaning four times a year comes with the plan. We use pure water, which is water with the minerals filtered out, so it dries without spots. | Booked and paid for as its own job. |
 | Who keeps track of the schedule | We do. | You do. |
 | If a spot gets missed | Tell us and we re-rinse it free within 48 hours. | Ask what the company's guarantee is before you book. |
@@ -81,7 +81,7 @@ So the plan doesn't win on one pass of each job. It wins on the windows, on the 
 ## Switching from one-off jobs to the plan
 
 1. Write down what you had cleaned in the last year and roughly what you paid.
-2. Get your price at [rinseitoff.com/plan](/plan). It takes about a minute.
+2. Get your price at [rinseitoff.com/plan](/plan). It takes a couple of minutes.
 3. Read what each season covers and hold it up against your list.
 4. Book the first cleaning or a consult, depending on what you were quoted for.
 5. If a spot looks wrong after a visit, tell us. We re-rinse it free within 48 hours.
@@ -99,7 +99,7 @@ Ours covers the roof and siding in spring, the driveway, walkways and an algae t
 
 Gutters don't send a reminder when they're full. On the plan, keeping track is our job.
 
-**[See your price for your house](/plan).** It takes about a minute.
+**[See your price for your house](/plan).** It takes a couple of minutes.
 
 ---
 

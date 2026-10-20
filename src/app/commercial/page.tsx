@@ -21,7 +21,6 @@ import {
   AUDIT_LEAD,
   AUDIT_POINTS,
   COMMERCIAL_CTA_BODY,
-  COMMERCIAL_FAQ,
   COMMERCIAL_META_DESCRIPTION,
   COMMERCIAL_METHOD_KEYS,
   TRUST as TRUST_COPY,
@@ -58,8 +57,7 @@ const TRUST: { icon: typeof ShieldCheck; title: string; body: string }[] = TRUST
 
 const BASE_URL = "https://rinseitoff.com";
 
-// FAQPage + Service markup. Every answer is text printed on this page
-// (see src/lib/commercial.ts); nothing is added that the page does not say.
+// Service markup only. FAQPage was removed because its questions are not printed on this page.
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -81,15 +79,6 @@ const jsonLd = {
           itemOffered: { "@type": "Service", name: `${m.surface}: ${m.method}`, description: m.what },
         })),
       },
-    },
-    {
-      "@type": "FAQPage",
-      "@id": `${BASE_URL}/commercial#faq`,
-      mainEntity: COMMERCIAL_FAQ.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-      })),
     },
   ],
 };

@@ -84,7 +84,7 @@ From the same Portland-area table: a one-story house wash at $250 to $350 plus g
 
 The north wall will go green again eventually. It's a wall, and that's what walls here do.
 
-**[See your price for your house](/plan).** It takes about a minute.
+**[See your price for your house](/plan).** It takes a couple of minutes.
 
 ---
 

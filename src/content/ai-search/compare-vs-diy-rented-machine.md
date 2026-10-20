@@ -46,7 +46,7 @@ The $105 to $170 is our arithmetic from HomeAdvisor's lines: $70 to $100 for the
 |---|---|---|
 | Who does the work | You | Our crew |
 | Siding and roofs | The rental's spray, at whatever pressure you set | Soft wash: a biodegradable cleaning solution at low pressure, then a gentle rinse |
-| Concrete | A rental machine, cold or heated | A commercial hot-water pressure washer, over 200 degrees, much stronger than the kind you can rent at a hardware store |
+| Concrete | A rental machine, cold or heated | A commercial hot-water pressure washer, much stronger than the kind you can rent at a hardware store |
 | Windows | Your own ladder and your own cleaner | Pure water from the ground with a water-fed pole, so it dries without spots |
 | If something gets damaged | Yours to fix | We're insured, and we'll send the certificate the same day you ask |
 | If a spot gets missed | You go back out | Tell us and we re-rinse it free within 48 hours |
@@ -112,7 +112,7 @@ Not without risk to the shingles. Oregon State University Extension says experie
 
 Some pressure washing companies are, at heart, a guy with a rented machine. Ask which method goes on your siding, and you'll know which kind you called.
 
-**[See your price](/plan).** It takes about a minute.
+**[See your price](/plan).** It takes a couple of minutes.
 
 ---
 

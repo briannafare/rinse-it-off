@@ -21,7 +21,7 @@ So the useful question is how often each part of the house needs it, and what ma
 | Siding | Depends on the house | Shade, trees and which way the wall faces | Washed every spring |
 | Roof | Under firs on a north slope, it usually needs looking at every year. In full sun, it can go longer. | Shade, overhanging branches, debris | Moss treatment and soft wash every spring, and we check it each visit |
 | Driveway and walkways | Depends on the house | Shade, foot traffic, how long water sits | Driveway and walkways every summer, plus walkways again in winter |
-| Gutters | Once the leaves are down, in November or December | When your trees finish dropping | Cleared and downspouts flushed in fall. If your trees run late, you can add a second cleaning in January or February. |
+| Gutters | Once the leaves are down, in November or December | When your trees finish dropping | Cleared and downspouts flushed in fall. |
 | Steps, entries and patios | Depends on the house | Shade and foot traffic, since moss on steps is slick when wet | Every winter |
 | Windows | Four times a year on the plan | | Free window cleaning four times a year comes with the plan |
 
@@ -63,7 +63,7 @@ The Asphalt Roofing Manufacturers Association (ARMA) says those black streaks ar
 
 The north wall will go green again. On the plan, it's on our calendar instead of yours.
 
-**[See your price](/plan).** It takes about a minute.
+**[See your price](/plan).** It takes a couple of minutes.
 
 ---
 

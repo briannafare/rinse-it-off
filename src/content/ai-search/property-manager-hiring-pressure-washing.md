@@ -21,7 +21,7 @@ Most of what goes wrong with an exterior cleaning vendor shows up later. It's a 
 | What method goes on each surface? | Soft wash on siding and roofs, pressure and hot water on concrete. | The wrong pressure strips paint, pushes water behind siding and etches wood. |
 | Where does the wash water go? | A specific answer for your city and your site. | Some cities, Portland included, don't allow wash water into storm drains. |
 | Can you work around tenants and business hours? | Yes, with a schedule set before the first visit. | Nobody wants to step over a hose on the way in. |
-| Will I get a written report with photos? | Yes, for every area, before and after. | Your owners and your board can see what was done. |
+| Will I get a written report with photos? | Yes. Every surface is photographed, point by point, and the report is board-ready. | Your owners and your board can see what was done. |
 | What happens if a spot gets missed? | A free re-clean within a set number of days. | Ours is a 48-hour re-rinse. |
 | How is the price built? | Itemized by area, in writing, before work starts. | You can budget it and compare it line by line. |
 
@@ -70,9 +70,7 @@ We can't tell you who's liable for a fall, and this page isn't the place to deci
 
 Our free property inspection is also a quote. We'd like the work, and the report comes with a price for it.
 
-It's worth having even if you never hire us. We walk the property, check 21 points and photograph what we find. For each item, the report says what it is, why it matters and how we'd treat it. It's board-ready, so you can hand it straight to owners or an HOA board.
-
-Your own crew can work from it. It's yours to keep either way.
+We walk the property, check 21 points and photograph what we find. For each item, the report says what it is, why it matters and how we'd treat it. It's board-ready, so you can hand it straight to owners or an HOA board.
 
 ## How to run the first month
 
@@ -108,7 +106,7 @@ That's a question for your insurer and your attorney. What helps either way is a
 **How often should an apartment complex have its walkways and parking lot pressure washed?**
 As a starting point, entrances every one to three months and parking lots once or twice a year. Trash pads at apartment buildings run every one to two months. Shade, foot traffic and spills move those up or down.
 
-**[Book the free 21-point inspection](/assessment).** The report is yours to keep.
+**[Book the free 21-point inspection](/assessment).**
 
 ---
 

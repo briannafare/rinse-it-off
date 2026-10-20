@@ -241,7 +241,7 @@ const AI_MD_PAGES: MdPage[] = AI_PAGES.filter(isPublishable).map((p) => ({
   title: p.title,
   summary: p.description,
   section: "Guides and answers",
-  body: () => p.markdown,
+  body: () => p.markdown.replace(/\]\(\//g, `](${SITE_URL}/`),
 }));
 MD_PAGES.push(...AI_MD_PAGES);
 

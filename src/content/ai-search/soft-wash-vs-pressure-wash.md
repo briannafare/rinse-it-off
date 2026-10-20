@@ -19,7 +19,7 @@ High-pressure water doesn't know the difference between dirt and paint. On a hou
 | | Soft wash | Pressure wash |
 |---|---|---|
 | Pressure | Low | High |
-| What does the cleaning | A cleaning solution, rinsed off gently | The force of the water, and with us, heat over 200 degrees |
+| What does the cleaning | A cleaning solution, rinsed off gently | The force of the water, and with us, hot water |
 | Best surfaces | Siding, stucco, wood, painted trim, asphalt shingle roofs | Concrete: driveways, walkways, patios |
 | Risks | Needs a cleaning solution, and plants nearby need protecting | Drives water behind siding, strips paint, knocks granules off shingles, can etch wood |
 | Speed | Slower, and sometimes needs a second pass, per Window Genie | Faster on flat concrete |
@@ -36,7 +36,7 @@ High-pressure water doesn't know the difference between dirt and paint. On a hou
 | Cedar and wood shingles | Soft wash | Pressure can etch wood. Window Genie lists wood siding among the surfaces where soft washing is less likely to do damage. |
 | Painted trim | Soft wash | High pressure strips paint. |
 | Brick | Cold water at high flow | Masonry gets a lot of water rather than a lot of force. |
-| Concrete | Hot water over 200 degrees, with a surface cleaner | Concrete can take pressure, and a wand alone leaves zebra stripes. |
+| Concrete | Hot water, with a surface cleaner | Concrete can take pressure, and a wand alone leaves zebra stripes. |
 | Asphalt shingles | Soft wash | High pressure knocks off the granules that protect the roof. |
 | Glass | Pure water from the ground with a water-fed pole | Water with the minerals filtered out dries without spots. |
 
@@ -84,7 +84,7 @@ It can. Pressure can etch wood, and on a roof it can damage shingles. Oregon Sta
 
 Our pressure washer still gets plenty of work. Concrete can handle it, and it never complains.
 
-**[See your price](/plan).** It takes about a minute.
+**[See your price](/plan).** It takes a couple of minutes.
 
 ---
 
