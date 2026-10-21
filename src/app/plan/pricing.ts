@@ -464,9 +464,9 @@ export function addOnEstimate(a: AddOn, answer: AddOnAnswer | undefined, price: 
   return `${a.label}: priced at site visit`;
 }
 
-// ── Membership upgrade: a second gutter cleaning in spring (Oregon
-//    recommends two a year). Same 20% member discount, done on the spring
-//    visit so there is no extra trip. ─────────────────────────────────────────
+// ── Membership upgrade: a second gutter cleaning (Oregon recommends two a
+//    year) on the date the customer picks; we suggest January or February.
+//    Same 20% member discount. ─────────────────────────────────────────
 export interface Effective {
   monthly: number; // per month, billed monthly
   annual: number; // monthly × 12

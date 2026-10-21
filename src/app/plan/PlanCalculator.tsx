@@ -483,7 +483,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
       { label: `Screens, ${WINDOW_VISITS_PER_YEAR} visits`, sub: "you remove and reinstall", value: price.screensAnnualValue, free: true },
     ];
     const e = effectivePrice(price, springGutters);
-    if (springGutters) rows.splice(3, 0, { label: "Spring gutters, second cleaning", value: e.upgradeValue });
+    if (springGutters) rows.splice(3, 0, { label: "Second gutter cleaning", value: e.upgradeValue });
     const baseYourPrice = billing === "annual" ? price.prepaidAnnual : price.memberAnnual;
     const yourPrice = billing === "annual" ? e.prepaid : e.annual;
     const total = price.valueReceived + (springGutters ? e.upgradeValue : 0);
@@ -862,8 +862,8 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                   <button type="button" className={`upgrade ${springGutters ? "on" : ""}`} onClick={() => setSpringGutters((v) => !v)} aria-pressed={springGutters}>
                     <span className="box">{springGutters && <Check />}</span>
                     <span className="body">
-                      <span className="t">Add a second gutter cleaning in spring</span>
-                      <span className="sub">Recommended in Oregon · done on the spring visit, no extra trip</span>
+                      <span className="t">Add a second gutter cleaning</span>
+                      <span className="sub">Recommended in Oregon · you pick the date, we suggest January or February</span>
                     </span>
                     <span className="amt">+${fmt(stack.upgradeMonthly)}/mo</span>
                   </button>

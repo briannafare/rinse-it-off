@@ -210,8 +210,11 @@ export function CinematicHero() {
         </div>
 
         <Seal text="Free window cleaning ★ four times a year ★ " className="absolute bottom-[calc(3.5vw+28px)] right-10 z-10 hidden w-36 -rotate-6 md:block" />
-        {/* Hal: settles over the open sky, never on a person or on the headline. */}
-        <HalFlyIn className="pointer-events-none absolute bottom-[74px] left-[4%] z-20 w-[20vw] max-w-[110px] md:bottom-auto md:left-auto md:right-[6%] md:top-[19%] md:w-[10vw] md:max-w-[180px]" />
+        {/* Hal: settles over the open sky, never on a person or on the headline. On a phone tall enough
+            (700px+) he hangs just under the business slide's button, whose headline runs a line longer.
+            On shorter phones there is no room between that button and the Call/Text bar, so he keeps
+            the low spot and sits behind the button (z-5, under the copy's z-10): the button stays whole. */}
+        <HalFlyIn className="pointer-events-none absolute bottom-[74px] left-[4%] z-[5] w-[40vw] max-w-[220px] max-md:[@media(min-height:700px)]:bottom-auto max-md:[@media(min-height:700px)]:top-[calc(260px+64vw)] max-md:[@media(min-height:700px)]:z-20 md:bottom-auto md:left-auto md:z-20 md:right-[6%] md:top-[19%] md:w-[15vw] md:max-w-[270px]" />
       </div>
       {/* the stripe band along the photo's tilted lower edge (the centre of the cut sits 1.75vw up) */}
       <StripeBand className="absolute inset-x-0 bottom-[1.75vw]" />
