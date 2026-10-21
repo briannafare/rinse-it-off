@@ -3,6 +3,7 @@ import { track as metaTrack } from "@/components/MetaPixel";
 import { useEffect, useMemo, useState } from "react";
 import { bookFirstVisit, confirmDeposit, depositCheckout, submitPlanQuote } from "./actions";
 import { getFreeSlots } from "../assessment/actions";
+import { HalFlyIn } from "@/components/retro/HalFlyIn";
 import {
   ADD_ONS,
   ADD_ON_GROUPS,
@@ -43,11 +44,14 @@ const DS = `
     --blue-wash:     #E6F5FC;
     --mint:          #FCEBC0;
     --surface:       #FFFFFF;
-    --surface-alt:   #FFFFFF;
+    --surface-alt:   #F3EEE4;
+    --paper:         #FBF8F2;
+    --sky:           #62C4EB;
+    --sun:           #F2B632;
     --text-primary:  #0C1215;
     --text-secondary:#3B4247;
     --text-muted:    #7A8186;
-    --border:        #E4DCCD;
+    --border:        #CFC6B6;
     --border-light:  #E4DCCD;
     --font-display: "neue-haas-grotesk-display", system-ui, -apple-system, sans-serif;
     --font-body:    "neue-haas-grotesk-text", system-ui, -apple-system, sans-serif;
@@ -61,10 +65,10 @@ const DS = `
   }
 
   html { -webkit-font-smoothing: antialiased; }
-  body { font-family: var(--font-body); color: var(--text-primary); background: var(--surface); }
+  body { font-family: var(--font-body); color: var(--text-primary); background: var(--paper); }
   ::selection { background: rgba(214,51,108,0.25); }
 
-  .plan { font-family: var(--font-body); color: var(--text-primary); background: var(--surface); min-height: 100vh; width: 100%; max-width: 100vw; overflow-x: hidden; }
+  .plan { font-family: var(--font-body); color: var(--text-primary); background: var(--paper); min-height: 100vh; width: 100%; max-width: 100vw; overflow-x: hidden; }
   .plan * { min-width: 0; }
   .plan img, .plan input, .plan select, .plan button { max-width: 100%; }
   .plan-wrap, .plan-card { width: 100%; }
@@ -73,24 +77,28 @@ const DS = `
     outline: 2px solid var(--blue); outline-offset: 2px;
   }
 
-  .plan-header { background: var(--ink); padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .plan-header a.phone { font-family: var(--font-display); font-weight: 600; font-size: 0.9375rem; color: var(--blue-deep); text-decoration: none; white-space: nowrap; }
+  .plan-header { background: var(--paper); border-bottom: 1.5px solid rgba(12,18,21,0.12); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .plan-header a.phone { font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--ink); text-decoration: none; white-space: nowrap; }
 
-  .plan-hero { background: var(--aura-water); background-color: var(--surface-alt); padding: 36px 24px 32px; }
-  .plan-hero h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 6vw, 3rem); letter-spacing: -0.03em; line-height: 1.0; color: var(--ink); margin-bottom: 14px; text-wrap: balance; }
-  .plan-hero h1 .accent { color: var(--blue-deep); font-weight: 500; }
-  .plan-hero p { font-size: 1.0625rem; line-height: 1.6; color: var(--text-secondary); max-width: 440px; margin: 0 auto; text-wrap: pretty; }
+  .plan-hero { background: var(--paper); padding: 32px 16px 28px; }
+  .plan-hero .in { max-width: 528px; margin: 0 auto; display: grid; grid-template-columns: 1fr clamp(92px, 26vw, 168px); align-items: center; column-gap: clamp(8px, 3vw, 24px); }
+  .plan-hero .hal { width: 100%; }
+  .plan-hero .in p { grid-column: 1 / -1; }
+  .plan-hero h1 { font-size: clamp(2rem, 7vw, 3rem); line-height: 1.0; color: var(--ink); margin-bottom: 14px; text-wrap: balance; }
+  .plan-hero h1 .accent { background: linear-gradient(transparent 58%, var(--sun) 58% 92%, transparent 92%); -webkit-box-decoration-break: clone; box-decoration-break: clone; padding-inline: .06em; }
+  .plan-hero p { font-size: 1.0625rem; line-height: 1.6; color: var(--text-secondary); max-width: 440px; text-wrap: pretty; }
 
   .plan-wrap { max-width: 560px; margin: 0 auto; padding: 24px 16px 64px; }
-  .plan-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r-2xl); padding: clamp(22px, 5vw, 40px); box-shadow: var(--shadow-soft); }
+  .plan-card { background: var(--surface); border: 1.5px solid var(--ink); border-radius: 16px; padding: clamp(22px, 5vw, 40px); box-shadow: 5px 5px 0 var(--ink); }
 
   /* Step counter: the one place a small label is allowed. */
   .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 28px; }
   .steps .seg { height: 4px; border-radius: 2px; background: var(--border); transition: background 0.3s var(--ease-out-expo); }
-  .steps .seg.on { background: var(--blue); }
+  .steps .seg.on { background: var(--sky); }
   .steps .seg.past { background: var(--ink); }
-  .steps .name { font-size: 0.8125rem; font-weight: 500; color: var(--text-muted); margin-top: 8px; }
-  .steps .name.on { color: var(--ink); }
+  .steps .name { font-family: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: 0.6875rem; color: var(--text-muted); margin-top: 8px; }
+  .steps .name.on { color: var(--blue-deep); }
+  @media (max-width: 440px) { .steps .name { letter-spacing: .03em; font-size: 0.625rem; } }
 
   .plan h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 4.5vw, 1.875rem); letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); margin-bottom: 8px; text-wrap: balance; }
   .plan .lead { font-size: 1rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 24px; text-wrap: pretty; }
@@ -259,18 +267,18 @@ const DS = `
   .reserve a.btn { text-decoration: none; }
   .checkout { width: 100%; height: 720px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
   .cal { border: 2px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
-  .cal-head { display: flex; align-items: center; justify-content: space-between; background: var(--ink); color: #fff; padding: 10px 12px; font-family: var(--font-display); font-weight: 600; font-size: 0.9375rem; }
-  .cal-head button { background: none; border: none; color: rgba(255,255,255,0.8); font-size: 22px; line-height: 1; padding: 0 10px; cursor: pointer; min-height: 32px; }
-  .cal-head button:disabled { color: rgba(255,255,255,0.25); cursor: not-allowed; }
+  .cal-head { display: flex; align-items: center; justify-content: space-between; background: var(--sky); color: var(--ink); padding: 10px 12px; font-family: var(--font-display); font-weight: 600; font-size: 0.9375rem; }
+  .cal-head button { background: none; border: none; color: var(--ink); font-size: 22px; line-height: 1; padding: 0 10px; cursor: pointer; min-height: 32px; }
+  .cal-head button:disabled { color: rgba(12,18,21,0.25); cursor: not-allowed; }
   .cal-dow { display: grid; grid-template-columns: repeat(7, 1fr); background: var(--surface-alt); border-bottom: 1px solid var(--border-light); }
   .cal-dow span { text-align: center; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); padding: 6px 0; }
   .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; padding: 6px; background: var(--surface-alt); }
   .cal-day { aspect-ratio: 1; border: 2px solid transparent; border-radius: var(--r-sm); background: var(--surface); color: var(--border); font-family: var(--font-body); font-size: 0.9375rem; cursor: not-allowed; }
   .cal-day.open { color: var(--ink); font-weight: 600; cursor: pointer; border-color: var(--blue-wash); background: var(--blue-wash); }
-  .cal-day.sel { background: var(--ink); color: var(--blue); border-color: var(--blue); }
+  .cal-day.sel { background: var(--sun); color: var(--ink); border-color: var(--ink); }
   .times { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
   .time { min-height: 44px; padding: 8px 14px; border: 2px solid var(--border); border-radius: var(--r-sm); background: var(--surface); font-family: var(--font-body); font-size: 0.9375rem; color: var(--ink); cursor: pointer; }
-  .time.on { border-color: var(--blue); background: var(--ink); color: var(--blue); }
+  .time.on { border-color: var(--ink); background: var(--sun); color: var(--ink); }
 
   .error { background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--r-sm); padding: 12px 16px; margin-bottom: 16px; font-size: 0.875rem; color: #b91c1c; line-height: 1.5; }
 
@@ -288,14 +296,17 @@ const DS = `
   .safe h3 { font-size: 1rem; margin: 0 0 6px; }
   .safe p { margin: 0 0 12px; font-size: 0.9375rem; line-height: 1.5; }
   .safe .btn { display: inline-flex; width: auto; }
-  .done .mark { width: 64px; height: 64px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--ink); }
+  .done .mark { width: 64px; height: 64px; background: var(--sky); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--ink); }
   .done h2 { font-size: clamp(1.75rem, 6vw, 2.25rem); margin-bottom: 12px; }
   .done p { font-size: 1.0625rem; line-height: 1.6; color: var(--text-secondary); max-width: 420px; margin: 0 auto; text-wrap: pretty; }
   .done p + p { margin-top: 12px; }
-  .done .tel { background: var(--ink); border-radius: var(--r-lg); padding: 18px 28px; display: inline-block; margin-top: 28px; }
-  .done .tel .k { font-size: 0.8125rem; color: rgba(255,255,255,0.55); margin-bottom: 4px; }
-  .done .tel a { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; color: var(--blue-deep); text-decoration: none; letter-spacing: -0.02em; }
+  .done .tel { background: var(--sky); border: 1.5px solid var(--ink); border-radius: var(--r-lg); padding: 18px 28px; display: inline-block; margin-top: 28px; }
+  .done .tel .k { font-size: 0.8125rem; color: var(--ink); margin-bottom: 4px; }
+  .done .tel a { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; color: var(--ink); text-decoration: none; letter-spacing: -0.02em; }
 
+  /* big figures and small headings in the site's Fraunces, like the home page stats */
+  .plan .price-big .num, .plan .stack-total .t.yours .amt, .plan .save-block .v { font-family: var(--font-title); font-weight: 900; letter-spacing: -0.02em; font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 144; }
+  .plan .stack h3, .plan .reserve h3 { font-family: var(--font-title); font-weight: 900; letter-spacing: -0.01em; }
   @media (prefers-reduced-motion: reduce) { .plan * { transition: none !important; } }
 `;
 
@@ -556,7 +567,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
 
       <header className="plan-header">
         <a href="https://www.rinseitoff.com" style={{ display: "inline-block" }}>
-          <img src="/logo-white.png" alt="Rinse It Off" style={{ height: 36, width: "auto" }} onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+          <img src="/logo-dark.png" alt="Rinse It Off" style={{ height: 40, width: "auto" }} onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
         </a>
         <a className="phone" href="tel:+19716264146">(971) 626-4146</a>
       </header>
@@ -610,10 +621,11 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
       ) : (
         <>
           <div className="plan-hero">
-            <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
+            <div className="in">
               <h1>
                 Your monthly price, <span className="accent">custom to your house.</span>
               </h1>
+              <HalFlyIn className="hal" />
               <p>Answer a few questions and we&apos;ll show you the price for a year of exterior care, windows included.</p>
             </div>
           </div>
