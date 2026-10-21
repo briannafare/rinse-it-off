@@ -14,8 +14,8 @@ export function FinalCTA() {
       <div className="relative md:aspect-[16/9] md:min-h-[620px]">
         <div className="mat film-grain relative aspect-[3/2] overflow-hidden md:absolute md:inset-0 md:aspect-auto">
         <Image
-          src="/brand/retro/final-truck.webp"
-          alt="A Rinse It Off crew gearing up beside their work truck on a leafy street of mid-century houses"
+          src="/brand/retro/final-van.webp"
+          alt="Three Rinse It Off cleaners wrapping up beside their white-and-teal van in the wet, freshly cleaned driveway of a mid-century house, one carrying a water-fed pole"
           fill
           sizes="100vw"
           className="object-cover object-[50%_40%]"

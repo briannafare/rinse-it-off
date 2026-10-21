@@ -103,14 +103,14 @@ export function BeforeAfter() {
             href="/assessment"
             className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none"
           >
-            Book your free 21-point property audit
+            <span>Book your free <span className="whitespace-nowrap">21-point</span> property audit</span>
             <svg
               aria-hidden="true"
               viewBox="0 0 20 20"
               fill="none"
               stroke="currentColor"
               strokeWidth={2}
-              className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+              className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
             >
               <path d="M4 10h12M11 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
