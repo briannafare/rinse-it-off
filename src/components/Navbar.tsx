@@ -102,11 +102,7 @@ export function Navbar() {
             </a>
             <a
               href="/assessment"
-              className={`btn-print transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 motion-reduce:transition-none ${
-                scrolled
-                  ? "bg-[#F2B632] text-[#0C1215] hover:bg-[#F6C451] focus-visible:ring-offset-white"
-                  : "bg-[#F2B632] text-[#0C1215] hover:bg-[#F6C451] focus-visible:ring-offset-white"
-              }`}
+              className="btn-print inline-flex min-h-[48px] items-center whitespace-nowrap bg-[#F2B632] px-6 leading-none text-[#0C1215] transition-colors duration-300 hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
             >
               Free assessment
             </a>
