@@ -66,7 +66,7 @@ export default function AboutPage() {
       />
       <Navbar />
       <main>
-        {/* ── Hero: a real job photo beside the owners' hello ── */}
+        {/* ── Hero: Bri and Alstun beside their hello ── */}
         <section className="w-full overflow-hidden bg-retro-pool pt-16 md:grid md:min-h-[72svh] md:grid-cols-2 md:items-center md:pt-[72px]">
           <div className="mat film-grain relative m-3 overflow-hidden md:order-2 md:my-5 md:ml-0 md:mr-5">
             <Image

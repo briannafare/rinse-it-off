@@ -69,11 +69,12 @@ export const ABOUT_RIG_PHOTO = {
   caption: "Hot water on a curb edge, steaming in the rain.",
 };
 
+/** The two people the headline names (the same photo as the print pieces and Facebook cover). */
 export const ABOUT_HERO_PHOTO = {
-  src: "/brand/photos/work/surface-cleaner-steam.webp",
-  w: 1600,
-  h: 1200,
-  alt: "A Rinse It Off technician guiding a surface cleaner through a cloud of steam on a wet walkway",
+  src: "/brand/photos/owners-bri-alstun.webp",
+  w: 1024,
+  h: 941,
+  alt: "Bri and Alstun, the owners of Rinse It Off, smiling and waving in Rinse It Off caps",
 };
 
 export const ABOUT_PROMISES_TITLE = "What comes with the work";

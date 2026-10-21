@@ -39,13 +39,14 @@ export function Methods() {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
-                <span className="label-caps absolute left-0 top-4 bg-[#62C4EB] px-3 py-2 !tracking-[0.14em] text-[#0C1215]">
-                  {m.method}
-                </span>
               </div>
               <div className="p-6">
+                {/* the method label sits here, not over the picture, where it covered people's faces */}
+                <p className="label-caps inline-block bg-[#62C4EB] px-3 py-1.5 !tracking-[0.14em] text-[#0C1215]">
+                  {m.method}
+                </p>
                 <h3
-                  className="text-lg font-semibold text-[#0C1215]"
+                  className="mt-3 text-lg font-semibold text-[#0C1215]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {m.surface}

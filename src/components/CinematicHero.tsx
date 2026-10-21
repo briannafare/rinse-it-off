@@ -211,7 +211,7 @@ export function CinematicHero() {
 
         <Seal text="Free window cleaning ★ four times a year ★ " className="absolute bottom-[calc(3.5vw+28px)] right-10 z-10 hidden w-36 -rotate-6 md:block" />
         {/* Hal: settles over the open sky, never on a person or on the headline. */}
-        <HalFlyIn className="pointer-events-none absolute bottom-[74px] left-[4%] z-20 w-[20vw] max-w-[110px] md:bottom-auto md:left-auto md:right-[6%] md:top-[19%] md:w-[10vw] md:max-w-[180px]" />
+        <HalFlyIn className="pointer-events-none absolute bottom-[74px] left-[4%] z-20 w-[40vw] max-w-[220px] md:bottom-auto md:left-auto md:right-[6%] md:top-[19%] md:w-[15vw] md:max-w-[270px]" />
       </div>
       {/* the stripe band along the photo's tilted lower edge (the centre of the cut sits 1.75vw up) */}
       <StripeBand className="absolute inset-x-0 bottom-[1.75vw]" />
