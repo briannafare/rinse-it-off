@@ -1,5 +1,6 @@
 "use client";
 import { track as metaTrack } from "@/components/MetaPixel";
+import { track as vaTrack } from "@vercel/analytics";
 import { useEffect, useMemo, useState } from "react";
 import { bookFirstVisit, confirmDeposit, depositCheckout, submitPlanQuote } from "./actions";
 import { getFreeSlots } from "../assessment/actions";
@@ -478,6 +479,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
     setSending(false);
     if (result.success) {
       setSaved({ saved: result.saved, contactId: result.contactId });
+      if (result.saved) vaTrack("Price request", { src, kind: hand.length ? "range" : "price" });
       if (result.saved) metaTrack("Lead", hand.length ? { content_name: "membership price by hand" } : { content_name: "membership quote", value: result.memberMonthly, currency: "USD" });
       if (hand.length) { setDone(true); window.scrollTo({ top: 0, behavior: "smooth" }); }
       else if (result.saved && result.contactId) go(4);
@@ -523,6 +525,9 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
   const savedLine = price && eff ? `You save $${fmt(price.savedVsAlaCarte + (billing === "annual" ? eff.prepaySaves : 0))} this year` : "";
   const suggested = useMemo(() => (house ? suggestedAddOns(house) : []), [house]);
 
+  // Vercel Web Analytics: which source (postcard, ad, home page) brought each plan visit (Bri 2026-10-22).
+  useEffect(() => { vaTrack("Plan visit", { src }); }, [src]);
+
   // Real availability for the next 14 days, fetched once the Reserve step opens.
   useEffect(() => {
     if (step !== 4 || slotsLoaded) return;
@@ -557,7 +562,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
     setCheckNote("");
     for (let i = 0; i < 3; i++) {
       const r = await confirmDeposit(saved.contactId);
-      if (r.paid) { setDepositPaid(true); setChecking(false); metaTrack("Purchase", { content_name: "membership reservation", value: 99, currency: "USD" }); return; }
+      if (r.paid) { setDepositPaid(true); setChecking(false); vaTrack("Deposit paid", { src }); metaTrack("Purchase", { content_name: "membership reservation", value: 99, currency: "USD" }); return; }
       await new Promise((res) => setTimeout(res, 3000));
     }
     setChecking(false);

@@ -1,4 +1,5 @@
 import MetaPixel from "@/components/MetaPixel";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { AREAS } from "@/lib/areas";
 import { SERVICES } from "@/lib/services";
@@ -167,6 +168,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-retro-paper text-text-primary font-body antialiased overflow-x-hidden">
         <MetaPixel />
         {children}
+        <Analytics />
       </body>
     </html>
   );
