@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Phone } from "lucide-react";
 import { FinalCTA } from "@/components/FinalCTA";
 import { PostCard } from "@/components/blog/PostCard";
-import { BASE_URL } from "@/components/blog/format";
+import { BASE_URL, postPicture } from "@/components/blog/format";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { imageUrl } from "@/sanity/lib/image";
 import { AI_PAGES, isPublishable } from "@/lib/ai-pages";
@@ -142,21 +142,16 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
               <div className="container-site">
                 <Link
                   href={`/blog/${featured.slug}`}
-                  className="group grid overflow-hidden rounded-[4px] bg-retro-pool ring-1 ring-retro-line transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 md:grid-cols-2"
+                  className="frame group grid overflow-hidden bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 md:grid-cols-2"
                 >
-                  {featured.heroImage?.asset ? (
-                    <div className="relative aspect-[16/10] md:aspect-auto md:min-h-[360px]">
-                      <FeaturedImage post={featured} />
-                    </div>
-                  ) : null}
-                  <div className={`flex flex-col justify-center p-8 md:p-12 ${featured.heroImage?.asset ? "" : "md:col-span-2"}`}>
+                  <div className="relative aspect-[16/10] border-b-2 border-[#0C1215] md:aspect-auto md:min-h-[360px] md:border-b-0 md:border-r-2">
+                    <FeaturedImage post={featured} />
+                  </div>
+                  <div className="flex flex-col justify-center p-8 md:p-12">
                     {featured.categoryLabel ? (
-                      <p className="mb-3 text-sm font-medium text-[#1A6E93]">{featured.categoryLabel}</p>
+                      <p className="label-caps mb-3 !tracking-[0.14em] text-[#1A6E93]">{featured.categoryLabel}</p>
                     ) : null}
-                    <h2
-                      className="mb-4 text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.08] tracking-[-0.02em] text-[#0C1215]"
-                      style={{ ...display, fontWeight: 600 }}
-                    >
+                    <h2 className="mb-4 text-[clamp(1.6rem,3.2vw,2.4rem)] leading-[1.08] text-[#0C1215]">
                       {featured.title}
                     </h2>
                     <p className="mb-6 max-w-xl text-lg leading-relaxed text-[#3B4247]">{featured.excerpt}</p>
@@ -245,11 +240,11 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
 }
 
 function FeaturedImage({ post }: { post: PostCardType }) {
-  if (!post.heroImage?.asset) return null;
+  const pic = postPicture(post, (img) => imageUrl(img, 1200, 800));
   return (
     <Image
-      src={imageUrl(post.heroImage, 1200, 800)}
-      alt={post.heroImage.alt || ""}
+      src={pic.src}
+      alt={pic.alt}
       fill
       sizes="(max-width: 768px) 100vw, 50vw"
       className="object-cover"

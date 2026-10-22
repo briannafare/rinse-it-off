@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
+    // blog post photos come from the Sanity CMS (src/sanity/lib/image.ts); without this the optimizer 400s them
+    remotePatterns: [{ protocol: "https", hostname: "cdn.sanity.io", pathname: "/images/r7qcxvui/**" }],
   },
   // Printed postcard QR codes point at /go/<season>. Served as a 307
   // (permanent: false) so the destination can change without reprinting.
