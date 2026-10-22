@@ -21,8 +21,11 @@ import {
   type TermYears,
   priceHouse,
   handPriceReasons,
+  handRange,
   suggestedAddOns,
-  type Access,
+  type Parking,
+  type Sides,
+  type Slope,
   type AddOnAnswer,
   type DrivewaySize,
   type ExactInputs,
@@ -133,6 +136,7 @@ const DS = `
 
   .choices { display: grid; gap: 8px; }
   .choices.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .choices.cols-4 { grid-template-columns: repeat(4, 1fr); }
   .choice {
     min-height: 52px; padding: 12px 14px; border: 2px solid var(--border); border-radius: var(--r-md);
     background: var(--surface); color: var(--ink); font-family: var(--font-body); font-size: 0.9375rem; font-weight: 400;
@@ -316,6 +320,14 @@ const PCT = (d: number) => `${Math.round(d * 100)}%`;
 const TZ = "America/Los_Angeles";
 const slotTime = (iso: string) => new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: TZ });
 const slotDate = (iso: string) => new Date(iso).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: TZ });
+// The plan's scope, for houses that see a range instead of one price.
+const HAND_INCLUDES: [string, string][] = [
+  ["Spring", "Moss treatment and soft wash on the roof, and a house wash on the siding"],
+  ["Summer", "Driveway and walkways pressure washed, with an algae treatment"],
+  ["Fall", "Gutters cleared and downspouts flushed once the leaves are down"],
+  ["Winter", "Steps, entries, walkways and patios cleaned"],
+  ["Every visit", "The outside of every window cleaned, free"],
+];
 const DAYS = ["No preference", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const DOW = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -373,7 +385,9 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
   const [windows, setWindows] = useState("");
   const [roof, setRoof] = useState<RoofType>("composition");
   const [driveway, setDriveway] = useState<DrivewaySize>("typical");
-  const [access, setAccess] = useState<Access>("easy");
+  const [slope, setSlope] = useState<Slope>("flat");
+  const [sides, setSides] = useState<Sides>("all");
+  const [parking, setParking] = useState<Parking>("close");
   const [exactText, setExactText] = useState<Record<keyof ExactInputs, string>>({ roofSf: "", drivewaySf: "", walkwaySf: "", gutterLf: "", largeWindows: "", frenchWindows: "" });
   const setExact = (k: keyof ExactInputs, v: string) => setExactText((p) => ({ ...p, [k]: v.replace(/[^0-9]/g, "").slice(0, 6) }));
   // An expander stays open while it holds a number (so coming back to this
@@ -424,12 +438,13 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
     const s = parseInt(sqft, 10);
     const w = parseInt(windows, 10);
     if (!street.trim() || !city.trim() || !(s > 0) || !stories || !(w >= 0) || windows === "") return null;
-    return { address, addressParts: { street: street.trim(), city: city.trim(), state: stateCode.trim().toUpperCase() || "OR", zip: zip.trim() }, livingSqft: s, stories, windows: w, roof, driveway, access, exact };
-  }, [address, street, city, stateCode, zip, sqft, stories, windows, roof, driveway, access, exact]);
+    return { address, addressParts: { street: street.trim(), city: city.trim(), state: stateCode.trim().toUpperCase() || "OR", zip: zip.trim() }, livingSqft: s, stories, windows: w, roof, driveway, slope, sides, parking, exact };
+  }, [address, street, city, stateCode, zip, sqft, stories, windows, roof, driveway, slope, sides, parking, exact]);
 
   const price = useMemo(() => (house ? priceHouse(house) : null), [house]);
   // Houses past the calculator's limits get no instant number (Bri 2026-10-19).
   const hand = useMemo(() => (house ? handPriceReasons(house) : []), [house]);
+  const range = price && hand.length ? handRange(price) : null;
   const HAND_STEP = 9;
 
   const toggleAddOn = (k: string) => setAddOns((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
@@ -580,7 +595,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
             </div>
             <h2>{saved.saved ? "Got it." : "Call or text us."}</h2>
             {saved.saved ? (
-              <p>We&apos;ll look at {house.addressParts?.street || house.address} and text you your price from (971) 626-4146.</p>
+              <p>Your range is ${fmt(range?.low ?? 0)} to ${fmt(range?.high ?? 0)} a month. Someone from our team will look at {house.addressParts?.street || house.address} and text you your exact price from (971) 626-4146.</p>
             ) : (
               <p>Our system had trouble saving your details just now. Call or text us and we&apos;ll price it with you.</p>
             )}
@@ -672,10 +687,10 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
 
                   <div className="field">
                     <div className="q">Stories</div>
-                    <div className="choices cols-3" role="group" aria-label="Stories">
-                      {([1, 2, 3] as Stories[]).map((s) => (
+                    <div className="choices cols-4" role="group" aria-label="Stories">
+                      {([1, 2, 3, 4] as Stories[]).map((s) => (
                         <button key={s} type="button" className={`choice center ${stories === s ? "on" : ""}`} onClick={() => setStories(s)} aria-pressed={stories === s}>
-                          {s === 3 ? "3+" : s}
+                          {s === 4 ? "4+" : s}
                         </button>
                       ))}
                     </div>
@@ -748,21 +763,34 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     </details>
                   </div>
 
-                  <div className="field">
-                    <div className="q">Getting around the house</div>
-                    <div className="choices" role="group" aria-label="Access">
-                      {([
-                        ["easy", "Easy", "We can walk all the way around"],
-                        ["gated-tight", "Gated or tight side yards"],
-                        ["steep-ladder", "Steep lot or hard ladder access"],
-                      ] as [Access, string, string?][]).map(([v, l, sub]) => (
-                        <button key={v} type="button" className={`choice ${access === v ? "on" : ""}`} onClick={() => setAccess(v)} aria-pressed={access === v}>
-                          <span className="box">{access === v && <Check />}</span>
-                          <span>{l}{sub && <span className="sub">{sub}</span>}</span>
-                        </button>
-                      ))}
+                  {([
+                    ["Is the lot flat or sloped?", "Lot", slope, setSlope, [
+                      ["flat", "Flat or a gentle slope"],
+                      ["some", "Some slope", "Ladders need leveling on part of it"],
+                      ["steep", "Steep", "A hillside, or a drop-off on one side"],
+                    ]],
+                    ["How many sides of the house can we walk along?", "Sides", sides, setSides, [
+                      ["all", "All the way around"],
+                      ["most", "Most of it", "A tight side yard, a gate or a fence in the way"],
+                      ["one-two", "Only one or two sides", "The rest backs onto a slope, a neighbor or plantings"],
+                    ]],
+                    ["Where can our truck park?", "Parking", parking, setParking, [
+                      ["close", "In the driveway, near the house"],
+                      ["far", "On the street, or the driveway is tiny", "Means a long hose run"],
+                    ]],
+                  ] as [string, string, string, (v: never) => void, [string, string, string?][]][]).map(([q, aria, val, set, opts]) => (
+                    <div className="field" key={aria}>
+                      <div className="q">{q}</div>
+                      <div className="choices" role="group" aria-label={aria}>
+                        {opts.map(([v, l, sub]) => (
+                          <button key={v} type="button" className={`choice ${val === v ? "on" : ""}`} onClick={() => set(v as never)} aria-pressed={val === v}>
+                            <span className="box">{val === v && <Check />}</span>
+                            <span>{l}{sub && <span className="sub">{sub}</span>}</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  ))}
 
                   <button type="submit" className="btn btn-ink" disabled={!house}>
                     Show my price
@@ -775,8 +803,17 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
 
               {step === HAND_STEP && house && hand.length > 0 && (
                 <form onSubmit={handleSubmit}>
-                  <h2>We&apos;ll price this house by hand.</h2>
-                  <p className="lead">With {hand.join(" and ")}, there&apos;s more ladder work and planning than this page can price. Send us your details and we&apos;ll look at the house and text you your price.</p>
+                  <h2>Homes like yours run about ${fmt(range!.low)} to ${fmt(range!.high)} a month.</h2>
+                  <p className="lead">Your home has {hand.join(" and ")}, so a real person confirms the exact price before you sign up. Send us your details and someone from our team will look at {house.addressParts?.street || "your house"} and text you your exact price.</p>
+                  <div className="stack">
+                    <h3>What the plan includes</h3>
+                    {HAND_INCLUDES.map(([t, sub]) => (
+                      <div className="stack-row" key={t}>
+                        <span className="l"><span className="t">{t}</span><span className="sub">{sub}</span></span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="guarantee">Before-and-after photos every visit. Anything not right, we re-rinse it free within 48 hours.</p>
                   <div className="field">
                     <label htmlFor="hname">Your name</label>
                     <input id="hname" type="text" autoComplete="name" placeholder="Jane Smith" value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} required />
@@ -797,7 +834,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     </label>
                   </div>
                   <button type="submit" className="btn btn-ink" disabled={sending || !contact.name || !contact.phone || !contact.consent}>
-                    {sending ? "Sending" : "Send it to us"}
+                    {sending ? "Sending" : "Text me my exact price"}
                   </button>
                   <p className="consent">
                     By submitting, you agree to receive calls and texts about your price and visits from Rinse It Off. Msg &amp; data rates may apply, frequency varies. Reply STOP to opt out, HELP for help. See our{" "}
@@ -810,7 +847,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
               {step === 1 && price && house && stack && hand.length === 0 && (
                 <div>
                   <p className="summary">
-                    <strong>{house.addressParts ? `${house.addressParts.street}, ${house.addressParts.city}` : house.address}</strong> · {house.livingSqft.toLocaleString()} sq ft · {house.stories === 3 ? "3 stories" : house.stories === 2 ? "2 stories" : "1 story"} · {house.windows} windows · {house.roof === "shake-steep" ? "wood shake or steep" : house.roof === "metal-tile" ? "metal or tile" : "composition"} roof · {house.driveway === "large" ? "large" : house.driveway === "small" ? "small" : "typical"} driveway · {house.access === "gated-tight" ? "gated or tight" : house.access === "steep-ladder" ? "steep" : "easy"} access
+                    <strong>{house.addressParts ? `${house.addressParts.street}, ${house.addressParts.city}` : house.address}</strong> · {house.livingSqft.toLocaleString()} sq ft · {house.stories === 4 ? "4+ stories" : house.stories === 3 ? "3 stories" : house.stories === 2 ? "2 stories" : "1 story"} · {house.windows} windows · {house.roof === "shake-steep" ? "wood shake or steep" : house.roof === "metal-tile" ? "metal or tile" : "composition"} roof · {house.driveway === "large" ? "large" : house.driveway === "small" ? "small" : "typical"} driveway · {house.slope === "steep" ? "steep" : house.slope === "some" ? "sloped" : "flat"} lot · {house.sides === "one-two" ? "one or two sides open" : house.sides === "most" ? "most sides open" : "open all around"} · truck {house.parking === "far" ? "on the street" : "in the driveway"}
                     {Object.keys(exact).length > 0 && (
                       <> · you gave: {[exact.roofSf && `roof ${exact.roofSf.toLocaleString()} sq ft`, exact.drivewaySf && `driveway ${exact.drivewaySf.toLocaleString()} sq ft`, exact.walkwaySf && `walkways ${exact.walkwaySf.toLocaleString()} sq ft`, exact.gutterLf && `gutters ${exact.gutterLf.toLocaleString()} ft`, exact.largeWindows && `${exact.largeWindows} large windows`, exact.frenchWindows && `${exact.frenchWindows} French windows`].filter(Boolean).join(", ")}</>
                     )}
