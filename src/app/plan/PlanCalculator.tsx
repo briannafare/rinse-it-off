@@ -526,7 +526,12 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
   const suggested = useMemo(() => (house ? suggestedAddOns(house) : []), [house]);
 
   // Vercel Web Analytics: which source (postcard, ad, home page) brought each plan visit (Bri 2026-10-22).
-  useEffect(() => { vaTrack("Plan visit", { src }); }, [src]);
+  // This effect runs before the layout's <Analytics /> sets up window.va, so start its queue here.
+  useEffect(() => {
+    const w = window as unknown as { va?: (...a: unknown[]) => void; vaq?: unknown[][] };
+    w.va ??= (...a: unknown[]) => { (w.vaq ??= []).push(a); };
+    vaTrack("Plan visit", { src });
+  }, [src]);
 
   // Real availability for the next 14 days, fetched once the Reserve step opens.
   useEffect(() => {
