@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
 import { depositCheckoutPlan } from "@/lib/deposit-checkout.mjs";
-import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, depositSchedule, effectivePrice, handPriceReasons, prepaidTermTotal, priceHouse, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
+import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, depositSchedule, effectivePrice, handPriceReasons, handRange, prepaidTermTotal, priceHouse, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -103,10 +103,12 @@ function cleanAnswer(a: AddOnAnswer | undefined): AddOnAnswer | undefined {
 
 function cleanHouse(h: HouseInputs): HouseInputs {
   const num = (n: unknown, max: number) => Math.min(max, Math.max(0, Math.floor(Number(n) || 0)));
-  const stories = h.stories === 2 ? 2 : h.stories === 3 ? 3 : 1;
+  const stories = h.stories === 2 ? 2 : h.stories === 3 ? 3 : h.stories === 4 ? 4 : 1;
   const roof = h.roof === "shake-steep" || h.roof === "metal-tile" ? h.roof : "composition";
   const driveway = h.driveway === "small" || h.driveway === "large" ? h.driveway : "typical";
-  const access = h.access === "gated-tight" || h.access === "steep-ladder" ? h.access : "easy";
+  const slope = h.slope === "some" || h.slope === "steep" ? h.slope : "flat";
+  const sides = h.sides === "most" || h.sides === "one-two" ? h.sides : "all";
+  const parking = h.parking === "far" ? "far" : "close";
   const ap = h.addressParts;
   const clean = (v: unknown, n: number) => String(v || "").trim().slice(0, n);
   const addressParts: AddressParts | undefined = ap ? { street: clean(ap.street, 120), city: clean(ap.city, 60), state: (clean(ap.state, 2).toUpperCase() || "OR"), zip: clean(ap.zip, 10).replace(/[^0-9-]/g, "") } : undefined;
@@ -123,7 +125,9 @@ function cleanHouse(h: HouseInputs): HouseInputs {
     windows: num(h.windows, 500),
     roof,
     driveway,
-    access,
+    slope,
+    sides,
+    parking,
     exact,
   };
 }
@@ -135,6 +139,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
   // No plan-quote tag (that tag starts the price texts and the deposit link),
   // no price fields, a $0 opportunity, and a note telling the team to price it.
   const hand = handPriceReasons(house);
+  const range = handRange(price);
   const src = cleanSrc(data.src);
   const fallback: PlanQuoteResult = { success: true, saved: false, memberMonthly: price.memberMonthly };
 
@@ -189,24 +194,24 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
 
     // The full calculator, as a note a human can read in the contact record.
     const noteLines: string[] = [
-      ...(hand.length ? [`PRICE BY HAND: the page showed no price because of ${hand.join(", ")}. The numbers below are the calculator's floor for reference only. Do not quote them.`, ""] : []),
+      ...(hand.length ? [`CONFIRM THE PRICE: the page showed a range of $${range.low} to $${range.high} a month because of ${hand.join(" and ")}, and told them a person will text the exact price. The numbers below are the calculator's low end.`, ""] : []),
       `YEARLY MEMBERSHIP QUOTE (${new Date().toLocaleDateString("en-US", { timeZone: "America/Los_Angeles" })})`,
       `Source: ${source}`,
       "",
       "House",
       `  Address: ${house.address || "not given"}`,
       `  Living area: ${house.livingSqft.toLocaleString()} sq ft`,
-      `  Stories: ${house.stories === 3 ? "3+" : house.stories}`,
+      `  Stories: ${house.stories === 4 ? "4+" : house.stories}`,
       `  Exterior windows: ${house.windows} (free with the membership, valued at $${price.windowsPerVisitValue} a visit)`,
       `  Roof: ${house.roof}`,
       `  Driveway and walkways: ${house.driveway}`,
-      `  Access: ${house.access}`,
+      `  Lot: ${house.slope}, sides we can walk: ${house.sides}, truck parking: ${house.parking}`,
       `  Measurements given: ${Object.keys(house.exact || {}).length ? EXACT_KEYS.filter((k) => house.exact?.[k]).map((k) => `${k}=${house.exact?.[k]}`).join(", ") : "none"}`,
       "",
       "Lines (booked one at a time, per year)",
       ...price.lines.map((l) => `  ${l.label}: $${l.amount.toFixed(2)}  (${l.detail})`),
       `  Seasonal subtotal: $${price.subtotal.toFixed(2)}`,
-      `  Site access modifier: x${price.accessMultiplier}`,
+      `  Difficulty: ${price.points} points, rates ${Math.round(price.blend * 100)}% of the way to the full one-off table, hard-site multiplier x${price.accessMultiplier.toFixed(2)}`,
       `  Seasonal à la carte annual: $${price.coreAnnual.toFixed(2)}`,
       `  Windows value (free): $${price.windowsAnnualValue} (${WINDOW_VISITS_PER_YEAR} visits)`,
       `  Screens value (free while off, customer removes/reinstalls): $${price.screensAnnualValue}`,
@@ -303,7 +308,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
             name: `Yearly membership${hand.length ? " · price by hand" : ""} · ${house.address || name}`,
             status: "open",
             source,
-            monetaryValue: hand.length ? 0 : yearValue,
+            monetaryValue: hand.length ? range.low * 12 : yearValue,
           }),
         });
         if (!oppRes.ok) {
@@ -314,7 +319,7 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
             const upd = await fetch(`${GHL_API_BASE}/opportunities/${existingId}`, {
               method: "PUT",
               headers: ghlHeaders,
-              body: JSON.stringify({ name: `Yearly membership${hand.length ? " · price by hand" : ""} · ${house.address || name}`, monetaryValue: hand.length ? 0 : yearValue, source }),
+              body: JSON.stringify({ name: `Yearly membership${hand.length ? " · price by hand" : ""} · ${house.address || name}`, monetaryValue: hand.length ? range.low * 12 : yearValue, source }),
             });
             if (!upd.ok) console.error("GHL opportunity update failed:", upd.status, await upd.text());
           } else {
