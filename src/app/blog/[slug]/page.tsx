@@ -8,7 +8,7 @@ import { FinalCTA } from "@/components/FinalCTA";
 import { FaqSection } from "@/components/blog/FaqSection";
 import { PortableBody } from "@/components/blog/PortableBody";
 import { PostCard } from "@/components/blog/PostCard";
-import { BASE_URL, formatDate } from "@/components/blog/format";
+import { BASE_URL, formatDate, postPicture } from "@/components/blog/format";
 import { client } from "@/sanity/lib/client";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { imageUrl } from "@/sanity/lib/image";
@@ -200,13 +200,15 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         </div>
       </section>
 
-      {post.heroImage?.asset ? (
+      {(() => {
+        const pic = postPicture(post, (img) => imageUrl(img, 1800));
+        return (
         <div className="bg-white pt-10 md:pt-14">
           <div className="container-site">
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[4px] bg-retro-pool md:aspect-[21/9]">
+            <div className="frame relative aspect-[16/9] w-full overflow-hidden bg-retro-pool md:aspect-[21/9]">
               <Image
-                src={imageUrl(post.heroImage, 1800)}
-                alt={post.heroImage.alt || ""}
+                src={pic.src}
+                alt={pic.alt}
                 fill
                 priority
                 sizes="(max-width: 1280px) 100vw, 1280px"
@@ -215,7 +217,8 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             </div>
           </div>
         </div>
-      ) : null}
+        );
+      })()}
 
       <article className="bg-white py-12 md:py-16">
         <div className="container-site">
