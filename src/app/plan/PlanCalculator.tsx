@@ -21,6 +21,7 @@ import {
   prepaidTermTotal,
   type TermYears,
   priceHouse,
+  sizeRange,
   handPriceReasons,
   handRange,
   suggestedAddOns,
@@ -193,6 +194,10 @@ const DS = `
   .upgrade .amt { font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--ink); white-space: nowrap; }
   .scarcity { background: var(--surface-alt); border-radius: var(--r-lg); padding: 14px 16px; margin-top: 18px; font-size: 0.9375rem; line-height: 1.55; color: var(--text-primary); text-wrap: pretty; }
   .guarantee { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.5; margin-top: 12px; text-wrap: pretty; }
+  .range-first { background: var(--mint); border-radius: var(--r-lg); padding: 16px 18px; margin: -4px 0 26px; }
+  .range-first .k { font-size: 0.9375rem; font-weight: 500; color: var(--ink); }
+  .range-first .v { font-family: var(--font-title); font-weight: 900; font-size: clamp(1.625rem, 7vw, 2rem); letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
+  .range-first .s { font-size: 0.9375rem; line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
   .price-big { display: flex; align-items: baseline; gap: 6px; margin: 4px 0 6px; }
   .price-big .num { font-family: var(--font-display); font-weight: 400; font-size: clamp(4rem, 18vw, 6rem); letter-spacing: -0.04em; line-height: 0.95; color: var(--ink); font-variant-numeric: tabular-nums; }
   .price-big .per { font-family: var(--font-body); font-size: 1.125rem; color: var(--text-secondary); }
@@ -443,6 +448,10 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
   }, [address, street, city, stateCode, zip, sqft, stories, windows, roof, driveway, slope, sides, parking, exact]);
 
   const price = useMemo(() => (house ? priceHouse(house) : null), [house]);
+  // A range from size and stories alone, before the address and window count.
+  const early = useMemo(() => { const n = parseInt(sqft, 10); return n > 0 && stories ? sizeRange(n, stories) : null; }, [sqft, stories]);
+  const [rangeSeen, setRangeSeen] = useState(false);
+  useEffect(() => { if (early && !rangeSeen) { setRangeSeen(true); vaTrack("Range shown", { src }); } }, [early, rangeSeen, src]);
   // Houses past the calculator's limits get no instant number (Bri 2026-10-19).
   const hand = useMemo(() => (house ? handPriceReasons(house) : []), [house]);
   const range = price && hand.length ? handRange(price) : null;
@@ -677,16 +686,6 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                   <p className="lead">Rough numbers are fine.</p>
 
                   <div className="field">
-                    <label htmlFor="street">Street address</label>
-                    <input id="street" type="text" autoComplete="address-line1" placeholder="1234 SE Example St" value={street} onChange={(e) => setStreet(e.target.value)} required />
-                    <div className="addr-row">
-                      <input id="city" type="text" autoComplete="address-level2" placeholder="City" aria-label="City" value={city} onChange={(e) => setCity(e.target.value)} required />
-                      <input id="state" type="text" autoComplete="address-level1" aria-label="State" value={stateCode} maxLength={2} onChange={(e) => setStateCode(e.target.value.toUpperCase())} />
-                      <input id="zip" type="text" inputMode="numeric" autoComplete="postal-code" placeholder="ZIP" aria-label="ZIP" value={zip} onChange={(e) => setZip(e.target.value.replace(/[^0-9-]/g, "").slice(0, 10))} />
-                    </div>
-                  </div>
-
-                  <div className="field">
                     <label htmlFor="sqft">Living area</label>
                     <div className="unit-wrap">
                       <input id="sqft" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="1,800" value={sqft} onChange={(e) => setSqft(e.target.value.replace(/[^0-9]/g, ""))} required />
@@ -706,6 +705,15 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     </div>
                   </div>
 
+                  {early && (
+                    <div className="range-first" role="status">
+                      <div className="k">Homes this size usually run</div>
+                      <div className="v">${fmt(early.low)} to ${fmt(early.high)} a month</div>
+                      <div className="s">That&apos;s four seasons of cleaning, and your outside windows get washed free four times a year. The questions below get you to your exact price.</div>
+                    </div>
+                  )}
+
+                  {early && (<>
                   <div className="field">
                     <label htmlFor="windows">Exterior windows</label>
                     <input id="windows" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="14" value={windows} onChange={(e) => setWindows(e.target.value.replace(/[^0-9]/g, ""))} required />
@@ -802,12 +810,23 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     </div>
                   ))}
 
+                  <div className="field">
+                    <label htmlFor="street">Street address</label>
+                    <input id="street" type="text" autoComplete="address-line1" placeholder="1234 SE Example St" value={street} onChange={(e) => setStreet(e.target.value)} required />
+                    <div className="addr-row">
+                      <input id="city" type="text" autoComplete="address-level2" placeholder="City" aria-label="City" value={city} onChange={(e) => setCity(e.target.value)} required />
+                      <input id="state" type="text" autoComplete="address-level1" aria-label="State" value={stateCode} maxLength={2} onChange={(e) => setStateCode(e.target.value.toUpperCase())} />
+                      <input id="zip" type="text" inputMode="numeric" autoComplete="postal-code" placeholder="ZIP" aria-label="ZIP" value={zip} onChange={(e) => setZip(e.target.value.replace(/[^0-9-]/g, "").slice(0, 10))} />
+                    </div>
+                  </div>
+
                   <button type="submit" className="btn btn-ink" disabled={!house}>
                     Show my price
                   </button>
                   {!house && (
-                    <p className="fine" style={{ textAlign: "center", marginTop: 10 }}>Street, city, square footage, stories and windows first.</p>
+                    <p className="fine" style={{ textAlign: "center", marginTop: 10 }}>Windows, street and city first.</p>
                   )}
+                  </>)}
                 </form>
               )}
 
