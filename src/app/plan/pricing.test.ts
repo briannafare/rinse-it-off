@@ -2,7 +2,7 @@
  *  build (see package.json "prebuild"): `node --experimental-strip-types src/app/plan/pricing.test.ts`.
  *  If a constant in pricing.ts changes on purpose, update the expected numbers here. */
 import assert from "node:assert/strict";
-import { handPriceReasons, handRange, priceHouse, scopeFor, type HouseInputs } from "./pricing.ts";
+import { handPriceReasons, handRange, priceHouse, scopeFor, sizeRange, type HouseInputs } from "./pricing.ts";
 
 const base: HouseInputs = { address: "test", livingSqft: 1800, stories: 1, windows: 12, roof: "composition", driveway: "typical", slope: "flat", sides: "all", parking: "close" };
 const r2 = (n: number) => Math.round(n * 100) / 100;
@@ -53,3 +53,13 @@ assert.deepEqual(handPriceReasons({ ...base, livingSqft: 2600, stories: 2, windo
 assert.equal(Math.round(scopeFor(2000, 2).roofSf), 1200);
 assert.equal(Math.round(scopeFor(2000, 2).sidingSf), 1667);
 console.log(`pricing.test.ts: ${cases.length} vectors and the no-cliff sweep passed`);
+
+// The range shown before the address: never under the floor, always holds the easy-house price.
+for (const sf of [900, 1500, 2600, 4500]) {
+  for (const stories of [1, 2, 3, 4] as const) {
+    const r = sizeRange(sf, stories);
+    assert.ok(r.low >= 189 && r.high > r.low, `sizeRange ${sf}/${stories}: ${JSON.stringify(r)}`);
+    assert.equal(r.low, priceHouse({ ...base, livingSqft: sf, stories, windows: 0 }).memberMonthly, `sizeRange ${sf}/${stories}: low is not the easy price`);
+  }
+}
+assert.deepEqual(sizeRange(1500, 1), { low: 189, high: 280 });
