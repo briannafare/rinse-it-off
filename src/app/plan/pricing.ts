@@ -257,6 +257,19 @@ export function handRange(p: PriceResult): { low: number; high: number } {
   return { low: Math.floor(p.memberMonthly / 25) * 25, high: Math.ceil((p.memberMonthly * HAND_RANGE_SPREAD) / 25) * 25 };
 }
 
+/** A range from size and stories alone, shown before we ask for the address or
+ *  window count (2026-10-22: 26 ad clicks in 97035 gave 15 page views and 0
+ *  price requests, and the first number came after 11 questions). Low end is
+ *  an easy site (the exact instant price, so never under the $189 floor), high
+ *  end a harder one that still gets an instant price, up to $5. Both assume
+ *  the included window count. */
+export function sizeRange(livingSqft: number, stories: Stories): { low: number; high: number } {
+  const base = { address: "", livingSqft, stories, windows: includedWindows(Math.max(SCOPE_FLOOR_SQFT, livingSqft)) };
+  const easy = priceHouse({ ...base, roof: "composition", driveway: "typical", slope: "flat", sides: "all", parking: "close" });
+  const hard = priceHouse({ ...base, roof: "shake-steep", driveway: "large", slope: "some", sides: "most", parking: "far" });
+  return { low: easy.memberMonthly, high: Math.ceil(hard.memberMonthly / 5) * 5 };
+}
+
 // ── Membership discounts and floor ──────────────────────────────────────────
 export const MEMBER_MONTHLY_DISCOUNT = 0.2; // 12 months, billed monthly
 export const MEMBER_PREPAID_DISCOUNT = 0.28; // 12 months, paid up front: a full 10% under the monthly year (0.72 / 0.80)

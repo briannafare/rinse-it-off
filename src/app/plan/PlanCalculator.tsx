@@ -21,6 +21,7 @@ import {
   prepaidTermTotal,
   type TermYears,
   priceHouse,
+  sizeRange,
   handPriceReasons,
   handRange,
   suggestedAddOns,
@@ -193,6 +194,10 @@ const DS = `
   .upgrade .amt { font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--ink); white-space: nowrap; }
   .scarcity { background: var(--surface-alt); border-radius: var(--r-lg); padding: 14px 16px; margin-top: 18px; font-size: 0.9375rem; line-height: 1.55; color: var(--text-primary); text-wrap: pretty; }
   .guarantee { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.5; margin-top: 12px; text-wrap: pretty; }
+  .range-first { background: var(--mint); border-radius: var(--r-lg); padding: 16px 18px; margin: -4px 0 26px; }
+  .range-first .k { font-size: 0.9375rem; font-weight: 500; color: var(--ink); }
+  .range-first .v { font-family: var(--font-title); font-weight: 900; font-size: clamp(1.625rem, 7vw, 2rem); letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
+  .range-first .s { font-size: 0.9375rem; line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
   .price-big { display: flex; align-items: baseline; gap: 6px; margin: 4px 0 6px; }
   .price-big .num { font-family: var(--font-display); font-weight: 400; font-size: clamp(4rem, 18vw, 6rem); letter-spacing: -0.04em; line-height: 0.95; color: var(--ink); font-variant-numeric: tabular-nums; }
   .price-big .per { font-family: var(--font-body); font-size: 1.125rem; color: var(--text-secondary); }
@@ -312,7 +317,37 @@ const DS = `
   /* big figures and small headings in the site's Fraunces, like the home page stats */
   .plan .price-big .num, .plan .stack-total .t.yours .amt, .plan .save-block .v { font-family: var(--font-title); font-weight: 900; letter-spacing: -0.02em; font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 144; }
   .plan .stack h3, .plan .reserve h3 { font-family: var(--font-title); font-weight: 900; letter-spacing: -0.01em; }
-  @media (prefers-reduced-motion: reduce) { .plan * { transition: none !important; } }
+  /* Quick quote: two taps, then the big reveal (Bri 2026-10-25: "a couple really basic questions...
+     a really cool, big, sparkly quote"). */
+  .quick .choices.sizes { grid-template-columns: 1fr 1fr; }
+  .quick .choice.center .sub { font-family: var(--font-body); font-weight: 400; }
+  .quick .choice.center { flex-direction: column; gap: 0; min-height: 60px; }
+  .quick .choice.center.on { font-weight: 700; border-color: var(--ink); background: var(--sun); }
+  .reveal { position: relative; overflow: hidden; text-align: center; background: var(--ink); color: var(--paper); border: 2px solid var(--ink); border-radius: 18px; padding: 30px 18px 24px; margin: 6px 0 18px; box-shadow: 5px 5px 0 var(--sun); animation: reveal-pop .7s var(--ease-out-expo) both; }
+  .reveal::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.22) 50%, transparent 65%); transform: translateX(-120%); animation: reveal-shine 1.6s .5s ease-out both; pointer-events: none; }
+  .reveal .k { font-family: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; font-size: 0.75rem; color: var(--sky); }
+  .reveal .v { font-family: var(--font-title); font-weight: 900; font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 144; font-size: clamp(2.75rem, 13vw, 4.25rem); line-height: 1; letter-spacing: -0.02em; color: var(--sun); margin: 10px 0 4px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .reveal .v .to { font-size: .5em; color: var(--paper); margin: 0 .2em; vertical-align: middle; }
+  .reveal .for { font-size: 0.9375rem; color: var(--paper); opacity: .85; margin-top: 6px; }
+  .start { font-size: 0.9375rem; line-height: 1.5; color: var(--text-secondary); margin: -6px 0 20px; text-wrap: pretty; }
+  .start strong { color: var(--ink); font-weight: 600; }
+  .reveal .per { font-size: 1rem; color: var(--paper); opacity: .85; }
+  .reveal .free { display: inline-block; margin-top: 14px; background: #D6336C; color: #fff; border-radius: 999px; padding: 6px 14px; font-weight: 600; font-size: 0.9375rem; line-height: 1.3; }
+  .reveal .spark { position: absolute; color: var(--sun); font-size: 18px; line-height: 1; animation: twinkle 2.2s ease-in-out infinite both; pointer-events: none; }
+  .reveal .spark.m { color: #D6336C; } .reveal .spark.s { color: var(--sky); }
+  .incl { list-style: none; display: grid; gap: 6px; margin: 0 0 22px; }
+  .incl li { display: flex; gap: 10px; align-items: baseline; font-size: 0.9375rem; line-height: 1.45; color: var(--text-primary); }
+  .incl li b { font-weight: 600; min-width: 64px; }
+  .next-q { font-family: var(--font-title); font-weight: 900; font-size: 1.25rem; color: var(--ink); margin: 0 0 10px; }
+  .btn-shine { position: relative; overflow: hidden; }
+  .btn-shine::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.55) 50%, transparent 70%); transform: translateX(-120%); animation: reveal-shine 2.8s 1.2s ease-in-out infinite; }
+  .btn-line { background: var(--surface); color: var(--ink); border: 2px solid var(--ink); border-radius: 14px; font-family: var(--font-label); font-weight: 700; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; margin-top: 10px; }
+  .talk { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .talk .btn { margin-top: 0; }
+  @keyframes reveal-pop { 0% { opacity: 0; transform: scale(.9) translateY(10px); } 100% { opacity: 1; transform: none; } }
+  @keyframes reveal-shine { to { transform: translateX(120%); } }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(.4) rotate(0deg); } 50% { opacity: 1; transform: scale(1.15) rotate(45deg); } }
+  @media (prefers-reduced-motion: reduce) { .plan * { transition: none !important; } .plan *, .plan *::after { animation: none !important; } .reveal .spark { opacity: .8; } }
 `;
 
 const STEP_NAMES = ["House", "Price", "Add-ons", "Claim", "Reserve"];
@@ -344,6 +379,57 @@ const dateKey = (y: number, m: number, d: number) => `${y}-${String(m + 1).padSt
 
 const fmt = (n: number) => n.toLocaleString("en-US", { maximumFractionDigits: 0 });
 
+// Quick quote house sizes. The range spans the whole bucket: the easiest house
+// at `lo` to the hardest at `hi` (sizeRange), so the exact price lands inside it.
+// `mid` pre-fills the living area if they go on to the exact price.
+const SIZES: { label: string; sub: string; lo: number; hi: number; mid: number }[] = [
+  { label: "Under 1,500", sub: "sq ft · 1 to 2 bedrooms", lo: 1200, hi: 1500, mid: 1400 },
+  { label: "1,500 to 2,000", sub: "sq ft · about 3 bedrooms", lo: 1500, hi: 2000, mid: 1800 },
+  { label: "2,000 to 3,000", sub: "sq ft · 3 to 4 bedrooms", lo: 2000, hi: 3000, mid: 2500 },
+  { label: "3,000 to 4,000", sub: "sq ft · 4 to 5 bedrooms", lo: 3000, hi: 4000, mid: 3500 },
+  { label: "Over 4,000", sub: "sq ft · 5 bedrooms and up", lo: 4000, hi: 4500, mid: 4500 },
+];
+// Sparkle positions on the reveal card (left %, top %, delay s, size px, color class).
+const SPARKS: [number, number, number, number, string][] = [
+  [6, 12, 0, 22, ""], [87, 8, 0.4, 28, "m"], [14, 74, 0.9, 18, "s"], [82, 64, 0.2, 24, ""],
+  [46, 4, 1.3, 16, "s"], [93, 40, 1.6, 16, "m"], [3, 42, 1.1, 24, ""], [62, 88, 0.6, 18, "m"],
+];
+
+/** Counts a number up from 0 for the reveal; jumps straight there with reduced motion. */
+function useCountUp(target: number, ms = 900) {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setN(target); return; }
+    let raf = 0;
+    const t0 = performance.now();
+    const tick = (t: number) => {
+      const k = Math.min(1, (t - t0) / ms);
+      setN(Math.round(target * (1 - Math.pow(1 - k, 3))));
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, ms]);
+  return n;
+}
+
+function Reveal({ low, high, forLine }: { low: number; high: number; forLine: string }) {
+  const a = useCountUp(low);
+  const b = useCountUp(high, 1100);
+  return (
+    <div className="reveal" role="status" aria-live="polite" aria-label={`Your plan price: $${fmt(low)} to $${fmt(high)} a month`}>
+      {SPARKS.map(([l, t, d, sz, c], i) => (
+        <span key={i} className={`spark ${c}`} aria-hidden="true" style={{ left: `${l}%`, top: `${t}%`, animationDelay: `${d}s`, fontSize: sz }}>✦</span>
+      ))}
+      <div className="k">Your yearly plan price</div>
+      <div className="for">{forLine}</div>
+      <div className="v" aria-hidden="true">${fmt(a)}<span className="to">to</span>${fmt(b)}</div>
+      <div className="per">a month · 12-month plan, billed monthly</div>
+      <div className="free">+ outside windows washed free, 4 times a year</div>
+    </div>
+  );
+}
+
 function Check() {
   return (
     <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="var(--ink)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -374,6 +460,9 @@ function SafeSender({ email }: { email: string }) {
 
 export default function PlanCalculator({ src, dryRun = false }: { src: string; dryRun?: boolean }) {
   const [step, setStep] = useState(0);
+  // Quick quote first; the detailed questions only open when they ask for the exact price.
+  const [size, setSize] = useState<number | null>(null);
+  const [detail, setDetail] = useState(false);
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
   const [stateCode, setStateCode] = useState("OR");
@@ -443,6 +532,23 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
   }, [address, street, city, stateCode, zip, sqft, stories, windows, roof, driveway, slope, sides, parking, exact]);
 
   const price = useMemo(() => (house ? priceHouse(house) : null), [house]);
+  // A range from size and stories alone, before the address and window count.
+  const early = useMemo(() => { const n = parseInt(sqft, 10); return n > 0 && stories ? sizeRange(n, stories) : null; }, [sqft, stories]);
+  const unsure = size === -1;
+  const quick = size !== null && size >= 0 && stories ? { low: sizeRange(SIZES[size].lo, stories).low, high: sizeRange(SIZES[size].hi, stories).high } : null;
+  const pickSize = (i: number) => { setSize(i); setSqft(i >= 0 ? String(SIZES[i].mid) : ""); if (i < 0) vaTrack("Size unsure", { src }); };
+  const STORY_WORD = ["", "one-story", "two-story", "three-story", "four-story or taller"];
+  const openDetail = () => { vaTrack("Exact price start", { src }); setDetail(true); if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const smsBody = quick ? `Hi! The site gave me $${quick.low} to $${quick.high}/mo for the yearly plan. Can you give me my exact price?` : "";
+  const [rangeSeen, setRangeSeen] = useState(false);
+  // On a phone the reveal opens below the fold: bring it up the first time it appears.
+  const hasQuick = !!quick || unsure;
+  useEffect(() => {
+    if (!hasQuick || detail) return;
+    const t = setTimeout(() => document.querySelector(".reveal, .unsure")?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+    return () => clearTimeout(t);
+  }, [hasQuick, detail]);
+  useEffect(() => { if (early && !rangeSeen) { setRangeSeen(true); vaTrack("Range shown", { src }); } }, [early, rangeSeen, src]);
   // Houses past the calculator's limits get no instant number (Bri 2026-10-19).
   const hand = useMemo(() => (house ? handPriceReasons(house) : []), [house]);
   const range = price && hand.length ? handRange(price) : null;
@@ -648,16 +754,16 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
           <div className="plan-hero">
             <div className="in">
               <h1>
-                Your monthly price, <span className="accent">custom to your house.</span>
+                {detail ? <>Your exact price, <span className="accent">custom to your house.</span></> : <>Your price in <span className="accent">two taps.</span></>}
               </h1>
               <HalFlyIn className="hal" />
-              <p>Answer a few questions and we&apos;ll show you the price for a year of exterior care, windows included.</p>
+              <p>{detail ? "A few more questions about the house and you'll see your exact monthly price." : "A year of exterior cleaning, windows included. No address, no sign-up to see it."}</p>
             </div>
           </div>
 
           <div className="plan-wrap">
             <div className="plan-card">
-              {step !== HAND_STEP && <div className="steps" aria-label={`Step ${step + 1} of 5`}>
+              {step !== HAND_STEP && detail && <div className="steps" aria-label={`Step ${step + 1} of 5`}>
                 {STEP_NAMES.map((n, i) => (
                   <div key={n}>
                     <div className={`seg ${i === step ? "on" : i < step ? "past" : ""}`} />
@@ -671,20 +777,67 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                 </div>
               )}
 
-              {step === 0 && (
+              {step === 0 && !detail && (
+                <div className="quick">
+                  <p className="start">Four seasonal cleanings plus outside windows at every visit. <strong>Starting at ${MONTHLY_FLOOR}/month</strong> for an easy single-story home up to 1,500 sq ft.</p>
+                  <div className="field">
+                    <div className="q">How big is the house?</div>
+                    <div className="choices sizes" role="group" aria-label="House size">
+                      {SIZES.map((z, i) => (
+                        <button key={z.label} type="button" className={`choice center ${size === i ? "on" : ""}`} onClick={() => pickSize(i)} aria-pressed={size === i}>
+                          {z.label}<span className="sub">{z.sub}</span>
+                        </button>
+                      ))}
+                      <button type="button" className={`choice center ${unsure ? "on" : ""}`} onClick={() => pickSize(-1)} aria-pressed={unsure}>I&apos;m not sure</button>
+                    </div>
+                  </div>
+                  {!unsure && <div className="field">
+                    <div className="q">How many stories?</div>
+                    <div className="choices cols-4" role="group" aria-label="Stories">
+                      {([1, 2, 3, 4] as Stories[]).map((s) => (
+                        <button key={s} type="button" className={`choice center ${stories === s ? "on" : ""}`} onClick={() => setStories(s)} aria-pressed={stories === s}>
+                          {s === 4 ? "4+" : s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>}
+
+                  {unsure && (
+                    <div className="unsure">
+                      <p className="next-q">No problem.</p>
+                      <p className="lead" style={{ marginBottom: 16 }}>Plans start at ${MONTHLY_FLOOR} a month for an easy single-story home up to 1,500 sq ft. Most 3-bedroom homes are 1,500 to 2,000 sq ft, so tap that if it sounds right, or let us look at it for you.</p>
+                      <a className="btn btn-ink btn-shine" href={`/assessment?src=${encodeURIComponent(src)}`} onClick={() => vaTrack("Walk-through click", { src })}>Have someone come out, free</a>
+                      <div className="talk">
+                        <a className="btn btn-line" href="tel:+19716264146" onClick={() => vaTrack("Call click", { src })}>Call us</a>
+                        <a className="btn btn-line" href={`sms:+19716264146?&body=${encodeURIComponent("Hi! I'd like a price for the yearly plan.")}`} onClick={() => vaTrack("Text click", { src })}>Text us</a>
+                      </div>
+                    </div>
+                  )}
+
+                  {quick && size !== null && size >= 0 && (<>
+                    <Reveal key={`${size}-${stories}`} low={quick.low} high={quick.high} forLine={`For a ${STORY_WORD[stories]} home, ${SIZES[size].label.toLowerCase()} sq ft`} />
+                    <ul className="incl" aria-label="What's included">
+                      <li><b>Spring</b>Roof moss treatment and a house wash</li>
+                      <li><b>Summer</b>Driveway and walkways pressure washed</li>
+                      <li><b>Fall</b>Gutters cleared, downspouts flushed</li>
+                      <li><b>Winter</b>Steps, entries and walkways cleaned</li>
+                    </ul>
+                    <p className="next-q">Want your exact number?</p>
+                    <button type="button" className="btn btn-ink btn-shine" onClick={openDetail}>Get my exact price</button>
+                    <a className="btn btn-line" href={`/assessment?src=${encodeURIComponent(src)}`} onClick={() => vaTrack("Walk-through click", { src })}>Have someone come out, free</a>
+                    <div className="talk">
+                      <a className="btn btn-line" href="tel:+19716264146" onClick={() => vaTrack("Call click", { src })}>Call us</a>
+                      <a className="btn btn-line" href={`sms:+19716264146?&body=${encodeURIComponent(smsBody)}`} onClick={() => vaTrack("Text click", { src })}>Text us</a>
+                    </div>
+                    <p className="fine" style={{ marginTop: 14, textAlign: "center" }}>Every house is a little different, so the exact price depends on windows, roof, driveway and access. It usually lands inside this range.</p>
+                  </>)}
+                </div>
+              )}
+
+              {step === 0 && detail && (
                 <form onSubmit={(e) => { e.preventDefault(); if (house) go(hand.length ? HAND_STEP : 1); }}>
                   <h2>First, the house.</h2>
                   <p className="lead">Rough numbers are fine.</p>
-
-                  <div className="field">
-                    <label htmlFor="street">Street address</label>
-                    <input id="street" type="text" autoComplete="address-line1" placeholder="1234 SE Example St" value={street} onChange={(e) => setStreet(e.target.value)} required />
-                    <div className="addr-row">
-                      <input id="city" type="text" autoComplete="address-level2" placeholder="City" aria-label="City" value={city} onChange={(e) => setCity(e.target.value)} required />
-                      <input id="state" type="text" autoComplete="address-level1" aria-label="State" value={stateCode} maxLength={2} onChange={(e) => setStateCode(e.target.value.toUpperCase())} />
-                      <input id="zip" type="text" inputMode="numeric" autoComplete="postal-code" placeholder="ZIP" aria-label="ZIP" value={zip} onChange={(e) => setZip(e.target.value.replace(/[^0-9-]/g, "").slice(0, 10))} />
-                    </div>
-                  </div>
 
                   <div className="field">
                     <label htmlFor="sqft">Living area</label>
@@ -706,6 +859,15 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     </div>
                   </div>
 
+                  {early && (
+                    <div className="range-first" role="status">
+                      <div className="k">Homes this size usually run</div>
+                      <div className="v">${fmt(early.low)} to ${fmt(early.high)} a month</div>
+                      <div className="s">That&apos;s four seasons of cleaning, and your outside windows get washed free four times a year. The questions below get you to your exact price.</div>
+                    </div>
+                  )}
+
+                  {early && (<>
                   <div className="field">
                     <label htmlFor="windows">Exterior windows</label>
                     <input id="windows" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="14" value={windows} onChange={(e) => setWindows(e.target.value.replace(/[^0-9]/g, ""))} required />
@@ -802,12 +964,23 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     </div>
                   ))}
 
+                  <div className="field">
+                    <label htmlFor="street">Street address</label>
+                    <input id="street" type="text" autoComplete="address-line1" placeholder="1234 SE Example St" value={street} onChange={(e) => setStreet(e.target.value)} required />
+                    <div className="addr-row">
+                      <input id="city" type="text" autoComplete="address-level2" placeholder="City" aria-label="City" value={city} onChange={(e) => setCity(e.target.value)} required />
+                      <input id="state" type="text" autoComplete="address-level1" aria-label="State" value={stateCode} maxLength={2} onChange={(e) => setStateCode(e.target.value.toUpperCase())} />
+                      <input id="zip" type="text" inputMode="numeric" autoComplete="postal-code" placeholder="ZIP" aria-label="ZIP" value={zip} onChange={(e) => setZip(e.target.value.replace(/[^0-9-]/g, "").slice(0, 10))} />
+                    </div>
+                  </div>
+
                   <button type="submit" className="btn btn-ink" disabled={!house}>
                     Show my price
                   </button>
                   {!house && (
-                    <p className="fine" style={{ textAlign: "center", marginTop: 10 }}>Street, city, square footage, stories and windows first.</p>
+                    <p className="fine" style={{ textAlign: "center", marginTop: 10 }}>Windows, street and city first.</p>
                   )}
+                  </>)}
                 </form>
               )}
 
