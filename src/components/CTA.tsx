@@ -50,7 +50,7 @@ export function CTA() {
 
               <div className="flex items-center gap-2 pt-2 px-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-mint animate-pulse" />
-                <span className="text-[11px] text-white/25 font-mono">Portland, OR — Licensed & Insured — Free estimates</span>
+                <span className="text-[11px] text-white/25 font-mono">Portland metro — Fully insured — Free estimates</span>
               </div>
             </div>
           </div>

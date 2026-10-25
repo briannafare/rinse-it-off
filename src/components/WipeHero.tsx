@@ -97,7 +97,7 @@ export function WipeHero() {
               <span className="font-semibold text-[#102E32]">5.0</span> on Google
             </span>
             <span className="h-3 w-px bg-[#D4E1E8]" aria-hidden />
-            <span>Licensed &amp; insured</span>
+            <span>Fully insured</span>
             <span className="h-3 w-px bg-[#D4E1E8]" aria-hidden />
             <span>You approve before you pay</span>
           </motion.div>

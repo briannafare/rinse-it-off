@@ -68,7 +68,7 @@ export function Hero() {
           <div data-hero className="flex items-center gap-6 mt-10 text-[13px] text-white/35">
             <span className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-mint/60" />
-              Licensed &amp; Insured
+              Fully insured
             </span>
             <span className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-mint/60" />

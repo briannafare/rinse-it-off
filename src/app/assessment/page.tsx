@@ -225,7 +225,7 @@ export default function AssessmentPage() {
       {/* Hero strip */}
       <div style={{ background: "var(--aura-water)", backgroundColor: "var(--surface-alt, #FFFFFF)", padding: "40px 24px 36px" }}>
         <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
-          <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 12 }}>Portland, OR · Licensed &amp; Insured</div>
+          <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 12 }}>Portland metro · Fully insured</div>
           <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(2rem, 6vw, 3rem)", color: "var(--ink)", letterSpacing: "-0.03em", lineHeight: 1.0, marginBottom: 16 }}>
             Get a free on-site<br /><span style={{ color: "var(--blue)", fontWeight: 500 }}>property assessment.</span>
           </h1>
@@ -458,7 +458,7 @@ export default function AssessmentPage() {
 
         {/* Trust row */}
         <div style={{ display: "flex", justifyContent: "center", gap: "clamp(16px, 4vw, 36px)", flexWrap: "wrap", marginTop: 28 }}>
-          {["Licensed & Insured", "Same-Day Response", "Free Assessment"].map((t) => (
+          {["Fully insured", "Same-Day Response", "Free Assessment"].map((t) => (
             <div key={t} style={{ display: "flex", alignItems: "center", gap: 7, fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-muted)", fontWeight: 500 }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               {t}
