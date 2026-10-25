@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
   // (permanent: false) so the destination can change without reprinting.
   async redirects() {
     return [
+      // business-card links (rinseitoff.com/bri etc.) -> the assessment form, tagged to that person
+      ...[["bri", "bri-lindley"], ["alstun", "alstun-thurman"], ["david", "david-chandler"]].map(([path, rep]) => ({
+        source: `/${path}`,
+        destination: `/assessment?utm_source=business-card&utm_medium=typed-url&utm_campaign=${rep}`,
+        permanent: false,
+      })),
       {
         source: "/go/:slug([a-z0-9-]{1,40})",
         destination: "/plan?src=postcard-:slug",

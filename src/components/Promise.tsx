@@ -23,7 +23,7 @@ const POINTS: {
   {
     icon: ShieldCheck,
     stat: null,
-    title: "Licensed & insured",
+    title: "Fully insured",
     body: "We carry full liability insurance, so your home or your building is covered before we start. Ask and we'll send the certificate the same day.",
   },
 ];

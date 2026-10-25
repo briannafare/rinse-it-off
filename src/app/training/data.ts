@@ -235,7 +235,7 @@ export const RESOURCE_LINKS: Resource[] = [
 export const ELEVATOR_SPEECH = {
   title: 'The 30-Second Elevator Speech',
   subtitle: 'Soft washing explained cold — memorize this, practice it, own it.',
-  script: `We're Rinse It Off — we do commercial and residential exterior cleaning across the Portland metro. Pressure washing, soft washing, roof and gutter cleaning. The difference is we match the method to the surface. Every property gets assessed first, so we're using the right pressure, the right temperature, the right chemistry. No damage, no shortcuts. We're licensed, insured, and we give free property assessments — no pressure, just an honest look at what your building needs.`,
+  script: `We're Rinse It Off — we do commercial and residential exterior cleaning across the Portland metro. Pressure washing, soft washing, roof and gutter cleaning. The difference is we match the method to the surface. Every property gets assessed first, so we're using the right pressure, the right temperature, the right chemistry. No damage, no shortcuts. We're fully insured, and we give free property assessments — no pressure, just an honest look at what your building needs.`,
   tips: [
     'Lead with the company name and what you do',
     "Hit \"method-matching\" — it's the differentiator",

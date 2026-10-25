@@ -206,7 +206,7 @@ export default function FlyerPage() {
       {/* ── Hero strip ── */}
       <div className="bg-brand-black px-6 pt-8 pb-10">
         <div className="max-w-2xl mx-auto">
-          <p className="text-brand-blue text-sm font-medium mb-3">Portland, OR · Licensed &amp; Insured</p>
+          <p className="text-brand-blue text-sm font-medium mb-3">Portland metro · Fully insured</p>
           <h1 className="font-display text-display-lg font-semibold text-white leading-tight tracking-tight mb-4">
             Get a free on-site<br />
             <span className="text-brand-blue">property assessment.</span>
@@ -471,7 +471,7 @@ export default function FlyerPage() {
           {/* ── Trust row ── */}
           <div className="mt-6 grid grid-cols-3 gap-3">
             {[
-              { label: "Licensed & Insured", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" },
+              { label: "Fully insured", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" },
               { label: "Same-Day Response", icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" },
               { label: "Free Assessment", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
             ].map(({ label, icon }) => (
