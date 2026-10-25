@@ -125,11 +125,14 @@ export default function AssessmentPage() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
 
-  // Pull real availability for the audit calendar (today → +45 days) once.
+  // Pull real availability for the audit calendar once. GHL's free-slots endpoint
+  // rejects any range over 31 days (a 45-day ask returned 400 and greyed out every
+  // date), so fetch two 31-day windows (~62 days) and merge them.
   useEffect(() => {
     const now = Date.now();
-    getFreeSlots(now, now + 45 * 24 * 60 * 60 * 1000)
-      .then((r) => setSlotMap(r.days))
+    const day = 24 * 60 * 60 * 1000;
+    Promise.all([getFreeSlots(now, now + 31 * day), getFreeSlots(now + 31 * day, now + 62 * day)])
+      .then(([a, b]) => setSlotMap({ ...a.days, ...b.days }))
       .catch(() => setSlotMap({}))
       .finally(() => setSlotsLoaded(true));
   }, []);
