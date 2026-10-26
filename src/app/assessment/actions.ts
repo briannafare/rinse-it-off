@@ -49,6 +49,7 @@ export interface AssessmentFormData {
   appointmentTime?: string;
   appointmentISO?: string; // exact slot from GHL free-slots (has -07:00/-08:00 offset)
   source?: string; // which form sent it, so flyer QR leads are attributable in GHL
+  src?: string; // ?src= tag from the link (e.g. fb-nov-03), cleaned server-side
 }
 
 /** Real availability for the audit calendar. Returns { "YYYY-MM-DD": ISO[] } in
@@ -111,7 +112,8 @@ export async function submitAssessmentForm(
       throw new Error("Missing GHL_LOCATION_ID");
     }
 
-    const source = data.source || "Website — Property Audit";
+    const src = /^[a-z0-9-]{1,40}$/.test((data.src || "").toLowerCase().trim()) ? (data.src || "").toLowerCase().trim() : "";
+    const source = data.source || (src ? `Campaign · ${src}` : "Website — Property Audit");
     const isCommercial = data.propertyType === "commercial";
     const nameParts = data.name.trim().split(" ");
     const firstName = nameParts[0] || "";
@@ -144,6 +146,7 @@ export async function submitAssessmentForm(
         "property-audit",
         "website-assessment",
         isCommercial ? "lead-com" : "lead-res",
+        ...(src ? [`src-${src}`] : []),
         ...(flagged ? ["needs-review"] : []),
       ],
       customFields,

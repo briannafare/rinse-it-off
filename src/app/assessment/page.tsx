@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { track as vaTrack } from "@vercel/analytics";
 import { submitAssessmentForm, getFreeSlots, type AssessmentFormData } from "./actions";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -124,6 +125,14 @@ export default function AssessmentPage() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+  // ?src= tag from a post, ad or card (e.g. fb-nov-03), so each booking can be counted by where it came from.
+  const [src, setSrc] = useState("");
+  useEffect(() => {
+    const raw = (new URLSearchParams(window.location.search).get("src") || "").toLowerCase().trim();
+    const clean = /^[a-z0-9-]{1,40}$/.test(raw) ? raw : "";
+    setSrc(clean);
+    vaTrack("Assessment visit", { src: clean || "web" });
+  }, []);
 
   // Pull real availability for the audit calendar once. GHL's free-slots endpoint
   // rejects any range over 31 days (a 45-day ask returned 400 and greyed out every
@@ -163,10 +172,12 @@ export default function AssessmentPage() {
       appointmentDate: day ? fmtDate(cy, cm, day) : undefined,
       appointmentTime: time || undefined,
       appointmentISO: selectedISO || undefined,
+      src: src || undefined,
     };
     const result = await submitAssessmentForm(payload);
     setSending(false);
     if (result.success) {
+      vaTrack("Assessment request", { src: src || "web", type: propertyType || "unknown" });
       setSent(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
