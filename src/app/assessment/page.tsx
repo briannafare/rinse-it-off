@@ -131,6 +131,9 @@ export default function AssessmentPage() {
     const raw = (new URLSearchParams(window.location.search).get("src") || "").toLowerCase().trim();
     const clean = /^[a-z0-9-]{1,40}$/.test(raw) ? raw : "";
     setSrc(clean);
+    // This effect runs before the layout's <Analytics /> sets up window.va, so start its queue here (same as /plan).
+    const w = window as unknown as { va?: (...a: unknown[]) => void; vaq?: unknown[][] };
+    w.va ??= (...a: unknown[]) => { (w.vaq ??= []).push(a); };
     vaTrack("Assessment visit", { src: clean || "web" });
   }, []);
 
