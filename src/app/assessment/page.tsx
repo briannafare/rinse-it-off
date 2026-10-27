@@ -124,6 +124,15 @@ export default function AssessmentPage() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+  // ?type=residential|commercial from the site's links; ?src= from the /plan price page (always a home).
+  const [fromPlan, setFromPlan] = useState("");
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    const t = q.get("type");
+    const src = q.get("src");
+    if (src !== null) { setPropertyType("residential"); setFromPlan(src.replace(/[^\w-]/g, "").slice(0, 40) || "direct"); }
+    else if (t === "residential" || t === "commercial") setPropertyType(t);
+  }, []);
 
   // Pull real availability for the audit calendar once. GHL's free-slots endpoint
   // rejects any range over 31 days (a 45-day ask returned 400 and greyed out every
@@ -154,7 +163,7 @@ export default function AssessmentPage() {
     setSending(true);
     const payload: AssessmentFormData = {
       propertyType,
-      services,
+      services: fromPlan ? ["Yearly plan walk-through"] : services,
       name: form.name,
       phone: form.phone,
       email: form.email,
@@ -163,6 +172,7 @@ export default function AssessmentPage() {
       appointmentDate: day ? fmtDate(cy, cm, day) : undefined,
       appointmentTime: time || undefined,
       appointmentISO: selectedISO || undefined,
+      source: fromPlan ? `Website — Plan walk-through (${fromPlan})` : undefined,
     };
     const result = await submitAssessmentForm(payload);
     setSending(false);
@@ -230,10 +240,14 @@ export default function AssessmentPage() {
         <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
           <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 12 }}>Portland metro · Fully insured</div>
           <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(2rem, 6vw, 3rem)", color: "var(--ink)", letterSpacing: "-0.03em", lineHeight: 1.0, marginBottom: 16 }}>
-            Get a free on-site<br /><span style={{ color: "var(--blue)", fontWeight: 500 }}>property assessment.</span>
+            {fromPlan
+              ? <>Have someone<br /><span style={{ color: "var(--blue)", fontWeight: 500 }}>come out, free.</span></>
+              : <>Get a free on-site<br /><span style={{ color: "var(--blue)", fontWeight: 500 }}>property assessment.</span></>}
           </h1>
           <p style={{ fontFamily: "var(--font-body)", color: "var(--text-secondary)", fontSize: "1.0625rem", lineHeight: 1.6, maxWidth: 420, margin: "0 auto" }}>
-            We come to you, walk the property, and put together a detailed assessment of what needs attention. No charge, no commitment.
+            {fromPlan
+              ? "Pick a time below. We walk around the house, confirm the work, and give you your exact monthly price for the yearly plan. No charge, no commitment."
+              : "We come to you, walk the property, and put together a detailed assessment of what needs attention. No charge, no commitment."}
           </p>
         </div>
       </div>
@@ -262,91 +276,12 @@ export default function AssessmentPage() {
               </div>
             </div>
 
-            {/* Step 2 — Services */}
+            {/* Step 2 — Calendar: open times before any contact details (Dan Hockenmaier, SuperMe 2026-10-25) */}
             {propertyType && (
               <div style={{ marginBottom: 32 }}>
-                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 10 }}>
-                  What needs cleaning? <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>(select all that apply)</span>
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                  {serviceList.map((s) => {
-                    const on = services.includes(s);
-                    return (
-                      <button key={s} type="button" onClick={() => toggleService(s)}
-                        style={{
-                          padding: "10px 13px", border: on ? "2px solid var(--blue)" : "2px solid var(--border)",
-                          borderRadius: "var(--r-sm)", background: on ? "var(--blue-wash)" : "var(--surface)",
-                          color: "var(--ink)", fontFamily: "var(--font-body)", fontWeight: on ? 600 : 400,
-                          fontSize: "0.875rem", textAlign: "left", cursor: "pointer", transition: "all 0.15s",
-                          display: "flex", alignItems: "center", gap: 8,
-                        }}>
-                        <span style={{ width: 14, height: 14, borderRadius: 3, border: on ? "none" : "2px solid var(--border)", background: on ? "var(--blue)" : "transparent", flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
-                          {on && <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="var(--ink)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="2 6 5 9 10 3"/></svg>}
-                        </span>
-                        {s}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* Step 3 — Contact info */}
-            {propertyType && (
-              <div style={{ marginBottom: 32 }}>
-                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 10 }}>Your contact info</div>
-                <div style={{ display: "grid", gap: 12 }}>
-                  {[
-                    { key: "name", label: "Full Name", type: "text", placeholder: "Jane Smith", required: true },
-                    { key: "phone", label: "Phone Number", type: "tel", placeholder: "(503) 555-0100", required: true },
-                    { key: "email", label: "Email Address", type: "email", placeholder: "jane@company.com", required: false },
-                    { key: "address", label: "Property Address", type: "text", placeholder: "1234 NE Broadway, Portland, OR", required: false },
-                  ].map(({ key, label, type, placeholder, required }) => (
-                    <div key={key}>
-                      <label style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", fontWeight: 500, color: "var(--text-secondary)", display: "block", marginBottom: 6 }}>
-                        {label}{required && <span style={{ color: "var(--blue)" }}> *</span>}
-                      </label>
-                      <input
-                        type={type} placeholder={placeholder} required={required}
-                        value={form[key as keyof typeof form]}
-                        onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                        style={{
-                          width: "100%", padding: "11px 14px", border: "2px solid var(--border)",
-                          borderRadius: "var(--r-sm)", fontSize: "0.9375rem",
-                          fontFamily: "var(--font-body)", color: "var(--ink)", outline: "none",
-                          transition: "border-color 0.15s", background: "var(--surface)",
-                        }}
-                        onFocus={(e) => (e.target.style.borderColor = "var(--blue)")}
-                        onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
-                      />
-                    </div>
-                  ))}
-                  <div>
-                    <label style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", fontWeight: 500, color: "var(--text-secondary)", display: "block", marginBottom: 6 }}>Anything else we should know?</label>
-                    <textarea
-                      placeholder="Describe the surfaces, any problem areas, or questions you have..."
-                      rows={3} value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      style={{
-                        width: "100%", padding: "11px 14px", border: "2px solid var(--border)",
-                        borderRadius: "var(--r-sm)", fontSize: "0.9375rem",
-                        fontFamily: "var(--font-body)", color: "var(--ink)", outline: "none",
-                        transition: "border-color 0.15s", resize: "vertical", background: "var(--surface)",
-                      }}
-                      onFocus={(e) => (e.target.style.borderColor = "var(--blue)")}
-                      onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Step 4 — Calendar */}
-            {propertyType && (
-              <div style={{ marginBottom: 32 }}>
-                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 4 }}>Book your walkthrough</div>
+                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 4 }}>Pick a time for your walkthrough</div>
                 <p style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-muted)", marginBottom: 12, lineHeight: 1.5 }}>
-                  {slotsLoaded ? "Pick a real open time — it's booked the moment you submit." : "Loading live availability…"}
+                  {slotsLoaded ? "These are real open times. Yours is booked when you send the form below." : "Loading open times…"}
                 </p>
                 <div style={{ border: "2px solid var(--border)", borderRadius: "var(--r-lg)", overflow: "hidden", background: "var(--surface)" }}>
                   {/* Calendar header */}
@@ -425,6 +360,85 @@ export default function AssessmentPage() {
                 <p style={{ fontFamily: "var(--font-body)", fontSize: "0.75rem", color: "var(--text-muted)", marginTop: 8, textAlign: "center" }}>
                   Prefer to skip? We&apos;ll still send your written quote — scheduling is optional.
                 </p>
+              </div>
+            )}
+
+            {/* Step 3 — Services (the yearly plan already covers everything) */}
+            {propertyType && !fromPlan && (
+              <div style={{ marginBottom: 32 }}>
+                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 10 }}>
+                  What needs cleaning? <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>(select all that apply)</span>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                  {serviceList.map((s) => {
+                    const on = services.includes(s);
+                    return (
+                      <button key={s} type="button" onClick={() => toggleService(s)}
+                        style={{
+                          padding: "10px 13px", border: on ? "2px solid var(--blue)" : "2px solid var(--border)",
+                          borderRadius: "var(--r-sm)", background: on ? "var(--blue-wash)" : "var(--surface)",
+                          color: "var(--ink)", fontFamily: "var(--font-body)", fontWeight: on ? 600 : 400,
+                          fontSize: "0.875rem", textAlign: "left", cursor: "pointer", transition: "all 0.15s",
+                          display: "flex", alignItems: "center", gap: 8,
+                        }}>
+                        <span style={{ width: 14, height: 14, borderRadius: 3, border: on ? "none" : "2px solid var(--border)", background: on ? "var(--blue)" : "transparent", flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                          {on && <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="var(--ink)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="2 6 5 9 10 3"/></svg>}
+                        </span>
+                        {s}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Step 4 — Contact info */}
+            {propertyType && (
+              <div style={{ marginBottom: 32 }}>
+                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 10 }}>{time ? "Where should we confirm it?" : "Your contact info"}</div>
+                <div style={{ display: "grid", gap: 12 }}>
+                  {[
+                    { key: "name", label: "Full Name", type: "text", placeholder: "Jane Smith", required: true },
+                    { key: "phone", label: "Phone Number", type: "tel", placeholder: "(503) 555-0100", required: true },
+                    { key: "email", label: "Email Address", type: "email", placeholder: "jane@company.com", required: false },
+                    { key: "address", label: "Property Address", type: "text", placeholder: "1234 NE Broadway, Portland, OR", required: false },
+                  ].map(({ key, label, type, placeholder, required }) => (
+                    <div key={key}>
+                      <label style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", fontWeight: 500, color: "var(--text-secondary)", display: "block", marginBottom: 6 }}>
+                        {label}{required && <span style={{ color: "var(--blue)" }}> *</span>}
+                      </label>
+                      <input
+                        type={type} placeholder={placeholder} required={required}
+                        value={form[key as keyof typeof form]}
+                        onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                        style={{
+                          width: "100%", padding: "11px 14px", border: "2px solid var(--border)",
+                          borderRadius: "var(--r-sm)", fontSize: "0.9375rem",
+                          fontFamily: "var(--font-body)", color: "var(--ink)", outline: "none",
+                          transition: "border-color 0.15s", background: "var(--surface)",
+                        }}
+                        onFocus={(e) => (e.target.style.borderColor = "var(--blue)")}
+                        onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
+                      />
+                    </div>
+                  ))}
+                  <div>
+                    <label style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", fontWeight: 500, color: "var(--text-secondary)", display: "block", marginBottom: 6 }}>Anything else we should know?</label>
+                    <textarea
+                      placeholder="Describe the surfaces, any problem areas, or questions you have..."
+                      rows={3} value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      style={{
+                        width: "100%", padding: "11px 14px", border: "2px solid var(--border)",
+                        borderRadius: "var(--r-sm)", fontSize: "0.9375rem",
+                        fontFamily: "var(--font-body)", color: "var(--ink)", outline: "none",
+                        transition: "border-color 0.15s", resize: "vertical", background: "var(--surface)",
+                      }}
+                      onFocus={(e) => (e.target.style.borderColor = "var(--blue)")}
+                      onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
+                    />
+                  </div>
+                </div>
               </div>
             )}
 
