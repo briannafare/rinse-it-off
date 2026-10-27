@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
 import { depositCheckoutPlan } from "@/lib/deposit-checkout.mjs";
-import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, depositSchedule, effectivePrice, handPriceReasons, handRange, prepaidTermTotal, priceHouse, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
+import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, cleanRange, depositSchedule, effectivePrice, handPriceReasons, handRange, prepaidTermTotal, priceHouse, rangePosition, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -76,7 +76,9 @@ export interface PlanQuoteData {
   term?: 1 | 2 | 3; // years the price is locked for
   springGutters?: boolean; // membership upgrade: second gutter cleaning, date of their choosing
   src: string; // from ?src= on the URL, carried through the form
+  shownRange?: { low: number; high: number; label: string }; // the quick-quote range on screen when they asked for the exact price
 }
+
 
 export interface PlanQuoteResult {
   success: boolean;
@@ -190,10 +192,15 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
     // The channel label follows the src prefix so a Meta or referral lead is not filed under "Postcard".
     const channel = src === "web" ? "Website" : src.startsWith("postcard-") ? "Postcard" : src.startsWith("meta-") ? "Meta" : src.startsWith("referral-") ? "Referral" : "Campaign";
     const source = src === "web" ? "Website · plan calculator" : `${channel} · ${src}`;
-    const tags = [hand.length ? "plan-hand-price" : "plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : []), ...(coDecider ? ["co-decider"] : []), "consent-sms-email"];
+    // Where the exact (or hand-price low end) landed against the range on the reveal.
+    const seen = cleanRange(data.shownRange);
+    const finalMonthly = hand.length ? range.low : eff.monthly;
+    const seenPos = seen ? rangePosition(seen, finalMonthly) : null;
+    const tags = [...(seenPos ? [`range-${seenPos}`] : []), hand.length ? "plan-hand-price" : "plan-quote", "lead-res", `src-${src}`, `billing-${billing}`, `term-${term}y`, ...(springGutters ? ["upgrade-spring-gutters"] : []), ...(chosenAddOns.some((a) => a.key === "lights") ? ["interest-holiday-lights"] : []), ...(flagged ? ["needs-review"] : []), ...(coDecider ? ["co-decider"] : []), "consent-sms-email"];
 
     // The full calculator, as a note a human can read in the contact record.
     const noteLines: string[] = [
+      ...(seen ? [`RANGE SHOWN ON THE PAGE: $${seen.low} to $${seen.high} a month (${seen.label || "size and stories"}). ${hand.length ? "Calculator low end" : "Exact price"}: $${finalMonthly}/mo, ${seenPos === "inside" ? "inside the range" : `${seenPos} the range`}.`, ""] : []),
       ...(hand.length ? [`CONFIRM THE PRICE: the page showed a range of $${range.low} to $${range.high} a month because of ${hand.join(" and ")}, and told them a person will text the exact price. The numbers below are the calculator's low end.`, ""] : []),
       `YEARLY MEMBERSHIP QUOTE (${new Date().toLocaleDateString("en-US", { timeZone: "America/Los_Angeles" })})`,
       `Source: ${source}`,
@@ -271,6 +278,10 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
           { key: "membership_core_annual", field_value: Math.round(price.coreAnnual) },
           { key: "membership_window_value", field_value: Math.round(price.windowsAnnualValue) },
           { key: "membership_savings", field_value: price.savedVsAlaCarte }]),
+          ...(seen ? [
+          { key: "plan_range_shown_low", field_value: seen.low },
+          { key: "plan_range_shown_high", field_value: seen.high },
+          { key: "plan_range_shown_for", field_value: seen.label }] : []),
           // Custom copies of two standard fields: only custom fields can sit inside {{#if}} in a GHL message.
           { key: "membership_first_name", field_value: firstName },
           { key: "membership_address", field_value: [house.addressParts?.street || house.address, house.addressParts?.city].filter(Boolean).join(", ") },

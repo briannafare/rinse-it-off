@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
+import { cleanRange } from "../plan/pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -18,6 +19,10 @@ const RESIDENTIAL_PIPELINE_ID = process.env.GHL_RESIDENTIAL_PIPELINE_ID || "";
 const RESIDENTIAL_STAGE_ID = process.env.GHL_RESIDENTIAL_STAGE_ID || "";
 // "Access Notes / Gate Code" custom field (LARGE_TEXT) — safe free-text.
 const CF_ACCESS_NOTES = "sL97gzPiCMVzGZ58Cgns";
+// "Plan range shown" low / high / for (created 2026-10-26), same fields the /plan quote writes.
+const CF_RANGE_LOW = "dmyq3p2Y2XG931HFWraG";
+const CF_RANGE_HIGH = "rBbHvU6vbWBwRMEWOryU";
+const CF_RANGE_FOR = "VeGtDOjdtNV6LhuGz1IH";
 // Property Assessment calendar (slug rio-property-audit), 45-min slots, Kenn primary.
 const AUDIT_CALENDAR_ID = process.env.GHL_AUDIT_CALENDAR_ID || "tA6NtDSKU60mNlSNXLS9";
 const SLOT_MINUTES = 45;
@@ -49,6 +54,7 @@ export interface AssessmentFormData {
   appointmentTime?: string;
   appointmentISO?: string; // exact slot from GHL free-slots (has -07:00/-08:00 offset)
   source?: string; // which form sent it, so flyer QR leads are attributable in GHL
+  rangeShown?: { low: number; high: number; label: string }; // the /plan range they saw before booking
 }
 
 /** Real availability for the audit calendar. Returns { "YYYY-MM-DD": ISO[] } in
@@ -126,10 +132,14 @@ export async function submitAssessmentForm(
       notesLines.push(`Requested Assessment: ${data.appointmentDate} at ${data.appointmentTime}`);
     }
     if (data.message) notesLines.push(`Notes: ${data.message}`);
+    // Saved so the walk-through's final price can be checked against what the page promised.
+    const seen = cleanRange(data.rangeShown);
+    if (seen) notesLines.unshift(`RANGE SHOWN ON /plan: $${seen.low} to $${seen.high} a month (${seen.label || "size and stories"}). Note where the final price lands.`);
 
-    const customFields = data.message
-      ? [{ id: CF_ACCESS_NOTES, value: data.message }]
-      : [];
+    const customFields = [
+      ...(data.message ? [{ id: CF_ACCESS_NOTES, value: data.message }] : []),
+      ...(seen ? [{ id: CF_RANGE_LOW, value: seen.low }, { id: CF_RANGE_HIGH, value: seen.high }, { id: CF_RANGE_FOR, value: seen.label }] : []),
+    ];
 
     const payload: Record<string, unknown> = {
       locationId: GHL_LOCATION_ID,
@@ -144,6 +154,7 @@ export async function submitAssessmentForm(
         "property-audit",
         "website-assessment",
         isCommercial ? "lead-com" : "lead-res",
+        ...(seen ? ["plan-range-shown"] : []),
         ...(flagged ? ["needs-review"] : []),
       ],
       customFields,

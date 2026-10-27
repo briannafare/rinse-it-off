@@ -572,3 +572,15 @@ export function depositSchedule(e: Effective, billing: "monthly" | "annual"): st
   if (billing === "annual") return `$${DEPOSIT_USD} today, then $${(e.prepaid - DEPOSIT_USD).toLocaleString()} at signing`;
   return `$${DEPOSIT_USD} today, then $${Math.ceil((e.annual - DEPOSIT_USD) / 12).toLocaleString()} a month for 12 months`;
 }
+
+/** The range the visitor saw, clamped (it comes from the browser and only describes their own record). */
+export function cleanRange(r: { low?: unknown; high?: unknown; label?: unknown } | undefined | null): { low: number; high: number; label: string } | null {
+  if (!r) return null;
+  const n = (v: unknown) => Math.min(5000, Math.max(0, Math.round(Number(v) || 0)));
+  const low = n(r.low), high = n(r.high);
+  if (!low || high < low) return null;
+  return { low, high, label: String(r.label || "").replace(/[^\w ,.+-]/g, "").slice(0, 80) };
+}
+
+/** Where a final monthly price landed against the range shown. */
+export const rangePosition = (r: { low: number; high: number }, monthly: number) => (monthly < r.low ? "below" : monthly > r.high ? "above" : "inside");

@@ -2,7 +2,7 @@
  *  build (see package.json "prebuild"): `node --experimental-strip-types src/app/plan/pricing.test.ts`.
  *  If a constant in pricing.ts changes on purpose, update the expected numbers here. */
 import assert from "node:assert/strict";
-import { handPriceReasons, handRange, priceHouse, scopeFor, sizeRange, type HouseInputs } from "./pricing.ts";
+import { cleanRange, handPriceReasons, handRange, priceHouse, rangePosition, scopeFor, sizeRange, type HouseInputs } from "./pricing.ts";
 
 const base: HouseInputs = { address: "test", livingSqft: 1800, stories: 1, windows: 12, roof: "composition", driveway: "typical", slope: "flat", sides: "all", parking: "close" };
 const r2 = (n: number) => Math.round(n * 100) / 100;
@@ -63,3 +63,9 @@ for (const sf of [900, 1500, 2600, 4500]) {
   }
 }
 assert.deepEqual(sizeRange(1500, 1), { low: 189, high: 280 });
+
+// The range a visitor saw, saved next to their final price.
+assert.deepEqual(cleanRange({ low: "233", high: 370.4, label: "1,500 to 2,000 sq ft, two-story<script>" }), { low: 233, high: 370, label: "1,500 to 2,000 sq ft, two-storyscript" });
+assert.equal(cleanRange({ low: 400, high: 300 }), null);
+assert.equal(cleanRange(undefined), null);
+assert.deepEqual([rangePosition({ low: 233, high: 370 }, 200), rangePosition({ low: 233, high: 370 }, 370), rangePosition({ low: 233, high: 370 }, 371)], ["below", "inside", "above"]);
