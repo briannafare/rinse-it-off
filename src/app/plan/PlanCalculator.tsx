@@ -194,6 +194,10 @@ const DS = `
   .upgrade .amt { font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--ink); white-space: nowrap; }
   .scarcity { background: var(--surface-alt); border-radius: var(--r-lg); padding: 14px 16px; margin-top: 18px; font-size: 0.9375rem; line-height: 1.55; color: var(--text-primary); text-wrap: pretty; }
   .guarantee { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.5; margin-top: 12px; text-wrap: pretty; }
+  details.extras { border: 2px solid var(--border); border-radius: var(--r-md); padding: 4px 14px; margin: 4px 0 22px; }
+  details.extras[open] { padding-bottom: 6px; }
+  details.extras > summary { color: var(--ink); font-weight: 600; min-height: 48px; }
+  details.extras > .field:first-of-type { margin-top: 10px; }
   .range-first { background: var(--mint); border-radius: var(--r-lg); padding: 16px 18px; margin: -4px 0 26px; }
   .range-first .k { font-size: 0.9375rem; font-weight: 500; color: var(--ink); }
   .range-first .v { font-family: var(--font-title); font-weight: 900; font-size: clamp(1.625rem, 7vw, 2rem); letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
@@ -535,10 +539,13 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
   // A range from size and stories alone, before the address and window count.
   const early = useMemo(() => { const n = parseInt(sqft, 10); return n > 0 && stories ? sizeRange(n, stories) : null; }, [sqft, stories]);
   const unsure = size === -1;
+  const [extrasOpen, setExtrasOpen] = useState(false);
   const quick = size !== null && size >= 0 && stories ? { low: sizeRange(SIZES[size].lo, stories).low, high: sizeRange(SIZES[size].hi, stories).high } : null;
   const pickSize = (i: number) => { setSize(i); setSqft(i >= 0 ? String(SIZES[i].mid) : ""); if (i < 0) vaTrack("Size unsure", { src }); };
   const STORY_WORD = ["", "one-story", "two-story", "three-story", "four-story or taller"];
   const openDetail = () => { vaTrack("Exact price start", { src }); setDetail(true); if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" }); };
+  // Keep the range they saw on the reveal while they finish; switch to the exact-size range once they change the size.
+  const shownRange = quick && size !== null && size >= 0 && sqft === String(SIZES[size].mid) ? quick : early;
   const smsBody = quick ? `Hi! The site gave me $${quick.low} to $${quick.high}/mo for the yearly plan. Can you give me my exact price?` : "";
   const [rangeSeen, setRangeSeen] = useState(false);
   // On a phone the reveal opens below the fold: bring it up the first time it appears.
@@ -757,7 +764,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                 {detail ? <>Your exact price, <span className="accent">custom to your house.</span></> : <>Your price in <span className="accent">two taps.</span></>}
               </h1>
               <HalFlyIn className="hal" />
-              <p>{detail ? "A few more questions about the house and you'll see your exact monthly price." : "A year of exterior cleaning, windows included. No address, no sign-up to see it."}</p>
+              <p>{detail ? "Your address and window count, and you'll see your exact monthly price." : "A year of exterior cleaning, windows included. No address, no sign-up to see it."}</p>
             </div>
           </div>
 
@@ -836,38 +843,27 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
 
               {step === 0 && detail && (
                 <form onSubmit={(e) => { e.preventDefault(); if (house) go(hand.length ? HAND_STEP : 1); }}>
-                  <h2>First, the house.</h2>
-                  <p className="lead">Rough numbers are fine.</p>
+                  <h2>Two more things.</h2>
+                  <p className="lead">Your size and stories carry over. Everything else assumes a typical house, so only open the extras if yours isn&apos;t.</p>
 
-                  <div className="field">
-                    <label htmlFor="sqft">Living area</label>
-                    <div className="unit-wrap">
-                      <input id="sqft" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="1,800" value={sqft} onChange={(e) => setSqft(e.target.value.replace(/[^0-9]/g, ""))} required />
-                      <span className="unit">sq ft</span>
-                    </div>
-                    <div className="help">A basic 3-bedroom is usually 1,500 to 2,000.</div>
-                  </div>
-
-                  <div className="field">
-                    <div className="q">Stories</div>
-                    <div className="choices cols-4" role="group" aria-label="Stories">
-                      {([1, 2, 3, 4] as Stories[]).map((s) => (
-                        <button key={s} type="button" className={`choice center ${stories === s ? "on" : ""}`} onClick={() => setStories(s)} aria-pressed={stories === s}>
-                          {s === 4 ? "4+" : s}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {early && (
+                  {shownRange && (
                     <div className="range-first" role="status">
-                      <div className="k">Homes this size usually run</div>
-                      <div className="v">${fmt(early.low)} to ${fmt(early.high)} a month</div>
-                      <div className="s">That&apos;s four seasons of cleaning, and your outside windows get washed free four times a year. The questions below get you to your exact price.</div>
+                      <div className="k">Your range</div>
+                      <div className="v">${fmt(shownRange.low)} to ${fmt(shownRange.high)} a month</div>
+                      <div className="s">Add the address and window count and this turns into your exact price. No name or phone number needed to see it.</div>
                     </div>
                   )}
 
-                  {early && (<>
+                  <div className="field">
+                    <label htmlFor="street">Street address</label>
+                    <input id="street" type="text" autoComplete="address-line1" placeholder="1234 SE Example St" value={street} onChange={(e) => setStreet(e.target.value)} required />
+                    <div className="addr-row">
+                      <input id="city" type="text" autoComplete="address-level2" placeholder="City" aria-label="City" value={city} onChange={(e) => setCity(e.target.value)} required />
+                      <input id="state" type="text" autoComplete="address-level1" aria-label="State" value={stateCode} maxLength={2} onChange={(e) => setStateCode(e.target.value.toUpperCase())} />
+                      <input id="zip" type="text" inputMode="numeric" autoComplete="postal-code" placeholder="ZIP" aria-label="ZIP" value={zip} onChange={(e) => setZip(e.target.value.replace(/[^0-9-]/g, "").slice(0, 10))} />
+                    </div>
+                  </div>
+
                   <div className="field">
                     <label htmlFor="windows">Exterior windows</label>
                     <input id="windows" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="14" value={windows} onChange={(e) => setWindows(e.target.value.replace(/[^0-9]/g, ""))} required />
@@ -881,106 +877,120 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     </details>
                   </div>
 
-                  <div className="field">
-                    <div className="q">Roof</div>
-                    <div className="choices" role="group" aria-label="Roof">
-                      {([
-                        ["composition", "Composition shingle"],
-                        ["shake-steep", "Wood shake or steep pitch"],
-                        ["metal-tile", "Metal or tile"],
-                      ] as [RoofType, string][]).map(([v, l]) => (
-                        <button key={v} type="button" className={`choice ${roof === v ? "on" : ""}`} onClick={() => setRoof(v)} aria-pressed={roof === v}>
-                          <span className="box">{roof === v && <Check />}</span>{l}
-                        </button>
-                      ))}
+                  {/* Casey Winters and Dan Hockenmaier, SuperMe 2026-10-25: the exact-price path must not become the old 11-question form. Defaults cover a typical house. */}
+                  <details className="more extras" open={extrasOpen} onToggle={(e) => setExtrasOpen(e.currentTarget.open)}>
+                    <summary>More about the house<span className="opt">· optional</span></summary>
+                    <div className="field">
+                      <label htmlFor="sqft">Living area</label>
+                      <div className="unit-wrap">
+                        <input id="sqft" type="text" inputMode="numeric" pattern="[0-9]*" placeholder="1,800" value={sqft} onChange={(e) => setSqft(e.target.value.replace(/[^0-9]/g, ""))} required />
+                        <span className="unit">sq ft</span>
+                      </div>
+                      <div className="help">A basic 3-bedroom is usually 1,500 to 2,000.</div>
                     </div>
-                    <details className="more" {...moreProps("roof", ["roofSf"])}>
-                      <summary>Enter roof size<span className="opt">· optional</span></summary>
-                      <div className="row">
-                        <div><label htmlFor="roofSf">Roof, sq ft</label><input id="roofSf" type="text" inputMode="numeric" value={exactText.roofSf} onChange={(e) => setExact("roofSf", e.target.value)} /></div>
-                      </div>
-                    </details>
-                  </div>
 
-                  <div className="field">
-                    <div className="q">Driveway and walkways</div>
-                    <div className="choices" role="group" aria-label="Driveway and walkways">
-                      {([
-                        ["small", "Small", "Under 800 sq ft"],
-                        ["typical", "Typical", "Two cars wide, a path to the door"],
-                        ["large", "Large or long", "Three cars, a long drive, lots of paths"],
-                      ] as [DrivewaySize, string, string][]).map(([v, l, sub]) => (
-                        <button key={v} type="button" className={`choice ${driveway === v ? "on" : ""}`} onClick={() => setDriveway(v)} aria-pressed={driveway === v}>
-                          <span className="box">{driveway === v && <Check />}</span>
-                          <span>{l}<span className="sub">{sub}</span></span>
-                        </button>
-                      ))}
-                    </div>
-                    <details className="more" {...moreProps("driveway", ["drivewaySf", "walkwaySf"])}>
-                      <summary>Enter dimensions<span className="opt">· optional</span></summary>
-                      <div className="row two">
-                        <div><label htmlFor="drivewaySf">Driveway, sq ft</label><input id="drivewaySf" type="text" inputMode="numeric" value={exactText.drivewaySf} onChange={(e) => setExact("drivewaySf", e.target.value)} /></div>
-                        <div><label htmlFor="walkwaySf">Walkways, sq ft</label><input id="walkwaySf" type="text" inputMode="numeric" value={exactText.walkwaySf} onChange={(e) => setExact("walkwaySf", e.target.value)} /></div>
-                      </div>
-                    </details>
-                  </div>
-
-                  <div className="field">
-                    <div className="q">Gutters</div>
-                    <details className="more" style={{ marginTop: 0 }} {...moreProps("gutters", ["gutterLf"])}>
-                      <summary>Enter linear feet<span className="opt">· optional</span></summary>
-                      <div className="row">
-                        <div><label htmlFor="gutterLf">Gutters, linear ft</label><input id="gutterLf" type="text" inputMode="numeric" value={exactText.gutterLf} onChange={(e) => setExact("gutterLf", e.target.value)} /></div>
-                      </div>
-                    </details>
-                  </div>
-
-                  {([
-                    ["Is the lot flat or sloped?", "Lot", slope, setSlope, [
-                      ["flat", "Flat or a gentle slope"],
-                      ["some", "Some slope", "Ladders need leveling on part of it"],
-                      ["steep", "Steep", "A hillside, or a drop-off on one side"],
-                    ]],
-                    ["How many sides of the house can we walk along?", "Sides", sides, setSides, [
-                      ["all", "All the way around"],
-                      ["most", "Most of it", "A tight side yard, a gate or a fence in the way"],
-                      ["one-two", "Only one or two sides", "The rest backs onto a slope, a neighbor or plantings"],
-                    ]],
-                    ["Where can our truck park?", "Parking", parking, setParking, [
-                      ["close", "In the driveway, near the house"],
-                      ["far", "On the street, or the driveway is tiny", "Means a long hose run"],
-                    ]],
-                  ] as [string, string, string, (v: never) => void, [string, string, string?][]][]).map(([q, aria, val, set, opts]) => (
-                    <div className="field" key={aria}>
-                      <div className="q">{q}</div>
-                      <div className="choices" role="group" aria-label={aria}>
-                        {opts.map(([v, l, sub]) => (
-                          <button key={v} type="button" className={`choice ${val === v ? "on" : ""}`} onClick={() => set(v as never)} aria-pressed={val === v}>
-                            <span className="box">{val === v && <Check />}</span>
-                            <span>{l}{sub && <span className="sub">{sub}</span>}</span>
+                    <div className="field">
+                      <div className="q">Stories</div>
+                      <div className="choices cols-4" role="group" aria-label="Stories">
+                        {([1, 2, 3, 4] as Stories[]).map((s) => (
+                          <button key={s} type="button" className={`choice center ${stories === s ? "on" : ""}`} onClick={() => setStories(s)} aria-pressed={stories === s}>
+                            {s === 4 ? "4+" : s}
                           </button>
                         ))}
                       </div>
                     </div>
-                  ))}
 
-                  <div className="field">
-                    <label htmlFor="street">Street address</label>
-                    <input id="street" type="text" autoComplete="address-line1" placeholder="1234 SE Example St" value={street} onChange={(e) => setStreet(e.target.value)} required />
-                    <div className="addr-row">
-                      <input id="city" type="text" autoComplete="address-level2" placeholder="City" aria-label="City" value={city} onChange={(e) => setCity(e.target.value)} required />
-                      <input id="state" type="text" autoComplete="address-level1" aria-label="State" value={stateCode} maxLength={2} onChange={(e) => setStateCode(e.target.value.toUpperCase())} />
-                      <input id="zip" type="text" inputMode="numeric" autoComplete="postal-code" placeholder="ZIP" aria-label="ZIP" value={zip} onChange={(e) => setZip(e.target.value.replace(/[^0-9-]/g, "").slice(0, 10))} />
+                    <div className="field">
+                      <div className="q">Roof</div>
+                      <div className="choices" role="group" aria-label="Roof">
+                        {([
+                          ["composition", "Composition shingle"],
+                          ["shake-steep", "Wood shake or steep pitch"],
+                          ["metal-tile", "Metal or tile"],
+                        ] as [RoofType, string][]).map(([v, l]) => (
+                          <button key={v} type="button" className={`choice ${roof === v ? "on" : ""}`} onClick={() => setRoof(v)} aria-pressed={roof === v}>
+                            <span className="box">{roof === v && <Check />}</span>{l}
+                          </button>
+                        ))}
+                      </div>
+                      <details className="more" {...moreProps("roof", ["roofSf"])}>
+                        <summary>Enter roof size<span className="opt">· optional</span></summary>
+                        <div className="row">
+                          <div><label htmlFor="roofSf">Roof, sq ft</label><input id="roofSf" type="text" inputMode="numeric" value={exactText.roofSf} onChange={(e) => setExact("roofSf", e.target.value)} /></div>
+                        </div>
+                      </details>
                     </div>
-                  </div>
 
-                  <button type="submit" className="btn btn-ink" disabled={!house}>
-                    Show my price
+                    <div className="field">
+                      <div className="q">Driveway and walkways</div>
+                      <div className="choices" role="group" aria-label="Driveway and walkways">
+                        {([
+                          ["small", "Small", "Under 800 sq ft"],
+                          ["typical", "Typical", "Two cars wide, a path to the door"],
+                          ["large", "Large or long", "Three cars, a long drive, lots of paths"],
+                        ] as [DrivewaySize, string, string][]).map(([v, l, sub]) => (
+                          <button key={v} type="button" className={`choice ${driveway === v ? "on" : ""}`} onClick={() => setDriveway(v)} aria-pressed={driveway === v}>
+                            <span className="box">{driveway === v && <Check />}</span>
+                            <span>{l}<span className="sub">{sub}</span></span>
+                          </button>
+                        ))}
+                      </div>
+                      <details className="more" {...moreProps("driveway", ["drivewaySf", "walkwaySf"])}>
+                        <summary>Enter dimensions<span className="opt">· optional</span></summary>
+                        <div className="row two">
+                          <div><label htmlFor="drivewaySf">Driveway, sq ft</label><input id="drivewaySf" type="text" inputMode="numeric" value={exactText.drivewaySf} onChange={(e) => setExact("drivewaySf", e.target.value)} /></div>
+                          <div><label htmlFor="walkwaySf">Walkways, sq ft</label><input id="walkwaySf" type="text" inputMode="numeric" value={exactText.walkwaySf} onChange={(e) => setExact("walkwaySf", e.target.value)} /></div>
+                        </div>
+                      </details>
+                    </div>
+
+                    <div className="field">
+                      <div className="q">Gutters</div>
+                      <details className="more" style={{ marginTop: 0 }} {...moreProps("gutters", ["gutterLf"])}>
+                        <summary>Enter linear feet<span className="opt">· optional</span></summary>
+                        <div className="row">
+                          <div><label htmlFor="gutterLf">Gutters, linear ft</label><input id="gutterLf" type="text" inputMode="numeric" value={exactText.gutterLf} onChange={(e) => setExact("gutterLf", e.target.value)} /></div>
+                        </div>
+                      </details>
+                    </div>
+
+                    {([
+                      ["Is the lot flat or sloped?", "Lot", slope, setSlope, [
+                        ["flat", "Flat or a gentle slope"],
+                        ["some", "Some slope", "Ladders need leveling on part of it"],
+                        ["steep", "Steep", "A hillside, or a drop-off on one side"],
+                      ]],
+                      ["How many sides of the house can we walk along?", "Sides", sides, setSides, [
+                        ["all", "All the way around"],
+                        ["most", "Most of it", "A tight side yard, a gate or a fence in the way"],
+                        ["one-two", "Only one or two sides", "The rest backs onto a slope, a neighbor or plantings"],
+                      ]],
+                      ["Where can our truck park?", "Parking", parking, setParking, [
+                        ["close", "In the driveway, near the house"],
+                        ["far", "On the street, or the driveway is tiny", "Means a long hose run"],
+                      ]],
+                    ] as [string, string, string, (v: never) => void, [string, string, string?][]][]).map(([q, aria, val, set, opts]) => (
+                      <div className="field" key={aria}>
+                        <div className="q">{q}</div>
+                        <div className="choices" role="group" aria-label={aria}>
+                          {opts.map(([v, l, sub]) => (
+                            <button key={v} type="button" className={`choice ${val === v ? "on" : ""}`} onClick={() => set(v as never)} aria-pressed={val === v}>
+                              <span className="box">{val === v && <Check />}</span>
+                              <span>{l}{sub && <span className="sub">{sub}</span>}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+
+                  </details>
+
+                  <button type="submit" className="btn btn-ink btn-shine" disabled={!house}>
+                    Show my exact price
                   </button>
                   {!house && (
-                    <p className="fine" style={{ textAlign: "center", marginTop: 10 }}>Windows, street and city first.</p>
+                    <p className="fine" style={{ textAlign: "center", marginTop: 10 }}>{sqft && stories ? "Street, city and window count first." : "Street, city, window count, and the size under More about the house."}</p>
                   )}
-                  </>)}
                 </form>
               )}
 
