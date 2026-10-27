@@ -543,7 +543,11 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
   const quick = size !== null && size >= 0 && stories ? { low: sizeRange(SIZES[size].lo, stories).low, high: sizeRange(SIZES[size].hi, stories).high } : null;
   const pickSize = (i: number) => { setSize(i); setSqft(i >= 0 ? String(SIZES[i].mid) : ""); if (i < 0) vaTrack("Size unsure", { src }); };
   const STORY_WORD = ["", "one-story", "two-story", "three-story", "four-story or taller"];
-  const openDetail = () => { vaTrack("Exact price start", { src }); setDetail(true); if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" }); };
+  // The range on the reveal when they asked for the exact price, saved with their quote (Kyle Poyar, SuperMe 2026-10-25).
+  const [seenRange, setSeenRange] = useState<{ low: number; high: number; label: string } | null>(null);
+  const rangeLabel = size !== null && size >= 0 && stories ? `${SIZES[size].label} sq ft, ${STORY_WORD[stories]}` : "";
+  const rangeQuery = quick ? `&range=${quick.low}-${quick.high}&for=${encodeURIComponent(rangeLabel)}` : "";
+  const openDetail = () => { vaTrack("Exact price start", { src }); if (quick) setSeenRange({ low: quick.low, high: quick.high, label: rangeLabel }); setDetail(true); if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" }); };
   // Keep the range they saw on the reveal while they finish; switch to the exact-size range once they change the size.
   const shownRange = quick && size !== null && size >= 0 && sqft === String(SIZES[size].mid) ? quick : early;
   const smsBody = quick ? `Hi! The site gave me $${quick.low} to $${quick.high}/mo for the yearly plan. Can you give me my exact price?` : "";
@@ -588,6 +592,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
       term,
       springGutters,
       src,
+      shownRange: seenRange ?? undefined,
     });
     setSending(false);
     if (result.success) {
@@ -831,7 +836,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     </ul>
                     <p className="next-q">Want your exact number?</p>
                     <button type="button" className="btn btn-ink btn-shine" onClick={openDetail}>Get my exact price</button>
-                    <a className="btn btn-line" href={`/assessment?src=${encodeURIComponent(src)}`} onClick={() => vaTrack("Walk-through click", { src })}>Have someone come out, free</a>
+                    <a className="btn btn-line" href={`/assessment?src=${encodeURIComponent(src)}${rangeQuery}`} onClick={() => vaTrack("Walk-through click", { src })}>Have someone come out, free</a>
                     <div className="talk">
                       <a className="btn btn-line" href="tel:+19716264146" onClick={() => vaTrack("Call click", { src })}>Call us</a>
                       <a className="btn btn-line" href={`sms:+19716264146?&body=${encodeURIComponent(smsBody)}`} onClick={() => vaTrack("Text click", { src })}>Text us</a>

@@ -126,10 +126,13 @@ export default function AssessmentPage() {
   const [error, setError] = useState("");
   // ?type=residential|commercial from the site's links; ?src= from the /plan price page (always a home).
   const [fromPlan, setFromPlan] = useState("");
+  const [rangeShown, setRangeShown] = useState<{ low: number; high: number; label: string } | undefined>();
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     const t = q.get("type");
     const src = q.get("src");
+    const [lo, hi] = (q.get("range") || "").split("-").map(Number);
+    if (lo > 0 && hi >= lo) setRangeShown({ low: lo, high: hi, label: q.get("for") || "" });
     if (src !== null) { setPropertyType("residential"); setFromPlan(src.replace(/[^\w-]/g, "").slice(0, 40) || "direct"); }
     else if (t === "residential" || t === "commercial") setPropertyType(t);
   }, []);
@@ -172,6 +175,7 @@ export default function AssessmentPage() {
       appointmentDate: day ? fmtDate(cy, cm, day) : undefined,
       appointmentTime: time || undefined,
       appointmentISO: selectedISO || undefined,
+      rangeShown,
       source: fromPlan ? `Website — Plan walk-through (${fromPlan})` : undefined,
     };
     const result = await submitAssessmentForm(payload);
