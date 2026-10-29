@@ -3,9 +3,12 @@ import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useScrollReveal } from "@/lib/gsap";
 import { Plus, Minus } from "lucide-react";
-import { FAQS } from "@/lib/faqs";
+import { FAQS, type FAQItem } from "@/lib/faqs";
 
-export function FAQ() {
+export function FAQ({
+  items = FAQS,
+  heading = "Things people ask us in the driveway.",
+}: { items?: FAQItem[]; heading?: string } = {}) {
   const [openIdx, setOpenIdx] = useState(0);
   const headRef = useScrollReveal();
   const reduce = useReducedMotion();
@@ -16,11 +19,8 @@ export function FAQ() {
         <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
           <div className="lg:col-span-2" ref={headRef}>
             <h2 className="font-display font-semibold text-display-lg text-text-primary mb-3">
-              Questions? <span className="text-brand-black">Answered.</span>
+              {heading}
             </h2>
-            <p className="text-text-secondary text-lg leading-relaxed mb-4">
-              Everything you need to know about residential and commercial exterior cleaning.
-            </p>
             <a
               href="tel:+19716264146"
               className="inline-flex min-h-11 items-center rounded-lg text-sm font-semibold text-text-primary hover:text-text-secondary transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF]"
@@ -31,7 +31,7 @@ export function FAQ() {
 
           <div className="lg:col-span-3">
             <div className="bg-white rounded-[4px] border border-border-light overflow-hidden">
-              {FAQS.map((faq, i) => {
+              {items.map((faq, i) => {
                 const isOpen = openIdx === i;
                 return (
                   <div key={i} className="border-b border-border-light last:border-b-0">

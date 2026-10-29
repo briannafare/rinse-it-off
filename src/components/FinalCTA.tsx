@@ -27,20 +27,16 @@ export function FinalCTA() {
           <h2
             className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-[#0C1215] md:text-6xl"
           >
-            Free walkthrough.
+            The walkthrough is free.
             <br />
-            <span>Firm price the same day.</span>
+            <span>The report is yours either way.</span>
           </h2>
           <p className="mt-4 max-w-lg text-lg text-[#0C1215]">
-            We walk the property with you, note every surface that needs work, and
-            leave you an itemized price you can take all of or part of. Same
-            walkthrough whether it&rsquo;s your house or your building. If something we
-            clean isn&rsquo;t right, we come back and re-rinse it free within 48 hours.
+            You get an itemized price the same day, for a parking lot or a driveway.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-6">
-            <RetroButton href="/assessment">
-              Get your same-day quote
-            </RetroButton>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <RetroButton href="/assessment?type=commercial">Book a free commercial walkthrough</RetroButton>
+            <RetroButton href="/assessment?type=residential">Get a price for your first home cleaning</RetroButton>
             <a
               href="tel:+19716264146"
               className="link-plain focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]"

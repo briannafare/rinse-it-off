@@ -21,7 +21,7 @@ export function CTA() {
                 <span className="font-serif font-normal italic text-brand-blue">look like new?</span>
               </h2>
               <p className="text-white/50 text-base leading-relaxed max-w-md">
-                Schedule a free property assessment. We walk the site, give you an honest quote, and never pressure you into anything.
+                Schedule a free walkthrough. We walk the site, give you an honest quote, and never pressure you into anything.
               </p>
             </div>
 

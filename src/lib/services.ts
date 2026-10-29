@@ -4,7 +4,7 @@
  *  method-matching system in methods.ts, so the six services can never drift
  *  from the homepage. Everything below the base is page-specific copy.
  *
- *  Claims are locked: free 21-point property audit → firm itemized quote the
+ *  Claims are locked: free 21-point walkthrough → firm itemized quote the
  *  same day we walk your property; Clean Water Promise = re-rinse free within
  *  48 hours; ~157 days with measurable rain/yr (NOAA 1991-2020, PDX); Insured (no license number); NO pricing,
  *  NO reviews. Serves BOTH residential and commercial. */

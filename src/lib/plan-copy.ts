@@ -53,7 +53,7 @@ export const PLAN_INCLUDED = [
 ];
 
 export const PLAN_VALUE =
-  "If you booked these visits one at a time, even a small one-story house would pay at least $4,300 a year. On the plan, a basic three-bedroom home pays $189 a month, about $2,270 a year. Bigger homes cost more, and the online price shows yours. It's a 12-month membership, billed monthly.";
+  "If you booked these visits one at a time, even a small one-story house would pay at least $4,300 a year. On the plan, an easy single-story home up to 1,500 sq ft pays $189 a month, about $2,270 a year. Bigger homes cost more, and the online price shows yours. It's a 12-month membership, billed monthly.";
 
 export const PLAN_CTA_NOTE = "It takes about a minute, and you see the number before we ask for your name or phone number.";
 

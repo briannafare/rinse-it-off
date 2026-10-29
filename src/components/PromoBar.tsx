@@ -23,7 +23,7 @@ export function PromoBar({ collapsed = false }: { collapsed?: boolean }) {
           <span className="hidden font-semibold text-[#0C1215] sm:inline">Now booking holiday light installs</span>
           <span className="hidden sm:inline"> for this season.</span>
         </span>
-        <a href="/#holiday" className="shrink-0 font-semibold underline decoration-[#F2B632] decoration-2 underline-offset-4 hover:decoration-[#D6336C]">
+        <a href="/holiday-lights" className="shrink-0 font-semibold underline decoration-[#F2B632] decoration-2 underline-offset-4 hover:decoration-[#D6336C]">
           See the details
         </a>
       </p>
