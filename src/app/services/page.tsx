@@ -39,7 +39,7 @@ export default function ServicesIndexPage() {
               className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Get your free assessment
+              Get your free walkthrough
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
             </Link>
             <a
@@ -100,7 +100,7 @@ export default function ServicesIndexPage() {
                 <span className="font-semibold text-[#0C1215]">
                   Not sure which method your property needs?
                 </span>{" "}
-                That&apos;s what the free 21-point property audit is for — we walk the property,
+                That&apos;s what the free 21-point walkthrough is for — we walk the property,
                 match the method to every surface, and hand you a firm, itemized quote the same
                 day. Insured, and backed by our Clean Water Promise.
               </p>
@@ -111,7 +111,7 @@ export default function ServicesIndexPage() {
                 className="inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Free assessment
+                Free walkthrough
               </Link>
               <Link
                 href="/assessment?type=residential"

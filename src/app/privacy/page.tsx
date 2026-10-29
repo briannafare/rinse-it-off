@@ -62,7 +62,7 @@ export default function PrivacyPage() {
                 <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
                   Rinse It Off (a DBA of Fresh Rinse, LLC) provides residential and commercial
                   exterior cleaning across the Portland, Oregon metro. This policy covers the
-                  information we collect through rinseitoff.com, our free property assessment
+                  information we collect through rinseitoff.com, our free walkthrough
                   request, phone calls, and text messages — and applies to every visitor and
                   customer.
                 </p>
@@ -78,7 +78,7 @@ export default function PrivacyPage() {
                   What we collect
                 </h2>
                 <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
-                  When you request a free assessment or reach out, we collect your name, phone
+                  When you request a free walkthrough or reach out, we collect your name, phone
                   number, email address, and property address, plus anything you tell us about
                   the job (surfaces, access notes, photos you send). If you book a walkthrough,
                   we also collect the date and time you selected.
@@ -122,7 +122,7 @@ export default function PrivacyPage() {
                   How we use your information
                 </h2>
                 <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
-                  We use your information to schedule your free assessment, prepare and send
+                  We use your information to schedule your free walkthrough, prepare and send
                   your quote, coordinate the job, process payment, and follow up afterward
                   (service reminders, review requests). We don&apos;t sell your information, and
                   we don&apos;t hand it to lead-generation companies or other businesses looking

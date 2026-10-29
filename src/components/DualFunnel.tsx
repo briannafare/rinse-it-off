@@ -18,8 +18,8 @@ const FUNNELS = [
   },
   {
     title: "For my business",
-    body: "Storefronts, offices, HOAs, multifamily, clubhouses. Start with the free 21-point audit and you get photos of every problem area, which is the part ownership actually reads.",
-    cta: "Book a property audit",
+    body: "Storefronts, offices, HOAs, multifamily, clubhouses. Start with the free 21-point walkthrough and you get photos of every problem area, which is the part ownership actually reads.",
+    cta: "Book a free commercial walkthrough",
     href: "/assessment?type=commercial",
     img: "/brand/retro/i-biz-wide.webp",
     alt: "A flat 1960s-style illustration of two cleaners at a mid-century storefront, one on the walkway with a surface cleaner, one on the glass",

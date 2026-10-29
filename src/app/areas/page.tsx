@@ -83,7 +83,7 @@ export default function AreasIndexPage() {
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#0C1215]/85">
                 We serve homeowners and businesses across the Portland metro with method-matched
                 exterior cleaning. Find your city or neighborhood below — every area gets the same
-                free 21-point property audit and Clean Water Promise.
+                free 21-point walkthrough and Clean Water Promise.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
                 <a
@@ -91,7 +91,7 @@ export default function AreasIndexPage() {
                   className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  Get your free assessment
+                  Get your free walkthrough
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
                 </a>
                 <a
@@ -172,7 +172,7 @@ export default function AreasIndexPage() {
                   Don&apos;t see your street?
                 </h2>
                 <p className="mt-2 text-[#0C1215]/80">
-                  We cover the whole Portland metro. Call us or book a free property audit and
+                  We cover the whole Portland metro. Call us or book a free walkthrough and
                   we&apos;ll confirm we&apos;re out your way.
                 </p>
               </div>
@@ -181,7 +181,7 @@ export default function AreasIndexPage() {
                 className="inline-flex flex-shrink-0 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Book your free property audit
+                Book your free walkthrough
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </a>
             </div>

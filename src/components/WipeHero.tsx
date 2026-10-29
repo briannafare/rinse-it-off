@@ -79,7 +79,7 @@ export function WipeHero() {
               className="text-sm font-medium text-[#2F6B66] underline-offset-4 hover:text-[#102E32] hover:underline"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Property managers → free 21-point audit
+              Property managers → free 21-point walkthrough
             </a>
           </motion.div>
 

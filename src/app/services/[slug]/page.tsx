@@ -130,7 +130,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           <h1 className="text-[clamp(2.5rem,8vw,4.6rem)] leading-[0.95] text-brand-black [text-wrap:balance]">{service.h1}</h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#3B4247]">{service.what}</p>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <RetroButton href="/assessment" signature>Get your free assessment</RetroButton>
+            <RetroButton href="/assessment" signature>Get your free walkthrough</RetroButton>
             <a href={PHONE_TEL} className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-base font-semibold text-brand-black hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]">
               <Phone className="h-4 w-4" aria-hidden />
               {PHONE_DISPLAY}
@@ -186,7 +186,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
               </ul>
               <div className="mt-7 border-t border-retro-line pt-6">
                 <p className="text-sm leading-relaxed text-[#3B4247]">
-                  Every job starts with a free 21-point property audit — we walk the property and
+                  Every job starts with a free 21-point walkthrough — we walk the property and
                   hand you a firm, itemized quote the same day, no guesswork.
                 </p>
                 <Link
@@ -194,7 +194,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                   className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FBF8F2] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  Book your free audit
+                  Book your free walkthrough
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
               </div>
@@ -349,7 +349,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             <span>property.</span>
           </h2>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-[#0C1215]/80">
-            Book your free 21-point property audit and get a firm, itemized quote the same day we
+            Book your free 21-point walkthrough and get a firm, itemized quote the same day we
             walk your property — home or business. Backed by our Clean Water Promise.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -358,7 +358,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
               className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Get your free assessment
+              Get your free walkthrough
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
             </Link>
             <Link
@@ -375,7 +375,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
               href="/assessment?type=commercial"
               className="rounded font-semibold text-[#0C1215] underline decoration-[#2E9BC6] decoration-2 underline-offset-4 transition-colors hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB]"
             >
-              Book a free commercial property audit
+              Book a free commercial walkthrough
             </Link>
             .
           </p>

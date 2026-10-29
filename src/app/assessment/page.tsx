@@ -246,12 +246,20 @@ export default function AssessmentPage() {
           <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: "clamp(2rem, 6vw, 3rem)", color: "var(--ink)", letterSpacing: "-0.03em", lineHeight: 1.0, marginBottom: 16 }}>
             {fromPlan
               ? <>Have someone<br /><span style={{ color: "var(--blue)", fontWeight: 500 }}>come out, free.</span></>
-              : <>Get a free on-site<br /><span style={{ color: "var(--blue)", fontWeight: 500 }}>property assessment.</span></>}
+              : propertyType === "commercial"
+                ? <>Book a free<br /><span style={{ color: "var(--blue)", fontWeight: 500 }}>commercial walkthrough.</span></>
+                : propertyType === "residential"
+                  ? <>Get a price for your<br /><span style={{ color: "var(--blue)", fontWeight: 500 }}>first home cleaning.</span></>
+                  : <>Book a free walkthrough.<br /><span style={{ color: "var(--blue)", fontWeight: 500 }}>Is it a business or a home?</span></>}
           </h1>
           <p style={{ fontFamily: "var(--font-body)", color: "var(--text-secondary)", fontSize: "1.0625rem", lineHeight: 1.6, maxWidth: 420, margin: "0 auto" }}>
             {fromPlan
               ? "Pick a time below. We walk around the house, confirm the work, and give you your exact monthly price for the yearly plan. No charge, no commitment."
-              : "We come to you, walk the property, and put together a detailed assessment of what needs attention. No charge, no commitment."}
+              : propertyType === "commercial"
+                ? "Pick a time and we'll walk the property with you. You get the 21-point report and an itemized price the same day. Not ready to pick a time? Ask for a written quote instead."
+                : propertyType === "residential"
+                  ? "Pick a time and we'll look at the house with you. The visit is free, and you get an itemized price that day. Rather skip the visit? Ask for a written quote instead."
+                  : "We come to you, walk the property, and give you an itemized price the same day. The visit is free."}
           </p>
         </div>
       </div>
@@ -457,7 +465,7 @@ export default function AssessmentPage() {
             {propertyType && (
               <div style={{ background: "var(--aura-water)", backgroundColor: "var(--blue-wash, #E6F5FC)", borderRadius: "var(--r-xl)", padding: "24px", marginTop: 8 }}>
                 <button type="submit" disabled={sending || !form.name || !form.phone} className="btn-glass">
-                  <span>{sending ? "Sending your request..." : apptLabel ? "Request My Free Assessment" : "Request My Free Assessment"}</span>
+                  <span>{sending ? "Sending your request..." : apptLabel ? "Request My Free Walkthrough" : "Request My Free Walkthrough"}</span>
                   {!sending && (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                   )}
@@ -479,7 +487,7 @@ export default function AssessmentPage() {
 
         {/* Trust row */}
         <div style={{ display: "flex", justifyContent: "center", gap: "clamp(16px, 4vw, 36px)", flexWrap: "wrap", marginTop: 28 }}>
-          {["Fully insured", "Same-Day Response", "Free Assessment"].map((t) => (
+          {["Fully insured", "Itemized price the same day", "48-hour re-rinse"].map((t) => (
             <div key={t} style={{ display: "flex", alignItems: "center", gap: 7, fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-muted)", fontWeight: 500 }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               {t}

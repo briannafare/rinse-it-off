@@ -103,7 +103,7 @@ export function BeforeAfter() {
             href="/assessment"
             className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none"
           >
-            <span>Book your free <span className="whitespace-nowrap">21-point</span> property audit</span>
+            <span>Book a free commercial walkthrough</span>
             <svg
               aria-hidden="true"
               viewBox="0 0 20 20"

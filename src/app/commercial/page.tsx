@@ -34,7 +34,7 @@ import {
 export const metadata: Metadata = pageMeta({
   title: "Commercial Pressure Washing in Portland, OR",
   description:
-    "Parking lots, trash pads, storefronts, siding and roofs for Portland-area property managers, HOAs and businesses. Starts with a free 21-point inspection.",
+    "Parking lots, trash pads, storefronts, siding and roofs for Portland-area property managers, HOAs and businesses. Starts with a free 21-point walkthrough. Commercial visits start at $750.",
   path: "/commercial",
   image: OG.commercial,
 });
@@ -121,21 +121,26 @@ export default function CommercialPage() {
             aria-hidden
             width={600}
             height={600}
-            className="pointer-events-none absolute right-[3%] top-[calc(46svh+8px)] z-10 w-[26vw] max-w-[120px] drop-shadow-[4px_10px_8px_rgba(40,30,20,.25)] md:left-[calc(46%-150px)] md:right-auto md:top-[16%] md:w-[11vw] md:max-w-[170px]"
+            className="pointer-events-none absolute z-10 hidden drop-shadow-[4px_10px_8px_rgba(40,30,20,.25)] md:block md:left-[calc(46%-150px)] md:right-auto md:top-[16%] md:w-[11vw] md:max-w-[170px]"
           />
           <div className="relative flex flex-col justify-center px-5 pb-[calc(4rem+env(safe-area-inset-bottom))] pt-8 sm:px-8 md:order-1 md:px-12 md:py-16 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))]">
-            <p className="label-caps mb-4 max-w-[70%] !tracking-[0.14em] text-retro-muted md:max-w-none">Commercial &amp; property management</p>
+            <p className="label-caps mb-4 !tracking-[0.14em] text-retro-muted">For property managers, HOAs and business owners</p>
             <h1 className="text-[clamp(2.6rem,9vw,5.2rem)] leading-[0.95] text-brand-black [text-wrap:balance]">
-              Every commercial surface <span className="title-accent text-[#1A6E93]">gets its own method.</span>
+              Tenants see the entrance and the parking lot <span className="title-accent text-[#1A6E93]">before they see anything else.</span>
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#3B4247]">
-              From parking lots and trash pads to storefronts, siding and roofs, we assess
-              your property first — then match the right{" "}
-              <span className="font-semibold text-brand-black">pressure, temperature, and chemistry</span> to each
-              surface. It starts with a free 21-point property audit.
+              We clean grime, oil and algae off building fronts, lots, entrances and trash pads. It
+              starts with a free 21-point walkthrough. We photograph each problem and write down how
+              to treat it. You get an itemized price the same day. The report is yours to keep.
+            </p>
+            <p className="mt-4 max-w-xl text-lg font-semibold leading-relaxed text-brand-black">
+              The walkthrough is free. Commercial cleaning visits start at $750.
+            </p>
+            <p className="mt-3 max-w-xl text-base leading-relaxed text-[#3B4247]">
+              We try to finish before you open, because nobody wants to step over a hose on the way in.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <RetroButton href={ASSESS_HREF} signature>Book your free property audit</RetroButton>
+              <RetroButton href={ASSESS_HREF} signature>Book a free commercial walkthrough</RetroButton>
               <a
                 href={PHONE_TEL}
                 className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-base font-semibold text-brand-black hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]"
@@ -144,11 +149,15 @@ export default function CommercialPage() {
                 {PHONE_DISPLAY}
               </a>
             </div>
-            <p className="label-caps mt-8 !tracking-[0.12em] text-retro-muted">Insured &middot; Free 21-point property audit &middot; Recurring maintenance plans</p>
+            <p className="label-caps mt-8 !tracking-[0.12em] text-retro-muted">Insured &middot; Itemized price the same day &middot; 48-hour re-rinse</p>
+            <p className="mt-5 max-w-xl text-sm leading-relaxed text-[#3B4247]">
+              Have a larger property elsewhere in the Willamette Valley? Tell us the city and what needs
+              cleaning. <a href={ASSESS_HREF} className="font-semibold text-[#1A6E93] underline underline-offset-4">We&apos;ll call to confirm the walkthrough.</a>
+            </p>
           </div>
         </section>
 
-        {/* ── THE WEDGE — free 21-point property audit ── */}
+        {/* ── THE WEDGE — free 21-point walkthrough ── */}
         <section className="bg-retro-paper py-16 md:py-24">
           <div className="container-site grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <div>
@@ -156,7 +165,7 @@ export default function CommercialPage() {
                 className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
-                The free 21-point property audit.
+                The free 21-point walkthrough.
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-[#3B4247]">
                 {AUDIT_LEAD}
@@ -173,16 +182,7 @@ export default function CommercialPage() {
                 ))}
               </ul>
 
-              <div className="mt-7 flex items-start gap-3 rounded-[4px] bg-[#E6F5FC] p-4">
-                <Droplets className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#1A6E93]" aria-hidden />
-                <p className="text-sm leading-relaxed text-[#3B4247]">
-                  <span className="font-semibold text-[#0C1215]">
-                    About 157 days of rain a year in Portland
-                  </span>{" "}
-                  keep moss, algae and grime coming back. The audit is where we map what your property
-                  needs to stay ahead of it &mdash; at no charge.
-                </p>
-              </div>
+              
 
               <div className="mt-8">
                 <a
@@ -190,7 +190,7 @@ export default function CommercialPage() {
                   className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  Book your free property audit
+                  Book a free commercial walkthrough
                   <ArrowRight
                     className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
                     aria-hidden
@@ -265,11 +265,11 @@ export default function CommercialPage() {
                 className="inline-flex items-center gap-2 rounded-full bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Get your free property audit
+                Book a free commercial walkthrough
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </a>
               <span className="text-sm text-[#5F676C]">
-                Not sure which your property needs? That&apos;s what the audit is for.
+                Not sure which your property needs? That&apos;s what the walkthrough is for.
               </span>
             </div>
           </div>
@@ -326,7 +326,7 @@ export default function CommercialPage() {
                 className="text-[clamp(1.9rem,4vw,3rem)] leading-[1.05] tracking-[-0.02em] text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
-                No surprises, no padding, no fine print.
+                Walk the property with us. We&apos;ll price each part the same day, and you choose which parts we clean.
               </h2>
             </div>
 
@@ -390,7 +390,7 @@ export default function CommercialPage() {
                   className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  Book your free property audit
+                  Book a free commercial walkthrough
                   <ArrowRight
                     className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
                     aria-hidden

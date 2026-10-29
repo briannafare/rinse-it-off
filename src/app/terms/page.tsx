@@ -19,7 +19,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = pageMeta({
   title: "Terms & the Clean Water Promise",
   description:
-    "How Rinse It Off works, in plain English: the free property audit, a firm itemized quote, and the 48-hour re-rinse guarantee.",
+    "How Rinse It Off works, in plain English: the free walkthrough, a firm itemized quote, and the 48-hour re-rinse guarantee.",
   path: "/terms",
 });
 
@@ -71,17 +71,17 @@ export default function TermsPage() {
                 </p>
               </article>
 
-              {/* Free 21-point audit */}
+              {/* Free 21-point walkthrough */}
               <article>
                 <h2
                   className="flex items-center gap-3 text-xl font-semibold text-[#0C1215] md:text-2xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   <ClipboardCheck className="h-5 w-5 shrink-0 text-[#1A6E93]" aria-hidden />
-                  Your free 21-point property audit
+                  Your free 21-point walkthrough
                 </h2>
                 <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
-                  Every job starts with a free 21-point property audit. We walk your
+                  Every job starts with a free 21-point walkthrough. We walk your
                   property, read each surface, and note the material, its condition, and
                   the right method for it. There&apos;s no charge and no obligation — it&apos;s
                   an honest look, not a sales pitch.
@@ -208,7 +208,7 @@ export default function TermsPage() {
                   Questions?
                 </h2>
                 <p className="mt-3 text-base leading-relaxed text-[#3B4247]">
-                  Ask us anything before we start — that&apos;s what the free assessment is
+                  Ask us anything before we start — that&apos;s what the free walkthrough is
                   for.
                 </p>
                 <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
@@ -217,7 +217,7 @@ export default function TermsPage() {
                     className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFFFF] motion-reduce:transition-none"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
-                    Get your free assessment
+                    Get your free walkthrough
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
                   </a>
                   <a
