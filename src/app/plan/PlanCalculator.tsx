@@ -766,10 +766,10 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
           <div className="plan-hero">
             <div className="in">
               <h1>
-                {detail ? <>Your exact price, <span className="accent">custom to your house.</span></> : <>Four cleanings a year, <span className="accent">and the windows are free at every one.</span></>}
+                {detail ? <>Your exact price, <span className="accent">custom to your house.</span></> : <>Four cleanings a year. <span className="accent">Free windows at every one.</span></>}
               </h1>
               <HalFlyIn className="hal" />
-              <p>{detail ? "Your address and window count, and you'll see your exact monthly price." : "A window cleaning on its own starts at $500. On the yearly plan, the outside windows are free at every visit."}</p>
+              <p>{detail ? "Your address and window count, and you'll see your exact monthly price." : "On their own, window cleanings start at $500. On the plan they\u2019re free."}</p>
             </div>
           </div>
 
@@ -791,8 +791,8 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
 
               {step === 0 && !detail && (
                 <div className="quick">
-                  <p className="start">Moss comes back every year without being asked. On the plan, so do we. Spring is the roof and siding, summer is the driveway and patio. Fall is the gutters, and winter is the steps and entries. We clean the outside windows at every visit with pure water, which is water with the minerals filtered out, so it dries without spots. <strong>Plans start at ${MONTHLY_FLOOR} a month</strong> for an easy single-story home up to 1,500 sq ft. Bigger homes cost more. It&apos;s a 12-month plan, billed monthly. Pick your home size below. You&apos;ll see your price before we ask for your name or address.</p>
-                  <p className="start">Gutters are the plan&apos;s fall visit anyway. Start there, join within a week, and the $350 comes off your plan. If your first cleaning was something bigger, $350 of it still comes off.</p>
+                  <p className="start">Roof and siding in spring, driveway in summer, gutters in fall, steps in winter, and the outside windows every time. <strong>From ${MONTHLY_FLOOR} a month</strong> for an easy single-story home up to 1,500 sq ft, on a 12-month plan.</p>
+                  <p className="start">Had a first cleaning with us? Join within a week and $350 comes off your plan.</p>
                   <div className="field">
                     <div className="q">How big is the house?</div>
                     <div className="choices sizes" role="group" aria-label="House size">

@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useScrollReveal, useStaggerReveal } from "@/lib/gsap";
-import { RetroButton } from "@/components/retro/Bits";
 
 /** Block 4: how a quote works, beside real footage. Copy: SuperMe website panel, 2026-10-28/29. */
 const STEPS = [
@@ -125,9 +124,13 @@ export function ProcessSection() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 sm:flex-row md:mt-16">
-          <RetroButton href="/assessment?type=commercial">Book a free commercial walkthrough</RetroButton>
-          <RetroButton href="/assessment?type=residential">Get a price for your first home cleaning</RetroButton>
+        <div className="mt-12 flex md:mt-16">
+          <a
+            href="/assessment"
+            className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
+          >
+            Book my free walkthrough
+          </a>
         </div>
       </div>
     </section>

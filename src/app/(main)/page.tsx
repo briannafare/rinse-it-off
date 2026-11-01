@@ -1,18 +1,24 @@
 import { CinematicHero } from "@/components/CinematicHero";
-import { ProofPhoto } from "@/components/home/ProofPhoto";
-import { WhatWeClean } from "@/components/home/WhatWeClean";
+import { AquaStats } from "@/components/AquaStats";
+import { DualFunnel } from "@/components/DualFunnel";
+import { PlanSection } from "@/components/PlanSection";
+import { Methods } from "@/components/Methods";
 import { ProcessSection } from "@/components/ProcessSection";
-import { Owners } from "@/components/home/Owners";
+import { BeforeAfter } from "@/components/BeforeAfter";
+import { WorkGallery } from "@/components/WorkGallery";
+import { Promise as PromiseSection } from "@/components/Promise";
 import { FAQ } from "@/components/FAQ";
-import { HOME_FAQS } from "@/lib/faqs";
+import { FAQS } from "@/lib/faqs";
 import { FinalCTA } from "@/components/FinalCTA";
 import { StickyMobileBar } from "@/components/StickyMobileBar";
+import { TitleCard } from "@/components/retro/Bits";
+import { HolidayLights } from "@/components/HolidayLights";
 import Script from "next/script";
 
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: HOME_FAQS.map((faq) => ({
+  mainEntity: FAQS.map((faq) => ({
     "@type": "Question",
     name: faq.q,
     acceptedAnswer: { "@type": "Answer", text: faq.a },
@@ -26,15 +32,20 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      {/* Six blocks (SuperMe website panel + Bri, 2026-10-29). The yearly plan chapter, holiday
-          lights, the six methods and the long FAQ moved to /plan, /holiday-lights, the service
-          pages and the pages their questions belong to. */}
       <CinematicHero />
-      <ProofPhoto />
-      <WhatWeClean />
+      <TitleCard chapter="Chapter one" title="The Yearly Plan" tone="tealtint" />
+      <PlanSection />
+      <AquaStats />
+      <HolidayLights />
+      <DualFunnel />
+      <TitleCard chapter="Chapter two" title="How We Clean" />
+      <Methods />
       <ProcessSection />
-      <Owners />
-      <FAQ items={HOME_FAQS} />
+      <TitleCard chapter="Chapter three" title="Real Jobs" tone="sky" />
+      <BeforeAfter />
+      <WorkGallery />
+      <PromiseSection />
+      <FAQ />
       <FinalCTA />
       <StickyMobileBar />
       {/* GHL chat widget — the A2P-registered SMS opt-in surface. Homepage ONLY:
@@ -48,7 +59,7 @@ export default function HomePage() {
         strategy="afterInteractive"
       />
       {/* Keep the chat out of the way (finish brief 2026-10-20): a smaller bubble tucked into the
-          corner, sitting above the phone's sticky Call / Text / main action bar, and no pop-up prompt
+          corner, sitting above the phone's sticky Call / Text / Free quote bar, and no pop-up prompt
           over headlines or buttons. The widget lives in a shadow root, so its style goes in there. */}
       <Script id="chat-tuck" strategy="afterInteractive">{`
         (function tuck(n){

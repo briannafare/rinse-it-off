@@ -47,7 +47,7 @@ export const TRUST: { key: string; title: string; body: string }[] = [
   {
     key: "method",
     title: "Method-matched, always",
-    body: "The roof gets a soft wash. The driveway gets the surface cleaner. We check before we bring either one out.",
+    body: "The roof gets a soft wash. The parking lot gets hot water. We check before we bring either one out.",
   },
   {
     key: "recurring",
@@ -57,7 +57,7 @@ export const TRUST: { key: string; title: string; body: string }[] = [
 ];
 
 export const COMMERCIAL_CTA_BODY =
-  "Book a free commercial walkthrough and get an itemized price the same day. Backed by our Clean Water Promise: we re-rinse anything you’re not happy with, free, within 48 hours.";
+  "Book a free walkthrough and get an itemized price the same day. We try to finish before you open, because nobody wants to step over a hose on the way in.";
 
 /** The method keys the page features, in page order (see METHODS in methods.ts). */
 export const COMMERCIAL_METHOD_KEYS = ["flatwork", "grease", "siding", "glass", "masonry", "roof"];
@@ -70,5 +70,5 @@ export const COMMERCIAL_FAQ: { q: string; a: string }[] = [
   { q: "Do you offer recurring maintenance plans for commercial properties?", a: TRUST[2].body },
   { q: "How do you decide which cleaning method to use?", a: TRUST[1].body },
   { q: "Who do you work with on commercial properties?", a: AUDIENCES.map((a) => `${a.title}: ${a.body}`).join(" ") },
-  { q: "What if I am not happy with the result?", a: COMMERCIAL_CTA_BODY.split("Backed by our Clean Water Promise: ")[1].replace(/^we/, "We") },
+  { q: "What if I am not happy with the result?", a: "We re-rinse anything you’re not happy with, free, within 48 hours. That’s our Clean Water Promise." },
 ];

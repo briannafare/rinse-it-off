@@ -256,9 +256,9 @@ export default function AssessmentPage() {
             {fromPlan
               ? "Pick a time below. We walk around the house, confirm the work, and give you your exact monthly price for the yearly plan. No charge, no commitment."
               : propertyType === "commercial"
-                ? "Pick a time and we'll walk the property with you. You get the 21-point report and an itemized price the same day. Not ready to pick a time? Ask for a written quote instead."
+                ? "Pick a time and we'll walk the property with you. Itemized price the same day. Not ready? Ask for a written quote."
                 : propertyType === "residential"
-                  ? "Pick a time and we'll look at the house with you. The visit is free, and you get an itemized price that day. Rather skip the visit? Ask for a written quote instead."
+                  ? "Pick a time and we'll look at the house with you. It's free, and you get a price that day."
                   : "We come to you, walk the property, and give you an itemized price the same day. The visit is free."}
           </p>
         </div>

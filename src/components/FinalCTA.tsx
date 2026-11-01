@@ -32,11 +32,10 @@ export function FinalCTA() {
             <span>The report is yours either way.</span>
           </h2>
           <p className="mt-4 max-w-lg text-lg text-[#0C1215]">
-            You get an itemized price the same day, for a parking lot or a driveway.
+            An itemized price the same day, for a parking lot or a driveway.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-            <RetroButton href="/assessment?type=commercial">Book a free commercial walkthrough</RetroButton>
-            <RetroButton href="/assessment?type=residential">Get a price for your first home cleaning</RetroButton>
+          <div className="mt-8 flex flex-wrap items-center gap-6">
+            <RetroButton href="/assessment">Book my free walkthrough</RetroButton>
             <a
               href="tel:+19716264146"
               className="link-plain focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]"
