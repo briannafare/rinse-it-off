@@ -42,6 +42,8 @@ type Slide = {
   accent: string;
   body: React.ReactNode;
   cta: { label: string; href: string };
+  /** a second, smaller way in, under the button */
+  oneOff?: { label: string; href: string };
   img: string;
   /** focal point, so phones crop onto the people, not the siding */
   pos: string;
@@ -83,6 +85,8 @@ const SLIDES: Slide[] = [
       </>
     ),
     cta: { label: "Get my home price", href: "/plan?src=home-hero" },
+    // /plan only prices the yearly plan, so a one-time cleaning needs its own door
+    oneOff: { label: "One cleaning? Book a free walkthrough", href: "/assessment?type=residential" },
     img: "/brand/retro/hero-home.webp",
     pos: "object-[46%_38%] md:object-[40%_40%]",
     alt: "Two Rinse It Off cleaners at a mid-century house with a wall of tall windows, one washing the high glass from the ground with a water-fed pole",
@@ -196,8 +200,13 @@ export function CinematicHero() {
                 );
               })()}
 
-              <motion.div key={`${s.key}-cta-${active}`} {...rise(0.2)} className="mt-6 flex flex-col gap-3 md:mt-10 md:flex-row md:items-center md:gap-5">
+              <motion.div key={`${s.key}-cta-${active}`} {...rise(0.2)} className="mt-6 flex flex-col gap-3 md:mt-10 md:flex-row md:flex-wrap md:items-center md:gap-5">
                 <RetroButton href={s.cta.href}>{s.cta.label}</RetroButton>
+                {s.oneOff && (
+                  <a href={s.oneOff.href} className="inline-flex min-h-11 items-center self-start whitespace-nowrap text-[15px] font-semibold text-brand-black underline decoration-[#F2B632] decoration-[3px] underline-offset-4 hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] md:order-last md:basis-full md:text-base">
+                    {s.oneOff.label} &rarr;
+                  </a>
+                )}
                 <a href={PHONE_TEL} className="link-plain !hidden text-lg md:!inline-flex focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]">
                   <Phone className="h-5 w-5" aria-hidden />
                   {PHONE_DISPLAY}
@@ -216,7 +225,7 @@ export function CinematicHero() {
         <HalFlyIn
           className={`pointer-events-none absolute left-[4%] z-20 transition-[top,width,opacity] duration-700 ease-out motion-reduce:transition-none md:left-auto md:right-[6%] md:top-[19%] md:w-[15vw] md:max-w-[270px] ${
             SLIDES[active].key === "home"
-              ? "top-[calc(260px+37vw)] w-[clamp(96px,calc((100svh-368px-37vw)*1.4),min(40vw,220px))]"
+              ? "top-[calc(316px+37vw)] w-[clamp(96px,calc((100svh-424px-37vw)*1.4),min(40vw,220px))]"
               : "top-[calc(266px+64vw)] w-[clamp(96px,calc((100svh-374px-64vw)*1.4),min(40vw,220px))] max-md:[@media(max-height:699px)]:opacity-0"
           }`}
         />
