@@ -71,7 +71,7 @@ const OPENERS = [
 ] as const;
 
 const METHOD_LINES = [
-  "We start every job the same way — a free 21-point property audit — then match the right pressure, temperature, and chemistry to each surface instead of blasting everything the same.",
+  "We start every job the same way — a free 21-point walkthrough — then match the right pressure, temperature, and chemistry to each surface instead of blasting everything the same.",
   "Rather than point one pressure setting at every surface, we assess the property first and match the method: soft wash for roofs and siding, hot water for grease, pure water for glass.",
   "Our whole approach is method-matching. We look at what each surface actually needs, then use the gentlest process that still gets it fully clean — no stripped shingles, no etched concrete.",
   "Pressure is a tool, not a default. We walk the property, note every surface, and match soft washing, hot water, or a pure-water rinse to the material in front of us.",
@@ -236,7 +236,7 @@ export default async function AreaPage({
                   className="group inline-flex items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-retro-pool"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  Get your free assessment
+                  Get your free walkthrough
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
                 </a>
                 <a
@@ -250,7 +250,7 @@ export default async function AreaPage({
               </div>
 
               <p className="mt-8 text-sm text-[#3B4247]">
-                Insured · Free 21-point property audit · Firm, itemized quote the same day we walk your property.
+                Insured · Free 21-point walkthrough · Firm, itemized quote the same day we walk your property.
               </p>
             </div>
           </div>
@@ -304,7 +304,7 @@ export default async function AreaPage({
                 className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl px-5 py-3 font-semibold text-[#0C1215] ring-1 ring-retro-line transition-colors hover:ring-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Business or property manager? Book a property audit
+                Business or property manager? Book a free commercial walkthrough
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </a>
             </div>
@@ -322,7 +322,7 @@ export default async function AreaPage({
                 How we&apos;d approach a {area.name} property
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-[#3B4247]">
-                Six methods, one crew. On your free audit we walk {area.name} with you and note
+                Six methods, one crew. On your free walkthrough we walk {area.name} with you and note
                 which of these each surface actually needs.
               </p>
             </header>
@@ -424,7 +424,7 @@ export default async function AreaPage({
               </div>
             </div>
             <ul className="flex flex-shrink-0 flex-col gap-2">
-              {["Insured", "Free 21-point audit", "Same-day itemized quote"].map((t) => (
+              {["Insured", "Free 21-point walkthrough", "Same-day itemized quote"].map((t) => (
                 <li key={t} className="flex items-center gap-2 text-sm font-medium text-[#0C1215]">
                   <Check className="h-4 w-4 text-[#1A6E93]" strokeWidth={3} aria-hidden />
                   {t}
@@ -509,7 +509,7 @@ export default async function AreaPage({
                 Ready for a cleaner exterior in {area.name}?
               </h2>
               <p className="mt-4 max-w-lg text-lg text-[#0C1215]/85">
-                Book your free 21-point property audit and get a firm, itemized quote the same day we
+                Book your free 21-point walkthrough and get a firm, itemized quote the same day we
                 walk your property — home or business. Backed by our Clean Water Promise.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-6">

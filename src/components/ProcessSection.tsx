@@ -2,28 +2,27 @@
 import { useEffect, useRef, useState } from "react";
 import { useScrollReveal, useStaggerReveal } from "@/lib/gsap";
 
-/** Show the machine actually working (real footage), beside the four-step
- *  money path. Risk-reversal copy: nothing charges until they approve. */
+/** Block 4: how a quote works, beside real footage. Copy: SuperMe website panel, 2026-10-28/29. */
 const STEPS = [
   {
     n: "01",
-    title: "We walk it with you, free",
-    body: "We look at every surface on site, whether that's a house, a storefront or a whole facility, and you get a firm itemized quote the same day. It's 21 points and it costs nothing.",
+    title: "Pick a time, or skip it",
+    body: "Pick a walkthrough time, or skip it and ask for a written quote.",
   },
   {
     n: "02",
-    title: "Reserve your slot, lock your price",
-    body: "Accept the quote and pick your day. Your price is locked, and a small deposit holds the date. Nothing else charges yet.",
+    title: "We write it down",
+    body: "We photograph what we find and write down how to treat each item. Hand the report to your own crew if you like.",
   },
   {
     n: "03",
-    title: "We clean. You walk it.",
-    body: "Every surface gets the method it needs, at your house or at your building. When we're done you walk the job with us before anything else happens.",
+    title: "You get a price the same day",
+    body: "You get an itemized price the same day. Take all of it or part of it.",
   },
   {
     n: "04",
-    title: "Pay the rest only when it's right",
-    body: "The balance settles after that walkthrough. If something isn't right, the Clean Water Promise covers it and we come back to re-rinse it free within 48 hours.",
+    title: "For homes: the plan, if you want it",
+    body: "When we're done, we show you the photos and what's due next season. Join the plan within a week and $350 comes off.",
   },
 ];
 
@@ -77,7 +76,7 @@ export function ProcessSection() {
             className="max-w-2xl text-3xl font-medium text-[#0C1215] md:text-4xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            You approve the work before the balance ever charges.
+            Getting a price takes one visit, or none.
           </h2>
         </div>
 
@@ -130,7 +129,7 @@ export function ProcessSection() {
             href="/assessment"
             className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
           >
-            Book your free 21-point audit
+            Book my free walkthrough
           </a>
         </div>
       </div>

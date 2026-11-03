@@ -12,7 +12,7 @@ export const PLAN_LABEL = "The yearly home plan · from $189 a month";
 export const PLAN_HEADLINE = "We clean the outside of your house every season, so the moss never gets a head start.";
 
 export const PLAN_BODY =
-  "Moss on the roof, green film on the siding, black streaks on the driveway. Around here all of it grows back, and it grows back faster on the side that doesn't get sun. The plan puts us on your calendar every season, so the cleaning happens before anyone brings it up at Thanksgiving. You don't have to book anything. We schedule each visit and text you before we come.";
+  "Moss on the roof, green film on the siding, black streaks on the driveway. Around here it all grows back. The plan puts us on your calendar every season, and we text you before each visit.";
 
 export const PLAN_NOTE = "Four stories or a steep lot? You'll still get a price range right away, and a real person confirms the exact number.";
 
@@ -21,19 +21,19 @@ export const PLAN_SEASONS = [
     name: "Spring",
     title: "Roof and siding",
     img: "/brand/retro/season-spring.webp",
-    work: "We treat the moss on your roof with a low-pressure soft wash that kills it at the root, so it isn't blasted around and the shingles keep their grit. Then we wash the green film off the siding.",
+    work: "A low-pressure soft wash kills the roof moss at the root. Then the green film comes off the siding.",
   },
   {
     name: "Summer",
     title: "Driveway, walkways and patio",
     img: "/brand/retro/season-summer.webp",
-    work: "Hot water and a big round surface cleaner, which spins across the concrete like a floor scrubber, lift the black algae, the grime and that dark spot where the car parks.",
+    work: "Hot water and a spinning surface cleaner lift the algae, the grime and that dark spot where the car parks.",
   },
   {
     name: "Fall",
     title: "Gutters",
     img: "/brand/retro/season-fall.webp",
-    work: "We wait until the leaves are down, then clear the gutters and flush the downspouts, so one cleaning lasts the whole winter.",
+    work: "Once the leaves are down, we clear the gutters and flush the downspouts.",
   },
   {
     name: "Winter",
@@ -44,7 +44,7 @@ export const PLAN_SEASONS = [
 ];
 
 export const PLAN_EVERY_VISIT =
-  "Free window cleaning. We clean the outside of every window with pure water on a water-fed pole, so the glass dries without spots. A window cleaning on its own starts at $500, so four a year would cost at least $2,000. On the plan they don't add anything to your price.";
+  "Free window cleaning. Outside windows at every visit, with pure water so the glass dries without spots. On their own, window cleanings start at $500. On the plan they add nothing to your price.";
 
 export const PLAN_INCLUDED = [
   "Before-and-after photos of every visit",
@@ -53,7 +53,7 @@ export const PLAN_INCLUDED = [
 ];
 
 export const PLAN_VALUE =
-  "If you booked these visits one at a time, even a small one-story house would pay at least $4,300 a year. On the plan, a basic three-bedroom home pays $189 a month, about $2,270 a year. Bigger homes cost more, and the online price shows yours. It's a 12-month membership, billed monthly.";
+  "Booked one at a time, these visits cost even a small one-story house at least $4,300 a year. On the plan, an easy single-story home up to 1,500 sq ft pays $189 a month, about $2,270 a year. It's a 12-month membership, billed monthly.";
 
 export const PLAN_CTA_NOTE = "It takes about a minute, and you see the number before we ask for your name or phone number.";
 

@@ -6,7 +6,7 @@
  *  method page's "other methods" row at six.
  *
  *  Locked facts (brand brain, Bri 2026-09-26): cleaned once the leaves are down, in
- *  November or December; a second cleaning is an optional add-on on the date they choose (we suggest January or February).
+ *  whenever they're clogged (Bri, 2026-10-24: no season rule); usually late October through winter, with an optional second cleaning a couple of months later.
  *  Never "twice every fall", never October timing, never lifts or high reach. Gutters are
  *  the fall visit of the yearly plan (plan-copy.ts). The opening is Sample A on the
  *  Rinse It Off style sheet, approved by Bri 2026-10-08. */
@@ -18,7 +18,7 @@ export const GUTTER_PATH = `/services/${GUTTER_SLUG}`;
 export const GUTTER_META_TITLE = "Gutter Cleaning in Portland, OR";
 
 export const GUTTER_META_DESCRIPTION =
-  "Gutter cleaning for Portland-area homes, done once the leaves are down in November or December. Part of the yearly plan, with an optional second cleaning.";
+  "Gutter cleaning for Portland-area homes, whenever they're clogged. Gutters start at $350, or come with the yearly plan as its fall visit.";
 
 export const GUTTER_H1 = "Gutter cleaning";
 
@@ -30,7 +30,7 @@ export const GUTTER_LEAD = [
 export const GUTTER_WHEN_TITLE = "When we clean them";
 
 export const GUTTER_WHEN = [
-  "We do gutters once the leaves are down, in November or December, so one cleaning does it. You can add a second cleaning whenever you want one. We suggest January or February, after the late trees finish dropping.",
+  "We clean gutters whenever they're clogged. Around here that's usually late October through winter, plus a second pass a couple of months later.",
   "We scoop out the leaves and needles and flush the downspouts, so the rain has somewhere to go all winter.",
   "The black streaks down the outside of a gutter are a separate job called gutter whitening. You can add it when you get your price.",
 ];
@@ -38,19 +38,19 @@ export const GUTTER_WHEN = [
 export const GUTTER_PLAN_TITLE = "Gutters come with the yearly plan";
 
 export const GUTTER_PLAN = [
-  "Gutters are the fall visit on our yearly home plan. In spring we clean the roof and siding. In summer we do the driveway, walkways and patio, and in winter we rinse the steps and entries. The windows get cleaned free at every visit, four times a year.",
+  "Gutters are the fall visit on our yearly home plan. In spring we clean the roof and siding. In summer we do the driveway, walkways and patio, and in winter we rinse the steps and entries. On the yearly plan, the outside windows are free at every visit.",
   "The plan starts from $189 a month and is priced for your house. You can see yours online in about a minute, before we ask for your name or number.",
 ];
 
 export const GUTTER_OTHER_TITLE = "Gutters on their own";
 
 export const GUTTER_OTHER =
-  "If you only want the gutters cleaned, or the gutters are on an apartment building, an office or an HOA's buildings, start with a free walkthrough. We look at the property and give you a price for the work.";
+  "Gutters on their own start at $350. If you only want the gutters cleaned, or the gutters are on an apartment building, an office or an HOA's buildings, start with a free walkthrough. We look at the property and give you a price for the work.";
 
 export const GUTTER_FAQS: FAQItem[] = [
   {
     q: "When should gutters be cleaned in the Portland area?",
-    a: "Once the leaves are down, which is usually November or December. Gutters cleaned in October tend to fill up again when the last leaves fall. If your trees drop late, a second cleaning catches the rest. You pick the date; we suggest January or February.",
+    a: "Whenever they're clogged. Around here that's usually late October through winter, and a second cleaning a couple of months later catches what the late trees drop.",
   },
   {
     q: "Do I need the yearly plan to get my gutters cleaned?",

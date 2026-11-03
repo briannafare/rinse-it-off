@@ -35,7 +35,7 @@ export default function ContactPage() {
               Get in touch
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[#0C1215]/80">
-              Questions, scheduling, or ready for your free property assessment — here&apos;s
+              Questions, scheduling, or ready for your free walkthrough — here&apos;s
               how to reach us. We serve homeowners and businesses across the Portland metro.
             </p>
           </div>
@@ -122,11 +122,10 @@ export default function ContactPage() {
                 className="text-[clamp(1.5rem,3vw,2.1rem)] leading-[1.1] tracking-[-0.02em] text-[#0C1215]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
               >
-                Ready for a free property assessment?
+                Ready for a free walkthrough?
               </h2>
               <p className="mt-3 max-w-xl text-base leading-relaxed text-[#0C1215]/80">
-                We walk your property, read every surface, and hand you a firm, itemized
-                quote the same day. No obligation — just an honest look.
+                We walk the property with you and send an itemized price the same day.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
                 <a
@@ -134,7 +133,7 @@ export default function ContactPage() {
                   className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  Book your free assessment
+                  Book your free walkthrough
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
                 </a>
                 <a

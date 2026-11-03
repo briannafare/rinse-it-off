@@ -104,7 +104,7 @@ export function Navbar() {
               href="/assessment"
               className="btn-print inline-flex min-h-[48px] items-center whitespace-nowrap bg-[#F2B632] px-6 leading-none text-[#0C1215] transition-colors duration-300 hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
             >
-              Free assessment
+              Free walkthrough
             </a>
           </div>
 
@@ -181,7 +181,7 @@ export function Navbar() {
                 className="btn-print bg-[#F2B632] px-6 py-4 text-center text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Free assessment
+                Free walkthrough
               </a>
             </div>
           </motion.div>

@@ -8,10 +8,10 @@ type Stat =
   | { text: string; label: string; note: string };
 
 const STATS: Stat[] = [
-  { value: 157, suffix: "", label: "rainy days a year, give or take", note: "Moss never takes a season off." },
+  { text: "$189", label: "a month, the yearly plan", note: "Four cleanings, free windows at each." },
   { value: 48, suffix: "hr", label: "re-rinse guarantee", note: "Anything you're not happy with, redone free." },
-  { value: 21, suffix: "-pt", label: "free property audit", note: "Photo-documented, board-ready." },
-  { text: "same-day", label: "quote", note: "A firm number the day we walk your property." },
+  { value: 21, suffix: "-pt", label: "free walkthrough", note: "Photos of every problem spot." },
+  { text: "same-day", label: "quote", note: "Itemized, the day we walk your property." },
 ];
 
 function CountUp({ target, suffix }: { target: number; suffix: string }) {

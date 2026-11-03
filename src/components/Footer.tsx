@@ -24,6 +24,7 @@ const commercialServices = [
 
 const companyLinks = [
   { label: "Yearly Plan", href: "/plan" },
+  { label: "Holiday Lights", href: "/holiday-lights" },
   { label: "About Us", href: "/about" },
   { label: "How It Works", href: "/#process" },
   { label: "Commercial", href: "/commercial" },
@@ -141,7 +142,7 @@ export function Footer() {
               href="/assessment"
               className="group inline-flex min-h-11 items-center gap-2 rounded-[14px] btn-print bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark motion-reduce:transition-none"
             >
-              Free Assessment
+              Free Walkthrough
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" />
             </a>
           </div>

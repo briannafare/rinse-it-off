@@ -63,7 +63,7 @@ export function Methods() {
             className="inline-flex items-center gap-2 rounded-full bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Get your free property assessment
+            Get your free walkthrough
             <ArrowRight className="h-4 w-4" aria-hidden />
           </a>
           <span className="text-sm text-[#5F676C]">
