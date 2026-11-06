@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
+import { appointmentWindow } from "@/lib/appointment-time.mjs";
 import { depositCheckoutPlan } from "@/lib/deposit-checkout.mjs";
 import { ADD_ONS, DEPOSIT_USD, EXACT_KEYS, MULTI_YEAR_PREPAID_DISCOUNT, WINDOW_VISITS_PER_YEAR, addOnEstimate, cleanRange, depositSchedule, effectivePrice, handPriceReasons, handRange, prepaidTermTotal, priceHouse, rangePosition, type AddOnAnswer, type AddressParts, type ExactInputs, type HouseInputs, type TermYears } from "./pricing";
 
@@ -559,11 +560,11 @@ export async function bookFirstVisit(input: BookVisitInput): Promise<{ ok: boole
     if (!GHL_API_KEY || !GHL_LOCATION_ID || !looksLikeGhlId(input.contactId)) return soft;
     const start = new Date(input.startISO);
     if (Number.isNaN(start.getTime()) || start.getTime() < Date.now()) return soft;
-    const endISO = new Date(start.getTime() + SLOT_MINUTES * 60000).toISOString();
+    const win = appointmentWindow(input.startISO, SLOT_MINUTES)!; // Pacific start + end, see lib/appointment-time.mjs
     const name = String(input.name || "").trim().slice(0, 120);
 
     if (DRY_RUN) {
-      dryLog("book a first visit on the assessment calendar", { contactId: input.contactId, name, startISO: input.startISO, endISO });
+      dryLog("book a first visit on the assessment calendar", { contactId: input.contactId, name, startISO: win.startTime, endISO: win.endTime });
       await addTags(input.contactId, ["membership-visit-booked"]);
       return { ok: true };
     }
@@ -575,8 +576,8 @@ export async function bookFirstVisit(input: BookVisitInput): Promise<{ ok: boole
         calendarId: AUDIT_CALENDAR_ID,
         locationId: GHL_LOCATION_ID,
         contactId: input.contactId,
-        startTime: input.startISO,
-        endTime: endISO,
+        startTime: win.startTime,
+        endTime: win.endTime,
         title: `First membership visit · ${name}`,
         appointmentStatus: "confirmed",
       }),

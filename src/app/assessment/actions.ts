@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
+import { appointmentWindow } from "@/lib/appointment-time.mjs";
 import { cleanRange } from "../plan/pricing";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
@@ -231,8 +232,10 @@ export async function submitAssessmentForm(
     //    the requested time is in the note and the crew follows up.
     if (contactId && data.appointmentISO) {
       try {
-        const startISO = data.appointmentISO;
-        const endISO = new Date(new Date(startISO).getTime() + SLOT_MINUTES * 60000).toISOString();
+        // Start AND end as Pacific wall time + offset. A UTC "Z" endTime made
+        // GHL book 11:00 AM-7:45 PM (2026-11-06) — see lib/appointment-time.mjs.
+        const win = appointmentWindow(data.appointmentISO, SLOT_MINUTES);
+        if (!win) throw new Error(`Unreadable appointment time: ${data.appointmentISO}`);
         const apptRes = await fetch(`${GHL_API_BASE}/calendars/events/appointments`, {
           method: "POST",
           headers: { ...ghlHeaders, Version: "2021-04-15" },
@@ -240,8 +243,8 @@ export async function submitAssessmentForm(
             calendarId: AUDIT_CALENDAR_ID,
             locationId: GHL_LOCATION_ID,
             contactId,
-            startTime: startISO,
-            endTime: endISO,
+            startTime: win.startTime,
+            endTime: win.endTime,
             title: `Property audit — ${data.name}`,
             appointmentStatus: "confirmed",
           }),
