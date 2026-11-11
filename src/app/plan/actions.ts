@@ -291,6 +291,8 @@ export async function submitPlanQuote(data: PlanQuoteData): Promise<PlanQuoteRes
           // Consent record, same two fields the Blitz uses (created 2026-08-13).
           { key: "consent_written_source", field_value: "rinseitoff.com/plan checkbox: text and email me about my quote and visits" },
           { key: "consent_written_date", field_value: consentDate },
+          // The whole calculator note again, so the team alerts can print it (notes never merge; Bri 2026-11-10).
+          { key: "form_answers", field_value: noteLines.join("\n") },
         ],
       }),
     });
