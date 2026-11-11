@@ -101,7 +101,8 @@ export default function GutterCleaningPage() {
             ))}
           </div>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <RetroButton href="/plan?src=gutters">See my price</RetroButton>
+            <RetroButton href="/book?service=gutters&src=gutters">Book a gutter cleaning</RetroButton>
+            <RetroButton href="/plan?src=gutters" tone="cream">Yearly plan price</RetroButton>
             <a href={PHONE_TEL} className="link-plain">
               <Phone className="h-4 w-4" aria-hidden />
               {PHONE_DISPLAY}
@@ -161,7 +162,7 @@ export default function GutterCleaningPage() {
             <h2 className="text-[clamp(1.6rem,3.5vw,2.3rem)] leading-[1.05] text-[#0C1215]">{GUTTER_OTHER_TITLE}</h2>
             <p className="mt-4 text-lg leading-relaxed text-[#3B4247]">{GUTTER_OTHER}</p>
             <div className="mt-6">
-              <RetroButton href="/assessment">Book a free walkthrough</RetroButton>
+              <RetroButton href="/book?service=gutters&src=gutters-own">Book the gutters</RetroButton>
             </div>
           </div>
         </div>

@@ -24,6 +24,7 @@ const commercialServices = [
 
 const companyLinks = [
   { label: "Yearly Plan", href: "/plan" },
+  { label: "One-Time Cleaning", href: "/book?src=footer" },
   { label: "Holiday Lights", href: "/holiday-lights" },
   { label: "About Us", href: "/about" },
   { label: "How It Works", href: "/#process" },

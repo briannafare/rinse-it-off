@@ -56,6 +56,8 @@ export interface AssessmentFormData {
   appointmentISO?: string; // exact slot from GHL free-slots (has -07:00/-08:00 offset)
   source?: string; // which form sent it, so flyer QR leads are attributable in GHL
   rangeShown?: { low: number; high: number; label: string }; // the /plan range they saw before booking
+  // /book (one-time home cleaning): house size + stories, and whether they want a visit or a rough price by text
+  oneTime?: { size?: string; stories?: string; wants: "visit" | "text-price" };
 }
 
 /** Real availability for the audit calendar. Returns { "YYYY-MM-DD": ISO[] } in
@@ -124,11 +126,17 @@ export async function submitAssessmentForm(
     const firstName = nameParts[0] || "";
     const lastName = nameParts.slice(1).join(" ") || "";
 
+    const once = data.oneTime;
     const notesLines: string[] = [
+      ...(once ? [once.wants === "text-price"
+        ? "ONE-TIME CLEANING: wants a rough price BY TEXT. Text them a ballpark from the details below."
+        : "ONE-TIME CLEANING: booked a free look at the house (see the time below)."] : []),
       `Property Type: ${data.propertyType}`,
       `Services Requested: ${data.services.join(", ") || "Not specified"}`,
     ];
     if (data.address) notesLines.push(`Property Address: ${data.address}`);
+    if (once?.size) notesLines.push(`House size: ${once.size}`);
+    if (once?.stories) notesLines.push(`Stories: ${once.stories}`);
     if (data.appointmentDate && data.appointmentTime) {
       notesLines.push(`Requested Assessment: ${data.appointmentDate} at ${data.appointmentTime}`);
     }
@@ -156,6 +164,7 @@ export async function submitAssessmentForm(
         "website-assessment",
         isCommercial ? "lead-com" : "lead-res",
         ...(seen ? ["plan-range-shown"] : []),
+        ...(once ? ["one-time-clean", ...(once.wants === "text-price" ? ["price-by-text"] : [])] : []),
         ...(flagged ? ["needs-review"] : []),
       ],
       customFields,
@@ -195,7 +204,7 @@ export async function submitAssessmentForm(
             locationId: GHL_LOCATION_ID,
             pipelineStageId: stageId,
             contactId,
-            name: `${data.name} — ${isCommercial ? "Commercial" : "Residential"} property audit`,
+            name: `${data.name} — ${once ? "One-time cleaning" : `${isCommercial ? "Commercial" : "Residential"} property audit`}`,
             status: "open",
             source,
           }),
@@ -245,7 +254,7 @@ export async function submitAssessmentForm(
             contactId,
             startTime: win.startTime,
             endTime: win.endTime,
-            title: `Property audit — ${data.name}`,
+            title: `${once ? "One-time cleaning look" : "Property audit"} — ${data.name}`,
             appointmentStatus: "confirmed",
           }),
         });

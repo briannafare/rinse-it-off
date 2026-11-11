@@ -114,7 +114,7 @@ export default function ServicesIndexPage() {
                 Free walkthrough
               </Link>
               <Link
-                href="/assessment?type=residential"
+                href="/book?src=services"
                 className="inline-flex items-center gap-2 rounded-full bg-[#F2B632] px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-[#F6C451] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transition-none"
                 style={{ fontFamily: "var(--font-display)" }}
               >

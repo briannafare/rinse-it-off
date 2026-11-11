@@ -7,11 +7,14 @@ import { usePathname } from "next/navigation";
 import { PromoBar } from "@/components/PromoBar";
 
 const LINKS = [
+  { label: "One-time cleaning", href: "/book?src=nav" },
+  { label: "Yearly plan", href: "/plan?src=nav" },
   { label: "Services", href: "/services" },
   { label: "Commercial", href: "/commercial" },
-  { label: "Proof", href: "/#proof" },
-  { label: "FAQ", href: "/#faq" },
-  { label: "Blog", href: "/blog" },
+  // wide: desktop shows these only from xl up, so the two homeowner doors fit at laptop widths
+  { label: "Proof", href: "/#proof", wide: true },
+  { label: "FAQ", href: "/#faq", wide: true },
+  { label: "Blog", href: "/blog", wide: true },
 ];
 
 const PHONE_DISPLAY = "(971) 626-4146";
@@ -80,12 +83,12 @@ export function Navbar() {
             />
           </a>
 
-          <div className="hidden items-center gap-8 md:flex">
+          <div className="hidden items-center gap-5 md:flex lg:gap-7">
             {LINKS.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
-                className={`label-caps !text-[0.8rem] !font-semibold rounded px-1 transition-colors duration-300 ${ink} hover:!text-[#1A6E93] ${focusRing} ${offset} motion-reduce:transition-none`}
+                className={`label-caps !text-[0.8rem] !font-semibold whitespace-nowrap rounded px-1 ${"wide" in l ? "hidden xl:inline" : ""} transition-colors duration-300 ${ink} hover:!text-[#1A6E93] ${focusRing} ${offset} motion-reduce:transition-none`}
               >
                 {l.label}
               </a>

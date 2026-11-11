@@ -19,8 +19,8 @@ const FUNNELS = [
   {
     title: "For my home",
     body: "Driveway, siding, roof, gutters, deck. We walk it with you, then hand you a firm price the same day, itemized so you can take part of it or all of it.",
-    cta: "Get my home quote",
-    href: "/assessment?type=residential",
+    cta: "Book a one-time cleaning",
+    href: "/book?src=home-card",
     img: "/brand/retro/i-home-wide.webp",
     alt: "A flat 1960s-style illustration of a cleaner washing a house's tall windows with a water-fed pole while the homeowners watch",
   },

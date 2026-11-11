@@ -15,6 +15,16 @@ const BASE_URL = "https://rinseitoff.com";
 
 type Params = { slug: string };
 
+// service page → the box it ticks on /book
+const BOOK_SERVICE: Record<string, string> = {
+  "roof-soft-wash": "roof-moss",
+  "concrete-surface-cleaning": "driveway",
+  "hot-water-degreasing": "driveway",
+  "pure-water-window-cleaning": "windows",
+  "brick-masonry-washing": "house-wash",
+  "house-washing": "house-wash",
+};
+
 /** Pre-render one page per service at build time. */
 export function generateStaticParams() {
   return SERVICE_SLUGS.map((slug) => ({ slug }));
@@ -130,7 +140,8 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
           <h1 className="text-[clamp(2.5rem,8vw,4.6rem)] leading-[0.95] text-brand-black [text-wrap:balance]">{service.h1}</h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#3B4247]">{service.what}</p>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <RetroButton href="/assessment" signature>Get your free walkthrough</RetroButton>
+            <RetroButton href={`/book?service=${BOOK_SERVICE[service.slug] ?? "not-sure"}&src=service-${service.slug}`} signature>Book one cleaning</RetroButton>
+            <RetroButton href="/assessment?type=commercial" tone="cream">For a business</RetroButton>
             <a href={PHONE_TEL} className="-mx-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg px-2 text-base font-semibold text-brand-black hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]">
               <Phone className="h-4 w-4" aria-hidden />
               {PHONE_DISPLAY}
@@ -362,7 +373,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden />
             </Link>
             <Link
-              href="/assessment?type=residential"
+              href="/book?src=services"
               className="inline-flex items-center gap-2 rounded-xl border border-[#0C1215]/15 bg-white/5 px-6 py-3.5 text-sm font-semibold text-[#0C1215] transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#62C4EB] motion-reduce:transition-none"
               style={{ fontFamily: "var(--font-display)" }}
             >

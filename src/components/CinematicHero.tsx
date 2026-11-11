@@ -42,8 +42,8 @@ type Slide = {
   accent: string;
   body: React.ReactNode;
   cta: { label: string; href: string };
-  /** a second, smaller way in, under the button */
-  oneOff?: { label: string; href: string };
+  /** a second button at the same size, beside the first */
+  second?: { label: string; href: string };
   img: string;
   /** focal point, so phones crop onto the people, not the siding */
   pos: string;
@@ -84,9 +84,10 @@ const SLIDES: Slide[] = [
         From <span className="font-semibold text-brand-black">$189 a month</span>.
       </>
     ),
-    cta: { label: "Get my home price", href: "/plan?src=home-hero" },
-    // /plan only prices the yearly plan, so a one-time cleaning needs its own door
-    oneOff: { label: "One cleaning? Book a free walkthrough", href: "/assessment?type=residential" },
+    cta: { label: "Get my plan price", href: "/plan?src=home-hero" },
+    // the plan and a single cleaning get equal buttons (Bri 2026-11-10: the membership
+    // should not be the only way people can get service)
+    second: { label: "Book one cleaning", href: "/book?src=home-hero" },
     img: "/brand/retro/hero-home.webp",
     pos: "object-[46%_38%] md:object-[40%_40%]",
     alt: "Two Rinse It Off cleaners at a mid-century house with a wall of tall windows, one washing the high glass from the ground with a water-fed pole",
@@ -202,11 +203,7 @@ export function CinematicHero() {
 
               <motion.div key={`${s.key}-cta-${active}`} {...rise(0.2)} className="mt-6 flex flex-col gap-3 md:mt-10 md:flex-row md:flex-wrap md:items-center md:gap-5">
                 <RetroButton href={s.cta.href}>{s.cta.label}</RetroButton>
-                {s.oneOff && (
-                  <a href={s.oneOff.href} className="inline-flex min-h-11 items-center self-start whitespace-nowrap text-[15px] font-semibold text-brand-black underline decoration-[#F2B632] decoration-[3px] underline-offset-4 hover:text-[#1A6E93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] md:order-last md:basis-full md:text-base">
-                    {s.oneOff.label} &rarr;
-                  </a>
-                )}
+                {s.second && <RetroButton href={s.second.href} tone="cream">{s.second.label}</RetroButton>}
                 <a href={PHONE_TEL} className="link-plain !hidden text-lg md:!inline-flex focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93]">
                   <Phone className="h-5 w-5" aria-hidden />
                   {PHONE_DISPLAY}

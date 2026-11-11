@@ -134,7 +134,8 @@ export default function AssessmentPage() {
     const [lo, hi] = (q.get("range") || "").split("-").map(Number);
     if (lo > 0 && hi >= lo) setRangeShown({ low: lo, high: hi, label: q.get("for") || "" });
     if (src !== null) { setPropertyType("residential"); setFromPlan(src.replace(/[^\w-]/g, "").slice(0, 40) || "direct"); }
-    else if (t === "residential" || t === "commercial") setPropertyType(t);
+    else if (t === "residential") window.location.replace("/book?src=assessment-link");
+    else if (t === "commercial") setPropertyType(t);
   }, []);
 
   // Pull real availability for the audit calendar once. GHL's free-slots endpoint
@@ -274,7 +275,7 @@ export default function AssessmentPage() {
               <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 10 }}>What type of property?</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                 {(["commercial", "residential"] as const).map((t) => (
-                  <button key={t} type="button" onClick={() => { setPropertyType(t); setServices([]); }}
+                  <button key={t} type="button" onClick={() => { if (t === "residential" && !fromPlan) { window.location.href = "/book?src=assessment"; return; } setPropertyType(t); setServices([]); }}
                     style={{
                       padding: "14px 16px", border: propertyType === t ? "2px solid var(--blue)" : "2px solid var(--border)",
                       borderRadius: "var(--r-md)", background: propertyType === t ? "var(--ink)" : "var(--surface)",

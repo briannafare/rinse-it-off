@@ -292,7 +292,7 @@ export default async function AreaPage({
 
             <div className="mt-8 flex flex-wrap gap-3 text-sm">
               <a
-                href="/assessment?type=residential"
+                href="/book?src=areas"
                 className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl bg-[#E6F5FC] px-5 py-3 font-semibold text-[#0C1215] transition-colors hover:bg-[#DDF0FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 style={{ fontFamily: "var(--font-display)" }}
               >
