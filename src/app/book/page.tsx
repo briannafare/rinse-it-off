@@ -64,10 +64,10 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
 // two or more services together have none.
 function minimumLine(picked: string[]) {
   const real = picked.filter((k) => k !== "not-sure");
-  if (real.length >= 2) return "Two or more services together have no minimum. We confirm the exact price.";
-  if (real.length === 1 && real[0] === "driveway") return "A driveway on its own starts at $500. Add another service and that minimum goes away.";
-  if (real.length === 1) return "One service on its own starts at $350. Add another and that minimum goes away.";
-  return "One service on its own starts at $350 ($500 for a driveway by itself). Two or more together have no minimum. We'll sort out what you need.";
+  if (real.length >= 2) return "Two or more services together have no minimum. The exact price is set at the visit.";
+  if (real.length === 1 && real[0] === "driveway") return "A driveway on its own starts at $500. With any other service, there's no minimum.";
+  if (real.length === 1) return "One service on its own starts at $350. Two or more together have no minimum.";
+  return "One service on its own starts at $350 ($500 for a driveway by itself). Two or more together have no minimum. Tell us what you're seeing below.";
 }
 
 const input =
@@ -240,13 +240,13 @@ export default function BookPage() {
             <label htmlFor="notes" className="mt-5 block text-[15px] font-semibold text-[#0C1215]">
               {picked.includes("not-sure") ? "What are you seeing?" : <>Anything we should know? <span className="font-normal text-[#5F676C]">(optional)</span></>}
             </label>
-            <textarea id="notes" rows={3} className={`${input} mt-2`} placeholder={picked.includes("not-sure") ? "Green streaks on the roof, a black film on the siding" : "Both sides of a duplex, a steep backyard, a gate code"} value={notes} onChange={(e) => setNotes(e.target.value)} />
+            <textarea id="notes" rows={3} className={`${input} mt-2`} placeholder={picked.includes("not-sure") ? "Green streaks on the roof, a black film on the siding" : "Gate code, steep backyard, a dog in the yard"} value={notes} onChange={(e) => setNotes(e.target.value)} />
           </Step>
 
           <Step n={3} title="How do you want your price?">
             <div className="grid gap-3 sm:grid-cols-2">
               {([
-                ["visit", "Book a free quote visit", "We come look, about 45 minutes, and give you a price that day. The cleaning itself gets its own day."],
+                ["visit", "Book a free quote visit", "We come look, about 45 minutes, and give you a price that day. No charge for the visit, and you decide after you see the price."],
                 ["text-price", "Text me a rough price", "From what you told us here. Photos make it closer, and it can change once we see the house."],
               ] as const).map(([k, title, body]) => (
                 <button
@@ -324,18 +324,18 @@ export default function BookPage() {
 
           {/* What they're asking for, in one place, right above the button */}
           <div className="frame bg-[#62C4EB] p-5 text-[#0C1215] md:p-7">
-            <p className="label-caps !tracking-[0.14em]">Your cleaning</p>
+            <p className="label-caps !tracking-[0.14em]">Your request</p>
             <p className="mt-2 text-[17px] font-semibold">{labels.length ? labels.join(", ") : "Pick what needs cleaning above"}</p>
             {(size || stories) && <p className="mt-1 text-[15px]">{[size, stories].filter(Boolean).join(", ")}</p>}
             <p className="mt-1 text-[15px]">
               {wants === "visit"
                 ? slot ? `Free quote visit, ${longDate(slot)} at ${timeLabel(slot)}` : "Free quote visit: pick a day and time above"
-                : wants === "text-price" ? "Rough price by text" : ""}
+                : wants === "text-price" ? "We'll text you a rough price" : ""}
             </p>
 
             {error && <p className="mt-4 rounded-[10px] bg-white p-3 text-[15px] text-[#B42318]">{error}</p>}
             <button type="submit" disabled={!ready || sending} className="btn-print mt-5 inline-flex min-h-[56px] w-full items-center justify-center gap-2 bg-[#F2B632] px-6 text-[#0C1215] disabled:cursor-not-allowed disabled:opacity-60">
-              {sending ? "Sending…" : wants === "text-price" ? "Text me a price" : "Book my quote visit"}
+              {sending ? "Sending…" : wants === "text-price" ? "Text me a rough price" : "Book my quote visit"}
               {!sending && <ArrowRight className="h-5 w-5" aria-hidden />}
             </button>
             <p className="mt-3 text-xs leading-relaxed text-[#0C1215]/80">
