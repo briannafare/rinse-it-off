@@ -97,6 +97,9 @@ export default function BookPage() {
     setSrc(s);
     const svc = q.get("service");
     if (svc && SERVICES.some((x) => x.key === svc)) setPicked([svc]);
+    // runs before the layout's <Analytics /> sets up window.va, so start its queue here (as /plan does)
+    const w = window as unknown as { va?: (...a: unknown[]) => void; vaq?: unknown[][] };
+    w.va ??= (...a: unknown[]) => { (w.vaq ??= []).push(a); };
     vaTrack("Book visit", { src: s });
   }, []);
 
