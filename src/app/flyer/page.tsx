@@ -24,7 +24,7 @@ const RESIDENTIAL_SERVICES = [
   "Patio & Outdoor Living",
 ];
 
-const TIME_SLOTS = ["8:00 AM", "10:00 AM", "12:00 PM", "2:00 PM", "4:00 PM"];
+const TIME_SLOTS = ["8 to 9 AM", "10 to 11 AM", "12 to 1 PM", "2 to 3 PM", "4 to 5 PM"]; // arrival windows, never an exact time
 const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -80,7 +80,7 @@ export default function FlyerPage() {
   const days = calDays(calYear, calMonth);
   const prevMonthDisabled = calYear === today.getFullYear() && calMonth === today.getMonth();
   const apptLabel = selectedDay
-    ? `${formatDate(calYear, calMonth, selectedDay)}${selectedTime ? ` at ${selectedTime}` : ""}`
+    ? `${formatDate(calYear, calMonth, selectedDay)}${selectedTime ? `, arriving ${selectedTime}` : ""}`
     : "";
 
   function toggleService(s: string) {
@@ -335,7 +335,7 @@ export default function FlyerPage() {
                       Schedule your assessment
                     </h2>
                     <p className="text-text-muted text-sm mb-4">
-                      Optional — pick a day and we&apos;ll confirm the time. Or skip and we&apos;ll reach out to find a time that works.
+                      Optional — pick a day and we&apos;ll confirm your arrival window. Or skip and we&apos;ll reach out to find a day that works.
                     </p>
 
                     <div className="border-2 border-border rounded-[4px] overflow-hidden">
@@ -401,7 +401,7 @@ export default function FlyerPage() {
                       {selectedDay !== null && (
                         <div className="border-t border-border px-4 py-4 bg-white">
                           <p className="text-xs font-medium text-text-muted mb-3">
-                            Available times — {MONTHS[calMonth]} {selectedDay}
+                            Arrival windows, {MONTHS[calMonth]} {selectedDay}
                           </p>
                           <div className="flex flex-wrap gap-2">
                             {TIME_SLOTS.map((v) => (
@@ -431,7 +431,7 @@ export default function FlyerPage() {
                           </svg>
                           <div>
                             <p className="font-display font-semibold text-text-primary text-sm">Assessment Requested</p>
-                            <p className="text-text-secondary text-xs">{formatDate(calYear, calMonth, selectedDay)} at {selectedTime}</p>
+                            <p className="text-text-secondary text-xs">{formatDate(calYear, calMonth, selectedDay)}, arriving {selectedTime}</p>
                           </div>
                         </div>
                       )}

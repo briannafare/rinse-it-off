@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { submitAssessmentForm, getFreeSlots, type AssessmentFormData } from "./actions";
+import { arrivalWindow } from "@/lib/appointment-time.mjs";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const COMMERCIAL_SERVICES = [
@@ -41,9 +42,7 @@ function dateKey(year: number, month: number, day: number): string {
 }
 // A GHL slot ISO ("2026-07-13T08:00:00-07:00") → "8:00 AM" in Pacific time.
 function slotLabel(iso: string): string {
-  return new Date(iso).toLocaleTimeString("en-US", {
-    hour: "numeric", minute: "2-digit", timeZone: "America/Los_Angeles",
-  });
+  return arrivalWindow(iso);
 }
 
 // ─── Design tokens (inlined — independent of site globals) ───────────────────
@@ -158,7 +157,7 @@ export default function AssessmentPage() {
   const prevDisabled = cy === today.getFullYear() && cm === today.getMonth();
   const prevMonth = () => { if (cm === 0) { setCy(cy - 1); setCm(11); } else setCm(cm - 1); clearPick(); };
   const nextMonth = () => { if (cm === 11) { setCy(cy + 1); setCm(0); } else setCm(cm + 1); clearPick(); };
-  const apptLabel = day ? `${fmtDate(cy, cm, day)}${time ? ` at ${time}` : ""}` : "";
+  const apptLabel = day ? `${fmtDate(cy, cm, day)}${time ? `, arriving ${time}` : ""}` : "";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -254,11 +253,11 @@ export default function AssessmentPage() {
           </h1>
           <p style={{ fontFamily: "var(--font-body)", color: "var(--text-secondary)", fontSize: "1.0625rem", lineHeight: 1.6, maxWidth: 420, margin: "0 auto" }}>
             {fromPlan
-              ? "Pick a time below. We walk around the house, confirm the work, and give you your exact monthly price for the yearly plan. No charge, no commitment."
+              ? "Pick an arrival window below. We walk around the house, confirm the work, and give you your exact monthly price for the yearly plan. No charge, no commitment."
               : propertyType === "commercial"
-                ? "Pick a time and we'll walk the property with you. Itemized price the same day. Not ready? Ask for a written quote."
+                ? "Pick an arrival window and we'll walk the property. Itemized price the same day. Not ready? Ask for a written quote."
                 : propertyType === "residential"
-                  ? "Pick a time and we'll look at the house with you. It's free, and you get a price that day."
+                  ? "Pick an arrival window and we'll look at the outside of the house. It's free, you get a price that day, and you don't need to be home."
                   : "We come to you, walk the property, and give you an itemized price the same day. The visit is free."}
           </p>
         </div>
@@ -291,9 +290,9 @@ export default function AssessmentPage() {
             {/* Step 2 — Calendar: open times before any contact details (Dan Hockenmaier, SuperMe 2026-10-25) */}
             {propertyType && (
               <div style={{ marginBottom: 32 }}>
-                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 4 }}>Pick a time for your walkthrough</div>
+                <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 4 }}>Pick an arrival window for your walkthrough</div>
                 <p style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-muted)", marginBottom: 12, lineHeight: 1.5 }}>
-                  {slotsLoaded ? "These are real open times. Yours is booked when you send the form below." : "Loading open times…"}
+                  {slotsLoaded ? "These are real openings. Yours is booked when you send the form below." : "Loading openings…"}
                 </p>
                 <div style={{ border: "2px solid var(--border)", borderRadius: "var(--r-lg)", overflow: "hidden", background: "var(--surface)" }}>
                   {/* Calendar header */}
@@ -338,7 +337,7 @@ export default function AssessmentPage() {
                   {day !== null && (
                     <div style={{ borderTop: "1px solid var(--border)", padding: "13px 16px", background: "var(--surface)" }}>
                       <div style={{ fontFamily: "var(--font-body)", fontSize: "0.75rem", fontWeight: 600, color: "var(--text-muted)", letterSpacing: "0.04em", marginBottom: 10 }}>
-                        Available times — {MONTHS[cm]} {day}
+                        Arrival windows, {MONTHS[cm]} {day}
                       </div>
                       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                         {selectedSlots.map((iso) => {
@@ -364,7 +363,7 @@ export default function AssessmentPage() {
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                       <div>
                         <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.8125rem", color: "var(--ink)" }}>Time selected</div>
-                        <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-secondary)" }}>{fmtDate(cy, cm, day)} at {time} — booked when you submit</div>
+                        <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-secondary)" }}>{fmtDate(cy, cm, day)}, arriving {time}. Booked when you submit</div>
                       </div>
                     </div>
                   )}
