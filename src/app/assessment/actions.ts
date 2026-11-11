@@ -26,7 +26,7 @@ const CF_RANGE_HIGH = "rBbHvU6vbWBwRMEWOryU";
 const CF_RANGE_FOR = "VeGtDOjdtNV6LhuGz1IH";
 // Property Assessment calendar (slug rio-property-audit), 45-min slots, Kenn primary.
 const AUDIT_CALENDAR_ID = process.env.GHL_AUDIT_CALENDAR_ID || "tA6NtDSKU60mNlSNXLS9";
-const SLOT_MINUTES = 45;
+const SLOT_MINUTES = 60; // the one-hour arrival window (Bri 2026-11-10); the calendar holds 45 min after it for the visit
 const TZ = "America/Los_Angeles";
 
 // Abuse watch on the one public write path into the CRM. Over FLAG_AFTER

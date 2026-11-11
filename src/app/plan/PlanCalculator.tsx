@@ -4,6 +4,7 @@ import { track as vaTrack } from "@vercel/analytics";
 import { useEffect, useMemo, useState } from "react";
 import { bookFirstVisit, confirmDeposit, depositCheckout, submitPlanQuote } from "./actions";
 import { getFreeSlots } from "../assessment/actions";
+import { arrivalWindow } from "@/lib/appointment-time.mjs";
 import { HalFlyIn } from "@/components/retro/HalFlyIn";
 import {
   ADD_ONS,
@@ -358,7 +359,7 @@ const STEP_NAMES = ["House", "Price", "Add-ons", "Claim", "Reserve"];
 type Billing = "monthly" | "annual";
 const PCT = (d: number) => `${Math.round(d * 100)}%`;
 const TZ = "America/Los_Angeles";
-const slotTime = (iso: string) => new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: TZ });
+const slotTime = (iso: string) => arrivalWindow(iso); // one-hour arrival window, never an exact time
 const slotDate = (iso: string) => new Date(iso).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: TZ });
 // The plan's scope, for houses that see a range instead of one price.
 const HAND_INCLUDES: [string, string][] = [
@@ -752,7 +753,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
             ) : (
               <p>We&apos;ll text you to take the deposit and set your first visit.</p>
             )}
-            {saved.saved && bookedISO && <p>Your first visit is booked for {slotDate(bookedISO)} at {slotTime(bookedISO)}. We&apos;ll text you a reminder the day before.</p>}
+            {saved.saved && bookedISO && <p>Your first visit is booked for {slotDate(bookedISO)}, arriving {slotTime(bookedISO)}. We&apos;ll text you a reminder the day before.</p>}
             {saved.saved && depositPaid && !bookedISO && <p>We&apos;ll text you within one business day to set your first visit.</p>}
             <div className="tel">
               <div className="k">Questions? Call or text</div>
@@ -1287,7 +1288,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     {!depositPaid ? (
                       <p style={{ marginBottom: 0 }}>Pay the ${DEPOSIT_USD} deposit to pick your first visit.</p>
                     ) : bookedISO ? (
-                      <div className="ok">Booked: {slotDate(bookedISO)} at {slotTime(bookedISO)}.</div>
+                      <div className="ok">Booked: {slotDate(bookedISO)}, arriving {slotTime(bookedISO)}.</div>
                     ) : !slotsLoaded ? (
                       <p style={{ marginBottom: 0 }}>Checking the calendar.</p>
                     ) : dayKeys.length === 0 ? (
@@ -1322,7 +1323,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                         )}
                         {pickedISO && (
                           <div style={{ marginTop: 12 }}>
-                            <p style={{ marginBottom: 8 }}><strong style={{ color: "var(--ink)", fontWeight: 500 }}>{slotDate(pickedISO)} at {slotTime(pickedISO)}</strong></p>
+                            <p style={{ marginBottom: 8 }}><strong style={{ color: "var(--ink)", fontWeight: 500 }}>{slotDate(pickedISO)}, arriving {slotTime(pickedISO)}</strong></p>
                             <button type="button" className="btn btn-ink" onClick={() => pickSlot(pickedISO)} disabled={!!booking}>{booking ? "Booking" : "Confirm this visit"}</button>
                           </div>
                         )}

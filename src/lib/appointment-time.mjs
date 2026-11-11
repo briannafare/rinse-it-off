@@ -23,6 +23,17 @@ export function pacificISO(ms) {
   return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}${off}`;
 }
 
+/** The one-hour arrival window a slot starts: "10 to 11 AM", "11 AM to 12 PM".
+ *  Bri 2026-11-10: customers never see an exact time, only a window. */
+const hm = new Intl.DateTimeFormat("en-US", { timeZone: TZ, hour: "numeric", minute: "2-digit" });
+const short = (ms) => hm.format(new Date(ms)).replace(":00", "");
+export function arrivalWindow(startISO) {
+  const start = new Date(startISO).getTime();
+  const [a, ap] = short(start).split(" ");
+  const [b, bp] = short(start + 3600000).split(" ");
+  return ap === bp ? `${a} to ${b} ${bp}` : `${a} ${ap} to ${b} ${bp}`;
+}
+
 /** Start/end for a GHL appointment: both Pacific, same format. Null if the slot is unreadable. */
 export function appointmentWindow(startISO, minutes) {
   const start = new Date(startISO).getTime();

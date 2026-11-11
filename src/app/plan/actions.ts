@@ -21,7 +21,7 @@ const MEMBERSHIP_STAGE_RESERVED_ID = process.env.GHL_MEMBERSHIP_STAGE_RESERVED_I
 
 // Property Assessment calendar (same one the /assessment form books), 45-min slots.
 const AUDIT_CALENDAR_ID = process.env.GHL_AUDIT_CALENDAR_ID || "tA6NtDSKU60mNlSNXLS9";
-const SLOT_MINUTES = 45;
+const SLOT_MINUTES = 60; // the one-hour arrival window (Bri 2026-11-10); the calendar holds 45 min after it for the visit
 // Staff user the deposit invoice is emailed from (send endpoints need a real userId).
 const GHL_SENDER_USER_ID = process.env.GHL_SENDER_USER_ID || "ZsKRE5X4jKKVTElNy1ed";
 // Public invoice page. The branded links domain is what GHL's own invoice
