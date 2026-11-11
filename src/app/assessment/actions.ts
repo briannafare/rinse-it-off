@@ -56,6 +56,13 @@ export interface AssessmentFormData {
   appointmentISO?: string; // exact slot from GHL free-slots (has -07:00/-08:00 offset)
   source?: string; // which form sent it, so flyer QR leads are attributable in GHL
   rangeShown?: { low: number; high: number; label: string }; // the /plan range they saw before booking
+  // /book (one-time cleaning): a free quote visit, or the cleaning itself with the price confirmed on arrival
+  oneTime?: {
+    wants: "visit" | "book-cleaning";
+    sqft?: number; sqftSource?: "county" | "owner"; stories?: string;
+    estimate?: { low: number; high: number }; // what the page said a house this size usually runs
+    home?: "home" | "walk-around"; preferredDay?: string; planToo?: boolean;
+  };
 }
 
 /** Real availability for the audit calendar. Returns { "YYYY-MM-DD": ISO[] } in
@@ -124,7 +131,11 @@ export async function submitAssessmentForm(
     const firstName = nameParts[0] || "";
     const lastName = nameParts.slice(1).join(" ") || "";
 
+    const once = data.oneTime;
     const notesLines: string[] = [
+      ...(once ? [once.wants === "visit"
+        ? `ONE-TIME CLEANING: free quote visit booked (${once.home === "walk-around" ? "they won't be home, OK to walk around" : "they'll be home"}).`
+        : `ONE-TIME CLEANING: wants the cleaning booked${once.preferredDay ? ` on ${once.preferredDay}` : ""}. Text them to confirm the arrival window; price confirmed on arrival.`] : []),
       `Property Type: ${data.propertyType}`,
       `Services Requested: ${data.services.join(", ") || "Not specified"}`,
     ];
@@ -132,6 +143,10 @@ export async function submitAssessmentForm(
     if (data.appointmentDate && data.appointmentTime) {
       notesLines.push(`Requested Assessment: ${data.appointmentDate} at ${data.appointmentTime}`);
     }
+    if (once?.sqft) notesLines.push(`House size: ${once.sqft.toLocaleString("en-US")} sq ft (${once.sqftSource === "county" ? "county records" : "they typed it"})`);
+    if (once?.stories) notesLines.push(`Stories: ${once.stories}`);
+    if (once?.estimate) notesLines.push(`Page showed: usually $${once.estimate.low.toLocaleString("en-US")} to $${once.estimate.high.toLocaleString("en-US")}. Note where the real price lands.`);
+    if (once?.planToo) notesLines.push("Also wants the yearly plan priced.");
     if (data.message) notesLines.push(`Notes: ${data.message}`);
     // Saved so the walk-through's final price can be checked against what the page promised.
     const seen = cleanRange(data.rangeShown);
@@ -156,6 +171,7 @@ export async function submitAssessmentForm(
         "website-assessment",
         isCommercial ? "lead-com" : "lead-res",
         ...(seen ? ["plan-range-shown"] : []),
+        ...(once ? ["one-time-clean", once.wants === "visit" ? "quote-visit" : "book-cleaning", ...(once.planToo ? ["plan-interest"] : [])] : []),
         ...(flagged ? ["needs-review"] : []),
       ],
       customFields,
@@ -168,17 +184,30 @@ export async function submitAssessmentForm(
       body: JSON.stringify(payload),
     });
 
-    if (!contactRes.ok) {
+    let contactId: string | undefined;
+    if (contactRes.ok) {
+      contactId = (await contactRes.json())?.contact?.id;
+    } else {
+      // A returning customer (or anyone who texted us first) is already a contact, and the
+      // location refuses duplicates (found 2026-11-10: their booking failed). Use the existing
+      // contact and add this request's tags on top of theirs. Upsert would replace their tags.
       const errBody = await contactRes.text();
-      console.error("GHL contact creation failed:", contactRes.status, errBody);
-      return {
-        success: false,
-        error: "Failed to save your request. Please call us directly at (971) 626-4146.",
-      };
+      const existing = (() => { try { return JSON.parse(errBody)?.meta?.contactId as string | undefined; } catch { return undefined; } })();
+      if (contactRes.status === 400 && existing) {
+        contactId = existing;
+        await fetch(`${GHL_API_BASE}/contacts/${existing}/tags`, {
+          method: "POST",
+          headers: ghlHeaders,
+          body: JSON.stringify({ tags: payload.tags }),
+        }).catch((e) => console.error("GHL tag add for existing contact failed:", e));
+      } else {
+        console.error("GHL contact creation failed:", contactRes.status, errBody);
+        return {
+          success: false,
+          error: "Failed to save your request. Please call us directly at (971) 626-4146.",
+        };
+      }
     }
-
-    const contactData = await contactRes.json();
-    const contactId = contactData?.contact?.id;
 
     // 2) Create an opportunity so the lead enters the sales pipeline.
     //    Commercial -> Commercial pipeline "New Lead". Residential -> its own
@@ -195,7 +224,7 @@ export async function submitAssessmentForm(
             locationId: GHL_LOCATION_ID,
             pipelineStageId: stageId,
             contactId,
-            name: `${data.name} — ${isCommercial ? "Commercial" : "Residential"} property audit`,
+            name: `${data.name} — ${once ? (once.wants === "visit" ? "One-time cleaning, quote visit" : "One-time cleaning, booked") : `${isCommercial ? "Commercial" : "Residential"} property audit`}`,
             status: "open",
             source,
           }),
@@ -245,7 +274,7 @@ export async function submitAssessmentForm(
             contactId,
             startTime: win.startTime,
             endTime: win.endTime,
-            title: `Property audit — ${data.name}`,
+            title: `${once ? "Quote visit" : "Property audit"} — ${data.name}`,
             appointmentStatus: "confirmed",
           }),
         });
