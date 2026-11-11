@@ -4,7 +4,11 @@
  *  Clackamas). Free and keyless. Clark County and anything outside the three counties
  *  comes back empty, and the page then asks the homeowner for their own number. */
 
+import { FOUNDING_SPOTS } from "@/lib/one-time-estimate";
+
 const RLIS = "https://services2.arcgis.com/McQ0OlIABe29rJJy/arcgis/rest/services/Taxlots_(Public)/FeatureServer/3/query";
+// Metro's building outlines: ground area and perimeter, so roof and gutters are measured, not guessed.
+const FOOTPRINTS = "https://services2.arcgis.com/McQ0OlIABe29rJJy/arcgis/rest/services/Building_Footprint_Database/FeatureServer/8/query";
 
 const WORDS: Record<string, string> = {
   NORTH: "N", SOUTH: "S", EAST: "E", WEST: "W", NORTHEAST: "NE", NORTHWEST: "NW", SOUTHEAST: "SE", SOUTHWEST: "SW",
@@ -22,17 +26,62 @@ export async function normalize(address: string) {
   return { street, city };
 }
 
-type Lot = { SITEADDR: string; SITECITY: string; BLDGSQFT: number };
+type Lot = { SITEADDR: string; SITECITY: string; BLDGSQFT: number; rings?: number[][][]; sr?: unknown };
 
 async function query(where: string): Promise<Lot[]> {
-  const url = `${RLIS}?where=${encodeURIComponent(where)}&outFields=SITEADDR,SITECITY,BLDGSQFT&f=json&resultRecordCount=10`;
+  const url = `${RLIS}?where=${encodeURIComponent(where)}&outFields=SITEADDR,SITECITY,BLDGSQFT&returnGeometry=true&f=json&resultRecordCount=10`;
   const r = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(6000) });
   if (!r.ok) return [];
-  const d = (await r.json()) as { features?: { attributes: Lot }[] };
-  return (d.features || []).map((f) => f.attributes).filter((a) => a.BLDGSQFT > 0);
+  const d = (await r.json()) as { spatialReference?: unknown; features?: { attributes: Lot; geometry?: { rings: number[][][] } }[] };
+  return (d.features || [])
+    .map((f) => ({ ...f.attributes, rings: f.geometry?.rings, sr: d.spatialReference }))
+    .filter((a) => a.BLDGSQFT > 0);
 }
 
-export async function lookupHouse(address: string): Promise<{ sqft: number; matched: string } | null> {
+/** The main building on the lot: the largest outline touching it. */
+async function outline(lot: Lot): Promise<{ footprintSf: number; perimeterFt: number } | null> {
+  if (!lot.rings) return null;
+  try {
+    const q = new URLSearchParams({
+      geometry: JSON.stringify({ rings: lot.rings, spatialReference: lot.sr }),
+      geometryType: "esriGeometryPolygon", spatialRel: "esriSpatialRelIntersects", inSR: JSON.stringify(lot.sr),
+      outFields: "Shape__Area,Shape__Length", returnGeometry: "false", f: "json",
+    });
+    const r = await fetch(FOOTPRINTS, { method: "POST", body: q, cache: "no-store", signal: AbortSignal.timeout(6000) });
+    const d = (await r.json()) as { features?: { attributes: { Shape__Area: number; Shape__Length: number } }[] };
+    const big = (d.features || []).map((f) => f.attributes).sort((a, b) => b.Shape__Area - a.Shape__Area)[0];
+    // ponytail: a building far bigger than the house is a neighbor or an apartment block; fall back to living area
+    if (!big || big.Shape__Area < 400 || big.Shape__Area > lot.BLDGSQFT * 2 + 1500) return null;
+    return { footprintSf: Math.round(big.Shape__Area), perimeterFt: Math.round(big.Shape__Length) };
+  } catch {
+    return null;
+  }
+}
+
+/** How many founding-rate spots are left: FOUNDING_SPOTS minus contacts tagged founding-rate.
+ *  Null when GHL can't be read, so the page never shows a made-up number. */
+export async function foundingLeft(): Promise<number | null> {
+  const key = process.env.GHL_API_KEY, loc = process.env.GHL_LOCATION_ID;
+  if (!key || !loc) return null;
+  try {
+    const r = await fetch("https://services.leadconnectorhq.com/contacts/search", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${key}`, Version: "2021-07-28", "Content-Type": "application/json" },
+      body: JSON.stringify({ locationId: loc, pageLimit: 1, filters: [{ field: "tags", operator: "contains", value: "founding-rate" }] }),
+      next: { revalidate: 300 },
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!r.ok) return null;
+    const total = ((await r.json()) as { total?: number }).total;
+    return typeof total === "number" ? Math.max(0, FOUNDING_SPOTS - total) : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function lookupHouse(
+  address: string,
+): Promise<{ sqft: number; matched: string; footprintSf?: number; perimeterFt?: number } | null> {
   try {
     const { street, city } = await normalize(address);
     const num = street.match(/^\d+/)?.[0];
@@ -48,7 +97,7 @@ export async function lookupHouse(address: string): Promise<{ sqft: number; matc
     const pick = (city && lots.find((l) => l.SITECITY?.toUpperCase() === city)) || (lots.length === 1 ? lots[0] : null);
     if (!pick) return null; // several houses share that street name in different cities: ask instead of guessing
     const title = (s: string) => s.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()).replace(/\b(Ne|Nw|Se|Sw)\b/g, (m) => m.toUpperCase());
-    return { sqft: Math.round(pick.BLDGSQFT), matched: `${title(pick.SITEADDR)}, ${title(pick.SITECITY || "")}` };
+    return { sqft: Math.round(pick.BLDGSQFT), matched: `${title(pick.SITEADDR)}, ${title(pick.SITECITY || "")}`, ...(await outline(pick)) };
   } catch {
     return null;
   }

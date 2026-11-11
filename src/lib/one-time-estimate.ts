@@ -1,85 +1,135 @@
-/** What a one-time cleaning usually runs, for the /book page.
+/** One-time cleaning prices for the /book page: a real number for this house.
  *
- *  Not a quote. Rinse charges by the exact square foot and the condition (a very mossy
- *  roof can take more than one treatment), and nobody has seen the house yet (Bri,
- *  2026-11-10). So this gives an honest idea: the same per-job prices the /plan
- *  calculator uses for "booked one at a time", at the house's real square footage, from
- *  an easy house (flat, all sides open, truck in the driveway) to a harder one (some
- *  slope, a side closed in, a long hose run). The text assistant's price guide
- *  (~/tools/rinse-it-off-ghl/homeowner_bot.py) is the same numbers in bands. */
-import { includedWindows, priceHouse, type Stories } from "@/app/plan/pricing";
+ *  Bri 2026-11-11: the old "from" prices ($500 for windows, $750 roof) read as
+ *  overcharging, and a range plus "book a visit to get your real price" wasn't a quote.
+ *  Rates below are the SuperMe panel's founding rates (Peter Kazanjy, Kyle Poyar, Paul
+ *  Ghio, Rohan Katyal, Dan Hockenmaier, 2026-11-11, https://superme.ai/chat/2h58b0ooushnzie9ir6b3),
+ *  set near the Portland market: about 20% under list for the first 25 customers.
+ *  One $250 minimum on the whole visit, never per service; no minimum on a day the crew
+ *  is already nearby. Condition can move the price by at most CONDITION_CAP, and only
+ *  with the homeowner's OK. The text assistant's price guide
+ *  (~/tools/rinse-it-off-ghl/homeowner_bot.py) must match these numbers. */
+import { includedWindows } from "@/app/plan/pricing";
 
 export type ServiceKey = "roof-moss" | "house-wash" | "gutters" | "driveway" | "windows" | "deck-fence" | "other";
+export type Moss = "light" | "patchy" | "thick";
+export type Driveway = "small" | "typical" | "large";
+export type Stories = 1 | 2 | 3;
 
-export const SERVICES: { key: ServiceKey; label: string; line?: string }[] = [
-  { key: "roof-moss", label: "Roof moss", line: "roof" },
-  { key: "house-wash", label: "House wash (siding)", line: "siding" },
-  { key: "gutters", label: "Gutters", line: "gutters" },
-  { key: "driveway", label: "Driveway and walkways", line: "driveway" },
-  { key: "windows", label: "Windows (outside)", line: "windows" },
-  { key: "deck-fence", label: "Deck or fence" },
-  { key: "other", label: "Something else" },
+export const SERVICES: { key: ServiceKey; label: string; priced: boolean }[] = [
+  { key: "roof-moss", label: "Roof moss", priced: true },
+  { key: "gutters", label: "Gutters", priced: true },
+  { key: "house-wash", label: "House wash (siding)", priced: true },
+  { key: "windows", label: "Windows (outside)", priced: true },
+  { key: "driveway", label: "Driveway and walkways", priced: true },
+  { key: "deck-fence", label: "Deck or fence", priced: false },
+  { key: "other", label: "Something else", priced: false },
 ];
 
-const BASE = { address: "", roof: "composition", driveway: "typical", slope: "flat", sides: "all", parking: "close" } as const;
-const round25 = (n: number) => Math.round(n / 25) * 25;
+// ── Rates: [founding, list]. Change prices here. ────────────────────────────
+export const FOUNDING_SPOTS = 25;
+export const LIST_UP = 1.2; // list = founding × 1.2, shown crossed out
+export const RATE = {
+  gutterLf: 1.5,
+  window: 10,
+  concreteSf: 0.25,
+  houseWashSf: 0.19, // per sq ft of living area
+  roofSf: { light: 0.225, patchy: 0.25, thick: 0.325 } as Record<Moss, number>, // thick = second pass priced in
+};
+export const FLOOR = { "roof-moss": 395, "house-wash": 350 } as Partial<Record<ServiceKey, number>>; // smallest job of that kind
+// ponytail: one factor for height (ladder work, slower). Tune against real crew hours.
+export const STORY_FACTOR: Record<Stories, number> = { 1: 1, 2: 1.1, 3: 1.3 };
+export const VISIT_MIN = 250;
+export const CONDITION_CAP = 75;
+export const DRIVEWAY_SF: Record<Driveway, number> = { small: 450, typical: 750, large: 1100 }; // driveway + front walk
+export const MOSS_LABEL: Record<Moss, string> = {
+  light: "A little green in spots",
+  patchy: "Green patches across parts of the roof",
+  thick: "Thick cushions covering whole sections",
+};
 
-/** Each service's one-visit price at this size, keyed by service. */
-function linePrices(sqft: number, stories: Stories, harder: boolean): Partial<Record<ServiceKey, number>> {
-  const p = priceHouse({
-    ...BASE,
-    livingSqft: sqft,
-    stories,
-    windows: includedWindows(sqft),
-    ...(harder ? { slope: "some", sides: "most", parking: "far" } : {}),
-  } as Parameters<typeof priceHouse>[0]);
-  const byLine = Object.fromEntries(p.lines.map((l) => [l.key, l.amount * p.accessMultiplier]));
-  const out: Partial<Record<ServiceKey, number>> = {};
-  for (const s of SERVICES) {
-    if (s.line === "windows") out[s.key] = p.windowsPerVisitValue;
-    else if (s.line && byLine[s.line] !== undefined) out[s.key] = byLine[s.line];
-  }
-  return out;
+export interface House {
+  sqft: number; // living area
+  stories: Stories;
+  footprintSf?: number; // measured building outline, when Metro has it
+  perimeterFt?: number;
+}
+export interface Choices { moss: Moss; windows: number; driveway: Driveway }
+
+/** Roof, gutter and window quantities for the house. Uses the measured outline when we
+ *  have it, else a footprint from living area (plus a garage). */
+export function measure(h: House) {
+  const footprint = h.footprintSf && h.footprintSf > 300 ? h.footprintSf : h.sqft / h.stories + 300;
+  const perimeter = h.perimeterFt && h.perimeterFt > 60 ? h.perimeterFt : 4.6 * Math.sqrt(footprint); // 4.6: houses aren't square
+  return {
+    roofSf: Math.round(footprint * 1.15 + perimeter), // ~6/12 pitch plus a foot of eave
+    gutterLf: Math.round(perimeter),
+    windows: includedWindows(h.sqft),
+  };
 }
 
-export interface Estimate {
-  lines: { key: ServiceKey; label: string; low: number; high: number }[];
-  low: number;
-  high: number;
-  unpriced: string[]; // picked services we can't put a number on before seeing them
+/** Guess stories from county living area vs the measured outline (minus a garage). */
+export function guessStories(sqft: number, footprintSf?: number): Stories | null {
+  if (!footprintSf || footprintSf < 500) return null;
+  const r = sqft / Math.max(400, footprintSf - 400);
+  return r < 1.35 ? 1 : r < 2.4 ? 2 : 3;
 }
 
-/** Null when there's nothing to price (no size, 4+ stories, or only unpriced services). */
-export function estimate(sqft: number | null, stories: Stories | null, picked: ServiceKey[]): Estimate | null {
-  if (!sqft || !stories || stories > 3 || sqft > 6000) return null;
-  const a = linePrices(sqft, stories, false);
-  const b = linePrices(sqft, stories, true);
-  const lines = SERVICES.filter((s) => picked.includes(s.key) && a[s.key] !== undefined).map((s) => {
-    const x = a[s.key]!, y = b[s.key]!;
-    return { key: s.key, label: s.label, low: round25(Math.min(x, y)), high: round25(Math.max(x, y)) };
+const round5 = (n: number) => Math.round(n / 5) * 5;
+
+/** Founding price of one service for this house, or null if it's priced on site. */
+export function servicePrice(key: ServiceKey, h: House, c: Choices): number | null {
+  const m = measure(h);
+  const sf = STORY_FACTOR[h.stories];
+  const raw: Partial<Record<ServiceKey, number>> = {
+    "roof-moss": m.roofSf * RATE.roofSf[c.moss],
+    gutters: m.gutterLf * RATE.gutterLf * sf,
+    "house-wash": h.sqft * RATE.houseWashSf * sf,
+    windows: c.windows * RATE.window * sf,
+    driveway: DRIVEWAY_SF[c.driveway] * RATE.concreteSf,
+  };
+  if (raw[key] === undefined) return null;
+  return round5(Math.max(raw[key]!, FLOOR[key] ?? 0));
+}
+
+export interface Quote {
+  lines: { key: ServiceKey; label: string; price: number; list: number }[];
+  unpriced: string[];
+  subtotal: number;
+  list: number;
+  minimumGap: number; // what's left to reach VISIT_MIN on a normal day (0 if covered)
+}
+
+export function quote(h: House, picked: ServiceKey[], c: Choices): Quote {
+  const lines = SERVICES.filter((s) => picked.includes(s.key) && s.priced).map((s) => {
+    const price = servicePrice(s.key, h, c)!;
+    return { key: s.key, label: s.label, price, list: round5(price * LIST_UP) };
   });
-  const unpriced = SERVICES.filter((s) => picked.includes(s.key) && a[s.key] === undefined).map((s) => s.label);
-  if (!lines.length) return null;
-  return { lines, low: lines.reduce((t, l) => t + l.low, 0), high: lines.reduce((t, l) => t + l.high, 0), unpriced };
+  const subtotal = lines.reduce((t, l) => t + l.price, 0);
+  return {
+    lines,
+    unpriced: SERVICES.filter((s) => picked.includes(s.key) && !s.priced).map((s) => s.label),
+    subtotal,
+    list: lines.reduce((t, l) => t + l.list, 0),
+    minimumGap: lines.length ? Math.max(0, VISIT_MIN - subtotal) : 0,
+  };
 }
 
-/** The lowest each service runs on the smallest house we price: the "from" on each tile. */
-export const FROM: Partial<Record<ServiceKey, number>> = (() => {
-  const all = ([1, 2, 3] as Stories[]).map((st) => linePrices(1200, st, false));
-  const out: Partial<Record<ServiceKey, number>> = {};
-  for (const s of SERVICES) {
-    const v = all.map((x) => x[s.key]).filter((n): n is number => n !== undefined);
-    if (v.length) out[s.key] = round25(Math.min(...v));
-  }
-  return out;
-})();
-
-/** The one pairing worth suggesting for what's in the cart, if any. */
+/** The one add worth suggesting, preferring one that covers the visit minimum. */
 export function pairing(picked: ServiceKey[]): { key: ServiceKey; why: string } | null {
   const has = (k: ServiceKey) => picked.includes(k);
   if (has("roof-moss") && !has("gutters")) return { key: "gutters", why: "Moss off the roof ends up in the gutters, so most people clear them on the same visit." };
   if (has("gutters") && !has("roof-moss")) return { key: "roof-moss", why: "Roof moss is what fills most gutters. Treating it on the same visit keeps them clear longer." };
+  if (has("windows") && !has("gutters")) return { key: "gutters", why: "Gutters are the usual add to a window visit, with the ladder already out." };
   if (has("house-wash") && !has("windows")) return { key: "windows", why: "Siding rinse runs down the glass, so the outside windows are the natural add after a house wash." };
   if (has("driveway") && !has("house-wash")) return { key: "house-wash", why: "With the crew and the water already there, the siding is the usual add to a driveway." };
   return null;
 }
+
+/** Sizes for houses county records don't have. Midpoints of the bands. */
+export const SIZE_BANDS = [
+  { label: "Under 1,500 sq ft", sqft: 1200 },
+  { label: "1,500 to 2,500", sqft: 2000 },
+  { label: "2,500 to 3,500", sqft: 3000 },
+  { label: "Over 3,500", sqft: 4000 },
+];

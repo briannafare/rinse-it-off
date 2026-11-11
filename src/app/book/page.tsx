@@ -1,18 +1,22 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { track as vaTrack } from "@vercel/analytics";
-import { ArrowRight, Check, MessageSquare, Phone, Plus } from "lucide-react";
+import { ArrowRight, Check, MessageSquare, Minus, Phone, Plus } from "lucide-react";
 import { getFreeSlots, submitAssessmentForm } from "../assessment/actions";
-import { lookupHouse } from "./actions";
+import { foundingLeft, lookupHouse } from "./actions";
 import { arrivalWindow } from "@/lib/appointment-time.mjs";
-import { estimate, FROM, pairing, SERVICES, type ServiceKey } from "@/lib/one-time-estimate";
-import type { Stories } from "@/app/plan/pricing";
+import {
+  CONDITION_CAP, FLOOR, FOUNDING_SPOTS, MOSS_LABEL, RATE, SERVICES, SIZE_BANDS, VISIT_MIN,
+  guessStories, measure, pairing, quote, servicePrice,
+  type Choices, type Driveway, type House, type Moss, type ServiceKey, type Stories,
+} from "@/lib/one-time-estimate";
 
-/** One-time cleaning: what needs cleaning → where (size from county records, or their own
- *  number, or "not sure") → what a house that size usually runs → a free quote visit OR the
- *  cleaning itself → a day (and a one-hour arrival window for visits) → name and mobile.
- *  Bri 2026-11-10: no fake prices, no exact times, the two paths stay separate, and they
- *  don't need to be home for a quote visit. Writes into GHL through the /assessment action. */
+/** One-time cleaning: address (size and outline from public records) → what needs
+ *  cleaning, priced for that house → one total → a day → name and mobile.
+ *  Bri 2026-11-11: a real number, not a range plus "book a visit"; competitive founding
+ *  rates; no $500 for ten windows; few questions. Condition can move the price by at most
+ *  CONDITION_CAP, with their OK. A free quote visit stays available as the second path.
+ *  Writes into GHL through the /assessment action, which recomputes the price. */
 
 const PHONE = "+19716264146";
 const PHONE_DISPLAY = "(971) 626-4146";
@@ -22,9 +26,22 @@ const STORIES: { v: Stories; label: string }[] = [
   { v: 2, label: "2 stories" },
   { v: 3, label: "3 or more" },
 ];
+const DRIVEWAYS: { v: Driveway; label: string }[] = [
+  { v: "small", label: "Small" },
+  { v: "typical", label: "Two-car" },
+  { v: "large", label: "Large or long" },
+];
 const money = (n: number) => `$${n.toLocaleString("en-US")}`;
 
-// "2026-11-12" → "Thu, Nov 12" (built from parts so the browser's zone can't shift the day)
+// Before we know the house: the unit price, or the smallest job of that kind.
+const UNIT: Partial<Record<ServiceKey, string>> = {
+  "roof-moss": `from ${money(FLOOR["roof-moss"]!)}`,
+  gutters: `$${RATE.gutterLf.toFixed(2)} a foot`,
+  "house-wash": `from ${money(FLOOR["house-wash"]!)}`,
+  windows: `${money(RATE.window)} a window`,
+  driveway: "from $115",
+};
+
 function dayLabel(key: string) {
   const [y, m, d] = key.split("-").map(Number);
   return new Date(y, m - 1, d).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
@@ -38,20 +55,19 @@ const longDate = (iso: string) => new Date(iso).toLocaleDateString("en-US", { we
 function cleaningDays() {
   const out: string[] = [];
   for (let i = 1; out.length < 21 && i < 40; i++) {
-    const d = new Date(Date.now() + i * 86400000);
-    const key = d.toLocaleDateString("en-CA", { timeZone: TZ });
+    const key = new Date(Date.now() + i * 86400000).toLocaleDateString("en-CA", { timeZone: TZ });
     if (new Date(`${key}T12:00:00`).getDay() !== 0) out.push(key);
   }
   return out;
 }
 
-function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; children: React.ReactNode }) {
+function Chip({ on, onClick, children, wide }: { on: boolean; onClick: () => void; children: React.ReactNode; wide?: boolean }) {
   return (
     <button
       type="button"
       aria-pressed={on}
       onClick={onClick}
-      className={`flex min-h-12 items-center gap-2 rounded-[12px] border-2 px-4 py-2.5 text-left text-[15px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 motion-reduce:transition-none ${
+      className={`${wide ? "w-full " : ""}flex min-h-12 items-center gap-2 rounded-[12px] border-2 px-4 py-2.5 text-left text-[15px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 motion-reduce:transition-none ${
         on ? "border-[#0C1215] bg-[#F2B632] font-semibold text-[#0C1215]" : "border-[#E4DCCD] bg-white text-[#0C1215] hover:border-[#0C1215]"
       }`}
     >
@@ -81,24 +97,29 @@ type Lookup = { state: "idle" | "looking" | "found" | "missing"; matched?: strin
 
 export default function BookPage() {
   const [src, setSrc] = useState("direct");
-  const [picked, setPicked] = useState<ServiceKey[]>([]);
   const [address, setAddress] = useState("");
   const [lookup, setLookup] = useState<Lookup>({ state: "idle" });
-  const [sqftText, setSqftText] = useState("");
+  const [sqft, setSqft] = useState<number | null>(null);
   const [sqftSource, setSqftSource] = useState<"county" | "owner">("owner");
-  const [sizeUnknown, setSizeUnknown] = useState(false);
+  const [outline, setOutline] = useState<{ footprintSf?: number; perimeterFt?: number }>({});
   const [editingSize, setEditingSize] = useState(false);
   const [stories, setStories] = useState<Stories | null>(null);
-  const [notes, setNotes] = useState("");
-  const [wants, setWants] = useState<"" | "visit" | "book-cleaning">("");
+  const [storiesGuessed, setStoriesGuessed] = useState(false);
+  const [picked, setPicked] = useState<ServiceKey[]>([]);
+  const [moss, setMoss] = useState<Moss | null>(null);
+  const [windows, setWindows] = useState<number | null>(null);
+  const [driveway, setDriveway] = useState<Driveway>("typical");
+  const [wants, setWants] = useState<"book-cleaning" | "visit">("book-cleaning");
+  const [cleanDay, setCleanDay] = useState("");
   const [slotMap, setSlotMap] = useState<Record<string, string[]>>({});
   const [slotsLoaded, setSlotsLoaded] = useState(false);
   const [dayKey, setDayKey] = useState("");
   const [slot, setSlot] = useState("");
   const [home, setHome] = useState<"" | "home" | "walk-around">("");
-  const [cleanDay, setCleanDay] = useState("");
+  const [notes, setNotes] = useState("");
   const [planToo, setPlanToo] = useState(false);
   const [contact, setContact] = useState({ name: "", phone: "", email: "" });
+  const [spotsLeft, setSpotsLeft] = useState<number | null>(null);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
@@ -114,55 +135,66 @@ export default function BookPage() {
     const w = window as unknown as { va?: (...a: unknown[]) => void; vaq?: unknown[][] };
     w.va ??= (...a: unknown[]) => { (w.vaq ??= []).push(a); };
     vaTrack("Book visit", { src: s });
+    foundingLeft().then(setSpotsLeft).catch(() => setSpotsLeft(null));
   }, []);
 
-  // Real openings on the same calendar /assessment books. GHL rejects ranges over 31 days.
+  // Quote-visit openings load only if they ask for a visit.
   useEffect(() => {
+    if (wants !== "visit" || slotsLoaded) return;
     const now = Date.now();
     const day = 24 * 60 * 60 * 1000;
     Promise.all([getFreeSlots(now, now + 31 * day), getFreeSlots(now + 31 * day, now + 62 * day)])
       .then(([a, b]) => setSlotMap({ ...a.days, ...b.days }))
       .catch(() => setSlotMap({}))
       .finally(() => setSlotsLoaded(true));
-  }, []);
+  }, [wants, slotsLoaded]);
 
   const visitDays = useMemo(() => Object.keys(slotMap).filter((k) => slotMap[k]?.length).sort().slice(0, 21), [slotMap]);
   const cleanDays = useMemo(cleaningDays, []);
   const toggle = (k: ServiceKey) => setPicked((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
-  const labels = SERVICES.filter((s) => picked.includes(s.key)).map((s) => s.label);
 
-  const sqft = sizeUnknown ? null : Number(sqftText.replace(/[^\d]/g, "")) || null;
-  const est = estimate(sqft && sqft >= 400 ? sqft : null, stories, picked);
-  const pair = est ? pairing(picked) : null;
-  const pairEst = pair && sqft && stories ? estimate(sqft, stories, [pair.key]) : null;
+  const house: House | null = sqft && stories ? { sqft, stories, ...outline } : null;
+  const windowCount = windows ?? (house ? measure(house).windows : 12);
+  const choices: Choices = { moss: moss ?? "patchy", windows: windowCount, driveway };
+  const q = house ? quote(house, picked, choices) : null;
+  const total = q && q.lines.length ? Math.max(q.subtotal, VISIT_MIN) : 0;
+  const pair = q && q.lines.length ? pairing(picked) : null;
+  const pairPrice = pair && house ? servicePrice(pair.key, house, choices) : null;
+  const founding = spotsLeft !== null && spotsLeft > 0;
+  const needsMoss = picked.includes("roof-moss") && !moss;
 
   const findHouse = async () => {
     if (!address.trim() || lookup.state === "looking") return;
     setLookup({ state: "looking" });
     const r = await lookupHouse(address);
     if (r) {
-      setSqftText(String(r.sqft));
+      setSqft(r.sqft);
       setSqftSource("county");
-      setSizeUnknown(false);
+      setOutline({ footprintSf: r.footprintSf, perimeterFt: r.perimeterFt });
       setEditingSize(false);
+      const g = guessStories(r.sqft, r.footprintSf);
+      setStories(g);
+      setStoriesGuessed(!!g);
+      setWindows(null);
       setLookup({ state: "found", matched: r.matched });
     } else {
+      setSqft(null);
+      setOutline({});
       setSqftSource("owner");
       setLookup({ state: "missing" });
     }
-    vaTrack("Book house lookup", { found: r ? "yes" : "no", src });
+    vaTrack("Book house lookup", { found: r ? "yes" : "no", outline: r?.footprintSf ? "yes" : "no", src });
   };
 
-  const choose = (w: "visit" | "book-cleaning") => { setWants(w); vaTrack("Book path", { path: w, src }); };
-  const sizeAnswered = sizeUnknown || !!sqft;
-  const whenReady = wants === "visit" ? !!slot && !!home : wants === "book-cleaning" ? !!cleanDay : false;
-  const ready = picked.length > 0 && address.trim() && sizeAnswered && stories && whenReady && contact.name.trim() && contact.phone.trim();
+  const whenReady = wants === "visit" ? !!slot && !!home : !!cleanDay;
+  const ready = picked.length > 0 && address.trim() && (wants === "visit" || (house && !needsMoss)) && whenReady && contact.name.trim() && contact.phone.trim();
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!ready || !wants) return;
+    if (!ready) return;
     setError("");
     setSending(true);
+    const labels = SERVICES.filter((s) => picked.includes(s.key)).map((s) => (s.key === "roof-moss" && moss ? `${s.label} (${moss} moss)` : s.label));
     const result = await submitAssessmentForm({
       propertyType: "residential",
       services: labels,
@@ -180,15 +212,15 @@ export default function BookPage() {
         sqft: sqft || undefined,
         sqftSource: sqft ? sqftSource : undefined,
         stories: STORIES.find((s) => s.v === stories)?.label,
-        estimate: est ? { low: est.low, high: est.high } : undefined,
         home: wants === "visit" && home ? home : undefined,
         preferredDay: wants === "book-cleaning" && cleanDay ? longDay(cleanDay) : undefined,
         planToo,
+        price: house ? { house, picked, choices, founding } : undefined,
       },
     });
     setSending(false);
     if (result.success) {
-      vaTrack("Book request", { path: wants, src, services: picked.length, plan: planToo ? "yes" : "no" });
+      vaTrack("Book request", { path: wants, src, services: picked.length, total, plan: planToo ? "yes" : "no" });
       setSent(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
@@ -207,26 +239,25 @@ export default function BookPage() {
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F2B632] ring-2 ring-[#0C1215]">
               <Check className="h-6 w-6" aria-hidden />
             </span>
-            <h1 className="mt-5 text-[2.2rem] leading-[1.02] text-[#0C1215] md:text-[3rem]">
-              {wants === "visit" ? `You're booked, ${first}.` : `Got it, ${first}.`}
-            </h1>
+            <h1 className="mt-5 text-[2.2rem] leading-[1.02] text-[#0C1215] md:text-[3rem]">You&apos;re booked, {first}.</h1>
             {wants === "visit" ? (
               <p className="mt-4 text-lg leading-relaxed text-[#3B4247]">
                 Bri will be at {address.trim()} on <strong className="text-[#0C1215]">{longDate(slot)}, arriving {arrivalWindow(slot)}</strong>.{" "}
                 {home === "walk-around"
-                  ? "You don't need to be there. She'll walk around the outside and text you the exact price."
-                  : "She'll look at the outside with you and give you the exact price that day."}{" "}
+                  ? "You don't need to be there, since she'll walk around the outside and text you the price."
+                  : "She'll look at the outside with you and give you the price that day."}{" "}
                 You&apos;ll get a reminder text the day before.
               </p>
             ) : (
               <p className="mt-4 text-lg leading-relaxed text-[#3B4247]">
-                We&apos;ll text {contact.phone.trim()} to confirm your arrival window on <strong className="text-[#0C1215]">{longDay(cleanDay)}</strong>.
-                The price is confirmed when we arrive, before any work starts.
+                Your cleaning is set for <strong className="text-[#0C1215]">{longDay(cleanDay)}</strong>
+                {total ? <> at <strong className="text-[#0C1215]">{money(total)}</strong></> : null}. We&apos;ll text {contact.phone.trim()} with your
+                one-hour arrival window.
               </p>
             )}
             <div className="mt-7 rounded-[12px] bg-[#62C4EB]/25 p-5">
               <p className="font-semibold text-[#0C1215]">Have photos of the house?</p>
-              <p className="mt-1 text-[#3B4247]">Text them to us. A couple of pictures of the problem spots helps us bring the right gear.</p>
+              <p className="mt-1 text-[#3B4247]">Text them to us. A couple of pictures of the worst spots helps us bring the right gear.</p>
               <a
                 href={`sms:${PHONE}?&body=${photoText}`}
                 onClick={() => vaTrack("Book photos", { src })}
@@ -251,9 +282,9 @@ export default function BookPage() {
     <section className="bg-retro-paper pb-28 pt-28 md:pb-24 md:pt-36">
       <div className="container-site max-w-2xl">
         <p className="label-caps !tracking-[0.14em] text-[#1A6E93]">One-time cleaning</p>
-        <h1 className="mt-3 text-[2.6rem] leading-[0.98] text-[#0C1215] [text-wrap:balance] md:text-[3.6rem]">Book a cleaning</h1>
+        <h1 className="mt-3 text-[2.6rem] leading-[0.98] text-[#0C1215] [text-wrap:balance] md:text-[3.6rem]">Get your price</h1>
         <p className="mt-5 text-lg leading-relaxed text-[#3B4247]">
-          Tell us what needs cleaning and where. You&apos;ll see what a house your size usually runs, then book a free quote visit or the cleaning itself.
+          Type your address and pick what needs cleaning. We look up your house and price it on the spot. Then pick a day.
         </p>
         <p className="mt-3 text-[15px] text-[#3B4247]">
           Rather just talk?{" "}
@@ -264,33 +295,18 @@ export default function BookPage() {
         </p>
 
         <form onSubmit={submit} className="mt-10 grid gap-5">
-          <Step n={1} title="What needs cleaning?">
-            <p className="-mt-2 mb-4 text-[15px] text-[#5F676C]">Pick as many as you like.</p>
-            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-              {SERVICES.map((s) => (
-                <Chip key={s.key} on={picked.includes(s.key)} onClick={() => toggle(s.key)}>
-                  <span className="flex w-full items-baseline justify-between gap-3">
-                    <span>{s.label}</span>
-                    <span className="shrink-0 text-[13px] font-normal text-[#5F676C]">
-                      {FROM[s.key] ? `from ${money(FROM[s.key]!)}` : "priced on site"}
-                    </span>
-                  </span>
-                </Chip>
-              ))}
-            </div>
-          </Step>
-
-          <Step n={2} title="Where's the house?">
+          <Step n={1} title="Where's the house?">
             <label htmlFor="address" className={label}>Address</label>
             <div className="mt-2 flex gap-2">
               <input
                 id="address"
                 className={input}
                 autoComplete="street-address"
-                placeholder="1234 SE Main St, Portland"
+                placeholder="1234 SW Main St, Tigard"
                 value={address}
                 onChange={(e) => { setAddress(e.target.value); if (lookup.state !== "idle") setLookup({ state: "idle" }); }}
                 onBlur={() => { if (lookup.state === "idle" && /\d+\s+\S+/.test(address)) findHouse(); }}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); findHouse(); } }}
                 required
               />
               <button type="button" onClick={findHouse} className="shrink-0 rounded-[10px] border-2 border-[#0C1215] bg-white px-4 text-[15px] font-semibold text-[#0C1215]">
@@ -298,132 +314,190 @@ export default function BookPage() {
               </button>
             </div>
 
-            {lookup.state === "found" && !editingSize && (
+            {lookup.state === "found" && !editingSize && sqft && (
               <div className="mt-4 rounded-[10px] bg-[#62C4EB]/25 p-4 text-[15px] text-[#0C1215]">
-                County records list this house at <strong>{Number(sqftText).toLocaleString("en-US")} sq ft</strong>
+                Found it: <strong>{sqft.toLocaleString("en-US")} sq ft</strong>
+                {outline.footprintSf ? <>, and we measured the roof and gutter line from above</> : null}.
                 <span className="block text-[13px] text-[#3B4247]">{lookup.matched}</span>
                 <button type="button" onClick={() => { setEditingSize(true); setSqftSource("owner"); }} className="mt-2 text-[14px] font-semibold underline">
-                  Not right? Change it
+                  Size not right? Change it
                 </button>
               </div>
             )}
 
             {(lookup.state === "missing" || editingSize) && (
               <div className="mt-4">
-                <label htmlFor="sqft" className={label}>
-                  {lookup.state === "missing" ? "We couldn't find this house in county records. About how many square feet is it?" : "How many square feet is it?"}
-                </label>
-                <div className="mt-2 flex flex-wrap items-center gap-2">
-                  <input
-                    id="sqft"
-                    inputMode="numeric"
-                    className={`${input} max-w-[180px]`}
-                    placeholder="2,100"
-                    value={sizeUnknown ? "" : sqftText}
-                    onChange={(e) => { setSqftText(e.target.value); setSizeUnknown(false); setSqftSource("owner"); }}
-                  />
-                  <Chip on={sizeUnknown} onClick={() => { setSizeUnknown(!sizeUnknown); setSqftText(""); }}>Not sure</Chip>
+                <p className={label}>
+                  {lookup.state === "missing" ? "We couldn't find this house in county records. About how big is it?" : "About how big is it?"}
+                </p>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  {SIZE_BANDS.map((b) => (
+                    <Chip key={b.sqft} on={sqft === b.sqft} onClick={() => { setSqft(b.sqft); setOutline({}); setSqftSource("owner"); setWindows(null); }}>
+                      {b.label}
+                    </Chip>
+                  ))}
                 </div>
               </div>
             )}
 
-            {lookup.state !== "idle" && lookup.state !== "looking" && (
+            {(lookup.state === "found" || lookup.state === "missing") && (
               <>
-                <p className="mt-5 text-[15px] font-semibold text-[#0C1215]">How many stories?</p>
+                <p className="mt-5 text-[15px] font-semibold text-[#0C1215]">
+                  {storiesGuessed ? "Looks like this many stories. Change it if not." : "How many stories?"}
+                </p>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {STORIES.map((s) => <Chip key={s.v} on={stories === s.v} onClick={() => setStories(s.v)}>{s.label}</Chip>)}
+                  {STORIES.map((s) => (
+                    <Chip key={s.v} on={stories === s.v} onClick={() => { setStories(s.v); setStoriesGuessed(false); }}>{s.label}</Chip>
+                  ))}
                 </div>
               </>
             )}
           </Step>
 
-          {picked.length > 0 && sizeAnswered && stories && (
-            <Step n={3} title={est ? "What a house this size usually runs" : "Your price"}>
-              {est ? (
-                <>
-                  <ul className="divide-y divide-[#E4DCCD]">
-                    {est.lines.map((l) => (
-                      <li key={l.key} className="flex items-baseline justify-between gap-4 py-2.5 text-[16px] text-[#0C1215]">
-                        <span>{l.label}</span>
-                        <span className="font-semibold tabular-nums">{money(l.low)} to {money(l.high)}</span>
-                      </li>
-                    ))}
-                    {est.unpriced.map((u) => (
-                      <li key={u} className="flex items-baseline justify-between gap-4 py-2.5 text-[16px] text-[#0C1215]">
-                        <span>{u}</span>
-                        <span className="text-[14px] text-[#5F676C]">priced on site</span>
-                      </li>
-                    ))}
-                  </ul>
-                  {est.lines.length > 1 && (
-                    <p className="mt-3 flex items-baseline justify-between gap-4 border-t-2 border-[#0C1215] pt-3 text-[18px] font-semibold text-[#0C1215]">
-                      <span>Together</span>
-                      <span className="tabular-nums">{money(est.low)} to {money(est.high)}</span>
-                    </p>
-                  )}
-                  <p className="mt-4 text-[15px] leading-relaxed text-[#3B4247]">
-                    This isn&apos;t your quote. We price by the exact square foot and by the condition, and nobody has seen the house yet. A roof with heavy
-                    moss, for example, can need more than one treatment. You get the exact price before any work starts.
-                  </p>
-                  {pair && pairEst && (
-                    <div className="mt-5 rounded-[12px] border-2 border-dashed border-[#0C1215]/30 p-4">
-                      <p className="text-[15px] leading-snug text-[#0C1215]">{pair.why}</p>
-                      <button
-                        type="button"
-                        onClick={() => { toggle(pair.key); vaTrack("Book add pairing", { add: pair.key, src }); }}
-                        className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-[10px] border-2 border-[#0C1215] bg-white px-4 text-[15px] font-semibold text-[#0C1215]"
-                      >
-                        <Plus className="h-4 w-4" aria-hidden /> Add {SERVICES.find((s) => s.key === pair.key)!.label.toLowerCase()}, usually{" "}
-                        {money(pairEst.low)} to {money(pairEst.high)}
-                      </button>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <p className="text-[16px] leading-relaxed text-[#3B4247]">
-                  We&apos;ll give you the exact price when we see the house. Book a free quote visit below, or book the cleaning and we&apos;ll confirm the
-                  price when we arrive, before any work starts.
+          <Step n={2} title="What needs cleaning?">
+            <div className="grid grid-cols-1 gap-2.5">
+              {SERVICES.map((s) => {
+                const on = picked.includes(s.key);
+                const price = house && s.priced ? servicePrice(s.key, house, choices) : null;
+                return (
+                  <div key={s.key} className={on ? "rounded-[14px] border-2 border-[#0C1215] p-1.5" : ""}>
+                    <Chip wide on={on} onClick={() => toggle(s.key)}>
+                      <span className="flex w-full items-baseline justify-between gap-3">
+                        <span>{s.label}</span>
+                        <span className="shrink-0 text-[14px] font-normal tabular-nums text-[#3B4247]">
+                          {!s.priced ? "priced when we see it" : price !== null ? money(price) : UNIT[s.key]}
+                        </span>
+                      </span>
+                    </Chip>
+
+                    {on && s.key === "roof-moss" && (
+                      <div className="px-2.5 pb-2 pt-3">
+                        <p className="text-[15px] font-semibold text-[#0C1215]">How much moss?</p>
+                        <div className="mt-2 grid gap-2">
+                          {(Object.keys(MOSS_LABEL) as Moss[]).map((m) => (
+                            <Chip key={m} on={moss === m} onClick={() => setMoss(m)}>
+                              <span><strong className="capitalize">{m}</strong>: {MOSS_LABEL[m].toLowerCase()}</span>
+                            </Chip>
+                          ))}
+                        </div>
+                        <p className="mt-2 text-[13px] text-[#5F676C]">Can&apos;t see the roof? Pick patchy. It&apos;s the most common.</p>
+                      </div>
+                    )}
+
+                    {on && s.key === "windows" && (
+                      <div className="flex flex-wrap items-center gap-3 px-2.5 pb-2 pt-3">
+                        <span className="text-[15px] text-[#0C1215]">
+                          {windows === null ? "About" : ""} <strong className="tabular-nums">{windowCount}</strong> windows{windows === null && house ? " for a house this size" : ""}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <button type="button" aria-label="One fewer window" onClick={() => setWindows(Math.max(1, windowCount - 1))} className="flex h-11 w-11 items-center justify-center rounded-[10px] border-2 border-[#0C1215] bg-white">
+                            <Minus className="h-4 w-4" aria-hidden />
+                          </button>
+                          <button type="button" aria-label="One more window" onClick={() => setWindows(windowCount + 1)} className="flex h-11 w-11 items-center justify-center rounded-[10px] border-2 border-[#0C1215] bg-white">
+                            <Plus className="h-4 w-4" aria-hidden />
+                          </button>
+                        </span>
+                      </div>
+                    )}
+
+                    {on && s.key === "driveway" && (
+                      <div className="px-2.5 pb-2 pt-3">
+                        <p className="text-[15px] font-semibold text-[#0C1215]">How big is the driveway?</p>
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {DRIVEWAYS.map((d) => <Chip key={d.v} on={driveway === d.v} onClick={() => setDriveway(d.v)}>{d.label}</Chip>)}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </Step>
+
+          {q && q.lines.length > 0 && !needsMoss && (
+            <Step n={3} title="Your price">
+              {founding && (
+                <p className="-mt-1 mb-3 inline-block rounded-full bg-[#F2B632] px-3 py-1 text-[13px] font-semibold text-[#0C1215]">
+                  Founding customer rate: {spotsLeft} of {FOUNDING_SPOTS} spots left
                 </p>
               )}
+              <ul className="divide-y divide-[#E4DCCD]">
+                {q.lines.map((l) => (
+                  <li key={l.key} className="flex items-baseline justify-between gap-4 py-2.5 text-[16px] text-[#0C1215]">
+                    <span>{l.key === "roof-moss" && moss ? `Roof moss (${moss})` : l.label}</span>
+                    <span className="tabular-nums">
+                      {founding && <s className="mr-2 text-[14px] text-[#5F676C]">{money(l.list)}</s>}
+                      <strong>{money(l.price)}</strong>
+                    </span>
+                  </li>
+                ))}
+                {q.unpriced.map((u) => (
+                  <li key={u} className="flex items-baseline justify-between gap-4 py-2.5 text-[16px] text-[#0C1215]">
+                    <span>{u}</span>
+                    <span className="text-[14px] text-[#5F676C]">priced when we see it</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 flex items-baseline justify-between gap-4 border-t-2 border-[#0C1215] pt-3 text-[20px] font-semibold text-[#0C1215]">
+                <span>Total</span>
+                <span className="tabular-nums">{money(total)}</span>
+              </p>
+
+              {q.minimumGap > 0 && (
+                <p className="mt-3 rounded-[10px] bg-[#62C4EB]/25 p-3 text-[15px] leading-snug text-[#0C1215]">
+                  Your cleaning comes to {money(q.subtotal)}. A visit starts at {money(VISIT_MIN)}, so add something below or keep it as is. If
+                  we&apos;re already working near you that day, we drop the minimum and you pay {money(q.subtotal)}. We&apos;ll tell you when we confirm your day.
+                </p>
+              )}
+
+              {pair && pairPrice !== null && (
+                <div className="mt-4 rounded-[12px] border-2 border-dashed border-[#0C1215]/30 p-4">
+                  <p className="text-[15px] leading-snug text-[#0C1215]">{pair.why}</p>
+                  <button
+                    type="button"
+                    onClick={() => { toggle(pair.key); vaTrack("Book add pairing", { add: pair.key, src }); }}
+                    className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-[10px] border-2 border-[#0C1215] bg-white px-4 text-[15px] font-semibold text-[#0C1215]"
+                  >
+                    <Plus className="h-4 w-4" aria-hidden /> Add {SERVICES.find((s) => s.key === pair.key)!.label.toLowerCase()} for {money(pairPrice)}
+                  </button>
+                </div>
+              )}
+
+              <p className="mt-4 text-[15px] leading-relaxed text-[#3B4247]">
+                We check the house when we arrive, before we start. If it needs more than you picked (thicker moss, say), we show you photos first.
+                The most it can go up is {money(CONDITION_CAP)}, and you can say no.
+              </p>
             </Step>
           )}
 
-          <Step n={picked.length > 0 && sizeAnswered && stories ? 4 : 3} title="How do you want to go ahead?">
-            <div className="grid gap-3 sm:grid-cols-2">
-              {([
-                ["visit", "Free quote visit", "Bri comes by, looks at the outside and gives you the exact price. You don't need to be home."],
-                ["book-cleaning", "Book the cleaning", "Pick a day. We confirm the price when we arrive, before any work starts."],
-              ] as const).map(([k, title, body]) => (
-                <button
-                  key={k}
-                  type="button"
-                  aria-pressed={wants === k}
-                  onClick={() => choose(k)}
-                  className={`rounded-[14px] border-2 p-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1A6E93] focus-visible:ring-offset-2 motion-reduce:transition-none ${
-                    wants === k ? "border-[#0C1215] bg-[#F2B632]" : "border-[#E4DCCD] bg-white hover:border-[#0C1215]"
-                  }`}
-                >
-                  <span className="flex items-center gap-2 text-[17px] font-semibold text-[#0C1215]">
-                    {wants === k && <Check className="h-4 w-4" aria-hidden />}
-                    {title}
-                  </span>
-                  <span className="mt-1 block text-[15px] leading-snug text-[#3B4247]">{body}</span>
-                </button>
-              ))}
-            </div>
-
-            {wants === "visit" && (
-              <div className="mt-6">
-                <p className="text-[15px] font-semibold text-[#0C1215]">Pick a day</p>
+          <Step n={q && q.lines.length > 0 && !needsMoss ? 4 : 3} title={wants === "visit" ? "Pick a time for Bri's visit" : "Pick a day"}>
+            {wants === "book-cleaning" ? (
+              <>
+                <div className="-mx-1 flex max-w-full gap-2 overflow-x-auto px-1 pb-2">
+                  {cleanDays.map((k) => (
+                    <Chip key={k} on={cleanDay === k} onClick={() => setCleanDay(k)}>
+                      <span className="whitespace-nowrap">{dayLabel(k)}</span>
+                    </Chip>
+                  ))}
+                </div>
+                <p className="mt-2 text-[15px] text-[#3B4247]">We&apos;ll text you a one-hour arrival window for that day.</p>
+                <p className="mt-4 text-[15px] text-[#3B4247]">
+                  Rather have Bri look at it first?{" "}
+                  <button type="button" onClick={() => { setWants("visit"); vaTrack("Book path", { path: "visit", src }); }} className="font-semibold text-[#0C1215] underline">
+                    Book a free quote visit
+                  </button>
+                  . You don&apos;t need to be home.
+                </p>
+              </>
+            ) : (
+              <>
                 {!slotsLoaded ? (
-                  <p className="mt-2 text-[15px] text-[#5F676C]">Loading openings…</p>
+                  <p className="text-[15px] text-[#5F676C]">Loading openings…</p>
                 ) : visitDays.length === 0 ? (
-                  <p className="mt-2 text-[15px] text-[#3B4247]">
-                    We couldn&apos;t load the calendar just now. Call or text {PHONE_DISPLAY} and we&apos;ll set it up.
-                  </p>
+                  <p className="text-[15px] text-[#3B4247]">We couldn&apos;t load the calendar just now. Call or text {PHONE_DISPLAY} and we&apos;ll set it up.</p>
                 ) : (
                   <>
-                    <div className="-mx-1 mt-2 flex max-w-full gap-2 overflow-x-auto px-1 pb-2">
+                    <div className="-mx-1 flex max-w-full gap-2 overflow-x-auto px-1 pb-2">
                       {visitDays.map((k) => (
                         <Chip key={k} on={dayKey === k} onClick={() => { setDayKey(k); setSlot(""); }}>
                           <span className="whitespace-nowrap">{dayLabel(k)}</span>
@@ -449,53 +523,28 @@ export default function BookPage() {
                     </div>
                   </>
                 )}
-                {SERVICES.some((s) => !picked.includes(s.key)) && (
-                  <>
-                    <p className="mt-6 text-[15px] font-semibold text-[#0C1215]">While Bri&apos;s there, want her to price anything else?</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {SERVICES.filter((s) => !picked.includes(s.key) && s.key !== "other").map((s) => (
-                        <Chip key={s.key} on={false} onClick={() => toggle(s.key)}>
-                          <Plus className="h-4 w-4" aria-hidden /> {s.label}
-                        </Chip>
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-
-            {wants === "book-cleaning" && (
-              <div className="mt-6">
-                <p className="text-[15px] font-semibold text-[#0C1215]">Pick a day</p>
-                <div className="-mx-1 mt-2 flex max-w-full gap-2 overflow-x-auto px-1 pb-2">
-                  {cleanDays.map((k) => (
-                    <Chip key={k} on={cleanDay === k} onClick={() => setCleanDay(k)}>
-                      <span className="whitespace-nowrap">{dayLabel(k)}</span>
-                    </Chip>
-                  ))}
-                </div>
-                <p className="mt-2 text-[15px] text-[#3B4247]">We&apos;ll text you to confirm a one-hour arrival window that day.</p>
-              </div>
-            )}
-
-            {wants && (
-              <>
-                <label htmlFor="notes" className={`${label} mt-6`}>
-                  Anything we should know? <span className="font-normal text-[#5F676C]">(optional)</span>
-                </label>
-                <textarea id="notes" rows={2} className={`${input} mt-2`} placeholder="Gate code, a dog in the yard, the side with the worst moss" value={notes} onChange={(e) => setNotes(e.target.value)} />
-                <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-[12px] border-2 border-[#E4DCCD] bg-white p-4">
-                  <input type="checkbox" className="mt-1 h-5 w-5 accent-[#0C1215]" checked={planToo} onChange={(e) => setPlanToo(e.target.checked)} />
-                  <span className="text-[15px] leading-snug text-[#0C1215]">
-                    <strong>Also price the yearly plan for my house.</strong>{" "}
-                    <span className="text-[#3B4247]">One visit each season, with the outside windows cleaned free at every one.</span>
-                  </span>
-                </label>
+                <p className="mt-5 text-[15px] text-[#3B4247]">
+                  <button type="button" onClick={() => setWants("book-cleaning")} className="font-semibold text-[#0C1215] underline">
+                    Book the cleaning instead
+                  </button>
+                </p>
               </>
             )}
+
+            <label htmlFor="notes" className={`${label} mt-6`}>
+              Anything we should know? <span className="font-normal text-[#5F676C]">(optional)</span>
+            </label>
+            <textarea id="notes" rows={2} className={`${input} mt-2`} placeholder="Gate code, a dog in the yard, the side with the worst moss" value={notes} onChange={(e) => setNotes(e.target.value)} />
+            <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-[12px] border-2 border-[#E4DCCD] bg-white p-4">
+              <input type="checkbox" className="mt-1 h-5 w-5 accent-[#0C1215]" checked={planToo} onChange={(e) => setPlanToo(e.target.checked)} />
+              <span className="text-[15px] leading-snug text-[#0C1215]">
+                <strong>Also price the yearly plan for my house.</strong>{" "}
+                <span className="text-[#3B4247]">One visit each season, with the outside windows cleaned free at every one.</span>
+              </span>
+            </label>
           </Step>
 
-          <Step n={picked.length > 0 && sizeAnswered && stories ? 5 : 4} title="Where should we confirm it?">
+          <Step n={q && q.lines.length > 0 && !needsMoss ? 5 : 4} title="Where should we text you?">
             <div className="grid gap-4">
               <div>
                 <label htmlFor="name" className={label}>First and last name</label>
@@ -514,28 +563,27 @@ export default function BookPage() {
             </div>
           </Step>
 
-          {/* What they're asking for, in one place, right above the button */}
           <div className="frame bg-[#62C4EB] p-5 text-[#0C1215] md:p-7">
-            <p className="label-caps !tracking-[0.14em]">Your request</p>
-            <p className="mt-2 text-[17px] font-semibold">{labels.length ? labels.join(", ") : "Pick what needs cleaning above"}</p>
-            {est && <p className="mt-1 text-[15px]">Usually {money(est.low)} to {money(est.high)} for a house this size</p>}
+            <p className="label-caps !tracking-[0.14em]">Your booking</p>
+            <p className="mt-2 text-[17px] font-semibold">
+              {picked.length ? SERVICES.filter((s) => picked.includes(s.key)).map((s) => s.label).join(", ") : "Pick what needs cleaning above"}
+              {wants === "book-cleaning" && total ? `: ${money(total)}` : ""}
+            </p>
             <p className="mt-1 text-[15px]">
               {wants === "visit"
                 ? slot ? `Free quote visit, ${longDate(slot)}, arriving ${arrivalWindow(slot)}` : "Free quote visit: pick a day and an arrival window above"
-                : wants === "book-cleaning"
-                  ? cleanDay ? `Cleaning on ${longDay(cleanDay)}. We'll text to confirm the arrival window.` : "Cleaning: pick a day above"
-                  : ""}
+                : cleanDay ? `Cleaning on ${longDay(cleanDay)}. We'll text your arrival window.` : "Pick a day above"}
             </p>
 
             {error && <p className="mt-4 rounded-[10px] bg-white p-3 text-[15px] text-[#B42318]">{error}</p>}
             <button type="submit" disabled={!ready || sending} className="btn-print mt-5 inline-flex min-h-[56px] w-full items-center justify-center gap-2 bg-[#F2B632] px-6 text-[#0C1215] disabled:cursor-not-allowed disabled:opacity-60">
-              {sending ? "Sending…" : wants === "book-cleaning" ? "Book my cleaning" : "Book my quote visit"}
+              {sending ? "Sending…" : wants === "visit" ? "Book my quote visit" : "Book my cleaning"}
               {!sending && <ArrowRight className="h-5 w-5" aria-hidden />}
             </button>
             <p className="mt-3 text-xs leading-relaxed text-[#0C1215]/80">
-              By submitting, you agree to receive calls and texts about your quote and appointment from Rinse It Off. Msg &amp; data rates may apply,
-              frequency varies. Reply STOP to opt out, HELP for help. See our{" "}
-              <a href="/privacy" className="underline">Privacy Policy</a> and <a href="/terms" className="underline">Terms</a>.
+              By submitting, you agree to receive calls and texts about your booking from Rinse It Off. Msg &amp; data rates may apply, frequency varies.
+              Reply STOP to opt out, HELP for help. See our <a href="/privacy" className="underline">Privacy Policy</a> and{" "}
+              <a href="/terms" className="underline">Terms</a>.
             </p>
           </div>
         </form>
