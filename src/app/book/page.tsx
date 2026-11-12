@@ -6,9 +6,9 @@ import { getFreeSlots, submitAssessmentForm } from "../assessment/actions";
 import { lookupHouse } from "./actions";
 import { arrivalWindow } from "@/lib/appointment-time.mjs";
 import {
-  CONDITION_CAP, DRIVEWAY_SF, FLOOR, MOSS_LABEL, RATE, SERVICES, SIZE_BANDS, VISIT_MIN,
+  CONDITION_CAP, DRIVEWAY_SF, FLOOR, HARD, MOSS_LABEL, RATE, SAME_VISIT_OFF, SERVICES, SIZE_BANDS, VISIT_MIN,
   guessStories, measure, pairing, quote, servicePrice,
-  type Choices, type Driveway, type House, type Moss, type ServiceKey, type Stories,
+  type Choices, type Driveway, type Hard, type House, type Moss, type ServiceKey, type Stories,
 } from "@/lib/one-time-estimate";
 
 /** One-time cleaning: address (size and outline from public records) → what needs
@@ -21,11 +21,14 @@ import {
 const PHONE = "+19716264146";
 const PHONE_DISPLAY = "(971) 626-4146";
 const TZ = "America/Los_Angeles";
-const STORIES: { v: Stories; label: string }[] = [
+const STORIES: { v: Stories | 4; label: string }[] = [
   { v: 1, label: "1 story" },
   { v: 2, label: "2 stories" },
-  { v: 3, label: "3 or more" },
+  { v: 3, label: "3 stories" },
+  { v: 4, label: "4 or more" },
 ];
+const ASK_HARD: Hard[] = ["slope", "lift", "surface"]; // "tall" comes from the stories answer
+const andList = (a: string[]) => (a.length < 2 ? a.join("") : `${a.slice(0, -1).join(", ")} and ${a[a.length - 1]}`).toLowerCase();
 const DRIVEWAYS: { v: Driveway; label: string }[] = [
   { v: "small", label: "Small" },
   { v: "typical", label: "Two-car" },
@@ -103,7 +106,8 @@ export default function BookPage() {
   const [sqftSource, setSqftSource] = useState<"county" | "owner">("owner");
   const [outline, setOutline] = useState<{ footprintSf?: number; perimeterFt?: number }>({});
   const [editingSize, setEditingSize] = useState(false);
-  const [stories, setStories] = useState<Stories | null>(null);
+  const [stories, setStories] = useState<Stories | 4 | null>(null);
+  const [hard, setHard] = useState<Hard[]>([]);
   const [storiesGuessed, setStoriesGuessed] = useState(false);
   const [picked, setPicked] = useState<ServiceKey[]>([]);
   const [moss, setMoss] = useState<Moss | null>(null);
@@ -151,15 +155,18 @@ export default function BookPage() {
   const cleanDays = useMemo(cleaningDays, []);
   const toggle = (k: ServiceKey) => setPicked((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
 
-  const house: House | null = sqft && stories ? { sqft, stories, ...outline } : null;
+  const house: House | null = sqft && stories ? { sqft, stories: Math.min(stories, 3) as Stories, ...outline } : null;
+  const hardAll: Hard[] = stories === 4 ? ["tall", ...hard] : hard;
+  const fromPhotos = new Set(hardAll.flatMap((h) => HARD[h].reviews));
   const windowCount = windows ?? (house ? measure(house).windows : 12);
-  const choices: Choices = { moss: moss ?? "patchy", windows: windowCount, driveway };
+  const choices: Choices = { moss: moss ?? "patchy", windows: windowCount, driveway, hard: hardAll };
   const q = house ? quote(house, picked, choices) : null;
   const total = q ? q.total : 0;
   const pair = q && q.lines.length ? pairing(picked) : null;
   // what adding it really costs: its price less the same-visit savings, never below 0
   const pairPrice = pair && house ? quote(house, [...picked, pair.key], choices).total - total : null;
   const needsMoss = picked.includes("roof-moss") && !moss;
+  const showPrice = !!q && (q.lines.length > 0 || q.review.length > 0) && !needsMoss;
 
   const findHouse = async () => {
     if (!address.trim() || lookup.state === "looking") return;
@@ -255,7 +262,11 @@ export default function BookPage() {
             )}
             <div className="mt-7 rounded-[12px] bg-[#62C4EB]/25 p-5">
               <p className="font-semibold text-[#0C1215]">Have photos of the house?</p>
-              <p className="mt-1 text-[#3B4247]">Text them to us. A couple of pictures of the worst spots helps us bring the right gear.</p>
+              <p className="mt-1 text-[#3B4247]">
+                {q?.review.length
+                  ? `Text us a photo of each side of the house so we can price the ${andList(q.review)}. You approve that price before it's added.`
+                  : "Text them to us. A couple of pictures of the worst spots helps us bring the right gear."}
+              </p>
               <a
                 href={`sms:${PHONE}?&body=${photoText}`}
                 onClick={() => vaTrack("Book photos", { src })}
@@ -348,6 +359,14 @@ export default function BookPage() {
                     <Chip key={s.v} on={stories === s.v} onClick={() => { setStories(s.v); setStoriesGuessed(false); }}>{s.label}</Chip>
                   ))}
                 </div>
+                <p className="mt-5 text-[15px] font-semibold text-[#0C1215]">Any of these at your house? Skip it if not.</p>
+                <div className="mt-2 grid gap-2">
+                  {ASK_HARD.map((h) => (
+                    <Chip key={h} on={hard.includes(h)} onClick={() => setHard((x) => (x.includes(h) ? x.filter((y) => y !== h) : [...x, h]))}>
+                      {HARD[h].label}
+                    </Chip>
+                  ))}
+                </div>
               </>
             )}
           </Step>
@@ -362,8 +381,8 @@ export default function BookPage() {
                     <Chip wide on={on} onClick={() => toggle(s.key)}>
                       <span className="flex w-full items-baseline justify-between gap-3">
                         <span>{s.label}</span>
-                        <span className="shrink-0 text-[14px] font-normal tabular-nums text-[#3B4247]">
-                          {!s.priced ? "priced when we see it" : price !== null ? money(price) : UNIT[s.key]}
+                        <span className="max-w-[55%] text-right text-[14px] font-normal tabular-nums text-[#3B4247]">
+                          {!s.priced ? "priced when we see it" : fromPhotos.has(s.key) ? "priced from photos" : price !== null ? money(price) : UNIT[s.key]}
                         </span>
                       </span>
                     </Chip>
@@ -412,7 +431,7 @@ export default function BookPage() {
             </div>
           </Step>
 
-          {q && q.lines.length > 0 && !needsMoss && (
+          {q && showPrice && (
             <Step n={3} title="Your price">
               <ul className="divide-y divide-[#E4DCCD]">
                 {q.lines.map((l) => (
@@ -427,6 +446,12 @@ export default function BookPage() {
                     <span className="whitespace-nowrap tabular-nums"><strong>&minus;{money(q.sameVisitOff)}</strong></span>
                   </li>
                 )}
+                {q.review.map((u) => (
+                  <li key={u} className="flex items-baseline justify-between gap-4 py-2.5 text-[16px] text-[#0C1215]">
+                    <span>{u}</span>
+                    <span className="text-[14px] text-[#5F676C]">priced from photos</span>
+                  </li>
+                ))}
                 {q.unpriced.map((u) => (
                   <li key={u} className="flex items-baseline justify-between gap-4 py-2.5 text-[16px] text-[#0C1215]">
                     <span>{u}</span>
@@ -434,10 +459,29 @@ export default function BookPage() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-3 flex items-baseline justify-between gap-4 border-t-2 border-[#0C1215] pt-3 text-[20px] font-semibold text-[#0C1215]">
-                <span>Total</span>
-                <span className="tabular-nums">{money(total)}</span>
-              </p>
+              {q.lines.length > 0 && (
+                <p className="mt-3 flex items-baseline justify-between gap-4 border-t-2 border-[#0C1215] pt-3 text-[20px] font-semibold text-[#0C1215]">
+                  <span>{q.review.length ? "Total so far" : "Total"}</span>
+                  <span className="tabular-nums">{money(total)}</span>
+                </p>
+              )}
+
+              {q.review.length > 0 && (
+                <div className="mt-3 rounded-[10px] bg-[#62C4EB]/25 p-3 text-[15px] leading-snug text-[#0C1215]">
+                  <p>
+                    On a house like this, the {andList(q.review)} can need a different setup, so we price {q.review.length > 1 ? "them" : "it"} from photos.
+                    Text us a photo of each side of the house and we&apos;ll text back a fixed price within one business day. Nothing is added until you say yes
+                    {q.lines.length > 0 ? `, and the ${money(SAME_VISIT_OFF)} off for one visit applies if you add it` : ""}.
+                  </p>
+                  <a
+                    href={`sms:${PHONE}?&body=${photoText}`}
+                    onClick={() => vaTrack("Book photos for price", { src })}
+                    className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-[10px] border-2 border-[#0C1215] bg-white px-4 text-[15px] font-semibold"
+                  >
+                    <MessageSquare className="h-4 w-4" aria-hidden /> Text us photos
+                  </a>
+                </div>
+              )}
 
               {q.minimumGap > 0 && (
                 <p className="mt-3 rounded-[10px] bg-[#62C4EB]/25 p-3 text-[15px] leading-snug text-[#0C1215]">
@@ -459,14 +503,14 @@ export default function BookPage() {
                 </div>
               )}
 
-              <p className="mt-4 text-[15px] leading-relaxed text-[#3B4247]">
+              {q.lines.length > 0 && <p className="mt-4 text-[15px] leading-relaxed text-[#3B4247]">
                 We check the house when we arrive, before we start. If it needs more than you picked (thicker moss, say), we show you photos first.
                 The most it can go up is {money(CONDITION_CAP)}, and you can say no.
-              </p>
+              </p>}
             </Step>
           )}
 
-          <Step n={q && q.lines.length > 0 && !needsMoss ? 4 : 3} title={wants === "visit" ? "Pick a time for Bri's visit" : "Pick a day"}>
+          <Step n={showPrice ? 4 : 3} title={wants === "visit" ? "Pick a time for Bri's visit" : "Pick a day"}>
             {wants === "book-cleaning" ? (
               <>
                 <div className="-mx-1 flex max-w-full gap-2 overflow-x-auto px-1 pb-2">

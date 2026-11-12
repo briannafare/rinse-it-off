@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
 import { appointmentWindow } from "@/lib/appointment-time.mjs";
 import { cleanRange } from "../plan/pricing";
-import { CONDITION_CAP, VISIT_MIN, quote, type Choices, type House, type ServiceKey } from "@/lib/one-time-estimate";
+import { CONDITION_CAP, HARD, SAME_VISIT_OFF, VISIT_MIN, quote, type Choices, type House, type ServiceKey } from "@/lib/one-time-estimate";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -149,8 +149,8 @@ export async function submitAssessmentForm(
     if (once?.stories) notesLines.push(`Stories: ${once.stories}`);
     const priced = once?.price ? quote(once.price.house, once.price.picked, once.price.choices) : null;
     const total = priced?.total ?? 0;
+    const $ = (n: number) => `$${n.toLocaleString("en-US")}`;
     if (priced?.lines.length) {
-      const $ = (n: number) => `$${n.toLocaleString("en-US")}`;
       notesLines.push(
         `PRICE SHOWN: ${priced.lines.map((l) => `${l.label} ${$(l.price)}`).join(", ")}` +
           (priced.sameVisitOff ? `, less ${$(priced.sameVisitOff)} for one visit` : "") +
@@ -166,6 +166,10 @@ export async function submitAssessmentForm(
         once!.price!.house.footprintSf && `measured outline ${once!.price!.house.footprintSf} sq ft, ${once!.price!.house.perimeterFt} ft around`,
       ].filter(Boolean);
       if (extras.length) notesLines.push(`They picked: ${extras.join("; ")}`);
+    }
+    if (priced?.review.length) {
+      const why = (once!.price!.choices.hard ?? []).filter((h) => h in HARD).map((h) => HARD[h].label.toLowerCase()).join("; ");
+      notesLines.push(`PRICE FROM PHOTOS: ${priced.review.join(", ")} (${why}). Get a photo of each side, text them a fixed price within one business day, and add it only with their OK. The ${$(SAME_VISIT_OFF)} one-visit discount applies if they add it.`);
     }
     if (once?.planToo) notesLines.push("Also wants the yearly plan priced.");
     if (data.message) notesLines.push(`Notes: ${data.message}`);

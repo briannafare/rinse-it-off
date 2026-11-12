@@ -25,4 +25,11 @@ assert.equal(rw.total, rw.subtotal - SAME_VISIT_OFF);
 // the roof job already flushes gutters: a full clean on top is half price
 const rg = quote(two, ["roof-moss", "gutters"], c);
 assert.equal(rg.lines.find((l) => l.key === "gutters")!.price, Math.round(p("gutters", two) / 2 / 5) * 5);
+// harder houses: the affected work is priced from photos, the rest stays instant
+const hill = quote(two, ["roof-moss", "gutters", "windows"], { ...c, hard: ["slope"] });
+assert.deepEqual(hill.lines.map((l) => l.key), ["windows"]);
+assert.deepEqual(hill.review, ["Roof moss", "Gutters"]);
+assert.equal(hill.total, VISIT_MIN); // 20 windows alone, $220, raised to the minimum
+const shake = quote(two, ["roof-moss", "gutters"], { ...c, hard: ["surface"] });
+assert.equal(shake.lines[0].price, p("gutters", two)); // roof not priced yet, so no half-price gutters
 console.log("one-time prices ok", { roof2: roof("patchy"), wash2: p("house-wash", two), gutters2: p("gutters", two), roofPlusGutters2: rg.total, windows13alone: w.total });

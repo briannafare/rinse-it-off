@@ -59,7 +59,20 @@ export interface House {
   footprintSf?: number; // measured building outline, when Metro has it
   perimeterFt?: number;
 }
-export interface Choices { moss: Moss; windows: number; driveway: Driveway }
+export interface Choices { moss: Moss; windows: number; driveway: Driveway; hard?: Hard[] }
+
+/** Houses that take a different setup (Bri 2026-11-12: four stories on forested hillsides, no room
+ *  for the lift, delicate surfaces). The services each one affects get a fixed price from photos
+ *  instead of an instant one; everything else stays instant. CONDITION_CAP is only for ordinary
+ *  variation. SuperMe panel 2026-11-12: https://superme.ai/chat/2h5e3glcc8jhnwvtfyqdd */
+export type Hard = "tall" | "slope" | "lift" | "surface";
+const UP_HIGH: ServiceKey[] = ["roof-moss", "gutters", "house-wash"];
+export const HARD: Record<Hard, { label: string; reviews: ServiceKey[] }> = {
+  tall: { label: "Four or more stories", reviews: UP_HIGH },
+  slope: { label: "Steep slope or hillside around the house", reviews: UP_HIGH },
+  lift: { label: "Trees, wires or no level spot to park a lift near the house", reviews: UP_HIGH },
+  surface: { label: "Cedar shake, tile, stucco or old paint", reviews: ["roof-moss", "house-wash"] },
+};
 
 /** Roof, gutter and window quantities for the house. Uses the measured outline when we
  *  have it, else a footprint from living area (plus a garage). */
@@ -100,6 +113,7 @@ export function servicePrice(key: ServiceKey, h: House, c: Choices): number | nu
 export interface Quote {
   lines: { key: ServiceKey; label: string; price: number }[];
   unpriced: string[];
+  review: string[]; // priced from photos (HARD), not in the total
   subtotal: number;
   sameVisitOff: number; // SAME_VISIT_OFF when two or more priced services, else 0
   minimumGap: number; // what's left to reach VISIT_MIN on a normal day (0 if covered)
@@ -107,8 +121,10 @@ export interface Quote {
 }
 
 export function quote(h: House, picked: ServiceKey[], c: Choices): Quote {
-  const roof = picked.includes("roof-moss");
-  const lines = SERVICES.filter((s) => picked.includes(s.key) && s.priced).map((s) => {
+  const review = new Set((c.hard ?? []).flatMap((h) => HARD[h]?.reviews ?? [])); // hard comes from the browser
+  const instant = (k: ServiceKey) => picked.includes(k) && !review.has(k);
+  const roof = instant("roof-moss");
+  const lines = SERVICES.filter((s) => instant(s.key) && s.priced).map((s) => {
     const alone = servicePrice(s.key, h, c)!;
     return s.key === "gutters" && roof
       ? { key: s.key, label: "Full gutter clean, added to the roof", price: round5(alone * ROOF_GUTTER_SHARE) }
@@ -120,6 +136,7 @@ export function quote(h: House, picked: ServiceKey[], c: Choices): Quote {
   return {
     lines,
     unpriced: SERVICES.filter((s) => picked.includes(s.key) && !s.priced).map((s) => s.label),
+    review: SERVICES.filter((s) => picked.includes(s.key) && s.priced && review.has(s.key)).map((s) => s.label),
     subtotal,
     sameVisitOff,
     minimumGap: lines.length ? Math.max(0, VISIT_MIN - net) : 0,
