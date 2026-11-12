@@ -9,7 +9,8 @@
  *  Peter Kazanjy, 2026-11-11, https://superme.ai/chat/2h598f3u9at2azopcmxvp). No minimum on a day
  *  the crew is already nearby. Condition can move the price by at most CONDITION_CAP, and only
  *  with the homeowner's OK. The text assistant and phone receptionist price guides
- *  (~/tools/rinse-it-off-ghl/) must match these numbers. */
+ *  (~/tools/rinse-it-off-ghl/) must match these numbers: scripts/print-price-guide.mts prints them.
+ *  Windows: Bri 2026-11-12, 2-3 minutes a window with the water-fed pole, so ~20 an hour. */
 import { includedWindows } from "@/app/plan/pricing";
 
 export type ServiceKey = "roof-moss" | "house-wash" | "gutters" | "driveway" | "windows" | "deck-fence" | "other";
