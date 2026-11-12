@@ -3,18 +3,18 @@ import { useEffect, useMemo, useState } from "react";
 import { track as vaTrack } from "@vercel/analytics";
 import { ArrowRight, Check, MessageSquare, Minus, Phone, Plus } from "lucide-react";
 import { getFreeSlots, submitAssessmentForm } from "../assessment/actions";
-import { foundingLeft, lookupHouse } from "./actions";
+import { lookupHouse } from "./actions";
 import { arrivalWindow } from "@/lib/appointment-time.mjs";
 import {
-  CONDITION_CAP, FLOOR, FOUNDING_SPOTS, MOSS_LABEL, RATE, SERVICES, SIZE_BANDS, VISIT_MIN,
+  CONDITION_CAP, DRIVEWAY_SF, FLOOR, MOSS_LABEL, RATE, SERVICES, SIZE_BANDS, VISIT_MIN,
   guessStories, measure, pairing, quote, servicePrice,
   type Choices, type Driveway, type House, type Moss, type ServiceKey, type Stories,
 } from "@/lib/one-time-estimate";
 
 /** One-time cleaning: address (size and outline from public records) → what needs
  *  cleaning, priced for that house → one total → a day → name and mobile.
- *  Bri 2026-11-11: a real number, not a range plus "book a visit"; competitive founding
- *  rates; no $500 for ten windows; few questions. Condition can move the price by at most
+ *  Bri 2026-11-11: a real number, not a range plus "book a visit"; priced from crew cost and
+ *  local competitors; no $500 for ten windows; few questions. Condition can move the price by at most
  *  CONDITION_CAP, with their OK. A free quote visit stays available as the second path.
  *  Writes into GHL through the /assessment action, which recomputes the price. */
 
@@ -39,7 +39,7 @@ const UNIT: Partial<Record<ServiceKey, string>> = {
   gutters: `$${RATE.gutterLf.toFixed(2)} a foot`,
   "house-wash": `from ${money(FLOOR["house-wash"]!)}`,
   windows: `${money(RATE.window)} a window`,
-  driveway: "from $115",
+  driveway: `from ${money(Math.round((DRIVEWAY_SF.small * RATE.concreteSf) / 5) * 5)}`,
 };
 
 function dayLabel(key: string) {
@@ -119,7 +119,6 @@ export default function BookPage() {
   const [notes, setNotes] = useState("");
   const [planToo, setPlanToo] = useState(false);
   const [contact, setContact] = useState({ name: "", phone: "", email: "" });
-  const [spotsLeft, setSpotsLeft] = useState<number | null>(null);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
@@ -135,7 +134,6 @@ export default function BookPage() {
     const w = window as unknown as { va?: (...a: unknown[]) => void; vaq?: unknown[][] };
     w.va ??= (...a: unknown[]) => { (w.vaq ??= []).push(a); };
     vaTrack("Book visit", { src: s });
-    foundingLeft().then(setSpotsLeft).catch(() => setSpotsLeft(null));
   }, []);
 
   // Quote-visit openings load only if they ask for a visit.
@@ -157,10 +155,10 @@ export default function BookPage() {
   const windowCount = windows ?? (house ? measure(house).windows : 12);
   const choices: Choices = { moss: moss ?? "patchy", windows: windowCount, driveway };
   const q = house ? quote(house, picked, choices) : null;
-  const total = q && q.lines.length ? Math.max(q.subtotal, VISIT_MIN) : 0;
+  const total = q ? q.total : 0;
   const pair = q && q.lines.length ? pairing(picked) : null;
-  const pairPrice = pair && house ? servicePrice(pair.key, house, choices) : null;
-  const founding = spotsLeft !== null && spotsLeft > 0;
+  // what adding it really costs: its price less the same-visit savings, never below 0
+  const pairPrice = pair && house ? quote(house, [...picked, pair.key], choices).total - total : null;
   const needsMoss = picked.includes("roof-moss") && !moss;
 
   const findHouse = async () => {
@@ -215,7 +213,7 @@ export default function BookPage() {
         home: wants === "visit" && home ? home : undefined,
         preferredDay: wants === "book-cleaning" && cleanDay ? longDay(cleanDay) : undefined,
         planToo,
-        price: house ? { house, picked, choices, founding } : undefined,
+        price: house ? { house, picked, choices } : undefined,
       },
     });
     setSending(false);
@@ -416,21 +414,19 @@ export default function BookPage() {
 
           {q && q.lines.length > 0 && !needsMoss && (
             <Step n={3} title="Your price">
-              {founding && (
-                <p className="-mt-1 mb-3 inline-block rounded-full bg-[#F2B632] px-3 py-1 text-[13px] font-semibold text-[#0C1215]">
-                  Founding customer rate: {spotsLeft} of {FOUNDING_SPOTS} spots left
-                </p>
-              )}
               <ul className="divide-y divide-[#E4DCCD]">
                 {q.lines.map((l) => (
                   <li key={l.key} className="flex items-baseline justify-between gap-4 py-2.5 text-[16px] text-[#0C1215]">
-                    <span>{l.key === "roof-moss" && moss ? `Roof moss (${moss})` : l.label}</span>
-                    <span className="tabular-nums">
-                      {founding && <s className="mr-2 text-[14px] text-[#5F676C]">{money(l.list)}</s>}
-                      <strong>{money(l.price)}</strong>
-                    </span>
+                    <span>{l.key === "roof-moss" && moss ? `Roof moss (${moss}), gutters flushed after` : l.label}</span>
+                    <span className="tabular-nums"><strong>{money(l.price)}</strong></span>
                   </li>
                 ))}
+                {q.sameVisitOff > 0 && (
+                  <li className="flex items-baseline justify-between gap-4 py-2.5 text-[16px] text-[#0C1215]">
+                    <span>All on one visit</span>
+                    <span className="whitespace-nowrap tabular-nums"><strong>&minus;{money(q.sameVisitOff)}</strong></span>
+                  </li>
+                )}
                 {q.unpriced.map((u) => (
                   <li key={u} className="flex items-baseline justify-between gap-4 py-2.5 text-[16px] text-[#0C1215]">
                     <span>{u}</span>
@@ -445,12 +441,12 @@ export default function BookPage() {
 
               {q.minimumGap > 0 && (
                 <p className="mt-3 rounded-[10px] bg-[#62C4EB]/25 p-3 text-[15px] leading-snug text-[#0C1215]">
-                  Your cleaning comes to {money(q.subtotal)}. A visit starts at {money(VISIT_MIN)}, so add something below or keep it as is. If
-                  we&apos;re already working near you that day, we drop the minimum and you pay {money(q.subtotal)}. We&apos;ll tell you when we confirm your day.
+                  Your cleaning comes to {money(VISIT_MIN - q.minimumGap)}. A visit starts at {money(VISIT_MIN)}, so add something below or keep it as is. If
+                  we&apos;re already working near you that day, we drop the minimum and you pay {money(VISIT_MIN - q.minimumGap)}. We&apos;ll tell you when we confirm your day.
                 </p>
               )}
 
-              {pair && pairPrice !== null && (
+              {pair && pairPrice !== null && pairPrice > 0 && (
                 <div className="mt-4 rounded-[12px] border-2 border-dashed border-[#0C1215]/30 p-4">
                   <p className="text-[15px] leading-snug text-[#0C1215]">{pair.why}</p>
                   <button

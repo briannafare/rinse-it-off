@@ -4,8 +4,6 @@
  *  Clackamas). Free and keyless. Clark County and anything outside the three counties
  *  comes back empty, and the page then asks the homeowner for their own number. */
 
-import { FOUNDING_SPOTS } from "@/lib/one-time-estimate";
-
 const RLIS = "https://services2.arcgis.com/McQ0OlIABe29rJJy/arcgis/rest/services/Taxlots_(Public)/FeatureServer/3/query";
 // Metro's building outlines: ground area and perimeter, so roof and gutters are measured, not guessed.
 const FOOTPRINTS = "https://services2.arcgis.com/McQ0OlIABe29rJJy/arcgis/rest/services/Building_Footprint_Database/FeatureServer/8/query";
@@ -53,27 +51,6 @@ async function outline(lot: Lot): Promise<{ footprintSf: number; perimeterFt: nu
     // ponytail: a building far bigger than the house is a neighbor or an apartment block; fall back to living area
     if (!big || big.Shape__Area < 400 || big.Shape__Area > lot.BLDGSQFT * 2 + 1500) return null;
     return { footprintSf: Math.round(big.Shape__Area), perimeterFt: Math.round(big.Shape__Length) };
-  } catch {
-    return null;
-  }
-}
-
-/** How many founding-rate spots are left: FOUNDING_SPOTS minus contacts tagged founding-rate.
- *  Null when GHL can't be read, so the page never shows a made-up number. */
-export async function foundingLeft(): Promise<number | null> {
-  const key = process.env.GHL_API_KEY, loc = process.env.GHL_LOCATION_ID;
-  if (!key || !loc) return null;
-  try {
-    const r = await fetch("https://services.leadconnectorhq.com/contacts/search", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${key}`, Version: "2021-07-28", "Content-Type": "application/json" },
-      body: JSON.stringify({ locationId: loc, pageLimit: 1, filters: [{ field: "tags", operator: "contains", value: "founding-rate" }] }),
-      next: { revalidate: 300 },
-      signal: AbortSignal.timeout(5000),
-    });
-    if (!r.ok) return null;
-    const total = ((await r.json()) as { total?: number }).total;
-    return typeof total === "number" ? Math.max(0, FOUNDING_SPOTS - total) : null;
   } catch {
     return null;
   }

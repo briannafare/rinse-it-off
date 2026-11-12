@@ -63,7 +63,7 @@ export interface AssessmentFormData {
     sqft?: number; sqftSource?: "county" | "owner"; stories?: string;
     home?: "home" | "walk-around"; preferredDay?: string; planToo?: boolean;
     // what the page priced; recomputed here so the CRM never trusts the browser's number
-    price?: { house: House; picked: ServiceKey[]; choices: Choices; founding: boolean };
+    price?: { house: House; picked: ServiceKey[]; choices: Choices };
   };
 }
 
@@ -148,12 +148,14 @@ export async function submitAssessmentForm(
     if (once?.sqft) notesLines.push(`House size: ${once.sqft.toLocaleString("en-US")} sq ft (${once.sqftSource === "county" ? "county records" : "they typed it"})`);
     if (once?.stories) notesLines.push(`Stories: ${once.stories}`);
     const priced = once?.price ? quote(once.price.house, once.price.picked, once.price.choices) : null;
-    const total = priced?.lines.length ? Math.max(priced.subtotal, VISIT_MIN) : 0;
+    const total = priced?.total ?? 0;
     if (priced?.lines.length) {
       const $ = (n: number) => `$${n.toLocaleString("en-US")}`;
       notesLines.push(
-        `PRICE SHOWN${once!.price!.founding ? " (founding rate)" : ""}: ${priced.lines.map((l) => `${l.label} ${$(l.price)}`).join(", ")}. Total ${$(total)}` +
-          (priced.minimumGap ? ` (${$(priced.subtotal)} plus the ${$(VISIT_MIN)} visit minimum; drop it if the crew is nearby that day)` : "") +
+        `PRICE SHOWN: ${priced.lines.map((l) => `${l.label} ${$(l.price)}`).join(", ")}` +
+          (priced.sameVisitOff ? `, less ${$(priced.sameVisitOff)} for one visit` : "") +
+          `. Total ${$(total)}` +
+          (priced.minimumGap ? ` (${$(VISIT_MIN - priced.minimumGap)} raised to the ${$(VISIT_MIN)} visit minimum; drop it if the crew is nearby that day)` : "") +
           `. Condition can add up to ${$(CONDITION_CAP)}, only with their OK.`,
       );
       const c = once!.price!.choices;
@@ -191,8 +193,6 @@ export async function submitAssessmentForm(
         isCommercial ? "lead-com" : "lead-res",
         ...(seen ? ["plan-range-shown"] : []),
         ...(once ? ["one-time-clean", once.wants === "visit" ? "quote-visit" : "book-cleaning", ...(once.planToo ? ["plan-interest"] : [])] : []),
-        // a founding spot is taken by a booked cleaning at the founding rate (the /book counter reads this tag)
-        ...(once?.wants === "book-cleaning" && once.price?.founding && total ? ["founding-rate"] : []),
         ...(flagged ? ["needs-review"] : []),
       ],
       customFields,
