@@ -139,6 +139,7 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     estimate: fail("Not attempted"),
     sent: fail("Not attempted"),
     tag: fail("Not attempted"),
+    note: fail("Not attempted"),
   };
 
   if (!(await isQuoteAuthed())) {
@@ -150,7 +151,7 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     return result;
   }
 
-  const { contact, propertyType, lineItems, discountPercent, discountReason, total } = payload;
+  const { contact, propertyType, lineItems, discountPercent, discountReason, total, sendToClient } = payload;
   const isResidential = propertyType === "residential";
   const nameParts = contact.name.trim().split(" ");
   const firstName = nameParts[0] || "";
@@ -233,9 +234,37 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     }
   }
 
+  // 2b) Note on the contact: everything from this quote in one place, with links to every
+  //     original photo and video (Bri 2026-11-13: "need all this info saved somewhere").
+  try {
+    const $ = (n: number) => `$${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const body = [
+      `QUOTE ${payload.quoteNumber} · ${contact.address || "no address"} · ${propertyType}`,
+      `Total ${$(total)}${sendToClient ? " (sent to client)" : " (draft, not sent)"}`,
+      "",
+      ...lineItems.map((i) => `${i.description}: ${i.name} — ${i.qty > 1 ? `${i.qty} × ` : ""}${$(i.unitPrice)}`),
+      discountPercent > 0 ? `Discount ${discountPercent}%: ${discountReason}` : "",
+      payload.pricingNote ? `\nHow it was priced: ${payload.pricingNote}` : "",
+      payload.summary ? `\nWhat the photos show: ${payload.summary}` : "",
+      payload.notes ? `\nField notes: ${payload.notes}` : "",
+      payload.files.length ? `\nPhotos and video (${payload.files.length}):` : "\nNo original files saved.",
+      ...payload.files.map((f) => `${f.kind === "video" ? "Video" : "Photo"} ${f.name}: ${f.url}`),
+    ].filter((l) => l !== "").join("\n");
+    const res = await fetch(`${GHL_API_BASE}/contacts/${contactId}/notes`, { method: "POST", headers: ghlHeaders, body: JSON.stringify({ body }) });
+    result.note = res.ok ? { status: "ok", detail: `${payload.files.length} file link${payload.files.length === 1 ? "" : "s"} on the contact` } : fail(`Note failed (${res.status})`);
+    if (!res.ok) console.error("GHL note failed:", res.status, await res.text());
+  } catch (e) {
+    console.error("GHL note error:", e);
+    result.note = fail("Note failed — network error");
+  }
+
   // 3) Create estimate.
   const now = new Date();
   const expiry = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // Quote valid 30 days
+  // Credits (same-visit savings) can't be estimate lines in GHL, so everything below the
+  // positive lines goes out as one fixed discount that lands on the same total.
+  const positive = lineItems.reduce((t, i) => t + Math.max(0, i.qty * i.unitPrice), 0);
+  const hasCredit = lineItems.some((i) => i.qty * i.unitPrice < 0);
   const items = lineItems
     .filter((i) => i.unitPrice > 0 || i.qty * i.unitPrice > 0)
     .map((i) => ({
@@ -244,6 +273,7 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
       currency: "USD",
       qty: i.qty,
       amount: i.unitPrice,
+      type: "one_time", // GHL rejects estimate items without it (found 2026-11-13)
     }));
   const sentTo: Record<string, string[]> = {};
   if (contact.email) sentTo.email = [contact.email];
@@ -256,6 +286,7 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     title: "ESTIMATE",
     currency: "USD",
     liveMode: true,
+    frequencySettings: { enabled: false }, // required by GHL since this tool was built (422 without it)
     issueDate: isoDate(now),
     expiryDate: isoDate(expiry),
     businessDetails: { name: "Rinse It Off — Fresh Rinse LLC", website: "rinseitoff.com" },
@@ -266,11 +297,17 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
       phoneNo: contact.phone || undefined,
     },
     items,
-    discount: {
-      type: "percentage",
-      value: discountPercent > 0 ? discountPercent : 0,
-      ...(discountPercent > 0 && discountReason ? { description: discountReason } : {}),
-    },
+    discount: hasCredit
+      ? {
+          type: "fixed",
+          value: Math.round((positive - total) * 100) / 100,
+          description: [...lineItems.filter((i) => i.unitPrice < 0).map((i) => i.name), discountPercent > 0 ? discountReason : ""].filter(Boolean).join(" + "),
+        }
+      : {
+          type: "percentage",
+          value: discountPercent > 0 ? discountPercent : 0,
+          ...(discountPercent > 0 && discountReason ? { description: discountReason } : {}),
+        },
     termsNotes: TERMS_NOTES_HTML,
     ...(Object.keys(sentTo).length ? { sentTo } : {}),
   };
@@ -321,6 +358,8 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
   // 4) Send the estimate (sms + email).
   if (!estimateId) {
     result.sent = { status: "skip", detail: "No estimate to send" };
+  } else if (!sendToClient) {
+    result.sent = { status: "skip", detail: "Saved as a draft in GHL, not sent. Send it from GHL or come back and send." };
   } else if (!contact.email && !contact.phone) {
     result.sent = { status: "skip", detail: "Contact has no email or phone" };
   } else {
@@ -354,7 +393,7 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     const res = await fetch(`${GHL_API_BASE}/contacts/${contactId}/tags`, {
       method: "POST",
       headers: ghlHeaders,
-      body: JSON.stringify({ tags: ["quote-sent", leadTag] }),
+      body: JSON.stringify({ tags: [result.sent.status === "ok" ? "quote-sent" : "quote-draft", leadTag] }),
     });
     if (res.ok) {
       result.tag = { status: "ok" };

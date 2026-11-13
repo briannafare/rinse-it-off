@@ -10,12 +10,17 @@ import { isQuoteAuthed } from "@/app/quote/auth";
 import { SYSTEM_PROMPT } from "@/app/quote/prompt";
 import { applyTieredMinimums } from "@/lib/quote/minimums.mjs";
 import type { AnalyzeResponse, Finding, RecommendedService } from "@/lib/quote/types";
+import { lookupHouse } from "@/app/book/actions";
+import {
+  HARD, MOSS_LABEL, SERVICES, VISIT_MIN, guessStories, measure, quote,
+  type Driveway, type Hard, type Moss, type ServiceKey, type Stories,
+} from "@/lib/one-time-estimate";
 
 export const runtime = "nodejs";
 export const maxDuration = 300; // analysis takes 30-90s; give it headroom
 
 const ANTHROPIC_MODEL = "claude-sonnet-5";
-const MAX_PHOTOS = 8; // cap to avoid oversized Anthropic requests (matches v1)
+const MAX_PHOTOS = 20; // the browser also keeps the request under Vercel's 4.5 MB body limit
 
 const ALLOWED_MEDIA = new Set(["image/jpeg", "image/png", "image/webp"]);
 
@@ -67,6 +72,7 @@ export async function POST(req: Request) {
     body.notes
       ? `MANDATORY INSPECTOR FIELD NOTES — READ THIS FIRST:\nEvery item, surface, or condition mentioned below MUST appear as a finding and quoted service in your response. These notes come from a salesperson who physically inspected the property. They take precedence over your photo interpretation.\n---\n${body.notes}\n---`
       : "",
+    body.propertyType === "residential" ? RESIDENTIAL_ASK : "",
     "\nReturn ONLY valid JSON, no markdown fences.",
   ]
     .filter(Boolean)
@@ -138,6 +144,7 @@ export async function POST(req: Request) {
     findings?: Finding[];
     recommendedServices?: RecommendedService[];
     clarifyingQuestions?: AnalyzeResponse["clarifyingQuestions"];
+    observations?: Observations;
   };
   try {
     const cleaned = textBlock.text.trim().replace(/^```json\s*/i, "").replace(/\s*```$/, "");
@@ -152,7 +159,12 @@ export async function POST(req: Request) {
 
   // Tiered standalone minimums — enforced server-side, exactly per the approved
   // export logic (shared module, also exercised by scripts/check-pricing.mjs).
-  const { services, pricingNote, applied } = applyTieredMinimums(parsed.recommendedServices || []);
+  // Homes are priced by the same engine as the /book page (one-time-estimate.ts), from the county
+  // record plus what the AI saw. Commercial still uses the rate sheet in prompt.ts.
+  const { services, pricingNote, applied } =
+    body.propertyType === "residential"
+      ? { ...(await priceHome(body.address || "", parsed.observations || {})), applied: null }
+      : applyTieredMinimums(parsed.recommendedServices || []);
 
   const payload: AnalyzeResponse = {
     assessment: {
@@ -167,4 +179,61 @@ export async function POST(req: Request) {
   };
 
   return NextResponse.json(payload);
+}
+
+// ── Homes: the AI reports what it sees, the engine sets the price ────────────
+const RESIDENTIAL_ASK = `PRICING FOR THIS HOME IS DONE SEPARATELY. Do not put prices in summaryText or findings.
+Also return an "observations" object describing the house as the photos, video frames and notes show it:
+{"stories": 1|2|3 (levels with outside walls to wash, a daylight basement counts),
+ "moss": "light"|"patchy"|"thick" (roof moss),
+ "windows": number of outside windows on the whole house (estimate the sides you can't see),
+ "driveway": "small"|"typical"|"large" (driveway plus front walk),
+ "hard": any of ["tall","slope","lift","surface"] (tall = four or more stories; slope = steep hillside around the house; lift = trees, wires or no level spot to park a lift; surface = cedar shake, tile, stucco or old paint),
+ "services": the work this house needs, any of ["roof-moss","gutters","house-wash","windows","driveway","deck-fence","other"]. Include everything the notes ask for.
+ "sqftEstimate": living area in sq ft if you can judge it}`;
+
+interface Observations {
+  stories?: number; moss?: Moss; windows?: number; driveway?: Driveway; hard?: Hard[]; services?: ServiceKey[]; sqftEstimate?: number;
+}
+
+const DESC: Partial<Record<ServiceKey, string>> = {
+  "roof-moss": "Moss treatment, loose debris off the roof, gutters flushed",
+  gutters: "Gutters cleaned out by hand, downspouts flushed",
+  "house-wash": "Soft wash of the siding, eaves and trim",
+  windows: "Outside glass, frames and sills",
+  driveway: "Driveway and front walk surface cleaned",
+};
+
+async function priceHome(address: string, o: Observations): Promise<{ services: RecommendedService[]; pricingNote: string }> {
+  const found = address ? await lookupHouse(address) : null;
+  const sqft = found?.sqft || (o.sqftEstimate && o.sqftEstimate > 400 ? o.sqftEstimate : 2000);
+  const seen = [1, 2, 3].includes(Number(o.stories)) ? (Number(o.stories) as Stories) : null;
+  const stories = seen ?? guessStories(sqft, found?.footprintSf) ?? 2;
+  const house = { sqft, stories, footprintSf: found?.footprintSf, perimeterFt: found?.perimeterFt };
+  const m = measure(house);
+  const moss = o.moss && o.moss in MOSS_LABEL ? o.moss : "patchy";
+  const windows = o.windows && o.windows > 0 ? Math.round(o.windows) : m.windows;
+  const driveway = o.driveway && ["small", "typical", "large"].includes(o.driveway) ? o.driveway : "typical";
+  const hard = (o.hard || []).filter((h) => h in HARD);
+  const picked = (o.services || []).filter((k) => SERVICES.some((s) => s.key === k));
+  const q = quote(house, picked, { moss, windows, driveway, hard });
+
+  const services: RecommendedService[] = q.lines.map((l) => ({
+    category: l.label,
+    description: l.key === "windows" ? `${DESC.windows}, ${windows} windows` : l.key === "roof-moss" ? `${DESC["roof-moss"]} (${moss} moss)` : DESC[l.key] || l.label,
+    estimatedPrice: l.price,
+    isAddon: false,
+  }));
+  if (q.sameVisitOff) services.push({ category: "Same visit", description: "Two or more services on one visit", estimatedPrice: -q.sameVisitOff, isAddon: false });
+  if (q.minimumGap) services.push({ category: "Visit minimum", description: `Brings the visit up to the $${VISIT_MIN} minimum`, estimatedPrice: q.minimumGap, isAddon: false });
+  for (const label of [...q.review, ...q.unpriced])
+    services.push({ category: label, description: `${label}: set the price from the photos`, estimatedPrice: 0, isAddon: false });
+
+  const pricingNote = [
+    `Priced for ${sqft.toLocaleString()} sq ft (${found ? "county record" : "estimated, address not in county records"}), ${stories} ${stories === 1 ? "story" : "stories"}${seen ? "" : " (guessed from size)"}.`,
+    `About ${m.roofSf.toLocaleString()} sq ft of roof, ${m.gutterLf} ft of gutter, ${windows} windows, ${moss} moss, ${driveway} driveway.`,
+    hard.length ? `Harder setup seen (${hard.map((h) => HARD[h].label.toLowerCase()).join("; ")}): those services need a price from the photos.` : "",
+    picked.length ? "" : "The AI didn't name any services. Add them on the next step.",
+  ].filter(Boolean).join(" ");
+  return { services, pricingNote };
 }
