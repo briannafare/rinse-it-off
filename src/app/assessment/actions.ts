@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { createWindow } from "@/lib/abuse-window.mjs";
 import { appointmentWindow } from "@/lib/appointment-time.mjs";
 import { cleanRange } from "../plan/pricing";
+import { CONDITION_CAP, HARD, SAME_VISIT_OFF, VISIT_MIN, quote, type Choices, type House, type ServiceKey } from "@/lib/one-time-estimate";
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -60,8 +61,9 @@ export interface AssessmentFormData {
   oneTime?: {
     wants: "visit" | "book-cleaning";
     sqft?: number; sqftSource?: "county" | "owner"; stories?: string;
-    estimate?: { low: number; high: number }; // what the page said a house this size usually runs
     home?: "home" | "walk-around"; preferredDay?: string; planToo?: boolean;
+    // what the page priced; recomputed here so the CRM never trusts the browser's number
+    price?: { house: House; picked: ServiceKey[]; choices: Choices };
   };
 }
 
@@ -135,7 +137,7 @@ export async function submitAssessmentForm(
     const notesLines: string[] = [
       ...(once ? [once.wants === "visit"
         ? `ONE-TIME CLEANING: free quote visit booked (${once.home === "walk-around" ? "they won't be home, OK to walk around" : "they'll be home"}).`
-        : `ONE-TIME CLEANING: wants the cleaning booked${once.preferredDay ? ` on ${once.preferredDay}` : ""}. Text them to confirm the arrival window; price confirmed on arrival.`] : []),
+        : `ONE-TIME CLEANING: wants the cleaning booked${once.preferredDay ? ` on ${once.preferredDay}` : ""}. Text them to confirm the arrival window. ${once.price ? "Price they saw is below; check the condition on arrival." : "No price shown; price it on arrival."}`] : []),
       `Property Type: ${data.propertyType}`,
       `Services Requested: ${data.services.join(", ") || "Not specified"}`,
     ];
@@ -145,7 +147,30 @@ export async function submitAssessmentForm(
     }
     if (once?.sqft) notesLines.push(`House size: ${once.sqft.toLocaleString("en-US")} sq ft (${once.sqftSource === "county" ? "county records" : "they typed it"})`);
     if (once?.stories) notesLines.push(`Stories: ${once.stories}`);
-    if (once?.estimate) notesLines.push(`Page showed: usually $${once.estimate.low.toLocaleString("en-US")} to $${once.estimate.high.toLocaleString("en-US")}. Note where the real price lands.`);
+    const priced = once?.price ? quote(once.price.house, once.price.picked, once.price.choices) : null;
+    const total = priced?.total ?? 0;
+    const $ = (n: number) => `$${n.toLocaleString("en-US")}`;
+    if (priced?.lines.length) {
+      notesLines.push(
+        `PRICE SHOWN: ${priced.lines.map((l) => `${l.label} ${$(l.price)}`).join(", ")}` +
+          (priced.sameVisitOff ? `, less ${$(priced.sameVisitOff)} for one visit` : "") +
+          `. Total ${$(total)}` +
+          (priced.minimumGap ? ` (${$(VISIT_MIN - priced.minimumGap)} raised to the ${$(VISIT_MIN)} visit minimum; drop it if the crew is nearby that day)` : "") +
+          `. Condition can add up to ${$(CONDITION_CAP)}, only with their OK.`,
+      );
+      const c = once!.price!.choices;
+      const extras = [
+        once!.price!.picked.includes("roof-moss") && `moss: ${c.moss}`,
+        once!.price!.picked.includes("windows") && `${c.windows} windows`,
+        once!.price!.picked.includes("driveway") && `driveway: ${c.driveway}`,
+        once!.price!.house.footprintSf && `measured outline ${once!.price!.house.footprintSf} sq ft, ${once!.price!.house.perimeterFt} ft around`,
+      ].filter(Boolean);
+      if (extras.length) notesLines.push(`They picked: ${extras.join("; ")}`);
+    }
+    if (priced?.review.length) {
+      const why = (once!.price!.choices.hard ?? []).filter((h) => h in HARD).map((h) => HARD[h].label.toLowerCase()).join("; ");
+      notesLines.push(`PRICE FROM PHOTOS: ${priced.review.join(", ")} (${why}). Get a photo of each side, text them a fixed price within one business day, and add it only with their OK. The ${$(SAME_VISIT_OFF)} one-visit discount applies if they add it.`);
+    }
     if (once?.planToo) notesLines.push("Also wants the yearly plan priced.");
     if (data.message) notesLines.push(`Notes: ${data.message}`);
     // Saved so the walk-through's final price can be checked against what the page promised.
@@ -226,6 +251,7 @@ export async function submitAssessmentForm(
             contactId,
             name: `${data.name} — ${once ? (once.wants === "visit" ? "One-time cleaning, quote visit" : "One-time cleaning, booked") : `${isCommercial ? "Commercial" : "Residential"} property audit`}`,
             status: "open",
+            ...(total ? { monetaryValue: total } : {}),
             source,
           }),
         });
