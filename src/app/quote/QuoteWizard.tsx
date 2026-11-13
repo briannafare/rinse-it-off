@@ -23,10 +23,12 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import { upload } from "@vercel/blob/client";
 import { searchGhlContacts, sendQuoteToGhl } from "./actions";
 import { buildClientQuoteHTML, buildInternalJobSheetHTML } from "@/lib/quote/print-templates";
 import {
   makeQuoteNumber,
+  type SavedFile,
   type AnalyzeResponse,
   type ContactInfo,
   type GhlContactMatch,
@@ -52,6 +54,8 @@ interface Draft {
   lineItems: QuoteLineItem[];
   discountPct: number;
   discountReason: string;
+  files?: SavedFile[]; // originals in Vercel Blob (older drafts don't have it)
+  sendToClient?: boolean;
 }
 
 function emptyDraft(): Draft {
@@ -68,6 +72,8 @@ function emptyDraft(): Draft {
     lineItems: [],
     discountPct: 0,
     discountReason: "",
+    files: [],
+    sendToClient: true,
   };
 }
 
@@ -96,6 +102,12 @@ function money(n: number): string {
 
 function scoreColor(s: number): string {
   return s <= 3 ? "#2F6B66" : s <= 6 ? "#D97706" : "#DC4B2A";
+}
+
+/** Vercel rejects request bodies over 4.5 MB: send photos in order until about 4 MB, max 20. */
+function underBudget<T extends { dataUrl: string }>(photos: T[]): T[] {
+  let bytes = 0;
+  return photos.slice(0, 20).filter((p) => (bytes += p.dataUrl.length) < 4e6);
 }
 
 let idCounter = 0;
@@ -137,6 +149,38 @@ function compressImage(file: File): Promise<{ dataUrl: string; mediaType: string
     img.src = url;
   });
 }
+
+/** A few still frames from a walkaround video, so the AI sees the footage too. */
+async function videoFrames(file: File, count = 4): Promise<string[]> {
+  const url = URL.createObjectURL(file);
+  const v = document.createElement("video");
+  v.muted = true;
+  v.playsInline = true;
+  v.preload = "auto";
+  v.src = url;
+  try {
+    await new Promise((ok, bad) => {
+      v.onloadeddata = ok;
+      v.onerror = () => bad(new Error(`This browser can't read ${file.name}. It's still saved; add a few photos too.`));
+    });
+    const frames: string[] = [];
+    for (let i = 0; i < count; i++) {
+      v.currentTime = (v.duration * (i + 0.5)) / count;
+      await new Promise((ok) => (v.onseeked = ok));
+      const scale = Math.min(1200 / v.videoWidth, 1200 / v.videoHeight, 1);
+      const c = document.createElement("canvas");
+      c.width = Math.round(v.videoWidth * scale);
+      c.height = Math.round(v.videoHeight * scale);
+      c.getContext("2d")?.drawImage(v, 0, 0, c.width, c.height);
+      frames.push(c.toDataURL("image/jpeg", 0.72));
+    }
+    return frames;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "no-address";
 
 // ── Print helper (window.open + document.write + print, per v1) ──────────────
 function printHTML(html: string) {
@@ -231,33 +275,36 @@ export default function QuoteWizard() {
   const pricingNoteItem = draft.lineItems.find((i) => i.category === "Pricing Note");
 
   // ── Photos ─────────────────────────────────────────────────────────────────
+  // Every original is saved to Blob (linked from the GHL note on send); photos are compressed and
+  // videos cut into a few frames for the AI. One file failing doesn't stop the rest.
   const addPhotos = useCallback(async (files: FileList | null) => {
     if (!files?.length) return;
     setUploading(true);
     setPhotoError(null);
-    try {
-      const list = Array.from(files);
-      const compressed = await Promise.all(list.map((f) => compressImage(f)));
-      setDraft((d) => ({
-        ...d,
-        photos: [
-          ...d.photos,
-          ...compressed.map((c, i) => ({
-            id: newId(),
-            name: list[i].name,
-            dataUrl: c.dataUrl,
-            mediaType: c.mediaType,
-          })),
-        ],
-      }));
-    } catch (e) {
-      setPhotoError(e instanceof Error ? e.message : "Could not process photos.");
-    } finally {
-      setUploading(false);
-      if (cameraRef.current) cameraRef.current.value = "";
-      if (galleryRef.current) galleryRef.current.value = "";
-    }
-  }, []);
+    const folder = `quotes/${slug(draft.contact.address)}-${draft.quoteNumber || "draft"}`;
+    const errors: string[] = [];
+    await Promise.all(
+      Array.from(files).map(async (f) => {
+        const isVideo = f.type.startsWith("video/");
+        const saving = upload(`${folder}/${f.name}`, f, { access: "public", handleUploadUrl: "/api/quote/upload", multipart: f.size > 50e6 })
+          .then((b) => setDraft((d) => ({ ...d, files: [...(d.files ?? []), { name: f.name, url: b.url, kind: isVideo ? "video" : "photo" }] })))
+          .catch(() => errors.push(`${f.name} wasn't saved. Try adding it again.`));
+        try {
+          const shots = isVideo
+            ? (await videoFrames(f)).map((dataUrl, i) => ({ name: `${f.name} (frame ${i + 1})`, dataUrl }))
+            : [{ name: f.name, dataUrl: (await compressImage(f)).dataUrl }];
+          setDraft((d) => ({ ...d, photos: [...d.photos, ...shots.map((x) => ({ id: newId(), ...x, mediaType: "image/jpeg" }))] }));
+        } catch (e) {
+          errors.push(e instanceof Error ? e.message : `Could not read ${f.name}.`);
+        }
+        await saving;
+      }),
+    );
+    if (errors.length) setPhotoError(errors.join(" "));
+    setUploading(false);
+    if (cameraRef.current) cameraRef.current.value = "";
+    if (galleryRef.current) galleryRef.current.value = "";
+  }, [draft.contact.address, draft.quoteNumber]);
 
   const removePhoto = useCallback((id: string) => {
     setDraft((d) => ({ ...d, photos: d.photos.filter((p) => p.id !== id) }));
@@ -292,7 +339,7 @@ export default function QuoteWizard() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          photos: draft.photos.map((p) => ({
+          photos: underBudget(draft.photos).map((p) => ({
             data: p.dataUrl.replace(/^data:[^;]+;base64,/, ""),
             mediaType: p.mediaType,
           })),
@@ -403,6 +450,11 @@ export default function QuoteWizard() {
         discountReason: draft.discountReason,
         subtotal,
         total,
+        sendToClient: draft.sendToClient ?? true,
+        notes: draft.notes,
+        summary: draft.analysis?.assessment.summaryText ?? "",
+        pricingNote: draft.analysis?.pricingNote ?? "",
+        files: draft.files ?? [],
       });
       setSendResult(res);
     });
@@ -663,13 +715,13 @@ export default function QuoteWizard() {
 
               <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="sr-only" id="q-camera"
                 onChange={(e) => addPhotos(e.target.files)} />
-              <input ref={galleryRef} type="file" accept="image/*" multiple className="sr-only" id="q-gallery"
+              <input ref={galleryRef} type="file" accept="image/*,video/*" multiple className="sr-only" id="q-gallery"
                 onChange={(e) => addPhotos(e.target.files)} />
 
               {uploading && (
                 <div className="mt-4 flex items-center gap-3 rounded-xl border border-[#C8E8F5] bg-[#E3ECE6] px-4 py-3 text-sm font-medium">
                   <Loader2 className="h-4 w-4 shrink-0 animate-spin text-[#2F6B66]" aria-hidden />
-                  Compressing photos…
+                  Saving the originals… keep this page open (video takes a minute)
                 </div>
               )}
               {photoError && <p className="mt-3 text-sm font-medium text-[#DC4B2A]">{photoError}</p>}
@@ -687,15 +739,16 @@ export default function QuoteWizard() {
                   className={`flex min-h-[88px] cursor-pointer select-none flex-col items-center justify-center gap-2 rounded-xl border-2 border-retro-line text-sm font-medium hover:border-[#2F6B66] ${uploading ? "pointer-events-none opacity-50" : ""}`}
                 >
                   <Images className="h-6 w-6 text-[#2F6B66]" aria-hidden />
-                  Choose photos
+                  Choose photos or video
                 </label>
               </div>
 
               {draft.photos.length > 0 && (
                 <div className="mt-4">
                   <p className="mb-2 text-sm font-medium">
-                    {draft.photos.length} photo{draft.photos.length > 1 ? "s" : ""}
-                    {draft.photos.length > 8 ? " (first 8 are sent to the AI)" : ""}
+                    {draft.photos.length} image{draft.photos.length > 1 ? "s" : ""} for the AI
+                    {underBudget(draft.photos).length < draft.photos.length ? ` (it reads the first ${underBudget(draft.photos).length})` : ""}
+                    {draft.files?.length ? ` · ${draft.files.length} original${draft.files.length > 1 ? "s" : ""} saved` : ""}
                   </p>
                   <div className="grid grid-cols-3 gap-2">
                     {draft.photos.map((p) => (
@@ -765,16 +818,16 @@ export default function QuoteWizard() {
                   </div>
                 </div>
 
-                {/* Minimum floor note */}
-                {draft.analysis.minimumApplied && (
+                {/* Minimum floor / how it was priced */}
+                {(draft.analysis.minimumApplied || draft.analysis.pricingNote) && (
                   <div className="rounded-[4px] border border-[#FED7AA] bg-[#FFF7ED] p-4 text-sm text-[#9A3412]">
-                    <p className="font-semibold">
+                    {draft.analysis.minimumApplied && <p className="font-semibold">
                       Standalone minimum applied — {draft.analysis.minimumApplied.tier} floor $
                       {draft.analysis.minimumApplied.floor}
                       {draft.analysis.minimumApplied.originalPrice > 0
                         ? ` (raised from $${draft.analysis.minimumApplied.originalPrice})`
                         : ""}
-                    </p>
+                    </p>}
                     {draft.analysis.pricingNote && <p className="mt-1 leading-relaxed">{draft.analysis.pricingNote}</p>}
                   </div>
                 )}
@@ -1115,11 +1168,20 @@ export default function QuoteWizard() {
 
             {/* Send to GHL */}
             <div className={cardCls}>
-              <h3 className="font-display text-sm font-semibold">Send to GHL</h3>
+              <h3 className="font-display text-sm font-semibold">Save to GHL</h3>
               <p className="mt-1 text-xs leading-relaxed text-[#8A8072]">
-                Upserts the contact, files the opportunity, creates the estimate with a 50% deposit due on acceptance,
-                and sends it by text and email. GHL becomes the system of record.
+                Saves the contact, the opportunity, a note with every line, the field notes and links to all{" "}
+                {draft.files?.length ?? 0} photos and videos, and the estimate with a 50% deposit due on acceptance.
               </p>
+              <label className="mt-3 flex min-h-11 cursor-pointer items-center gap-3 text-sm font-medium">
+                <input
+                  type="checkbox"
+                  checked={draft.sendToClient ?? true}
+                  onChange={(e) => patch({ sendToClient: e.target.checked })}
+                  className="h-5 w-5 accent-[#2F6B66]"
+                />
+                Text and email the estimate to the client now
+              </label>
               <button
                 type="button"
                 onClick={doSend}
@@ -1132,7 +1194,7 @@ export default function QuoteWizard() {
                   </>
                 ) : (
                   <>
-                    <Send className="h-4 w-4" aria-hidden /> Send to GHL
+                    <Send className="h-4 w-4" aria-hidden /> {draft.sendToClient ?? true ? "Save and send" : "Save as draft"}
                   </>
                 )}
               </button>
@@ -1146,6 +1208,7 @@ export default function QuoteWizard() {
                       ["Estimate", sendResult.estimate],
                       ["Sent (SMS + email)", sendResult.sent],
                       ["Tags", sendResult.tag],
+                      ["Note + file links", sendResult.note ?? { status: "skip" as const }],
                     ] as const
                   ).map(([label, r]) => (
                     <li key={label} className="flex items-start gap-2.5 text-sm">

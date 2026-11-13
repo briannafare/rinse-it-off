@@ -63,6 +63,13 @@ export interface QuotePhoto {
   mediaType: string;
 }
 
+/** An original photo or video saved to Vercel Blob; linked from the GHL contact note. */
+export interface SavedFile {
+  name: string;
+  url: string;
+  kind: "photo" | "video";
+}
+
 export interface ContactInfo {
   name: string;
   email: string;
@@ -92,6 +99,7 @@ export interface SendToGhlResult {
   estimate: SendStepResult;
   sent: SendStepResult;
   tag: SendStepResult;
+  note: SendStepResult;
 }
 
 export interface SendQuotePayload {
@@ -109,6 +117,12 @@ export interface SendQuotePayload {
   discountReason: string;
   subtotal: number;
   total: number;
+  /** Text and email the estimate now; false leaves it as a draft in GHL. */
+  sendToClient: boolean;
+  notes: string;
+  summary: string;
+  pricingNote: string;
+  files: SavedFile[];
 }
 
 /** Quote number format RIO-YYYY-MMDD-XX. Generated once per draft and kept
