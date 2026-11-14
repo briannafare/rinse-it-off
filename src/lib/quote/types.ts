@@ -74,7 +74,12 @@ export interface ContactInfo {
   name: string;
   email: string;
   phone: string;
+  /** Full one line ("226 SW Florida St, Portland, OR 97219"): what pricing, notes and PDFs use. */
   address: string;
+  street?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
 }
 
 export interface GhlContactMatch {
@@ -83,6 +88,9 @@ export interface GhlContactMatch {
   email: string;
   phone: string;
   address: string;
+  city: string;
+  state: string;
+  zip: string;
 }
 
 export type StepStatus = "ok" | "skip" | "fail";

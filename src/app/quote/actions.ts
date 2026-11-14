@@ -89,6 +89,9 @@ export async function searchGhlContacts(
       email: String(c.email ?? ""),
       phone: String(c.phone ?? ""),
       address: String(c.address1 ?? ""),
+      city: String(c.city ?? ""),
+      state: String(c.state ?? ""),
+      zip: String(c.postalCode ?? ""),
     }));
     return { ok: true, contacts };
   } catch (e) {
@@ -171,7 +174,10 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
         name: contact.name,
         email: contact.email || undefined,
         phone: contact.phone || undefined,
-        address1: contact.address || undefined,
+        address1: contact.street || contact.address || undefined,
+        city: contact.city || undefined,
+        state: contact.state || undefined,
+        postalCode: contact.zip || undefined,
         source: "Audit Tool — Quote",
         tags: ["property-audit", leadTag],
       }),
