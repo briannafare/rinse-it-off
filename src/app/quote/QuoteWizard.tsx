@@ -111,6 +111,18 @@ function underBudget<T extends { dataUrl: string }>(photos: T[]): T[] {
   return photos.slice(0, 20).filter((p) => (bytes += p.dataUrl.length) < 4e6);
 }
 
+function toLineItems(a: AnalyzeResponse): QuoteLineItem[] {
+  return a.recommendedServices.map((s) => ({
+    id: newId(),
+    category: s.category,
+    description: s.description,
+    qty: 1,
+    unitPrice: s.estimatedPrice,
+    isAddon: !!s.isAddon,
+    addonFor: s.addonFor ?? null,
+  }));
+}
+
 let idCounter = 0;
 function newId(): string {
   idCounter += 1;
@@ -360,7 +372,8 @@ export default function QuoteWizard() {
         );
         return;
       }
-      patch({ analysis: data as AnalyzeResponse });
+      // A re-run replaces the quote lines too (Bri 2026-11-13: re-ran, went to the Quote step, still saw the old $0s).
+      setDraft((d) => ({ ...d, analysis: data as AnalyzeResponse, lineItems: d.lineItems.length ? toLineItems(data as AnalyzeResponse) : [] }));
     } catch {
       setAnalyzeError("Analysis failed — check your connection and try again.");
     } finally {
@@ -370,15 +383,7 @@ export default function QuoteWizard() {
 
   const seedLineItems = useCallback(() => {
     if (!draft.analysis) return;
-    const items: QuoteLineItem[] = draft.analysis.recommendedServices.map((s) => ({
-      id: newId(),
-      category: s.category,
-      description: s.description,
-      qty: 1,
-      unitPrice: s.estimatedPrice,
-      isAddon: !!s.isAddon,
-      addonFor: s.addonFor ?? null,
-    }));
+    const items = toLineItems(draft.analysis);
     setDraft((d) => ({ ...d, lineItems: items, step: 4 }));
   }, [draft.analysis]);
 
@@ -916,7 +921,7 @@ export default function QuoteWizard() {
                 </div>
                 {draft.lineItems.length > 0 && (
                   <p className="text-center text-xs text-[#8A8072]">
-                    Building the quote again replaces your edited line items with these prices.
+                    Re-run or build again and the quote lines are replaced with these prices.
                   </p>
                 )}
               </>
@@ -927,8 +932,8 @@ export default function QuoteWizard() {
                 </div>
                 <h2 className="font-display text-base font-semibold">Ready to analyze</h2>
                 <p className="mx-auto mt-2 max-w-sm text-sm text-[#4A4238]">
-                  {Math.min(draft.photos.length, 8)} photo{draft.photos.length !== 1 ? "s" : ""} plus your notes go to
-                  the AI, which prices every surface off the approved rate table.
+                  {underBudget(draft.photos).length} image{underBudget(draft.photos).length !== 1 ? "s" : ""} plus your notes go to
+                  the AI. Homes are priced at the current one-time rates.
                 </p>
                 {analyzeError && (
                   <p className="mx-auto mt-3 max-w-sm rounded-xl border border-[#F5C6BB] bg-[#FDF2EF] px-4 py-3 text-sm font-medium text-[#B3341C]">
