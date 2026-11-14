@@ -11,8 +11,9 @@ import { SYSTEM_PROMPT } from "@/app/quote/prompt";
 import { applyTieredMinimums } from "@/lib/quote/minimums.mjs";
 import type { AnalyzeResponse, Finding, RecommendedService } from "@/lib/quote/types";
 import { lookupHouse } from "@/app/book/actions";
+import { ADD_ONS } from "@/app/plan/pricing";
 import {
-  HARD, MOSS_LABEL, SERVICES, VISIT_MIN, guessStories, measure, quote,
+  HARD, MOSS_LABEL, ROOF_GUTTER_SHARE, SAME_VISIT_OFF, SERVICES, VISIT_MIN, guessStories, measure, quote, servicePrice,
   type Driveway, type Hard, type Moss, type ServiceKey, type Stories,
 } from "@/lib/one-time-estimate";
 
@@ -190,10 +191,13 @@ Also return an "observations" object describing the house as the photos, video f
  "driveway": "small"|"typical"|"large" (driveway plus front walk),
  "hard": any of ["tall","slope","lift","surface"] (tall = four or more stories; slope = steep hillside around the house; lift = trees, wires or no level spot to park a lift; surface = cedar shake, tile, stucco or old paint),
  "services": the work this house needs, any of ["roof-moss","gutters","house-wash","windows","driveway","deck-fence","other"]. Include everything the notes ask for.
- "sqftEstimate": living area in sq ft if you can judge it}`;
+ "sqftEstimate": living area in sq ft if you can judge it,
+ "deckSqft": total sq ft of wood or coated deck and balcony floors that need cleaning (0 if none),
+ "fenceFt": feet of fence that needs cleaning (0 if none)}`;
 
 interface Observations {
   stories?: number; moss?: Moss; windows?: number; driveway?: Driveway; hard?: Hard[]; services?: ServiceKey[]; sqftEstimate?: number;
+  deckSqft?: number; fenceFt?: number;
 }
 
 const DESC: Partial<Record<ServiceKey, string>> = {
@@ -224,15 +228,37 @@ async function priceHome(address: string, o: Observations): Promise<{ services: 
     estimatedPrice: l.price,
     isAddon: false,
   }));
-  if (q.sameVisitOff) services.push({ category: "Same visit", description: "Two or more services on one visit", estimatedPrice: -q.sameVisitOff, isAddon: false });
-  if (q.minimumGap) services.push({ category: "Visit minimum", description: `Brings the visit up to the $${VISIT_MIN} minimum`, estimatedPrice: q.minimumGap, isAddon: false });
-  for (const label of [...q.review, ...q.unpriced])
+  // Harder setup: show the normal price marked to check, never $0 (Bri 2026-11-13: $0 read as broken).
+  const why = hard.map((h) => HARD[h].label.toLowerCase()).join("; ");
+  for (const s of SERVICES.filter((x) => q.review.includes(x.label))) {
+    const full = servicePrice(s.key, house, { moss, windows, driveway }) ?? 0;
+    const withRoof = s.key === "gutters" && picked.includes("roof-moss"); // the roof job already flushes them
+    const alone = withRoof ? Math.round((full * ROOF_GUTTER_SHARE) / 5) * 5 : full;
+    services.push({ category: withRoof ? "Full gutter clean, added to the roof" : s.label, description: `${DESC[s.key] || s.label}. CHECK: normal-house price; photos show ${why}`, estimatedPrice: alone, isAddon: false });
+  }
+  // Deck and fence at the live /plan add-on rates (ADD_ONS in plan/pricing.ts), from the AI's measurements.
+  if (picked.includes("deck-fence")) {
+    const rate = (k: string) => ADD_ONS.find((a) => a.key === k)?.list?.amount ?? 0;
+    const $r = (k: string) => rate(k).toFixed(2);
+    const deck = Math.round(o.deckSqft || 0);
+    const fence = Math.round(o.fenceFt || 0);
+    const r5 = (n: number) => Math.round(n / 5) * 5;
+    if (deck > 0) services.push({ category: "Deck and balconies", description: `Soft wash of about ${deck} sq ft of deck and balcony floors (measured from the photos) at $${$r("deck")}/sq ft`, estimatedPrice: r5(deck * rate("deck")), isAddon: false });
+    if (fence > 0) services.push({ category: "Fence", description: `About ${fence} ft of fence (measured from the photos) at $${$r("fence")}/ft`, estimatedPrice: r5(fence * rate("fence")), isAddon: false });
+    if (!deck && !fence) services.push({ category: "Deck or fence", description: `Couldn't measure it from the photos. Enter sq ft × $${$r("deck")} for a deck, feet × $${$r("fence")} for a fence`, estimatedPrice: 0, isAddon: false });
+  }
+  for (const label of q.unpriced.filter((l) => l !== "Deck or fence"))
     services.push({ category: label, description: `${label}: set the price from the photos`, estimatedPrice: 0, isAddon: false });
+  // Same-visit savings and the visit minimum, over every priced line (same rules as quote()).
+  const priced = services.filter((x) => x.estimatedPrice > 0);
+  const net = priced.reduce((t, x) => t + x.estimatedPrice, 0) - (priced.length > 1 ? SAME_VISIT_OFF : 0);
+  if (priced.length > 1) services.push({ category: "Same visit", description: "Two or more services on one visit", estimatedPrice: -SAME_VISIT_OFF, isAddon: false });
+  if (priced.length && net < VISIT_MIN) services.push({ category: "Visit minimum", description: `Brings the visit up to the $${VISIT_MIN} minimum`, estimatedPrice: VISIT_MIN - net, isAddon: false });
 
   const pricingNote = [
     `Priced for ${sqft.toLocaleString()} sq ft (${found ? "county record" : "estimated, address not in county records"}), ${stories} ${stories === 1 ? "story" : "stories"}${seen ? "" : " (guessed from size)"}.`,
     `About ${m.roofSf.toLocaleString()} sq ft of roof, ${m.gutterLf} ft of gutter, ${windows} windows, ${moss} moss, ${driveway} driveway.`,
-    hard.length ? `Harder setup seen (${hard.map((h) => HARD[h].label.toLowerCase()).join("; ")}): those services need a price from the photos.` : "",
+    hard.length ? `Harder setup seen (${why}): lines marked CHECK show the normal-house price. Adjust them from the photos.` : "",
     picked.length ? "" : "The AI didn't name any services. Add them on the next step.",
   ].filter(Boolean).join(" ");
   return { services, pricingNote };
