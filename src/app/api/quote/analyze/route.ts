@@ -247,8 +247,7 @@ async function priceHome(address: string, o: Observations): Promise<{ services: 
     if (fence > 0) services.push({ category: "Fence", description: `About ${fence} ft of fence (measured from the photos) at $${$r("fence")}/ft`, estimatedPrice: r5(fence * rate("fence")), isAddon: false });
     if (!deck && !fence) services.push({ category: "Deck or fence", description: `Couldn't measure it from the photos. Enter sq ft × $${$r("deck")} for a deck, feet × $${$r("fence")} for a fence`, estimatedPrice: 0, isAddon: false });
   }
-  for (const label of q.unpriced.filter((l) => l !== "Deck or fence"))
-    services.push({ category: label, description: `${label}: set the price from the photos`, estimatedPrice: 0, isAddon: false });
+  // ponytail: "Something else" gets no $0 line (Bri 2026-11-13 read $0 lines as broken); it shows in the findings.
   // Same-visit savings and the visit minimum, over every priced line (same rules as quote()).
   const priced = services.filter((x) => x.estimatedPrice > 0);
   const net = priced.reduce((t, x) => t + x.estimatedPrice, 0) - (priced.length > 1 ? SAME_VISIT_OFF : 0);
@@ -261,5 +260,7 @@ async function priceHome(address: string, o: Observations): Promise<{ services: 
     hard.length ? `Harder setup seen (${why}): lines marked CHECK show the normal-house price. Adjust them from the photos.` : "",
     picked.length ? "" : "The AI didn't name any services. Add them on the next step.",
   ].filter(Boolean).join(" ");
+  // One line per run in Vercel runtime logs, so "it gave me $0" can be checked against what was returned.
+  console.log("quote-priced", JSON.stringify({ address, obs: o, lines: services.map((x) => [x.category, x.estimatedPrice]) }));
   return { services, pricingNote };
 }
