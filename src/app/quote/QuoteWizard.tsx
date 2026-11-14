@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { upload } from "@vercel/blob/client";
 import { searchGhlContacts, sendQuoteToGhl } from "./actions";
+import AddressPicker, { fullAddress, type AddressParts } from "./AddressPicker";
 import { buildClientQuoteHTML, buildInternalJobSheetHTML } from "@/lib/quote/print-templates";
 import {
   makeQuoteNumber,
@@ -462,7 +463,8 @@ export default function QuoteWizard() {
   }, [draft, pricedItems, subtotal, total]);
 
   // ── Step gating ────────────────────────────────────────────────────────────
-  const canLeaveStep1 = draft.contact.name.trim().length > 0 && draft.contact.address.trim().length > 0;
+  const c1 = draft.contact;
+  const canLeaveStep1 = !!c1.name.trim() && (c1.street !== undefined ? !!c1.street.trim() && !!(c1.city?.trim() || c1.zip?.trim()) : !!c1.address.trim());
   const step = draft.step;
   const go = (n: number) => patch({ step: n });
 
@@ -633,7 +635,9 @@ export default function QuoteWizard() {
                               name: c.name || draft.contact.name,
                               email: c.email || "",
                               phone: c.phone || "",
-                              address: c.address || draft.contact.address,
+                              ...(c.address
+                                ? { street: c.address, city: c.city, state: c.state, zip: c.zip, address: fullAddress({ street: c.address, city: c.city, state: c.state, zip: c.zip }) }
+                                : {}),
                             });
                             setSearchResults(null);
                           }}
@@ -660,11 +664,17 @@ export default function QuoteWizard() {
                   <input id="q-name" className={inputCls} autoComplete="off" placeholder="Full name"
                     value={draft.contact.name} onChange={(e) => patchContact({ name: e.target.value })} />
                 </div>
-                <div>
-                  <label className={labelCls} htmlFor="q-address">Property address</label>
-                  <input id="q-address" className={inputCls} autoComplete="off" placeholder="1234 SE Oak St, Portland, OR"
-                    value={draft.contact.address} onChange={(e) => patchContact({ address: e.target.value })} />
-                </div>
+                <AddressPicker
+                  value={{
+                    street: draft.contact.street ?? draft.contact.address, // older drafts kept one line
+                    city: draft.contact.city ?? "",
+                    state: draft.contact.state ?? "",
+                    zip: draft.contact.zip ?? "",
+                  }}
+                  onChange={(a: AddressParts) => patchContact({ ...a, address: fullAddress(a) })}
+                  inputCls={inputCls}
+                  labelCls={labelCls}
+                />
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div>
                     <label className={labelCls} htmlFor="q-email">Email</label>
