@@ -105,7 +105,7 @@ async function analyze(body: AnalyzeRequestBody, apiKey: string): Promise<NextRe
       ? `MANDATORY INSPECTOR FIELD NOTES — READ THIS FIRST:\nEvery item, surface, or condition mentioned below MUST appear as a finding and quoted service in your response. These notes come from a salesperson who physically inspected the property. They take precedence over your photo interpretation.\n---\n${body.notes}\n---`
       : "",
     // Bri 2026-11-15: the tool is used by our salespeople at the property, so the report must not read as if we still have to check it.
-    "Whoever took these photos is our salesperson, at the property. The client reads summaryText, findings and service descriptions: state what is there as fact. Never write that anything will be verified, confirmed, inspected or assessed in person or on site, or that a price may change after an inspection.",
+    "Whoever took these photos is our salesperson, at the property. The client reads summaryText, findings and service descriptions: state what is there as fact. Never write that anything will be verified, confirmed, inspected or assessed in person or on site, or that a price may change after an inspection. Name the property's location only from the address above (Rinse It Off's own Portland/Tigard base is not where the house is).",
     body.propertyType === "residential" ? RESIDENTIAL_ASK : "",
     "\nReturn ONLY valid JSON, no markdown fences.",
   ]
