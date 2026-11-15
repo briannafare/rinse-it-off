@@ -127,6 +127,13 @@ function buildDepositScheduleConfig(): Record<string, unknown> {
 const TERMS_NOTES_HTML =
   "<ul><li>Deposit required to schedule</li><li>Balance due upon completion</li><li>Quote valid 30 days</li><li>Services weather-dependent</li><li>Not responsible for pre-existing damage</li></ul>";
 
+function toE164(p?: string): string {
+  const d = (p || "").replace(/\D/g, "");
+  if (d.length === 10) return `+1${d}`;
+  if (d.length === 11 && d.startsWith("1")) return `+${d}`;
+  return d.length > 7 && (p || "").trim().startsWith("+") ? `+${d}` : ""; // ponytail: US numbers; anything else is dropped, not sent broken
+}
+
 function isoDate(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
@@ -154,7 +161,9 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     return result;
   }
 
-  const { contact, propertyType, lineItems, discountPercent, discountReason, total, sendToClient } = payload;
+  const { propertyType, lineItems, discountPercent, discountReason, total, sendToClient } = payload;
+  // GHL estimates reject anything but +15035551234 (Bri 2026-11-14: "(503) 555-1234" failed the send).
+  const contact = { ...payload.contact, phone: toE164(payload.contact.phone) };
   const isResidential = propertyType === "residential";
   const nameParts = contact.name.trim().split(" ");
   const firstName = nameParts[0] || "";

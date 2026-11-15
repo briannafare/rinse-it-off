@@ -5,7 +5,8 @@
  *  A route handler (not a server action) so the multi-MB photo payload avoids
  *  the 1MB server-action body limit. ANTHROPIC_API_KEY never leaves the server. */
 
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
+import { head, put } from "@vercel/blob";
 import { isQuoteAuthed } from "@/app/quote/auth";
 import { SYSTEM_PROMPT } from "@/app/quote/prompt";
 import { applyTieredMinimums } from "@/lib/quote/minimums.mjs";
@@ -53,6 +54,36 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "BAD_REQUEST", message: "Invalid JSON body." }, { status: 400 });
   }
 
+  // The AI takes a minute or two. Phones drop a request held open that long (screen locks, app switch),
+  // so the work runs after the response and the browser polls GET ?job= for the result (Bri 2026-11-15).
+  const job = crypto.randomUUID();
+  after(async () => {
+    let out: { status: number; data: unknown };
+    try {
+      const res = await analyze(body, apiKey);
+      out = { status: res.status, data: await res.json() };
+    } catch (e) {
+      console.error("quote analyze crashed:", e);
+      out = { status: 500, data: { error: "API_ERROR", message: "The analysis hit an error. Run it again." } };
+    }
+    await put(jobPath(job), JSON.stringify(out), { access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json" });
+  });
+  return NextResponse.json({ job }, { status: 202 });
+}
+
+const jobPath = (job: string) => `quote-jobs/${job}.json`;
+
+/** GET ?job=<id>: {pending:true} while the AI works, then {status, data} with the analysis or its error. */
+export async function GET(req: Request) {
+  if (!(await isQuoteAuthed())) return NextResponse.json({ error: "UNAUTHORIZED", message: "Unlock the tool first." }, { status: 401 });
+  const job = new URL(req.url).searchParams.get("job") || "";
+  if (!/^[0-9a-f-]{36}$/.test(job)) return NextResponse.json({ error: "BAD_REQUEST", message: "Unknown job." }, { status: 400 });
+  const blob = await head(jobPath(job)).catch(() => null);
+  if (!blob) return NextResponse.json({ pending: true });
+  return NextResponse.json(await (await fetch(blob.url, { cache: "no-store" })).json());
+}
+
+async function analyze(body: AnalyzeRequestBody, apiKey: string): Promise<NextResponse> {
   const photos = (body.photos || [])
     .filter((p) => p?.data && ALLOWED_MEDIA.has(p.mediaType))
     .slice(0, MAX_PHOTOS);
@@ -73,6 +104,8 @@ export async function POST(req: Request) {
     body.notes
       ? `MANDATORY INSPECTOR FIELD NOTES — READ THIS FIRST:\nEvery item, surface, or condition mentioned below MUST appear as a finding and quoted service in your response. These notes come from a salesperson who physically inspected the property. They take precedence over your photo interpretation.\n---\n${body.notes}\n---`
       : "",
+    // Bri 2026-11-15: the tool is used by our salespeople at the property, so the report must not read as if we still have to check it.
+    "Whoever took these photos is our salesperson, at the property. The client reads summaryText, findings and service descriptions: state what is there as fact. Never write that anything will be verified, confirmed, inspected or assessed in person or on site, or that a price may change after an inspection.",
     body.propertyType === "residential" ? RESIDENTIAL_ASK : "",
     "\nReturn ONLY valid JSON, no markdown fences.",
   ]
@@ -92,6 +125,8 @@ export async function POST(req: Request) {
         model: ANTHROPIC_MODEL,
         // Sonnet 5 thinks by default and max_tokens caps thinking + text — keep headroom.
         max_tokens: 16000,
+        // Default effort is high: ~1:45 for 12 photos (2026-11-15), long enough for phones to drop the wait.
+        output_config: { effort: "medium" },
         system: SYSTEM_PROMPT,
         messages: [{ role: "user", content: [...imageContents, { type: "text", text: contextText }] }],
       }),
@@ -230,11 +265,14 @@ async function priceHome(address: string, o: Observations): Promise<{ services: 
   }));
   // Harder setup: show the normal price marked to check, never $0 (Bri 2026-11-13: $0 read as broken).
   const why = hard.map((h) => HARD[h].label.toLowerCase()).join("; ");
+  const check: string[] = []; // internal only: line descriptions go on the client's estimate
   for (const s of SERVICES.filter((x) => q.review.includes(x.label))) {
     const full = servicePrice(s.key, house, { moss, windows, driveway }) ?? 0;
     const withRoof = s.key === "gutters" && picked.includes("roof-moss"); // the roof job already flushes them
     const alone = withRoof ? Math.round((full * ROOF_GUTTER_SHARE) / 5) * 5 : full;
-    services.push({ category: withRoof ? "Full gutter clean, added to the roof" : s.label, description: `${DESC[s.key] || s.label}. CHECK: normal-house price; photos show ${why}`, estimatedPrice: alone, isAddon: false });
+    const label = withRoof ? "Full gutter clean, added to the roof" : s.label;
+    check.push(label);
+    services.push({ category: label, description: DESC[s.key] || s.label, estimatedPrice: alone, isAddon: false });
   }
   // Deck and fence at the live /plan add-on rates (ADD_ONS in plan/pricing.ts), from the AI's measurements.
   if (picked.includes("deck-fence")) {
@@ -243,8 +281,8 @@ async function priceHome(address: string, o: Observations): Promise<{ services: 
     const deck = Math.round(o.deckSqft || 0);
     const fence = Math.round(o.fenceFt || 0);
     const r5 = (n: number) => Math.round(n / 5) * 5;
-    if (deck > 0) services.push({ category: "Deck and balconies", description: `Soft wash of about ${deck} sq ft of deck and balcony floors (measured from the photos) at $${$r("deck")}/sq ft`, estimatedPrice: r5(deck * rate("deck")), isAddon: false });
-    if (fence > 0) services.push({ category: "Fence", description: `About ${fence} ft of fence (measured from the photos) at $${$r("fence")}/ft`, estimatedPrice: r5(fence * rate("fence")), isAddon: false });
+    if (deck > 0) services.push({ category: "Deck and balconies", description: `Soft wash of about ${deck} sq ft of deck and balcony floors at $${$r("deck")}/sq ft`, estimatedPrice: r5(deck * rate("deck")), isAddon: false });
+    if (fence > 0) services.push({ category: "Fence", description: `About ${fence} ft of fence at $${$r("fence")}/ft`, estimatedPrice: r5(fence * rate("fence")), isAddon: false });
     if (!deck && !fence) services.push({ category: "Deck or fence", description: `Couldn't measure it from the photos. Enter sq ft × $${$r("deck")} for a deck, feet × $${$r("fence")} for a fence`, estimatedPrice: 0, isAddon: false });
   }
   // ponytail: "Something else" gets no $0 line (Bri 2026-11-13 read $0 lines as broken); it shows in the findings.
@@ -257,7 +295,8 @@ async function priceHome(address: string, o: Observations): Promise<{ services: 
   const pricingNote = [
     `Priced for ${sqft.toLocaleString()} sq ft (${found ? "county record" : "estimated, address not in county records"}), ${stories} ${stories === 1 ? "story" : "stories"}${seen ? "" : " (guessed from size)"}.`,
     `About ${m.roofSf.toLocaleString()} sq ft of roof, ${m.gutterLf} ft of gutter, ${windows} windows, ${moss} moss, ${driveway} driveway.`,
-    hard.length ? `Harder setup seen (${why}): lines marked CHECK show the normal-house price. Adjust them from the photos.` : "",
+    check.length ? `Harder setup seen (${why}). ${check.join(" and ")} ${check.length > 1 ? "are" : "is"} at the normal-house price; raise ${check.length > 1 ? "them" : "it"} if the setup takes longer.` : "",
+    o.deckSqft || o.fenceFt ? `Deck and fence sizes are the AI's guess from the photos (${[o.deckSqft ? `${Math.round(o.deckSqft)} sq ft deck` : "", o.fenceFt ? `${Math.round(o.fenceFt)} ft fence` : ""].filter(Boolean).join(", ")}); fix the price if you measured.` : "",
     picked.length ? "" : "The AI didn't name any services. Add them on the next step.",
   ].filter(Boolean).join(" ");
   // One line per run in Vercel runtime logs, so "it gave me $0" can be checked against what was returned.

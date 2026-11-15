@@ -57,6 +57,7 @@ interface Draft {
   discountReason: string;
   files?: SavedFile[]; // originals in Vercel Blob (older drafts don't have it)
   sendToClient?: boolean;
+  analysisJob?: string; // AI run in progress on the server; survives a locked phone or a reload
 }
 
 function emptyDraft(): Draft {
@@ -363,23 +364,60 @@ export default function QuoteWizard() {
         }),
       });
       const data = await res.json();
-      if (!res.ok) {
+      if (!res.ok || !data?.job) {
         setAnalyzeError(
           data?.message ||
-            (data?.error === "NO_API_KEY"
-              ? "The Anthropic API key is missing on the server."
-              : "Analysis failed — try again."),
+            (data?.error === "NO_API_KEY" ? "The Anthropic API key is missing on the server." : "Analysis failed — try again."),
         );
+        setAnalyzing(false);
         return;
       }
-      // A re-run replaces the quote lines too (Bri 2026-11-13: re-ran, went to the Quote step, still saw the old $0s).
-      setDraft((d) => ({ ...d, analysis: data as AnalyzeResponse, lineItems: d.lineItems.length ? toLineItems(data as AnalyzeResponse) : [] }));
+      patch({ analysisJob: data.job }); // the effect below waits for the result
     } catch {
-      setAnalyzeError("Analysis failed — check your connection and try again.");
-    } finally {
+      setAnalyzeError("Couldn't send the photos — check your connection and try again.");
       setAnalyzing(false);
     }
   }, [draft.photos, draft.propertyType, draft.contact.address, draft.contact.name, draft.notes, patch]);
+
+  // Waits for the server's answer. Timers pause while the phone sleeps and pick up again when it wakes.
+  useEffect(() => {
+    const job = draft.analysisJob;
+    if (!job) return;
+    let stop = false;
+    setAnalyzing(true);
+    (async () => {
+      const deadline = Date.now() + 8 * 60_000;
+      while (!stop && Date.now() < deadline) {
+        await new Promise((r) => setTimeout(r, 3000));
+        if (stop) return;
+        let out: { pending?: boolean; status?: number; data?: AnalyzeResponse & { message?: string } } | null = null;
+        try {
+          out = await (await fetch(`/api/quote/analyze?job=${job}`, { cache: "no-store" })).json();
+        } catch {
+          continue; // offline for a moment; keep waiting
+        }
+        if (!out || out.pending) continue;
+        const ok = out.status === 200 && out.data;
+        if (!ok) setAnalyzeError(out.data?.message || "Analysis failed — try again.");
+        // A re-run replaces the quote lines too (Bri 2026-11-13: re-ran, went to the Quote step, still saw the old $0s).
+        setDraft((d) => ({
+          ...d,
+          analysisJob: undefined,
+          ...(ok ? { analysis: out.data as AnalyzeResponse, lineItems: d.lineItems.length ? toLineItems(out.data as AnalyzeResponse) : [] } : {}),
+        }));
+        setAnalyzing(false);
+        return;
+      }
+      if (!stop) {
+        setAnalyzeError("The analysis took too long. Run it again.");
+        setDraft((d) => ({ ...d, analysisJob: undefined }));
+        setAnalyzing(false);
+      }
+    })();
+    return () => {
+      stop = true;
+    };
+  }, [draft.analysisJob]);
 
   const seedLineItems = useCallback(() => {
     if (!draft.analysis) return;
@@ -806,7 +844,7 @@ export default function QuoteWizard() {
                 </div>
                 <h2 className="font-display text-base font-semibold">Analyzing {Math.min(draft.photos.length, 8)} photos</h2>
                 <p className="mx-auto mt-2 max-w-sm text-sm text-[#4A4238]">
-                  This takes 30–90 seconds. Stay on this page — results appear automatically.
+                  About a minute. You can lock your phone or switch apps; the numbers will be here when you come back.
                 </p>
                 <Loader2 className="mx-auto mt-4 h-5 w-5 animate-spin text-[#2F6B66]" aria-hidden />
               </div>
