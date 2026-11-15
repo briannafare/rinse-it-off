@@ -323,8 +323,11 @@ export default function QuoteWizard() {
   const openSaved = useCallback(async () => {
     setShowSaved(true);
     setSavedList(null);
-    setSavedList(await listQuotes().catch(() => []));
-  }, []);
+    const rows = await listQuotes().catch(() => []);
+    // The quote on screen may have a save still in flight: show it as it is now.
+    const here = draft.id && draft.contact.name.trim() ? { ...summaryOf(draft), id: draft.id, savedAt: Date.now() } : null;
+    setSavedList(here ? [here, ...rows.filter((r) => r.id !== here.id)] : rows);
+  }, [draft]);
 
   const openQuote = useCallback(async (id: string) => {
     setOpening(id);
