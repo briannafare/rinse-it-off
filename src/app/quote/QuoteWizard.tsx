@@ -300,8 +300,8 @@ export default function QuoteWizard() {
     const key = draft.photos.map((p) => p.id).join(",");
     if (body === lastSaved.current && key === photosKey.current) return;
     const id = draft.id;
+    setSaveState("saving"); // shows from the first keystroke, so "Saved" always means saved
     const t = setTimeout(async () => {
-      setSaveState("saving");
       try {
         if (key !== photosKey.current) {
           await upload(`saved-quotes/${id}/photos.json`, new Blob([JSON.stringify(draft.photos)], { type: "application/json" }), {
