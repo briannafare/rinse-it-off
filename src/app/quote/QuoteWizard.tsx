@@ -12,6 +12,7 @@ import {
   Check,
   ChevronLeft,
   FileText,
+  FolderOpen,
   Images,
   Loader2,
   Plus,
@@ -25,6 +26,7 @@ import {
 } from "lucide-react";
 import { upload } from "@vercel/blob/client";
 import { searchGhlContacts, sendQuoteToGhl } from "./actions";
+import { listQuotes, loadQuote, saveQuote, type SavedQuoteSummary } from "./saved";
 import AddressPicker, { fullAddress, type AddressParts } from "./AddressPicker";
 import { buildClientQuoteHTML, buildInternalJobSheetHTML } from "@/lib/quote/print-templates";
 import {
@@ -58,6 +60,9 @@ interface Draft {
   files?: SavedFile[]; // originals in Vercel Blob (older drafts don't have it)
   sendToClient?: boolean;
   analysisJob?: string; // AI run in progress on the server; survives a locked phone or a reload
+  id?: string; // folder in Saved quotes (older local drafts get one on resume)
+  ghl?: { contactId?: string; estimateId?: string; opportunityId?: string }; // from the last send; a re-send updates these
+  sentAt?: number;
 }
 
 function emptyDraft(): Draft {
@@ -76,6 +81,18 @@ function emptyDraft(): Draft {
     discountReason: "",
     files: [],
     sendToClient: true,
+    id: crypto.randomUUID(),
+  };
+}
+
+function summaryOf(d: Draft): Omit<SavedQuoteSummary, "id" | "savedAt"> {
+  const total = d.lineItems.filter((i) => i.category !== "Pricing Note").reduce((t, i) => t + i.qty * i.unitPrice, 0) * (1 - (d.discountPct || 0) / 100);
+  return {
+    quoteNumber: d.quoteNumber,
+    name: d.contact.name,
+    address: d.contact.address,
+    total: Math.round(total * 100) / 100,
+    status: d.sentAt ? "sent" : d.ghl?.estimateId ? "in GHL, not sent" : "in progress",
   };
 }
 
@@ -230,6 +247,15 @@ export default function QuoteWizard() {
   const [analyzing, setAnalyzing] = useState(false);
   const [analyzeError, setAnalyzeError] = useState<string | null>(null);
 
+  // Saved quotes (server copy, shared by everyone who unlocks the tool)
+  const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [showSaved, setShowSaved] = useState(false);
+  const [savedList, setSavedList] = useState<SavedQuoteSummary[] | null>(null);
+  const [savedFilter, setSavedFilter] = useState("");
+  const [opening, setOpening] = useState<string | null>(null);
+  const lastSaved = useRef(""); // what's already on the server, so opening a quote doesn't re-save it
+  const photosKey = useRef("");
+
   // Send state
   const [sendResult, setSendResult] = useState<SendToGhlResult | null>(null);
   const [sending, startSend] = useTransition();
@@ -267,6 +293,57 @@ export default function QuoteWizard() {
     return () => clearTimeout(t);
   }, [draft, hydrated]);
 
+  // ── Save to Saved quotes a few seconds after each change. Photos go up only when they change. ──
+  useEffect(() => {
+    if (!hydrated || !draft.id || !draft.contact.name.trim()) return;
+    const body = JSON.stringify({ ...draft, photos: [] });
+    const key = draft.photos.map((p) => p.id).join(",");
+    if (body === lastSaved.current && key === photosKey.current) return;
+    const id = draft.id;
+    setSaveState("saving"); // shows from the first keystroke, so "Saved" always means saved
+    const t = setTimeout(async () => {
+      try {
+        if (key !== photosKey.current) {
+          await upload(`saved-quotes/${id}/photos.json`, new Blob([JSON.stringify(draft.photos)], { type: "application/json" }), {
+            access: "public",
+            handleUploadUrl: "/api/quote/upload",
+          });
+          photosKey.current = key;
+        }
+        const res = await saveQuote(id, summaryOf(draft), JSON.parse(body));
+        if (res.ok) lastSaved.current = body;
+        setSaveState(res.ok ? "saved" : "error");
+      } catch {
+        setSaveState("error");
+      }
+    }, 2500);
+    return () => clearTimeout(t);
+  }, [draft, hydrated]);
+
+  const openSaved = useCallback(async () => {
+    setShowSaved(true);
+    setSavedList(null);
+    const rows = await listQuotes().catch(() => []);
+    // The quote on screen may have a save still in flight: show it as it is now.
+    const here = draft.id && draft.contact.name.trim() ? { ...summaryOf(draft), id: draft.id, savedAt: Date.now() } : null;
+    setSavedList(here ? [here, ...rows.filter((r) => r.id !== here.id)] : rows);
+  }, [draft]);
+
+  const openQuote = useCallback(async (id: string) => {
+    setOpening(id);
+    const q = await loadQuote(id).catch(() => null);
+    setOpening(null);
+    if (!q) return alert("Couldn't open that quote. Try again.");
+    const d = { ...emptyDraft(), ...(q.draft as Draft), photos: q.photos as QuotePhoto[], id };
+    lastSaved.current = JSON.stringify({ ...d, photos: [] });
+    photosKey.current = d.photos.map((p) => p.id).join(",");
+    setDraft(d);
+    setResumeAvailable(null);
+    setSendResult(null);
+    setAnalyzeError(null);
+    setShowSaved(false);
+  }, []);
+
   const patch = useCallback((p: Partial<Draft>) => setDraft((d) => ({ ...d, ...p })), []);
   const patchContact = useCallback(
     (p: Partial<ContactInfo>) => setDraft((d) => ({ ...d, contact: { ...d.contact, ...p } })),
@@ -278,6 +355,9 @@ export default function QuoteWizard() {
     setResumeAvailable(null);
     setSendResult(null);
     setAnalyzeError(null);
+    lastSaved.current = "";
+    photosKey.current = "";
+    setSaveState("idle");
     setDraft({ ...emptyDraft(), quoteNumber: makeQuoteNumber() });
   }, []);
 
@@ -499,8 +579,14 @@ export default function QuoteWizard() {
         summary: draft.analysis?.assessment.summaryText ?? "",
         pricingNote: draft.analysis?.pricingNote ?? "",
         files: draft.files ?? [],
+        ghl: draft.ghl,
       });
       setSendResult(res);
+      setDraft((d) => ({
+        ...d,
+        ghl: { contactId: res.contact.id ?? d.ghl?.contactId, estimateId: res.estimate.id ?? d.ghl?.estimateId, opportunityId: res.opportunity.id ?? d.ghl?.opportunityId },
+        ...(res.sent.status === "ok" ? { sentAt: Date.now() } : {}),
+      }));
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draft, pricedItems, subtotal, total]);
@@ -522,17 +608,30 @@ export default function QuoteWizard() {
             <p className="truncate text-xs text-[#8A8072]">
               {draft.quoteNumber || "New quote"}
               {draft.contact.address ? ` — ${draft.contact.address}` : ""}
+              {saveState === "saving" ? " · Saving…" : saveState === "saved" ? " · Saved" : saveState === "error" ? " · Not saved yet, retrying on the next change" : ""}
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              if (confirm("Start a new quote? The current draft will be cleared.")) startFresh();
-            }}
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-xs font-semibold text-[#4A4238] hover:bg-[#E3ECE6]"
-          >
-            <RotateCcw className="h-3.5 w-3.5" aria-hidden /> New
-          </button>
+          <div className="flex shrink-0 items-center">
+            <button
+              type="button"
+              onClick={() => (showSaved ? setShowSaved(false) : openSaved())}
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-xs font-semibold text-[#4A4238] hover:bg-[#E3ECE6]"
+            >
+              <FolderOpen className="h-3.5 w-3.5" aria-hidden /> {showSaved ? "Back" : "Saved quotes"}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                if (confirm("Start a new quote? This one stays in Saved quotes.")) {
+                  startFresh();
+                  setShowSaved(false);
+                }
+              }}
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-xs font-semibold text-[#4A4238] hover:bg-[#E3ECE6]"
+            >
+              <RotateCcw className="h-3.5 w-3.5" aria-hidden /> New
+            </button>
+          </div>
         </div>
         {/* Step dots */}
         <div className="mx-auto max-w-2xl px-4 pb-3 sm:px-6">
@@ -580,8 +679,54 @@ export default function QuoteWizard() {
       </header>
 
       <main className="mx-auto max-w-2xl space-y-4 px-4 py-5 sm:px-6">
+        {showSaved && (
+          <div className={cardCls}>
+            <h2 className="font-display text-base font-semibold">Saved quotes</h2>
+            <p className="mt-1 text-sm text-[#4A4238]">Every quote saves here as you work. Open one to change it; sending it again updates the same estimate in GHL.</p>
+            <div className="relative mt-3">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8A8072]" aria-hidden />
+              <input
+                className={`${inputCls} pl-9`}
+                placeholder="Search name, address or quote number"
+                value={savedFilter}
+                onChange={(e) => setSavedFilter(e.target.value)}
+                aria-label="Search saved quotes"
+              />
+            </div>
+            {savedList === null ? (
+              <p className="mt-4 flex items-center gap-2 text-sm text-[#4A4238]"><Loader2 className="h-4 w-4 animate-spin" aria-hidden /> Loading…</p>
+            ) : (
+              <ul className="mt-3 divide-y divide-[#E2D6BF]">
+                {savedList
+                  .filter((q) => `${q.name} ${q.address} ${q.quoteNumber}`.toLowerCase().includes(savedFilter.trim().toLowerCase()))
+                  .map((q) => (
+                    <li key={q.id}>
+                      <button
+                        type="button"
+                        onClick={() => openQuote(q.id)}
+                        disabled={!!opening}
+                        className="flex min-h-11 w-full items-center gap-3 py-3 text-left hover:bg-[#E3ECE6] disabled:opacity-60"
+                      >
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-semibold">{q.name || "No name"}</span>
+                          <span className="block truncate text-xs text-[#4A4238]">{q.address || "No address"}</span>
+                          <span className="block text-xs text-[#8A8072]">
+                            {q.quoteNumber} · {new Date(q.savedAt).toLocaleDateString()} · {q.status}
+                          </span>
+                        </span>
+                        <span className="shrink-0 text-sm font-semibold">{q.total ? `$${money(q.total)}` : ""}</span>
+                        {opening === q.id && <Loader2 className="h-4 w-4 shrink-0 animate-spin" aria-hidden />}
+                      </button>
+                    </li>
+                  ))}
+                {savedList.length === 0 && <li className="py-3 text-sm text-[#4A4238]">No saved quotes yet.</li>}
+              </ul>
+            )}
+          </div>
+        )}
+
         {/* Resume banner */}
-        {resumeAvailable && (
+        {!showSaved && resumeAvailable && (
           <div className="flex flex-wrap items-center gap-3 rounded-[4px] border border-[#C8E8F5] bg-[#E3ECE6] p-4 text-sm">
             <p className="min-w-0 flex-1 text-[#26211B]">
               Draft from {new Date(resumeAvailable.savedAt).toLocaleString()} found
@@ -592,7 +737,7 @@ export default function QuoteWizard() {
                 type="button"
                 className={btnPrimary}
                 onClick={() => {
-                  setDraft(resumeAvailable);
+                  setDraft({ ...resumeAvailable, id: resumeAvailable.id ?? crypto.randomUUID() });
                   setResumeAvailable(null);
                 }}
               >
@@ -613,7 +758,7 @@ export default function QuoteWizard() {
         )}
 
         {/* ── Step 1: Property & contact ─────────────────────────────────────── */}
-        {step === 1 && (
+        {!showSaved && step === 1 && (
           <div className="space-y-4">
             <div className={cardCls}>
               <h2 className="font-display text-base font-semibold">Property &amp; contact</h2>
@@ -757,7 +902,7 @@ export default function QuoteWizard() {
         )}
 
         {/* ── Step 2: Photos ─────────────────────────────────────────────────── */}
-        {step === 2 && (
+        {!showSaved && step === 2 && (
           <div className="space-y-4">
             <div className={cardCls}>
               <h2 className="font-display text-base font-semibold">Property photos</h2>
@@ -835,7 +980,7 @@ export default function QuoteWizard() {
         )}
 
         {/* ── Step 3: AI analysis ────────────────────────────────────────────── */}
-        {step === 3 && (
+        {!showSaved && step === 3 && (
           <div className="space-y-4">
             {analyzing ? (
               <div className={`${cardCls} py-10 text-center`}>
@@ -992,7 +1137,7 @@ export default function QuoteWizard() {
         )}
 
         {/* ── Step 4: Quote editor ───────────────────────────────────────────── */}
-        {step === 4 && (
+        {!showSaved && step === 4 && (
           <div className="space-y-4">
             <div className={`${cardCls} p-0 sm:p-0`}>
               <div className="border-b border-retro-line px-5 py-3">
@@ -1171,7 +1316,7 @@ export default function QuoteWizard() {
         )}
 
         {/* ── Step 5: Actions ────────────────────────────────────────────────── */}
-        {step === 5 && (
+        {!showSaved && step === 5 && (
           <div className="space-y-4">
             <div className={cardCls}>
               <h2 className="font-display text-base font-semibold">Quote {draft.quoteNumber}</h2>
@@ -1247,7 +1392,10 @@ export default function QuoteWizard() {
                   </>
                 ) : (
                   <>
-                    <Send className="h-4 w-4" aria-hidden /> {draft.sendToClient ?? true ? "Save and send" : "Save as draft"}
+                    <Send className="h-4 w-4" aria-hidden />{" "}
+                    {draft.ghl?.estimateId
+                      ? draft.sendToClient ?? true ? "Update and send again" : "Update the estimate in GHL"
+                      : draft.sendToClient ?? true ? "Save and send" : "Save as draft"}
                   </>
                 )}
               </button>

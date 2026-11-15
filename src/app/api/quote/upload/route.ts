@@ -13,8 +13,12 @@ export async function POST(req: Request) {
     const json = await handleUpload({
       body,
       request: req,
-      onBeforeGenerateToken: async () => {
+      onBeforeGenerateToken: async (pathname) => {
         if (!(await isQuoteAuthed())) throw new Error("Unlock the tool first.");
+        // A saved quote's photos (see src/app/quote/saved.ts): one JSON file per quote, replaced on each save.
+        if (/^saved-quotes\/[a-z0-9-]{8,64}\/photos\.json$/.test(pathname)) {
+          return { allowedContentTypes: ["application/json"], maximumSizeInBytes: 100 * 1024 * 1024, addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 60 };
+        }
         return {
           allowedContentTypes: ["image/*", "video/*"],
           maximumSizeInBytes: 2 * 1024 * 1024 * 1024, // 2 GB: a long 4K walkaround
