@@ -127,6 +127,8 @@ export interface SendQuotePayload {
   total: number;
   /** Text and email the estimate now; false leaves it as a draft in GHL. */
   sendToClient: boolean;
+  /** From an earlier send of this saved quote: update these instead of making new ones. */
+  ghl?: { estimateId?: string; opportunityId?: string };
   notes: string;
   summary: string;
   pricingNote: string;

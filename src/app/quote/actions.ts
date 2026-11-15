@@ -221,23 +221,31 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     };
   } else {
     try {
-      const res = await fetch(`${GHL_API_BASE}/opportunities/`, {
-        method: "POST",
-        headers: ghlHeaders,
-        body: JSON.stringify({
-          pipelineId,
-          locationId: GHL_LOCATION_ID,
-          pipelineStageId: stageId,
-          contactId,
-          name: `${contact.name} — ${contact.address || "Property quote"}`,
-          monetaryValue: total,
-          status: "open",
-          source: "Audit Tool — Quote",
-        }),
-      });
+      const oppName = `${contact.name} — ${contact.address || "Property quote"}`;
+      const prevOpp = payload.ghl?.opportunityId;
+      // A saved quote sent again updates its opportunity; if that was deleted in GHL, make a new one.
+      let res = prevOpp
+        ? await fetch(`${GHL_API_BASE}/opportunities/${prevOpp}`, { method: "PUT", headers: ghlHeaders, body: JSON.stringify({ name: oppName, monetaryValue: total }) })
+        : null;
+      if (!res?.ok) {
+        res = await fetch(`${GHL_API_BASE}/opportunities/`, {
+          method: "POST",
+          headers: ghlHeaders,
+          body: JSON.stringify({
+            pipelineId,
+            locationId: GHL_LOCATION_ID,
+            pipelineStageId: stageId,
+            contactId,
+            name: oppName,
+            monetaryValue: total,
+            status: "open",
+            source: "Audit Tool — Quote",
+          }),
+        });
+      }
       if (res.ok) {
         const data = (await res.json()) as { opportunity?: { id?: string }; id?: string };
-        result.opportunity = { status: "ok", id: data?.opportunity?.id || data?.id };
+        result.opportunity = { status: "ok", id: data?.opportunity?.id || data?.id, ...(prevOpp && data?.opportunity?.id === prevOpp ? { detail: "Updated" } : {}) };
       } else {
         const body = await res.text();
         console.error("GHL opportunity failed:", res.status, body);
@@ -329,35 +337,37 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
 
   let estimateId = "";
   try {
+    // A saved quote sent again updates the same estimate (Bri 2026-11-15: edit and update past quotes).
+    // If it was deleted in GHL, a new one is made.
+    const write = async (body: Record<string, unknown>) => {
+      const prev = payload.ghl?.estimateId;
+      if (prev) {
+        const r = await fetch(`${GHL_API_BASE}/invoices/estimate/${prev}`, { method: "PUT", headers: ghlHeaders, body: JSON.stringify(body) });
+        if (r.ok || (r.status !== 404 && r.status !== 400)) return { res: r, updated: true };
+        console.warn("Saved estimate not updatable, creating a new one:", r.status, await r.text());
+      }
+      return { res: await fetch(`${GHL_API_BASE}/invoices/estimate`, { method: "POST", headers: ghlHeaders, body: JSON.stringify(body) }), updated: false };
+    };
     // First attempt: with the 50%-deposit schedule + autoInvoice (best reading).
-    let res = await fetch(`${GHL_API_BASE}/invoices/estimate`, {
-      method: "POST",
-      headers: ghlHeaders,
-      body: JSON.stringify({ ...baseEstimateBody, ...buildDepositScheduleConfig() }),
-    });
+    let { res, updated } = await write({ ...baseEstimateBody, ...buildDepositScheduleConfig() });
     let usedDeposit = true;
     if (!res.ok && res.status >= 400 && res.status < 500) {
       // Shape rejected — retry WITHOUT the ambiguous deposit/autoInvoice fields
       // so the core estimate still goes out (fail-soft, per spec).
       const body = await res.text();
       console.warn("Estimate with deposit config rejected, retrying without:", res.status, body);
-      res = await fetch(`${GHL_API_BASE}/invoices/estimate`, {
-        method: "POST",
-        headers: ghlHeaders,
-        body: JSON.stringify(baseEstimateBody),
-      });
+      ({ res, updated } = await write(baseEstimateBody));
       usedDeposit = false;
     }
     if (res.ok) {
       const data = (await res.json()) as { _id?: string; id?: string; estimate?: { _id?: string; id?: string } };
-      estimateId = data._id || data.id || data.estimate?._id || data.estimate?.id || "";
+      estimateId = data._id || data.id || data.estimate?._id || data.estimate?.id || (updated ? payload.ghl?.estimateId ?? "" : "");
       result.estimate = estimateId
         ? {
             status: "ok",
             id: estimateId,
-            detail: usedDeposit
-              ? "Created with 50% deposit schedule + auto-invoice"
-              : "Created WITHOUT deposit schedule (GHL rejected the schedule fields — set the deposit in the GHL UI)",
+            detail: (updated ? "Updated the earlier estimate" : "Created") +
+              (usedDeposit ? " with 50% deposit schedule + auto-invoice" : " WITHOUT deposit schedule (GHL rejected the schedule fields — set the deposit in the GHL UI)"),
           }
         : fail("Estimate created but no id returned");
     } else {
