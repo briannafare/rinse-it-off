@@ -243,9 +243,17 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
           }),
         });
       }
+      // GHL allows one opportunity per contact: a second quote for the same client updates theirs.
+      let existing = "";
+      if (!res.ok && res.status === 400) {
+        const err = (await res.clone().json().catch(() => ({}))) as { meta?: { existingId?: string } };
+        existing = err.meta?.existingId || "";
+        if (existing) res = await fetch(`${GHL_API_BASE}/opportunities/${existing}`, { method: "PUT", headers: ghlHeaders, body: JSON.stringify({ name: oppName, monetaryValue: total }) });
+      }
       if (res.ok) {
         const data = (await res.json()) as { opportunity?: { id?: string }; id?: string };
-        result.opportunity = { status: "ok", id: data?.opportunity?.id || data?.id, ...(prevOpp && data?.opportunity?.id === prevOpp ? { detail: "Updated" } : {}) };
+        const id = data?.opportunity?.id || data?.id || existing;
+        result.opportunity = { status: "ok", id, ...(id && (id === prevOpp || id === existing) ? { detail: "Updated the client's opportunity" } : {}) };
       } else {
         const body = await res.text();
         console.error("GHL opportunity failed:", res.status, body);
