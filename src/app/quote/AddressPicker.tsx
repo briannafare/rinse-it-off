@@ -27,6 +27,22 @@ function parse(text: string): AddressParts {
   return { street: p[0] ?? "", city: p[1] ?? "", state: p[2] ?? "", zip: p[3]?.match(/^\d{5}/)?.[0] ?? "" };
 }
 
+async function suggest(text: string, signal?: AbortSignal): Promise<string[]> {
+  const q = new URLSearchParams({
+    f: "json", text, location: "-122.68,45.52", countryCode: "USA", category: "Address", maxSuggestions: "8",
+  });
+  const d = (await (await fetch(`${SUGGEST}?${q}`, { signal })).json()) as { suggestions?: { text: string }[] };
+  // ponytail: the service area is Oregon and SW Washington
+  return (d.suggestions ?? []).map((s) => s.text).filter((x) => /, (OR|WA), \d{5}/.test(x)).slice(0, 5);
+}
+
+/** GHL contacts often hold the whole address in one field ("12245 Sw 127th ave, Tigard 97223") with
+ *  city, state and ZIP empty. Split it with the same address lookup; null if nothing matches. */
+export async function resolveAddress(line: string): Promise<AddressParts | null> {
+  const hit = (await suggest(line).catch(() => []))[0];
+  return hit ? parse(hit) : null;
+}
+
 type Check = { state: "idle" | "looking" | "found" | "none"; text?: string };
 
 export default function AddressPicker({
@@ -49,12 +65,7 @@ export default function AddressPicker({
     const ctl = new AbortController();
     const t = setTimeout(async () => {
       try {
-        const q = new URLSearchParams({
-          f: "json", text: value.street, location: "-122.68,45.52", countryCode: "USA", category: "Address", maxSuggestions: "8",
-        });
-        const d = (await (await fetch(`${SUGGEST}?${q}`, { signal: ctl.signal })).json()) as { suggestions?: { text: string }[] };
-        // ponytail: the service area is Oregon and SW Washington
-        setHits((d.suggestions ?? []).map((s) => s.text).filter((x) => /, (OR|WA), \d{5}/.test(x)).slice(0, 5));
+        setHits(await suggest(value.street, ctl.signal));
       } catch {
         /* typed faster than the network, or offline: the fields still work by hand */
       }
