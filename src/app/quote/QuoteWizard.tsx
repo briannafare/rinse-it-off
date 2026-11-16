@@ -27,7 +27,7 @@ import {
 import { upload } from "@vercel/blob/client";
 import { searchGhlContacts, sendQuoteToGhl } from "./actions";
 import { listQuotes, loadQuote, saveQuote, type SavedQuoteSummary } from "./saved";
-import AddressPicker, { fullAddress, type AddressParts } from "./AddressPicker";
+import AddressPicker, { fullAddress, resolveAddress, type AddressParts } from "./AddressPicker";
 import { buildClientQuoteHTML, buildInternalJobSheetHTML } from "@/lib/quote/print-templates";
 import {
   makeQuoteNumber,
@@ -818,16 +818,17 @@ export default function QuoteWizard() {
                         <button
                           key={c.id}
                           type="button"
-                          onClick={() => {
+                          onClick={async () => {
+                            setSearchResults(null);
+                            const typed = { street: c.address, city: c.city, state: c.state, zip: c.zip };
+                            const line = fullAddress(typed);
+                            const a = !line ? null : !c.address || (c.city && c.state && c.zip) ? typed : ((await resolveAddress(line)) ?? typed);
                             patchContact({
                               name: c.name || draft.contact.name,
                               email: c.email || "",
                               phone: c.phone || "",
-                              ...(c.address
-                                ? { street: c.address, city: c.city, state: c.state, zip: c.zip, address: fullAddress({ street: c.address, city: c.city, state: c.state, zip: c.zip }) }
-                                : {}),
+                              ...(a ? { ...a, address: fullAddress(a) } : {}),
                             });
-                            setSearchResults(null);
                           }}
                           className="flex min-h-11 w-full items-center justify-between gap-3 border-b border-retro-line bg-white px-4 py-2.5 text-left text-sm last:border-0 hover:bg-[#E3ECE6]"
                         >
