@@ -127,6 +127,15 @@ function buildDepositScheduleConfig(): Record<string, unknown> {
 const TERMS_NOTES_HTML =
   "<ul><li>Deposit required to schedule</li><li>Balance due upon completion</li><li>Quote valid 30 days</li><li>Services weather-dependent</li><li>Not responsible for pre-existing damage</li></ul>";
 
+/** Rinse It Off's residential terms PDF, already in the GHL media library (attached to past invoices). */
+const RES_TERMS_PDF = {
+  id: "6a49777fea0b79df4fc40c52",
+  name: "RIO Residential Terms & Conditions_2026.pdf",
+  url: "https://assets.cdn.filesafe.space/UiIMlTlrvkxfxHx5ErG2/media/6a49777fea0b79df4fc40c52.pdf",
+  type: "application/pdf",
+  size: 100356,
+};
+
 function toE164(p?: string): string {
   const d = (p || "").replace(/\D/g, "");
   if (d.length === 10) return `+1${d}`;
@@ -343,23 +352,47 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     ...(Object.keys(sentTo).length ? { sentTo } : {}),
   };
 
+  // Invoice instead of estimate (Bri 2026-11-16: "turn the quote into an invoice that requests 50% deposit…
+  // the other 50% at job completion"). GHL splits it into two payments on one invoice; the pay link asks
+  // for the first. Shape verified live on INV-000633.
+  const inv = payload.invoice;
+  const docPath = inv ? "/invoices" : "/invoices/estimate";
+  const invoiceBody = (): Record<string, unknown> => {
+    const b: Record<string, unknown> = { ...baseEstimateBody };
+    delete b.expiryDate;
+    delete b.frequencySettings;
+    const day = new Date(`${inv!.jobDate}T12:00:00`).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+    return {
+      ...b,
+      name: `INV : ${contact.name}`,
+      title: "INVOICE",
+      dueDate: inv!.jobDate,
+      termsNotes: `<ul><li>50% deposit due now to hold your ${day} appointment</li><li>Remaining 50% due when the job is complete</li><li>Services weather-dependent</li><li>Not responsible for pre-existing damage</li></ul>`,
+      ...(isResidential ? { attachments: [RES_TERMS_PDF] } : {}),
+      paymentSchedule: {
+        type: "percentage",
+        schedules: [{ value: 50, dueDate: isoDate(now) }, { value: 50, dueDate: inv!.jobDate }],
+      },
+    };
+  };
+
   let estimateId = "";
   try {
     // A saved quote sent again updates the same estimate (Bri 2026-11-15: edit and update past quotes).
     // If it was deleted in GHL, a new one is made.
     const write = async (body: Record<string, unknown>) => {
-      const prev = payload.ghl?.estimateId;
+      const prev = inv ? payload.ghl?.invoiceId : payload.ghl?.estimateId;
       if (prev) {
-        const r = await fetch(`${GHL_API_BASE}/invoices/estimate/${prev}`, { method: "PUT", headers: ghlHeaders, body: JSON.stringify(body) });
+        const r = await fetch(`${GHL_API_BASE}${docPath}/${prev}`, { method: "PUT", headers: ghlHeaders, body: JSON.stringify(body) });
         if (r.ok || (r.status !== 404 && r.status !== 400)) return { res: r, updated: true };
         console.warn("Saved estimate not updatable, creating a new one:", r.status, await r.text());
       }
-      return { res: await fetch(`${GHL_API_BASE}/invoices/estimate`, { method: "POST", headers: ghlHeaders, body: JSON.stringify(body) }), updated: false };
+      return { res: await fetch(`${GHL_API_BASE}${inv ? "/invoices/" : "/invoices/estimate"}`, { method: "POST", headers: ghlHeaders, body: JSON.stringify(body) }), updated: false };
     };
     // First attempt: with the 50%-deposit schedule + autoInvoice (best reading).
-    let { res, updated } = await write({ ...baseEstimateBody, ...buildDepositScheduleConfig() });
+    let { res, updated } = await write(inv ? invoiceBody() : { ...baseEstimateBody, ...buildDepositScheduleConfig() });
     let usedDeposit = true;
-    if (!res.ok && res.status >= 400 && res.status < 500) {
+    if (!inv && !res.ok && res.status >= 400 && res.status < 500) {
       // Shape rejected — retry WITHOUT the ambiguous deposit/autoInvoice fields
       // so the core estimate still goes out (fail-soft, per spec).
       const body = await res.text();
@@ -369,19 +402,21 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     }
     if (res.ok) {
       const data = (await res.json()) as { _id?: string; id?: string; estimate?: { _id?: string; id?: string } };
-      estimateId = data._id || data.id || data.estimate?._id || data.estimate?.id || (updated ? payload.ghl?.estimateId ?? "" : "");
+      estimateId = data._id || data.id || data.estimate?._id || data.estimate?.id || (updated ? (inv ? payload.ghl?.invoiceId : payload.ghl?.estimateId) ?? "" : "");
       result.estimate = estimateId
         ? {
             status: "ok",
             id: estimateId,
-            detail: (updated ? "Updated the earlier estimate" : "Created") +
+            detail: inv
+              ? `${updated ? "Updated the earlier invoice" : "Created the invoice"}: $${(Math.round(total * 50) / 100).toFixed(2)} due now, the rest due ${inv.jobDate}`
+              : (updated ? "Updated the earlier estimate" : "Created") +
               (usedDeposit ? " with 50% deposit schedule + auto-invoice" : " WITHOUT deposit schedule (GHL rejected the schedule fields — set the deposit in the GHL UI)"),
           }
         : fail("Estimate created but no id returned");
     } else {
       const body = await res.text();
       console.error("GHL estimate failed:", res.status, body);
-      result.estimate = fail(`Estimate failed (${res.status})`);
+      result.estimate = fail(`${inv ? "Invoice" : "Estimate"} failed (${res.status})`);
     }
   } catch (e) {
     console.error("GHL estimate error:", e);
@@ -397,14 +432,14 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     result.sent = { status: "skip", detail: "Contact has no email or phone" };
   } else {
     try {
-      const res = await fetch(`${GHL_API_BASE}/invoices/estimate/${estimateId}/send`, {
+      const res = await fetch(`${GHL_API_BASE}${docPath}/${estimateId}/send`, {
         method: "POST",
         headers: ghlHeaders,
         body: JSON.stringify({
           altId: GHL_LOCATION_ID,
           altType: "location",
           userId: GHL_SENDER_USER_ID,
-          action: "sms_and_email",
+          action: contact.email && contact.phone ? "sms_and_email" : contact.email ? "email" : "sms",
           liveMode: true,
         }),
       });
@@ -426,7 +461,7 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     const res = await fetch(`${GHL_API_BASE}/contacts/${contactId}/tags`, {
       method: "POST",
       headers: ghlHeaders,
-      body: JSON.stringify({ tags: [result.sent.status === "ok" ? "quote-sent" : "quote-draft", leadTag] }),
+      body: JSON.stringify({ tags: [result.sent.status === "ok" ? (inv ? "invoice-sent" : "quote-sent") : "quote-draft", leadTag] }),
     });
     if (res.ok) {
       result.tag = { status: "ok" };

@@ -61,7 +61,9 @@ interface Draft {
   sendToClient?: boolean;
   analysisJob?: string; // AI run in progress on the server; survives a locked phone or a reload
   id?: string; // folder in Saved quotes (older local drafts get one on resume)
-  ghl?: { contactId?: string; estimateId?: string; opportunityId?: string }; // from the last send; a re-send updates these
+  ghl?: { contactId?: string; estimateId?: string; invoiceId?: string; opportunityId?: string }; // from the last send; a re-send updates these
+  asInvoice?: boolean; // send an invoice (50% now, 50% on jobDate) instead of an estimate
+  jobDate?: string; // YYYY-MM-DD
   sentAt?: number;
 }
 
@@ -580,11 +582,17 @@ export default function QuoteWizard() {
         pricingNote: draft.analysis?.pricingNote ?? "",
         files: draft.files ?? [],
         ghl: draft.ghl,
+        ...(draft.asInvoice && draft.jobDate ? { invoice: { jobDate: draft.jobDate } } : {}),
       });
       setSendResult(res);
       setDraft((d) => ({
         ...d,
-        ghl: { contactId: res.contact.id ?? d.ghl?.contactId, estimateId: res.estimate.id ?? d.ghl?.estimateId, opportunityId: res.opportunity.id ?? d.ghl?.opportunityId },
+        ghl: {
+          ...d.ghl,
+          contactId: res.contact.id ?? d.ghl?.contactId,
+          opportunityId: res.opportunity.id ?? d.ghl?.opportunityId,
+          ...(res.estimate.id ? { [d.asInvoice ? "invoiceId" : "estimateId"]: res.estimate.id } : {}),
+        },
         ...(res.sent.status === "ok" ? { sentAt: Date.now() } : {}),
       }));
     });
@@ -1370,8 +1378,34 @@ export default function QuoteWizard() {
               <h3 className="font-display text-sm font-semibold">Save to GHL</h3>
               <p className="mt-1 text-xs leading-relaxed text-[#8A8072]">
                 Saves the contact, the opportunity, a note with every line, the field notes and links to all{" "}
-                {draft.files?.length ?? 0} photos and videos, and the estimate with a 50% deposit due on acceptance.
+                {draft.files?.length ?? 0} photos and videos, and the estimate or invoice.
               </p>
+              <div className="mt-3 grid grid-cols-2 gap-2" role="radiogroup" aria-label="Send as">
+                {([
+                  [false, "Estimate", "Client accepts, then pays 50%"],
+                  [true, "Invoice", "50% deposit now, 50% on job day"],
+                ] as const).map(([v, label, sub]) => (
+                  <button
+                    key={label}
+                    type="button"
+                    role="radio"
+                    aria-checked={!!draft.asInvoice === v}
+                    onClick={() => patch({ asInvoice: v })}
+                    className={`min-h-11 rounded-xl border px-3 py-2 text-left text-sm ${!!draft.asInvoice === v ? "border-[#2F6B66] bg-[#E3ECE6] font-semibold" : "border-retro-line bg-white"}`}
+                  >
+                    {label}
+                    <span className="block text-xs font-normal text-[#8A8072]">{sub}</span>
+                  </button>
+                ))}
+              </div>
+              {draft.asInvoice && (
+                <div className="mt-3">
+                  <label className={labelCls} htmlFor="q-jobdate">Job date (the other 50% is due this day)</label>
+                  <input id="q-jobdate" type="date" className={inputCls} value={draft.jobDate ?? ""}
+                    min={new Date().toLocaleDateString("en-CA")} onChange={(e) => patch({ jobDate: e.target.value })} />
+                  {total > 0 && <p className="mt-1.5 text-xs text-[#8A8072]">The client pays ${money(Math.round(total * 50) / 100)} now and the rest on the job date.</p>}
+                </div>
+              )}
               <label className="mt-3 flex min-h-11 cursor-pointer items-center gap-3 text-sm font-medium">
                 <input
                   type="checkbox"
@@ -1379,12 +1413,12 @@ export default function QuoteWizard() {
                   onChange={(e) => patch({ sendToClient: e.target.checked })}
                   className="h-5 w-5 accent-[#2F6B66]"
                 />
-                Text and email the estimate to the client now
+                Text and email the {draft.asInvoice ? "invoice" : "estimate"} to the client now
               </label>
               <button
                 type="button"
                 onClick={doSend}
-                disabled={sending || pricedItems.length === 0 || !draft.contact.name.trim()}
+                disabled={sending || pricedItems.length === 0 || !draft.contact.name.trim() || (!!draft.asInvoice && !draft.jobDate)}
                 className={`${btnPrimary} mt-3 w-full`}
               >
                 {sending ? (
@@ -1394,9 +1428,9 @@ export default function QuoteWizard() {
                 ) : (
                   <>
                     <Send className="h-4 w-4" aria-hidden />{" "}
-                    {draft.ghl?.estimateId
-                      ? draft.sendToClient ?? true ? "Update and send again" : "Update the estimate in GHL"
-                      : draft.sendToClient ?? true ? "Save and send" : "Save as draft"}
+                    {(draft.asInvoice ? draft.ghl?.invoiceId : draft.ghl?.estimateId)
+                      ? draft.sendToClient ?? true ? "Update and send again" : `Update the ${draft.asInvoice ? "invoice" : "estimate"} in GHL`
+                      : draft.sendToClient ?? true ? `Save and send the ${draft.asInvoice ? "invoice" : "estimate"}` : "Save as draft"}
                   </>
                 )}
               </button>
@@ -1407,8 +1441,8 @@ export default function QuoteWizard() {
                     [
                       ["Contact", sendResult.contact],
                       ["Opportunity", sendResult.opportunity],
-                      ["Estimate", sendResult.estimate],
-                      ["Sent (SMS + email)", sendResult.sent],
+                      [draft.asInvoice ? "Invoice" : "Estimate", sendResult.estimate],
+                      ["Sent to the client", sendResult.sent],
                       ["Tags", sendResult.tag],
                       ["Note + file links", sendResult.note ?? { status: "skip" as const }],
                     ] as const
