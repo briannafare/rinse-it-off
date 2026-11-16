@@ -128,7 +128,9 @@ export interface SendQuotePayload {
   /** Text and email the estimate now; false leaves it as a draft in GHL. */
   sendToClient: boolean;
   /** From an earlier send of this saved quote: update these instead of making new ones. */
-  ghl?: { estimateId?: string; opportunityId?: string };
+  ghl?: { estimateId?: string; invoiceId?: string; opportunityId?: string };
+  /** Send an invoice instead of an estimate: 50% due now, 50% on the job date (YYYY-MM-DD). */
+  invoice?: { jobDate: string };
   notes: string;
   summary: string;
   pricingNote: string;
