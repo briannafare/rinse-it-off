@@ -77,8 +77,8 @@ export default function ReportView({ r, preview }: { r: JobReport; preview: bool
                 <p className="label-caps text-[#1A6E93]">The rundown</p>
                 <h2 className="mt-2 text-display">What we did</h2>
               </div>
-              <figure className="hidden shrink-0 text-center sm:block">
-                <img src="/brand/hal/hal-clipboard.webp" alt="" width={600} height={555} className="h-auto w-28 md:w-32" />
+              <figure className="shrink-0 text-center">
+                <img src="/brand/hal/hal-clipboard.webp" alt="" width={600} height={555} className="h-auto w-20 sm:w-28 md:w-32" />
                 <figcaption className="label-caps mt-1 text-[10px] text-[#5F676C]">Hal checked it over</figcaption>
               </figure>
             </motion.div>
@@ -217,7 +217,7 @@ function Compare({ before, after }: { before: JobMedia; after: JobMedia }) {
   const portrait = after.h > after.w;
 
   return (
-    <figure className={portrait ? "mx-auto max-w-[440px]" : ""}>
+    <figure className={portrait ? "mx-auto max-w-[440px] md:max-w-[360px]" : ""}>
       <div className="mat">
         <div
           ref={box}
