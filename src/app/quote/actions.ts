@@ -44,9 +44,10 @@ const ghlHeaders = {
 // ── Passcode gate ─────────────────────────────────────────────────────────────
 export async function unlockQuoteTool(formData: FormData): Promise<void> {
   const pw = String(formData.get("passcode") ?? "");
+  const next = formData.get("next") === "/jobs" ? "/jobs" : "/quote"; // the job-report tool shares this passcode
   const configured = process.env.QUOTE_PASSWORD;
-  if (!configured) redirect("/quote?error=unconfigured");
-  if (pw !== configured) redirect("/quote?error=wrong");
+  if (!configured) redirect(`${next}?error=unconfigured`);
+  if (pw !== configured) redirect(`${next}?error=wrong`);
   const jar = await cookies();
   jar.set(QUOTE_AUTH_COOKIE, expectedAuthToken()!, {
     httpOnly: true,
@@ -55,7 +56,7 @@ export async function unlockQuoteTool(formData: FormData): Promise<void> {
     maxAge: QUOTE_AUTH_MAX_AGE,
     path: "/",
   });
-  redirect("/quote");
+  redirect(next);
 }
 
 // ── Contact search (Step 1 "find existing contact") ───────────────────────────
