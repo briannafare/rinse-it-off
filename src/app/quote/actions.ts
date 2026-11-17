@@ -383,7 +383,10 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     const write = async (body: Record<string, unknown>) => {
       const prev = inv ? payload.ghl?.invoiceId : payload.ghl?.estimateId;
       if (prev) {
-        const r = await fetch(`${GHL_API_BASE}${docPath}/${prev}`, { method: "PUT", headers: ghlHeaders, body: JSON.stringify(body) });
+        // Invoice updates take invoiceItems, not items (422 otherwise; found 2026-11-16 on INV-000633).
+        const { items: lines, ...rest } = body;
+        const putBody = inv ? { ...rest, invoiceItems: lines } : body;
+        const r = await fetch(`${GHL_API_BASE}${docPath}/${prev}`, { method: "PUT", headers: ghlHeaders, body: JSON.stringify(putBody) });
         if (r.ok || (r.status !== 404 && r.status !== 400)) return { res: r, updated: true };
         console.warn("Saved estimate not updatable, creating a new one:", r.status, await r.text());
       }
