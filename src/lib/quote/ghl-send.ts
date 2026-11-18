@@ -21,7 +21,8 @@ const COMMERCIAL_STAGE_ID =
 const RESIDENTIAL_PIPELINE_ID = process.env.GHL_RESIDENTIAL_PIPELINE_ID || "";
 const RESIDENTIAL_STAGE_ID = process.env.GHL_RESIDENTIAL_STAGE_ID || "";
 // User that estimates are sent from (send endpoints require a real userId).
-const GHL_SENDER_USER_ID = process.env.GHL_SENDER_USER_ID || "ZsKRE5X4jKKVTElNy1ed";
+// GHL signs invoice and estimate texts and emails with this user's name. Was Kenn's id until 2026-11-18 (PR #48).
+const GHL_SENDER_USER_ID = process.env.GHL_INVOICE_SENDER_USER_ID || "9iXXFaE4tKyRGSvd2aBq";
 
 const ghlHeaders = {
   Authorization: `Bearer ${GHL_API_KEY}`,
