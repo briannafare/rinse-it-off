@@ -89,10 +89,10 @@ async function sendPickLink(
   if (!contact.email && !contact.phone) return { status: "skip", detail: `Contact has no email or phone. The client's link: ${url}` };
   const first = contact.name.trim().split(/\s+/)[0] || "there";
   const street = contact.address.split(",")[0].trim();
-  const sms = `Hi ${first}, it's Rinse It Off. Your quote${street ? ` for ${street}` : ""} is ready. Check the services you want and the price updates as you go. Two or more on one visit comes off the total: ${url}`;
+  const sms = `Hi ${first}, it's Rinse It Off. Your quote${street ? ` for ${street}` : ""} is ready. Check the services you want and the price updates as you go, bundle discount included: ${url}`;
   const html = `<div style="font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:1.5;color:#0C1215;max-width:520px">
 <p>Hi ${esc(first)},</p>
-<p>Your quote${street ? ` for ${esc(street)}` : ""} is ready. Check the services you want and the price updates as you go. Pick two or more for the same visit and the bundle discount comes off the total.</p>
+<p>Your quote${street ? ` for ${esc(street)}` : ""} is ready. Check the services you want and the price updates as you go. Bigger visits get a bundle discount, and the page shows it as you pick.</p>
 <p><a href="${url}" style="display:inline-block;background:#F2B632;color:#0C1215;border:2px solid #0C1215;border-radius:14px;padding:14px 22px;font-weight:700;text-decoration:none;letter-spacing:.06em;text-transform:uppercase;font-size:14px">Pick your services</a></p>
 <p>Questions? Text or call (971) 626-4146.</p>
 <p>Rinse It Off</p></div>`;

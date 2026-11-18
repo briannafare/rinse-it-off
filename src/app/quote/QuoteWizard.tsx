@@ -29,7 +29,7 @@ import { searchGhlContacts, sendQuoteAsPicks, sendQuoteToGhl } from "./actions";
 import { listQuotes, loadQuote, saveQuote, type SavedQuoteSummary } from "./saved";
 import AddressPicker, { fullAddress, resolveAddress, type AddressParts } from "./AddressPicker";
 import { buildClientQuoteHTML, buildInternalJobSheetHTML } from "@/lib/quote/print-templates";
-import { priceSelection } from "@/lib/quote/bundle";
+import { TIERS, priceSelection } from "@/lib/quote/bundle";
 import {
   makeQuoteNumber,
   type SavedFile,
@@ -1417,8 +1417,9 @@ export default function QuoteWizard() {
                 return (
                   <div className="mt-3 rounded-xl bg-retro-pool p-3 text-xs leading-relaxed text-[#4A4238]">
                     The client gets a text and email with a link, checks the services they want, and the estimate for
-                    those goes out on its own (50% deposit when they accept). Bundle discount: 2 services 10%, 3 or more
-                    15%{all.fullSetOnQuote ? ", everything on this quote 20%" : ". 20% needs roof, siding, windows and walkways all on the quote"}.
+                    those goes out on its own (50% deposit when they accept). Bundle discount, count and dollars
+                    both: {TIERS.map((t) => `${t.pct}% for ${t.label.toLowerCase()}`).join("; ")}.
+                    {all.tiers.length < TIERS.length && <> This quote can reach {all.tiers.length ? `up to ${all.tiers[all.tiers.length - 1].pct}%` : "no discount"}.</>}{" "}
                     It replaces the same-visit credit{draft.discountPct > 0 ? " and the manual discount above" : ""}.
                     {all.lines.length > 0 && <> If they take everything: <b>${money(all.total)}</b> ({all.pct}% off).</>}
                     {draft.pickUrl && (

@@ -4,7 +4,7 @@
 import { Check, Loader2 } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
 import { StripeBand } from "@/components/retro/Bits";
-import { FULL_PCT, TIERS, priceSelection, type OfferLine } from "@/lib/quote/bundle";
+import { priceSelection, type OfferLine } from "@/lib/quote/bundle";
 import { bookPicks } from "./actions";
 
 const TEXT_US = "sms:+19716264146";
@@ -60,16 +60,16 @@ export default function PickView({
               ? done.sent
                 ? "We just texted and emailed you the estimate for these services. Accept it there and pay the 50% deposit, and we'll get you on the schedule."
                 : "We have your picks. We'll text you the estimate shortly to accept and pay the 50% deposit."
-              : "Everything we'd do at your place is checked. Uncheck anything you don't want. More services on the same visit means more off the total."}
+              : `Everything we'd do at your place is checked. Uncheck anything you don't want.${r.tiers.length ? " Bigger visits get more off the total." : ""}`}
           </p>
         </div>
       </section>
       <StripeBand />
 
       <main className="container-site max-w-3xl py-10 md:py-14">
-        {!done && (
+        {!done && r.tiers.length > 0 && (
           <ol className="mb-8 grid gap-2 sm:grid-cols-3" aria-label="Bundle discounts">
-            {[...TIERS.map((t) => ({ label: t.label, pct: t.pct })), ...(r.fullSetOnQuote ? [{ label: "Everything on this quote", pct: FULL_PCT }] : [])].map((t) => (
+            {r.tiers.map((t) => (
               <li
                 key={t.pct}
                 className={`rounded-[14px] border-[1.5px] px-4 py-3 text-sm ${r.pct === t.pct ? "border-[#0C1215] bg-[#F2B632] font-semibold" : "border-[#0C1215]/20 bg-white"}`}
