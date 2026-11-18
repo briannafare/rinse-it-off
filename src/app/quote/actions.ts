@@ -32,8 +32,12 @@ const COMMERCIAL_STAGE_ID =
 // Residential pipeline does not exist yet — set both envs once Bri creates it.
 const RESIDENTIAL_PIPELINE_ID = process.env.GHL_RESIDENTIAL_PIPELINE_ID || "";
 const RESIDENTIAL_STAGE_ID = process.env.GHL_RESIDENTIAL_STAGE_ID || "";
-// User that estimates are sent from (send endpoints require a real userId).
-const GHL_SENDER_USER_ID = process.env.GHL_SENDER_USER_ID || "ZsKRE5X4jKKVTElNy1ed";
+// GHL user that estimates and invoices are sent from. GHL signs the invoice text and email with
+// this user's name (send endpoints also require a real userId). It was Kenn's id, so every invoice
+// went out signed "Kenn Llona" after he left (found 2026-11-17 on INV-000633). The env name changed
+// on purpose: the old GHL_SENDER_USER_ID on Vercel was set from .env.local (Kenn's id), and a new name means it
+// stops being read the moment this deploys. Default: Bri.
+const GHL_SENDER_USER_ID = process.env.GHL_INVOICE_SENDER_USER_ID || "9iXXFaE4tKyRGSvd2aBq";
 
 const ghlHeaders = {
   Authorization: `Bearer ${GHL_API_KEY}`,

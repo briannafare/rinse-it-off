@@ -22,8 +22,9 @@ const MEMBERSHIP_STAGE_RESERVED_ID = process.env.GHL_MEMBERSHIP_STAGE_RESERVED_I
 // Property Assessment calendar (same one the /assessment form books), 45-min slots.
 const AUDIT_CALENDAR_ID = process.env.GHL_AUDIT_CALENDAR_ID || "tA6NtDSKU60mNlSNXLS9";
 const SLOT_MINUTES = 60; // the one-hour arrival window (Bri 2026-11-10); the calendar holds 45 min after it for the visit
-// Staff user the deposit invoice is emailed from (send endpoints need a real userId).
-const GHL_SENDER_USER_ID = process.env.GHL_SENDER_USER_ID || "ZsKRE5X4jKKVTElNy1ed";
+// Staff user the deposit invoice is sent from; GHL signs the invoice with this user's name.
+// Same setting and default as /quote (see src/app/quote/actions.ts): was Kenn's id until 2026-11-18.
+const GHL_SENDER_USER_ID = process.env.GHL_INVOICE_SENDER_USER_ID || "9iXXFaE4tKyRGSvd2aBq";
 // Public invoice page. The branded links domain is what GHL's own invoice
 // emails resolve to (verified 2026-09-01: links.rinseitoff.com/l/... 302s to
 // links.rinseitoff.com/invoice/<id>). link.msgsndr.com/invoice/<id> also works.
