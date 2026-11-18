@@ -237,7 +237,7 @@ interface Observations {
 
 const DESC: Partial<Record<ServiceKey, string>> = {
   "roof-moss": "Moss treatment, loose debris off the roof, gutters flushed",
-  gutters: "Gutters cleaned out by hand, downspouts flushed",
+  gutters: "Gutters cleaned out, downspouts flushed",
   "house-wash": "Soft wash of the siding, eaves and trim",
   windows: "Outside glass, frames and sills",
   driveway: "Driveway and front walk surface cleaned",
