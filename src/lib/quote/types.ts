@@ -131,6 +131,12 @@ export interface SendQuotePayload {
   ghl?: { estimateId?: string; invoiceId?: string; opportunityId?: string };
   /** Send an invoice instead of an estimate: 50% due now, 50% on the job date (YYYY-MM-DD). */
   invoice?: { jobDate: string };
+  /** Send a pick-your-services link instead of an estimate: no estimate yet, the client picks on the page. */
+  pick?: { url: string };
+  /** One dollar discount for the whole estimate (bundle discount net of the visit minimum); overrides discountPercent. */
+  discountFixed?: { value: number; description: string };
+  /** Tag added once the client has it (default quote-sent / invoice-sent). */
+  sentTag?: string;
   notes: string;
   summary: string;
   pricingNote: string;

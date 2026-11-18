@@ -31,7 +31,7 @@ export const GUTTER_WHEN_TITLE = "When we clean them";
 
 export const GUTTER_WHEN = [
   "We clean gutters whenever they're clogged. Around here that's usually late October through winter, plus a second pass a couple of months later.",
-  "We scoop out the leaves and needles and flush the downspouts, so the rain has somewhere to go all winter.",
+  "We clear out the leaves and needles and flush the downspouts, so the rain has somewhere to go all winter.",
   "The black streaks down the outside of a gutter are a separate job called gutter whitening. You can add it when you get your price.",
 ];
 

@@ -237,7 +237,7 @@ interface Observations {
 
 const DESC: Partial<Record<ServiceKey, string>> = {
   "roof-moss": "Moss treatment, loose debris off the roof, gutters flushed",
-  gutters: "Gutters cleaned out by hand, downspouts flushed",
+  gutters: "Gutters cleaned out, downspouts flushed",
   "house-wash": "Soft wash of the siding, eaves and trim",
   windows: "Outside glass, frames and sills",
   driveway: "Driveway and front walk surface cleaned",
@@ -275,14 +275,17 @@ async function priceHome(address: string, o: Observations): Promise<{ services: 
     services.push({ category: label, description: DESC[s.key] || s.label, estimatedPrice: alone, isAddon: false });
   }
   // Deck and fence at the live /plan add-on rates (ADD_ONS in plan/pricing.ts), from the AI's measurements.
+  let rateNote = "";
   if (picked.includes("deck-fence")) {
     const rate = (k: string) => ADD_ONS.find((a) => a.key === k)?.list?.amount ?? 0;
     const $r = (k: string) => rate(k).toFixed(2);
     const deck = Math.round(o.deckSqft || 0);
     const fence = Math.round(o.fenceFt || 0);
     const r5 = (n: number) => Math.round(n / 5) * 5;
-    if (deck > 0) services.push({ category: "Deck and balconies", description: `Soft wash of about ${deck} sq ft of deck and balcony floors at $${$r("deck")}/sq ft`, estimatedPrice: r5(deck * rate("deck")), isAddon: false });
-    if (fence > 0) services.push({ category: "Fence", description: `About ${fence} ft of fence at $${$r("fence")}/ft`, estimatedPrice: r5(fence * rate("fence")), isAddon: false });
+    // The client sees these descriptions: no per-foot or per-sq-ft rate (Bri 2026-11-18). Rates go in the internal pricing note.
+    if (deck > 0) services.push({ category: "Deck and balconies", description: `Soft wash of about ${deck} sq ft of deck and balcony floors`, estimatedPrice: r5(deck * rate("deck")), isAddon: false });
+    if (fence > 0) services.push({ category: "Fence", description: `Soft wash of about ${fence} ft of fence`, estimatedPrice: r5(fence * rate("fence")), isAddon: false });
+    if (deck > 0 || fence > 0) rateNote = `Rates used: deck $${$r("deck")}/sq ft, fence $${$r("fence")}/ft.`;
     if (!deck && !fence) services.push({ category: "Deck or fence", description: `Couldn't measure it from the photos. Enter sq ft × $${$r("deck")} for a deck, feet × $${$r("fence")} for a fence`, estimatedPrice: 0, isAddon: false });
   }
   // ponytail: "Something else" gets no $0 line (Bri 2026-11-13 read $0 lines as broken); it shows in the findings.
@@ -296,7 +299,7 @@ async function priceHome(address: string, o: Observations): Promise<{ services: 
     `Priced for ${sqft.toLocaleString()} sq ft (${found ? "county record" : "estimated, address not in county records"}), ${stories} ${stories === 1 ? "story" : "stories"}${seen ? "" : " (guessed from size)"}.`,
     `About ${m.roofSf.toLocaleString()} sq ft of roof, ${m.gutterLf} ft of gutter, ${windows} windows, ${moss} moss, ${driveway} driveway.`,
     check.length ? `Harder setup seen (${why}). ${check.join(" and ")} ${check.length > 1 ? "are" : "is"} at the normal-house price; raise ${check.length > 1 ? "them" : "it"} if the setup takes longer.` : "",
-    o.deckSqft || o.fenceFt ? `Deck and fence sizes are the AI's guess from the photos (${[o.deckSqft ? `${Math.round(o.deckSqft)} sq ft deck` : "", o.fenceFt ? `${Math.round(o.fenceFt)} ft fence` : ""].filter(Boolean).join(", ")}); fix the price if you measured.` : "",
+    o.deckSqft || o.fenceFt ? `Deck and fence sizes are the AI's guess from the photos (${[o.deckSqft ? `${Math.round(o.deckSqft)} sq ft deck` : "", o.fenceFt ? `${Math.round(o.fenceFt)} ft fence` : ""].filter(Boolean).join(", ")}); fix the price if you measured. ${rateNote}` : "",
     picked.length ? "" : "The AI didn't name any services. Add them on the next step.",
   ].filter(Boolean).join(" ");
   // One line per run in Vercel runtime logs, so "it gave me $0" can be checked against what was returned.

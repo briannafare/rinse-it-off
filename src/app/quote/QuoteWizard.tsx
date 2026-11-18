@@ -25,10 +25,11 @@ import {
   X,
 } from "lucide-react";
 import { upload } from "@vercel/blob/client";
-import { searchGhlContacts, sendQuoteToGhl } from "./actions";
+import { searchGhlContacts, sendQuoteAsPicks, sendQuoteToGhl } from "./actions";
 import { listQuotes, loadQuote, saveQuote, type SavedQuoteSummary } from "./saved";
 import AddressPicker, { fullAddress, resolveAddress, type AddressParts } from "./AddressPicker";
 import { buildClientQuoteHTML, buildInternalJobSheetHTML } from "@/lib/quote/print-templates";
+import { TIERS, priceSelection } from "@/lib/quote/bundle";
 import {
   makeQuoteNumber,
   type SavedFile,
@@ -65,6 +66,9 @@ interface Draft {
   asInvoice?: boolean; // send an invoice (50% now, 50% on jobDate) instead of an estimate
   jobDate?: string; // YYYY-MM-DD
   sentAt?: number;
+  asPick?: boolean; // send a pick-your-services link (/pick/<id>) instead of an estimate or invoice
+  pickOfferId?: string; // the client's page from the last pick send; sending again updates it
+  pickUrl?: string;
 }
 
 function emptyDraft(): Draft {
@@ -84,6 +88,7 @@ function emptyDraft(): Draft {
     files: [],
     sendToClient: true,
     id: crypto.randomUUID(),
+    asPick: true, // Bri 2026-11-18: the client picks their services by default
   };
 }
 
@@ -561,7 +566,7 @@ export default function QuoteWizard() {
   const doSend = useCallback(() => {
     setSendResult(null);
     startSend(async () => {
-      const res = await sendQuoteToGhl({
+      const payload = {
         contact: draft.contact,
         propertyType: draft.propertyType,
         quoteNumber: draft.quoteNumber,
@@ -582,16 +587,20 @@ export default function QuoteWizard() {
         pricingNote: draft.analysis?.pricingNote ?? "",
         files: draft.files ?? [],
         ghl: draft.ghl,
-        ...(draft.asInvoice && draft.jobDate ? { invoice: { jobDate: draft.jobDate } } : {}),
-      });
+        ...(!draft.asPick && draft.asInvoice && draft.jobDate ? { invoice: { jobDate: draft.jobDate } } : {}),
+      };
+      // Client picks: the bundle discount replaces the manual discount and the same-visit credit.
+      const picks = draft.asPick ? await sendQuoteAsPicks({ ...payload, discountPercent: 0, discountReason: "" }, draft.pickOfferId, draft.id) : null;
+      const res = picks ? picks.result : await sendQuoteToGhl(payload);
       setSendResult(res);
       setDraft((d) => ({
         ...d,
+        ...(picks?.offerId ? { pickOfferId: picks.offerId, pickUrl: picks.url } : {}),
         ghl: {
           ...d.ghl,
           contactId: res.contact.id ?? d.ghl?.contactId,
           opportunityId: res.opportunity.id ?? d.ghl?.opportunityId,
-          ...(res.estimate.id ? { [d.asInvoice ? "invoiceId" : "estimateId"]: res.estimate.id } : {}),
+          ...(res.estimate.id && !d.asPick ? { [d.asInvoice ? "invoiceId" : "estimateId"]: res.estimate.id } : {}),
         },
         ...(res.sent.status === "ok" ? { sentAt: Date.now() } : {}),
       }));
@@ -1380,25 +1389,48 @@ export default function QuoteWizard() {
                 Saves the contact, the opportunity, a note with every line, the field notes and links to all{" "}
                 {draft.files?.length ?? 0} photos and videos, and the estimate or invoice.
               </p>
-              <div className="mt-3 grid grid-cols-2 gap-2" role="radiogroup" aria-label="Send as">
+              <div className="mt-3 grid grid-cols-3 gap-2" role="radiogroup" aria-label="Send as">
                 {([
-                  [false, "Estimate", "Client accepts, then pays 50%"],
-                  [true, "Invoice", "50% deposit now, 50% on job day"],
-                ] as const).map(([v, label, sub]) => (
-                  <button
-                    key={label}
-                    type="button"
-                    role="radio"
-                    aria-checked={!!draft.asInvoice === v}
-                    onClick={() => patch({ asInvoice: v })}
-                    className={`min-h-11 rounded-xl border px-3 py-2 text-left text-sm ${!!draft.asInvoice === v ? "border-[#2F6B66] bg-[#E3ECE6] font-semibold" : "border-retro-line bg-white"}`}
-                  >
-                    {label}
-                    <span className="block text-xs font-normal text-[#8A8072]">{sub}</span>
-                  </button>
-                ))}
+                  ["pick", "Client picks", "They check services, bundle discount applies"],
+                  ["estimate", "Estimate", "Client accepts, then pays 50%"],
+                  ["invoice", "Invoice", "50% deposit now, 50% on job day"],
+                ] as const).map(([v, label, sub]) => {
+                  const mode = draft.asPick ? "pick" : draft.asInvoice ? "invoice" : "estimate";
+                  return (
+                    <button
+                      key={v}
+                      type="button"
+                      role="radio"
+                      aria-checked={mode === v}
+                      onClick={() => patch({ asPick: v === "pick", asInvoice: v === "invoice" })}
+                      className={`min-h-11 rounded-xl border px-3 py-2 text-left text-sm ${mode === v ? "border-[#2F6B66] bg-[#E3ECE6] font-semibold" : "border-retro-line bg-white"}`}
+                    >
+                      {label}
+                      <span className="block text-xs font-normal text-[#8A8072]">{sub}</span>
+                    </button>
+                  );
+                })}
               </div>
-              {draft.asInvoice && (
+              {draft.asPick && (() => {
+                const offer = pricedItems.map((i, n) => ({ id: `l${n + 1}`, name: i.description, category: i.category, price: i.qty * i.unitPrice }));
+                const all = priceSelection(offer, offer.map((l) => l.id));
+                return (
+                  <div className="mt-3 rounded-xl bg-retro-pool p-3 text-xs leading-relaxed text-[#4A4238]">
+                    The client gets a text and email with a link, checks the services they want, and the estimate for
+                    those goes out on its own (50% deposit when they accept). Bundle discount, count and dollars
+                    both: {TIERS.map((t) => `${t.pct}% for ${t.label.toLowerCase()}`).join("; ")}.
+                    {all.tiers.length < TIERS.length && <> This quote can reach {all.tiers.length ? `up to ${all.tiers[all.tiers.length - 1].pct}%` : "no discount"}.</>}{" "}
+                    It replaces the same-visit credit{draft.discountPct > 0 ? " and the manual discount above" : ""}.
+                    {all.lines.length > 0 && <> If they take everything: <b>${money(all.total)}</b> ({all.pct}% off).</>}
+                    {draft.pickUrl && (
+                      <span className="mt-2 block break-all">
+                        Client&apos;s page: <a href={draft.pickUrl} target="_blank" rel="noreferrer" className="font-semibold underline">{draft.pickUrl}</a>
+                      </span>
+                    )}
+                  </div>
+                );
+              })()}
+              {!draft.asPick && draft.asInvoice && (
                 <div className="mt-3">
                   <label className={labelCls} htmlFor="q-jobdate">Job date (the other 50% is due this day)</label>
                   <input id="q-jobdate" type="date" className={inputCls} value={draft.jobDate ?? ""}
@@ -1413,12 +1445,12 @@ export default function QuoteWizard() {
                   onChange={(e) => patch({ sendToClient: e.target.checked })}
                   className="h-5 w-5 accent-[#2F6B66]"
                 />
-                Text and email the {draft.asInvoice ? "invoice" : "estimate"} to the client now
+                Text and email the {draft.asPick ? "link" : draft.asInvoice ? "invoice" : "estimate"} to the client now
               </label>
               <button
                 type="button"
                 onClick={doSend}
-                disabled={sending || pricedItems.length === 0 || !draft.contact.name.trim() || (!!draft.asInvoice && !draft.jobDate)}
+                disabled={sending || pricedItems.length === 0 || !draft.contact.name.trim() || (!draft.asPick && !!draft.asInvoice && !draft.jobDate)}
                 className={`${btnPrimary} mt-3 w-full`}
               >
                 {sending ? (
@@ -1428,7 +1460,9 @@ export default function QuoteWizard() {
                 ) : (
                   <>
                     <Send className="h-4 w-4" aria-hidden />{" "}
-                    {(draft.asInvoice ? draft.ghl?.invoiceId : draft.ghl?.estimateId)
+                    {draft.asPick
+                      ? draft.sendToClient ?? true ? (draft.pickUrl ? "Update the page and send again" : "Save and send the link") : "Save the page, don't send"
+                      : (draft.asInvoice ? draft.ghl?.invoiceId : draft.ghl?.estimateId)
                       ? draft.sendToClient ?? true ? "Update and send again" : `Update the ${draft.asInvoice ? "invoice" : "estimate"} in GHL`
                       : draft.sendToClient ?? true ? `Save and send the ${draft.asInvoice ? "invoice" : "estimate"}` : "Save as draft"}
                   </>
@@ -1441,7 +1475,7 @@ export default function QuoteWizard() {
                     [
                       ["Contact", sendResult.contact],
                       ["Opportunity", sendResult.opportunity],
-                      [draft.asInvoice ? "Invoice" : "Estimate", sendResult.estimate],
+                      [draft.asPick ? "Estimate" : draft.asInvoice ? "Invoice" : "Estimate", sendResult.estimate],
                       ["Sent to the client", sendResult.sent],
                       ["Tags", sendResult.tag],
                       ["Note + file links", sendResult.note ?? { status: "skip" as const }],

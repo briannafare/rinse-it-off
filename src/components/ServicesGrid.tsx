@@ -18,7 +18,7 @@ const SERVICES = [
   {
     icon: "/brand/icons/gutter-cleaning.png",
     title: "Gutter Cleaning",
-    method: "Hand-clear + flow test",
+    method: "Cleared + flow test",
     body: "Cleared, flushed, flow-tested, debris hauled away. Overflow never reaches your foundation.",
   },
   {

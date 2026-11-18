@@ -20,30 +20,14 @@ import type {
   SendToGhlResult,
 } from "@/lib/quote/types";
 
+import { pushQuoteToGhl } from "@/lib/quote/ghl-send";
+import { isAutoLine, type OfferLine } from "@/lib/quote/bundle";
+import { newOfferId, readOffer, writeOffer } from "@/lib/quote/offers";
+import { SITE_URL } from "@/lib/seo";
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
 const GHL_API_BASE = "https://services.leadconnectorhq.com";
 const GHL_VERSION = "2021-07-28";
-
-// Live GHL IDs (read from the Rinse It Off sub-account via MCP). Env-overridable.
-const COMMERCIAL_PIPELINE_ID = process.env.GHL_COMMERCIAL_PIPELINE_ID || "ohb2ZfnHPdrhfCqwqVSE";
-const COMMERCIAL_STAGE_ID =
-  process.env.GHL_COMMERCIAL_STAGE_ID || "bad7e4f8-2c55-465d-8f19-8d2eaf953bf6"; // "New Lead"
-// Residential pipeline does not exist yet — set both envs once Bri creates it.
-const RESIDENTIAL_PIPELINE_ID = process.env.GHL_RESIDENTIAL_PIPELINE_ID || "";
-const RESIDENTIAL_STAGE_ID = process.env.GHL_RESIDENTIAL_STAGE_ID || "";
-// GHL user that estimates and invoices are sent from. GHL signs the invoice text and email with
-// this user's name (send endpoints also require a real userId). It was Kenn's id, so every invoice
-// went out signed "Kenn Llona" after he left (found 2026-11-17 on INV-000633). The env name changed
-// on purpose: the old GHL_SENDER_USER_ID on Vercel was set from .env.local (Kenn's id), and a new name means it
-// stops being read the moment this deploys. Default: Bri.
-const GHL_SENDER_USER_ID = process.env.GHL_INVOICE_SENDER_USER_ID || "9iXXFaE4tKyRGSvd2aBq";
-
-const ghlHeaders = {
-  Authorization: `Bearer ${GHL_API_KEY}`,
-  Version: GHL_VERSION,
-  "Content-Type": "application/json",
-};
 
 // ── Passcode gate ─────────────────────────────────────────────────────────────
 export async function unlockQuoteTool(formData: FormData): Promise<void> {
@@ -105,383 +89,55 @@ export async function searchGhlContacts(
   }
 }
 
-// ── Deposit / auto-invoice builder ────────────────────────────────────────────
-/** BEST-READING IMPLEMENTATION — the exact wire shapes of paymentScheduleConfig
- *  and autoInvoice on CreateEstimatesDto are only partially documented (see
- *  research/ghl-capability.md: type=percentage + depositDateType=estimate_accepted
- *  is confirmed; the schedules[] entry shape and autoInvoice sub-schema are not).
- *  Kept in ONE place so a correction is a one-line change. sendQuoteToGhl
- *  retries estimate creation WITHOUT these fields if GHL rejects the body, so
- *  a wrong guess degrades to "estimate without deposit schedule", never a
- *  blocked send. */
-function buildDepositScheduleConfig(): Record<string, unknown> {
-  return {
-    paymentScheduleConfig: {
-      type: "percentage",
-      dateConfig: {
-        depositDateType: "estimate_accepted",
-        scheduleDateType: "regular_interval",
-      },
-      // 50% deposit due when the estimate is accepted; balance on completion.
-      schedules: [{ value: 50 }],
-    },
-    autoInvoice: { enabled: true },
-  };
-}
-
-const TERMS_NOTES_HTML =
-  "<ul><li>Deposit required to schedule</li><li>Balance due upon completion</li><li>Quote valid 30 days</li><li>Services weather-dependent</li><li>Not responsible for pre-existing damage</li></ul>";
-
-/** Rinse It Off's residential terms PDF, already in the GHL media library (attached to past invoices). */
-const RES_TERMS_PDF = {
-  id: "6a49777fea0b79df4fc40c52",
-  name: "RIO Residential Terms & Conditions_2026.pdf",
-  url: "https://assets.cdn.filesafe.space/UiIMlTlrvkxfxHx5ErG2/media/6a49777fea0b79df4fc40c52.pdf",
-  type: "application/pdf",
-  size: 100356,
-};
-
-function toE164(p?: string): string {
-  const d = (p || "").replace(/\D/g, "");
-  if (d.length === 10) return `+1${d}`;
-  if (d.length === 11 && d.startsWith("1")) return `+${d}`;
-  return d.length > 7 && (p || "").trim().startsWith("+") ? `+${d}` : ""; // ponytail: US numbers; anything else is dropped, not sent broken
-}
-
-function isoDate(d: Date): string {
-  return d.toISOString().slice(0, 10);
-}
-
 // ── Send to GHL (Step 5) ──────────────────────────────────────────────────────
-/** Fail-soft pipeline: contact upsert is the only hard dependency. Every later
- *  step reports ok/skip/fail but never throws and never loses earlier progress. */
 export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToGhlResult> {
-  const fail = (detail: string): SendStepResult => ({ status: "fail", detail });
-  const result: SendToGhlResult = {
-    contact: fail("Not attempted"),
-    opportunity: { status: "skip", detail: "Not attempted" },
-    estimate: fail("Not attempted"),
-    sent: fail("Not attempted"),
-    tag: fail("Not attempted"),
-    note: fail("Not attempted"),
-  };
-
   if (!(await isQuoteAuthed())) {
-    result.contact = fail("Not authorized — unlock the tool again");
-    return result;
+    const fail = (detail: string): SendStepResult => ({ status: "fail", detail });
+    return { contact: fail("Not authorized — unlock the tool again"), opportunity: { status: "skip" }, estimate: fail("Not attempted"), sent: fail("Not attempted"), tag: fail("Not attempted"), note: fail("Not attempted") };
   }
-  if (!GHL_API_KEY || !GHL_LOCATION_ID) {
-    result.contact = fail("GHL not configured (GHL_API_KEY / GHL_LOCATION_ID missing)");
-    return result;
-  }
+  return pushQuoteToGhl(payload);
+}
 
-  const { propertyType, lineItems, discountPercent, discountReason, total, sendToClient } = payload;
-  // GHL estimates reject anything but +15035551234 (Bri 2026-11-14: "(503) 555-1234" failed the send).
-  const contact = { ...payload.contact, phone: toE164(payload.contact.phone) };
-  const isResidential = propertyType === "residential";
-  const nameParts = contact.name.trim().split(" ");
-  const firstName = nameParts[0] || "";
-  const lastName = nameParts.slice(1).join(" ") || "";
-  const leadTag = isResidential ? "lead-res" : "lead-com";
+// ── Send as a pick-your-services link (Bri 2026-11-18) ────────────────────────
+/** Saves the quote's services as an offer page (/pick/<id>) and texts and emails the client the link.
+ *  The client checks what they want, the bundle discount applies (src/lib/quote/bundle.ts), and the
+ *  estimate for what they picked goes out from the page. Sending again updates the same page until the
+ *  client has picked; after that a send makes a new page. */
+export async function sendQuoteAsPicks(
+  payload: SendQuotePayload,
+  offerId?: string,
+  quoteId?: string,
+): Promise<{ result: SendToGhlResult; offerId?: string; url?: string; error?: string }> {
+  const fail = (detail: string): SendStepResult => ({ status: "fail", detail });
+  const blocked = (detail: string) => ({
+    result: { contact: fail(detail), opportunity: { status: "skip" as const }, estimate: fail("Not attempted"), sent: fail("Not attempted"), tag: fail("Not attempted"), note: fail("Not attempted") },
+    error: detail,
+  });
+  if (!(await isQuoteAuthed())) return blocked("Not authorized — unlock the tool again");
 
-  // 1) Upsert contact — the one hard dependency.
-  let contactId = "";
-  try {
-    const res = await fetch(`${GHL_API_BASE}/contacts/upsert`, {
-      method: "POST",
-      headers: ghlHeaders,
-      body: JSON.stringify({
-        locationId: GHL_LOCATION_ID,
-        firstName,
-        lastName,
-        name: contact.name,
-        email: contact.email || undefined,
-        phone: contact.phone || undefined,
-        address1: contact.street || contact.address || undefined,
-        city: contact.city || undefined,
-        state: contact.state || undefined,
-        postalCode: contact.zip || undefined,
-        source: "Audit Tool — Quote",
-        tags: ["property-audit", leadTag],
-      }),
-    });
-    if (!res.ok) {
-      const body = await res.text();
-      console.error("GHL contact upsert failed:", res.status, body);
-      result.contact = fail(`Upsert failed (${res.status})`);
-      return result;
-    }
-    const data = (await res.json()) as { contact?: { id?: string } };
-    contactId = data?.contact?.id || "";
-    if (!contactId) {
-      result.contact = fail("Upsert returned no contact id");
-      return result;
-    }
-    result.contact = { status: "ok", id: contactId };
-  } catch (e) {
-    console.error("GHL contact upsert error:", e);
-    result.contact = fail("Upsert failed — network error");
-    return result;
-  }
+  const lines: OfferLine[] = payload.lineItems
+    .map((i, n) => ({ id: `l${n + 1}`, name: i.name, category: i.description.replace(/ \(add-on\)$/, ""), price: Math.round(i.qty * i.unitPrice * 100) / 100 }))
+    .filter((l) => l.price > 0 && !isAutoLine(l.category));
+  if (!lines.length) return blocked("No priced services to pick from.");
 
-  // 2) Opportunity — commercial/multifamily/hoa -> commercial pipeline;
-  //    residential only when the residential pipeline envs exist.
-  const pipelineId = isResidential ? RESIDENTIAL_PIPELINE_ID : COMMERCIAL_PIPELINE_ID;
-  const stageId = isResidential ? RESIDENTIAL_STAGE_ID : COMMERCIAL_STAGE_ID;
-  if (!pipelineId || !stageId) {
-    result.opportunity = {
-      status: "skip",
-      detail: "Residential pipeline not configured (GHL_RESIDENTIAL_PIPELINE_ID/STAGE_ID)",
-    };
-  } else {
-    try {
-      const oppName = `${contact.name} — ${contact.address || "Property quote"}`;
-      const prevOpp = payload.ghl?.opportunityId;
-      // A saved quote sent again updates its opportunity; if that was deleted in GHL, make a new one.
-      let res = prevOpp
-        ? await fetch(`${GHL_API_BASE}/opportunities/${prevOpp}`, { method: "PUT", headers: ghlHeaders, body: JSON.stringify({ name: oppName, monetaryValue: total }) })
-        : null;
-      if (!res?.ok) {
-        res = await fetch(`${GHL_API_BASE}/opportunities/`, {
-          method: "POST",
-          headers: ghlHeaders,
-          body: JSON.stringify({
-            pipelineId,
-            locationId: GHL_LOCATION_ID,
-            pipelineStageId: stageId,
-            contactId,
-            name: oppName,
-            monetaryValue: total,
-            status: "open",
-            source: "Audit Tool — Quote",
-          }),
-        });
-      }
-      // GHL allows one opportunity per contact: a second quote for the same client updates theirs.
-      let existing = "";
-      if (!res.ok && res.status === 400) {
-        const err = (await res.clone().json().catch(() => ({}))) as { meta?: { existingId?: string } };
-        existing = err.meta?.existingId || "";
-        if (existing) res = await fetch(`${GHL_API_BASE}/opportunities/${existing}`, { method: "PUT", headers: ghlHeaders, body: JSON.stringify({ name: oppName, monetaryValue: total }) });
-      }
-      if (res.ok) {
-        const data = (await res.json()) as { opportunity?: { id?: string }; id?: string };
-        const id = data?.opportunity?.id || data?.id || existing;
-        result.opportunity = { status: "ok", id, ...(id && (id === prevOpp || id === existing) ? { detail: "Updated the client's opportunity" } : {}) };
-      } else {
-        const body = await res.text();
-        console.error("GHL opportunity failed:", res.status, body);
-        result.opportunity = fail(`Opportunity failed (${res.status})`);
-      }
-    } catch (e) {
-      console.error("GHL opportunity error:", e);
-      result.opportunity = fail("Opportunity failed — network error");
-    }
-  }
+  const prev = offerId ? await readOffer(offerId) : null;
+  const id = prev && prev.status !== "accepted" ? prev.id : newOfferId();
+  const url = `${SITE_URL}/pick/${id}`;
+  const everything = lines.reduce((t, l) => t + l.price, 0);
 
-  // 2b) Note on the contact: everything from this quote in one place, with links to every
-  //     original photo and video (Bri 2026-11-13: "need all this info saved somewhere").
-  try {
-    const $ = (n: number) => `$${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    const body = [
-      `QUOTE ${payload.quoteNumber} · ${contact.address || "no address"} · ${propertyType}`,
-      `Total ${$(total)}${sendToClient ? " (sent to client)" : " (draft, not sent)"}`,
-      "",
-      ...lineItems.map((i) => `${i.description}: ${i.name} — ${i.qty > 1 ? `${i.qty} × ` : ""}${$(i.unitPrice)}`),
-      discountPercent > 0 ? `Discount ${discountPercent}%: ${discountReason}` : "",
-      payload.pricingNote ? `\nHow it was priced: ${payload.pricingNote}` : "",
-      payload.summary ? `\nWhat the photos show: ${payload.summary}` : "",
-      payload.notes ? `\nField notes: ${payload.notes}` : "",
-      payload.files.length ? `\nPhotos and video (${payload.files.length}):` : "\nNo original files saved.",
-      ...payload.files.map((f) => `${f.kind === "video" ? "Video" : "Photo"} ${f.name}: ${f.url}`),
-    ].filter((l) => l !== "").join("\n");
-    const res = await fetch(`${GHL_API_BASE}/contacts/${contactId}/notes`, { method: "POST", headers: ghlHeaders, body: JSON.stringify({ body }) });
-    result.note = res.ok ? { status: "ok", detail: `${payload.files.length} file link${payload.files.length === 1 ? "" : "s"} on the contact` } : fail(`Note failed (${res.status})`);
-    if (!res.ok) console.error("GHL note failed:", res.status, await res.text());
-  } catch (e) {
-    console.error("GHL note error:", e);
-    result.note = fail("Note failed — network error");
-  }
-
-  // 3) Create estimate.
-  const now = new Date();
-  const expiry = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // Quote valid 30 days
-  // Credits (same-visit savings) can't be estimate lines in GHL, so everything below the
-  // positive lines goes out as one fixed discount that lands on the same total.
-  const positive = lineItems.reduce((t, i) => t + Math.max(0, i.qty * i.unitPrice), 0);
-  const hasCredit = lineItems.some((i) => i.qty * i.unitPrice < 0);
-  const items = lineItems
-    .filter((i) => i.unitPrice > 0 || i.qty * i.unitPrice > 0)
-    .map((i) => ({
-      name: i.isAddon ? `Add-on: ${i.name}` : i.name,
-      description: i.description,
-      currency: "USD",
-      qty: i.qty,
-      amount: i.unitPrice,
-      type: "one_time", // GHL rejects estimate items without it (found 2026-11-13)
-    }));
-  const sentTo: Record<string, string[]> = {};
-  if (contact.email) sentTo.email = [contact.email];
-  if (contact.phone) sentTo.phoneNo = [contact.phone];
-
-  const baseEstimateBody: Record<string, unknown> = {
-    altId: GHL_LOCATION_ID,
-    altType: "location",
-    name: `EST : ${contact.name}`,
-    title: "ESTIMATE",
-    currency: "USD",
-    liveMode: true,
-    frequencySettings: { enabled: false }, // required by GHL since this tool was built (422 without it)
-    issueDate: isoDate(now),
-    expiryDate: isoDate(expiry),
-    businessDetails: { name: "Rinse It Off — Fresh Rinse LLC", website: "rinseitoff.com" },
-    contactDetails: {
-      id: contactId,
-      name: contact.name,
-      email: contact.email || undefined,
-      phoneNo: contact.phone || undefined,
-    },
-    items,
-    discount: hasCredit
-      ? {
-          type: "fixed",
-          value: Math.round((positive - total) * 100) / 100,
-          description: [...lineItems.filter((i) => i.unitPrice < 0).map((i) => i.name), discountPercent > 0 ? discountReason : ""].filter(Boolean).join(" + "),
-        }
-      : {
-          type: "percentage",
-          value: discountPercent > 0 ? discountPercent : 0,
-          ...(discountPercent > 0 && discountReason ? { description: discountReason } : {}),
-        },
-    termsNotes: TERMS_NOTES_HTML,
-    ...(Object.keys(sentTo).length ? { sentTo } : {}),
-  };
-
-  // Invoice instead of estimate (Bri 2026-11-16: "turn the quote into an invoice that requests 50% deposit…
-  // the other 50% at job completion"). GHL splits it into two payments on one invoice; the pay link asks
-  // for the first. Shape verified live on INV-000633.
-  const inv = payload.invoice;
-  const docPath = inv ? "/invoices" : "/invoices/estimate";
-  const invoiceBody = (): Record<string, unknown> => {
-    const b: Record<string, unknown> = { ...baseEstimateBody };
-    delete b.expiryDate;
-    delete b.frequencySettings;
-    const day = new Date(`${inv!.jobDate}T12:00:00`).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
-    return {
-      ...b,
-      name: `INV : ${contact.name}`,
-      title: "INVOICE",
-      dueDate: inv!.jobDate,
-      termsNotes: `<ul><li>50% deposit due now to hold your ${day} appointment</li><li>Remaining 50% due when the job is complete</li><li>Services weather-dependent</li><li>Not responsible for pre-existing damage</li></ul>`,
-      ...(isResidential ? { attachments: [RES_TERMS_PDF] } : {}),
-      paymentSchedule: {
-        type: "percentage",
-        schedules: [{ value: 50, dueDate: isoDate(now) }, { value: 50, dueDate: inv!.jobDate }],
-      },
-    };
-  };
-
-  let estimateId = "";
-  try {
-    // A saved quote sent again updates the same estimate (Bri 2026-11-15: edit and update past quotes).
-    // If it was deleted in GHL, a new one is made.
-    const write = async (body: Record<string, unknown>) => {
-      const prev = inv ? payload.ghl?.invoiceId : payload.ghl?.estimateId;
-      if (prev) {
-        // Invoice updates take invoiceItems, not items (422 otherwise; found 2026-11-16 on INV-000633).
-        const { items: lines, ...rest } = body;
-        const putBody = inv ? { ...rest, invoiceItems: lines } : body;
-        const r = await fetch(`${GHL_API_BASE}${docPath}/${prev}`, { method: "PUT", headers: ghlHeaders, body: JSON.stringify(putBody) });
-        if (r.ok || (r.status !== 404 && r.status !== 400)) return { res: r, updated: true };
-        console.warn("Saved estimate not updatable, creating a new one:", r.status, await r.text());
-      }
-      return { res: await fetch(`${GHL_API_BASE}${inv ? "/invoices/" : "/invoices/estimate"}`, { method: "POST", headers: ghlHeaders, body: JSON.stringify(body) }), updated: false };
-    };
-    // First attempt: with the 50%-deposit schedule + autoInvoice (best reading).
-    let { res, updated } = await write(inv ? invoiceBody() : { ...baseEstimateBody, ...buildDepositScheduleConfig() });
-    let usedDeposit = true;
-    if (!inv && !res.ok && res.status >= 400 && res.status < 500) {
-      // Shape rejected — retry WITHOUT the ambiguous deposit/autoInvoice fields
-      // so the core estimate still goes out (fail-soft, per spec).
-      const body = await res.text();
-      console.warn("Estimate with deposit config rejected, retrying without:", res.status, body);
-      ({ res, updated } = await write(baseEstimateBody));
-      usedDeposit = false;
-    }
-    if (res.ok) {
-      const data = (await res.json()) as { _id?: string; id?: string; estimate?: { _id?: string; id?: string } };
-      estimateId = data._id || data.id || data.estimate?._id || data.estimate?.id || (updated ? (inv ? payload.ghl?.invoiceId : payload.ghl?.estimateId) ?? "" : "");
-      result.estimate = estimateId
-        ? {
-            status: "ok",
-            id: estimateId,
-            detail: inv
-              ? `${updated ? "Updated the earlier invoice" : "Created the invoice"}: $${(Math.round(total * 50) / 100).toFixed(2)} due now, the rest due ${inv.jobDate}`
-              : (updated ? "Updated the earlier estimate" : "Created") +
-              (usedDeposit ? " with 50% deposit schedule + auto-invoice" : " WITHOUT deposit schedule (GHL rejected the schedule fields — set the deposit in the GHL UI)"),
-          }
-        : fail("Estimate created but no id returned");
-    } else {
-      const body = await res.text();
-      console.error("GHL estimate failed:", res.status, body);
-      result.estimate = fail(`${inv ? "Invoice" : "Estimate"} failed (${res.status})`);
-    }
-  } catch (e) {
-    console.error("GHL estimate error:", e);
-    result.estimate = fail("Estimate failed — network error");
-  }
-
-  // 4) Send the estimate (sms + email).
-  if (!estimateId) {
-    result.sent = { status: "skip", detail: "No estimate to send" };
-  } else if (!sendToClient) {
-    result.sent = { status: "skip", detail: "Saved as a draft in GHL, not sent. Send it from GHL or come back and send." };
-  } else if (!contact.email && !contact.phone) {
-    result.sent = { status: "skip", detail: "Contact has no email or phone" };
-  } else {
-    try {
-      const res = await fetch(`${GHL_API_BASE}${docPath}/${estimateId}/send`, {
-        method: "POST",
-        headers: ghlHeaders,
-        body: JSON.stringify({
-          altId: GHL_LOCATION_ID,
-          altType: "location",
-          userId: GHL_SENDER_USER_ID,
-          action: contact.email && contact.phone ? "sms_and_email" : contact.email ? "email" : "sms",
-          liveMode: true,
-        }),
-      });
-      if (res.ok) {
-        result.sent = { status: "ok" };
-      } else {
-        const body = await res.text();
-        console.error("GHL estimate send failed:", res.status, body);
-        result.sent = fail(`Send failed (${res.status}) — estimate saved as draft in GHL`);
-      }
-    } catch (e) {
-      console.error("GHL estimate send error:", e);
-      result.sent = fail("Send failed — network error (estimate saved as draft)");
-    }
-  }
-
-  // 5) Tags: quote-sent + the lead tag (adding an existing tag is a no-op in GHL).
-  try {
-    const res = await fetch(`${GHL_API_BASE}/contacts/${contactId}/tags`, {
-      method: "POST",
-      headers: ghlHeaders,
-      body: JSON.stringify({ tags: [result.sent.status === "ok" ? (inv ? "invoice-sent" : "quote-sent") : "quote-draft", leadTag] }),
-    });
-    if (res.ok) {
-      result.tag = { status: "ok" };
-    } else {
-      const body = await res.text();
-      console.error("GHL tag failed:", res.status, body);
-      result.tag = fail(`Tag failed (${res.status})`);
-    }
-  } catch (e) {
-    console.error("GHL tag error:", e);
-    result.tag = fail("Tag failed — network error");
-  }
-
-  return result;
+  const result = await pushQuoteToGhl({ ...payload, total: everything, pick: { url } });
+  await writeOffer({
+    id,
+    quoteId,
+    quoteNumber: payload.quoteNumber,
+    propertyType: payload.propertyType,
+    contact: payload.contact,
+    lines,
+    status: "sent",
+    sentBy: "Rinse It Off",
+    sentAt: Date.now(),
+    ghl: { ...prev?.ghl, contactId: result.contact.id ?? prev?.ghl.contactId, opportunityId: result.opportunity.id ?? prev?.ghl.opportunityId },
+    updatedAt: Date.now(),
+  });
+  return { result, offerId: id, url };
 }
