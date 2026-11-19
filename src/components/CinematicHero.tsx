@@ -108,6 +108,16 @@ export function CinematicHero() {
     return () => clearTimeout(id);
   }, []);
 
+  // Phones under 700px tall hide Hal on the business slide (no room under its button), and the
+  // business slide comes first, so his fly-in used to play unseen and nobody saw him arrive. Hold
+  // him back until the first moment he can be seen, then let him fly in; once he's here he stays.
+  const [halReady, setHalReady] = useState(false);
+  useEffect(() => {
+    if (halReady) return;
+    const short = window.matchMedia("(max-width: 767px) and (max-height: 699px)").matches;
+    if (!short || SLIDES[active].key === "home") setHalReady(true);
+  }, [active, halReady]);
+
   const pick = useCallback((i: number) => {
     setActive(i);
     setHeld(true);
@@ -222,13 +232,13 @@ export function CinematicHero() {
             headline runs two lines longer, 27vw), gliding when the slide changes, and shrinks only when
             the screen is too short to show him whole above the Call/Text bar. Under 700px tall there is
             no room below the business button at all, so on that slide he fades out and comes back. */}
-        <HalFlyIn
+        {halReady && <HalFlyIn
           className={`pointer-events-none absolute left-[4%] z-20 transition-[top,width,opacity] duration-700 ease-out motion-reduce:transition-none md:left-auto md:right-[6%] md:top-[19%] md:w-[15vw] md:max-w-[270px] ${
             SLIDES[active].key === "home"
               ? "top-[calc(316px+37vw)] w-[clamp(96px,calc((100svh-424px-37vw)*1.4),min(40vw,220px))]"
               : "top-[calc(266px+64vw)] w-[clamp(96px,calc((100svh-374px-64vw)*1.4),min(40vw,220px))] max-md:[@media(max-height:699px)]:opacity-0"
           }`}
-        />
+        />}
       </div>
       {/* the stripe band along the photo's tilted lower edge (the centre of the cut sits 1.75vw up) */}
       <StripeBand className="absolute inset-x-0 bottom-[1.75vw]" />
