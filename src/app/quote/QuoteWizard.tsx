@@ -1383,7 +1383,7 @@ export default function QuoteWizard() {
               <div className="mt-3 grid grid-cols-2 gap-2" role="radiogroup" aria-label="Send as">
                 {([
                   [false, "Estimate", "Client accepts, then pays 50%"],
-                  [true, "Invoice", "50% deposit now, 50% on job day"],
+                  [true, "Invoice", "50% deposit now, the rest when the job's done"],
                 ] as const).map(([v, label, sub]) => (
                   <button
                     key={label}
@@ -1400,10 +1400,10 @@ export default function QuoteWizard() {
               </div>
               {draft.asInvoice && (
                 <div className="mt-3">
-                  <label className={labelCls} htmlFor="q-jobdate">Job date (the other 50% is due this day)</label>
+                  <label className={labelCls} htmlFor="q-jobdate">Job date (the deposit holds this day)</label>
                   <input id="q-jobdate" type="date" className={inputCls} value={draft.jobDate ?? ""}
                     min={new Date().toLocaleDateString("en-CA")} onChange={(e) => patch({ jobDate: e.target.value })} />
-                  {total > 0 && <p className="mt-1.5 text-xs text-[#8A8072]">The client pays ${money(Math.round(total * 50) / 100)} now and the rest on the job date.</p>}
+                  {total > 0 && <p className="mt-1.5 text-xs text-[#8A8072]">The client pays ${money(Math.round(total * 50) / 100)} now. The rest goes out only when the crew lead marks the job done in Job reports.</p>}
                 </div>
               )}
               <label className="mt-3 flex min-h-11 cursor-pointer items-center gap-3 text-sm font-medium">

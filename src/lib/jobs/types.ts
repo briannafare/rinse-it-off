@@ -38,6 +38,8 @@ export interface JobReport {
   pair?: { before?: string; after?: string }; // which two photos the slider compares (default: the first of each)
   remarks?: JobRemarks;
   note: string;
+  /** The deposit invoice whose balance the lead billed from this job (set by billBalance only). */
+  balanceId?: string;
   sentAt?: number;
   updatedAt: number;
 }

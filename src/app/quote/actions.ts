@@ -19,6 +19,9 @@ import type {
   SendStepResult,
   SendToGhlResult,
 } from "@/lib/quote/types";
+import { halfOf, readBalance, writeBalance } from "@/lib/jobs/balance";
+
+const usd = (n: number) => `$${n.toFixed(2)}`;
 
 const GHL_API_KEY = process.env.GHL_API_KEY;
 const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
@@ -357,27 +360,37 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
     ...(Object.keys(sentTo).length ? { sentTo } : {}),
   };
 
-  // Invoice instead of estimate (Bri 2026-11-16: "turn the quote into an invoice that requests 50% deposit…
-  // the other 50% at job completion"). GHL splits it into two payments on one invoice; the pay link asks
-  // for the first. Shape verified live on INV-000633.
+  // Invoice instead of estimate. Bri 2026-11-16: "turn the quote into an invoice that requests 50% deposit…
+  // the other 50% at job completion". Bri 2026-11-21: the rest "only sends when the crew lead specifies the
+  // job is complete". So this invoice bills the deposit alone, one line, no payment schedule. GHL emails
+  // "payment due" on every installment date, and the old schedule dated the balance on the job day, so Mike
+  // got that email the morning of his job (INV-000633, 2026-11-20). The balance waits in Blob until the lead
+  // marks the job done in /jobs, which makes and sends a second invoice (src/lib/jobs/balance.ts).
   const inv = payload.invoice;
+  const deposit = halfOf(total);
   const docPath = inv ? "/invoices" : "/invoices/estimate";
   const invoiceBody = (): Record<string, unknown> => {
     const b: Record<string, unknown> = { ...baseEstimateBody };
     delete b.expiryDate;
     delete b.frequencySettings;
     const day = new Date(`${inv!.jobDate}T12:00:00`).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+    const what = lineItems.filter((i) => i.qty * i.unitPrice > 0).map((i) => i.name).join(", ");
     return {
       ...b,
       name: `INV : ${contact.name}`,
       title: "INVOICE",
-      dueDate: inv!.jobDate,
-      termsNotes: `<ul><li>50% deposit due now to hold your ${day} appointment</li><li>Remaining 50% due when the job is complete</li><li>Services weather-dependent</li><li>Not responsible for pre-existing damage</li></ul>`,
+      dueDate: isoDate(now),
+      items: [{
+        name: `Deposit to hold your ${day} appointment`,
+        description: `50% of the ${usd(total)} job total${what ? ` for ${what}` : ""}. The other ${usd(total - deposit)} is invoiced when the job is done.`.slice(0, 500),
+        currency: "USD",
+        qty: 1,
+        amount: deposit,
+        type: "one_time",
+      }],
+      discount: { type: "percentage", value: 0 },
+      termsNotes: `<ul><li>50% deposit due now to hold your ${day} appointment</li><li>The other 50% is invoiced when the job is done, not before</li><li>Services weather-dependent</li><li>Not responsible for pre-existing damage</li></ul>`,
       ...(isResidential ? { attachments: [RES_TERMS_PDF] } : {}),
-      paymentSchedule: {
-        type: "percentage",
-        schedules: [{ value: 50, dueDate: isoDate(now) }, { value: 50, dueDate: inv!.jobDate }],
-      },
     };
   };
 
@@ -416,11 +429,34 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
             status: "ok",
             id: estimateId,
             detail: inv
-              ? `${updated ? "Updated the earlier invoice" : "Created the invoice"}: $${(Math.round(total * 50) / 100).toFixed(2)} due now, the rest due ${inv.jobDate}`
+              ? `${updated ? "Updated the deposit invoice" : "Created the deposit invoice"}: ${usd(deposit)} due now. The other ${usd(total - deposit)} waits until the crew marks the job done in /jobs`
               : (updated ? "Updated the earlier estimate" : "Created") +
               (usedDeposit ? " with 50% deposit schedule + auto-invoice" : " WITHOUT deposit schedule (GHL rejected the schedule fields — set the deposit in the GHL UI)"),
           }
         : fail("Estimate created but no id returned");
+      if (inv && estimateId) {
+        // Park the balance for the crew lead. A re-send rewrites it unless it was already billed.
+        const prev = await readBalance(estimateId).catch(() => null);
+        if (prev?.status !== "billed") {
+          await writeBalance({
+            depositInvoiceId: estimateId,
+            contactId,
+            client: { name: contact.name, email: contact.email || undefined, phone: contact.phone || undefined, address: contact.address || contact.street || "" },
+            services: lineItems.filter((i) => i.qty * i.unitPrice > 0).map((i) => i.name),
+            total,
+            deposit,
+            balance: Math.round((total - deposit) * 100) / 100,
+            jobDate: inv.jobDate,
+            quoteNumber: payload.quoteNumber,
+            status: "waiting",
+            createdAt: prev?.createdAt ?? Date.now(),
+            updatedAt: Date.now(),
+          }).catch((e) => {
+            console.error("Balance record failed:", e);
+            result.estimate = { ...result.estimate, detail: `${result.estimate.detail}. Couldn't save the balance for /jobs, so bill the other half from GHL after the job` };
+          });
+        }
+      }
     } else {
       const body = await res.text();
       console.error("GHL estimate failed:", res.status, body);
