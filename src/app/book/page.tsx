@@ -244,20 +244,19 @@ export default function BookPage() {
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F2B632] ring-2 ring-[#0C1215]">
               <Check className="h-6 w-6" aria-hidden />
             </span>
-            <h1 className="mt-5 text-[2.2rem] leading-[1.02] text-[#0C1215] md:text-[3rem]">You&apos;re booked, {first}.</h1>
+            <h1 className="mt-5 text-[2.2rem] leading-[1.02] text-[#0C1215] md:text-[3rem]">Got it, {first}.</h1>
             {wants === "visit" ? (
               <p className="mt-4 text-lg leading-relaxed text-[#3B4247]">
-                Bri will be at {address.trim()} on <strong className="text-[#0C1215]">{longDate(slot)}, arriving {arrivalWindow(slot)}</strong>.{" "}
+                You asked for Bri to come by {address.trim()} on <strong className="text-[#0C1215]">{longDate(slot)}, arriving {arrivalWindow(slot)}</strong>. She&apos;ll text you to confirm it.{" "}
                 {home === "walk-around"
                   ? "You don't need to be there, since she'll walk around the outside and text you the price."
                   : "She'll look at the outside with you and give you the price that day."}{" "}
-                You&apos;ll get a reminder text the day before.
               </p>
             ) : (
               <p className="mt-4 text-lg leading-relaxed text-[#3B4247]">
-                Your cleaning is set for <strong className="text-[#0C1215]">{longDay(cleanDay)}</strong>
-                {total ? <> at <strong className="text-[#0C1215]">{money(total)}</strong></> : null}. We&apos;ll text {contact.phone.trim()} with your
-                one-hour arrival window.
+                You asked for your cleaning on <strong className="text-[#0C1215]">{longDay(cleanDay)}</strong>
+                {total ? <> at <strong className="text-[#0C1215]">{money(total)}</strong></> : null}. We&apos;ll text {contact.phone.trim()} to confirm
+                the day and your one-hour arrival window.
               </p>
             )}
             <div className="mt-7 rounded-[12px] bg-[#62C4EB]/25 p-5">
@@ -520,7 +519,7 @@ export default function BookPage() {
                     </Chip>
                   ))}
                 </div>
-                <p className="mt-2 text-[15px] text-[#3B4247]">We&apos;ll text you a one-hour arrival window for that day.</p>
+                <p className="mt-2 text-[15px] text-[#3B4247]">We&apos;ll text you to confirm the day and a one-hour arrival window.</p>
                 <p className="mt-4 text-[15px] text-[#3B4247]">
                   Rather have Bri look at it first?{" "}
                   <button type="button" onClick={() => { setWants("visit"); vaTrack("Book path", { path: "visit", src }); }} className="font-semibold text-[#0C1215] underline">
@@ -612,7 +611,7 @@ export default function BookPage() {
             <p className="mt-1 text-[15px]">
               {wants === "visit"
                 ? slot ? `Free quote visit, ${longDate(slot)}, arriving ${arrivalWindow(slot)}` : "Free quote visit: pick a day and an arrival window above"
-                : cleanDay ? `Cleaning on ${longDay(cleanDay)}. We'll text your arrival window.` : "Pick a day above"}
+                : cleanDay ? `Cleaning on ${longDay(cleanDay)}. We'll text to confirm it.` : "Pick a day above"}
             </p>
 
             {error && <p className="mt-4 rounded-[10px] bg-white p-3 text-[15px] text-[#B42318]">{error}</p>}
