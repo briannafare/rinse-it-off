@@ -38,6 +38,28 @@ const RESIDENTIAL_STAGE_ID = process.env.GHL_RESIDENTIAL_STAGE_ID || "";
 // on purpose: the old GHL_SENDER_USER_ID on Vercel was set from .env.local (Kenn's id), and a new name means it
 // stops being read the moment this deploys. Default: Bri.
 const GHL_SENDER_USER_ID = process.env.GHL_INVOICE_SENDER_USER_ID || "9iXXFaE4tKyRGSvd2aBq";
+// GHL sends every invoice with ONE location-wide email template and has no per-invoice choice or
+// if/else in it (tested 2026-11-24). Default = the 50% deposit email; a no-deposit invoice swaps in
+// the paid-in-full copy for its send, then puts the default back.
+const INVOICE_EMAIL_DEPOSIT = "6a0e2ade68d54c25680b8733"; // "Invoice Payment Request"
+const INVOICE_EMAIL_FULL = "6b0675e49e8fbeae46132e72"; // "Invoice Payment Request — Paid in Full"
+
+/** Point GHL's "invoice sent" email at a template. Returns false if it could not. */
+async function setInvoiceEmailTemplate(templateId: string): Promise<boolean> {
+  const q = `altId=${GHL_LOCATION_ID}&altType=location`;
+  const cur = await fetch(`${GHL_API_BASE}/invoices/settings?${q}`, { headers: ghlHeaders });
+  if (!cur.ok) return false;
+  const { customNotification } = (await cur.json()) as { customNotification: Record<string, { defaultEmailTemplateId?: string }> };
+  if (!customNotification?.customerSendInvoice) return false;
+  if (customNotification.customerSendInvoice.defaultEmailTemplateId === templateId) return true;
+  customNotification.customerSendInvoice.defaultEmailTemplateId = templateId;
+  const res = await fetch(`${GHL_API_BASE}/invoices/settings`, {
+    method: "POST",
+    headers: ghlHeaders,
+    body: JSON.stringify({ altId: GHL_LOCATION_ID, altType: "location", customNotification }),
+  });
+  return res.ok;
+}
 
 const ghlHeaders = {
   Authorization: `Bearer ${GHL_API_KEY}`,
@@ -361,19 +383,29 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
   // the other 50% at job completion"). GHL splits it into two payments on one invoice; the pay link asks
   // for the first. Shape verified live on INV-000633.
   const inv = payload.invoice;
+  const withDeposit = inv?.deposit !== false;
   const docPath = inv ? "/invoices" : "/invoices/estimate";
   const invoiceBody = (): Record<string, unknown> => {
     const b: Record<string, unknown> = { ...baseEstimateBody };
     delete b.expiryDate;
     delete b.frequencySettings;
     const day = new Date(`${inv!.jobDate}T12:00:00`).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
-    return {
+    const common = {
       ...b,
       name: `INV : ${contact.name}`,
       title: "INVOICE",
       dueDate: inv!.jobDate,
-      termsNotes: `<ul><li>50% deposit due now to hold your ${day} appointment</li><li>Remaining 50% due when the job is complete</li><li>Services weather-dependent</li><li>Not responsible for pre-existing damage</li></ul>`,
       ...(isResidential ? { attachments: [RES_TERMS_PDF] } : {}),
+    };
+    if (!withDeposit) {
+      return {
+        ...common,
+        termsNotes: `<ul><li>Full amount due ${day}, in one payment</li><li>No deposit</li><li>Services weather-dependent</li><li>Not responsible for pre-existing damage</li></ul>`,
+      };
+    }
+    return {
+      ...common,
+      termsNotes: `<ul><li>50% deposit due now to hold your ${day} appointment</li><li>Remaining 50% due when the job is complete</li><li>Services weather-dependent</li><li>Not responsible for pre-existing damage</li></ul>`,
       paymentSchedule: {
         type: "percentage",
         schedules: [{ value: 50, dueDate: isoDate(now) }, { value: 50, dueDate: inv!.jobDate }],
@@ -416,7 +448,10 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
             status: "ok",
             id: estimateId,
             detail: inv
-              ? `${updated ? "Updated the earlier invoice" : "Created the invoice"}: $${(Math.round(total * 50) / 100).toFixed(2)} due now, the rest due ${inv.jobDate}`
+              ? `${updated ? "Updated the earlier invoice" : "Created the invoice"}: ` +
+                (withDeposit
+                  ? `$${(Math.round(total * 50) / 100).toFixed(2)} due now, the rest due ${inv.jobDate}`
+                  : `$${total.toFixed(2)} in one payment, due ${inv.jobDate}, no deposit`)
               : (updated ? "Updated the earlier estimate" : "Created") +
               (usedDeposit ? " with 50% deposit schedule + auto-invoice" : " WITHOUT deposit schedule (GHL rejected the schedule fields — set the deposit in the GHL UI)"),
           }
@@ -439,7 +474,13 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
   } else if (!contact.email && !contact.phone) {
     result.sent = { status: "skip", detail: "Contact has no email or phone" };
   } else {
+    // ponytail: the template swap is location-wide for ~2 s; two invoices sent in the same seconds
+    // could get each other's email. Fine for a two-person crew.
+    const swapEmail = !!inv && !withDeposit && !!contact.email;
     try {
+      if (swapEmail && !(await setInvoiceEmailTemplate(INVOICE_EMAIL_FULL))) {
+        throw new Error("Could not switch to the paid-in-full invoice email");
+      }
       const res = await fetch(`${GHL_API_BASE}${docPath}/${estimateId}/send`, {
         method: "POST",
         headers: ghlHeaders,
@@ -460,7 +501,11 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
       }
     } catch (e) {
       console.error("GHL estimate send error:", e);
-      result.sent = fail("Send failed — network error (estimate saved as draft)");
+      result.sent = fail(`Send failed — ${e instanceof Error && swapEmail ? e.message : "network error"} (saved as draft)`);
+    } finally {
+      if (swapEmail && !(await setInvoiceEmailTemplate(INVOICE_EMAIL_DEPOSIT).catch(() => false))) {
+        console.error("Invoice email template NOT restored to the 50% deposit default");
+      }
     }
   }
 
