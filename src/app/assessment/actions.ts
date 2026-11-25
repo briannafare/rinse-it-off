@@ -301,7 +301,7 @@ export async function submitAssessmentForm(
             startTime: win.startTime,
             endTime: win.endTime,
             title: `${once ? "Quote visit" : "Property audit"} — ${data.name}`,
-            appointmentStatus: "confirmed",
+            appointmentStatus: "new", // a request: Bri or Alstun approves it (Bri, 2026-11-24)
           }),
         });
         if (!apptRes.ok) {

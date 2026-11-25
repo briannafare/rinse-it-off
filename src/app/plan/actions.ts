@@ -582,7 +582,7 @@ export async function bookFirstVisit(input: BookVisitInput): Promise<{ ok: boole
         startTime: win.startTime,
         endTime: win.endTime,
         title: `First membership visit · ${name}`,
-        appointmentStatus: "confirmed",
+        appointmentStatus: "new", // a request: Bri or Alstun approves it (Bri, 2026-11-24)
       }),
     });
     if (!res.ok) {

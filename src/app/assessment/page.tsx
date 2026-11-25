@@ -292,7 +292,7 @@ export default function AssessmentPage() {
               <div style={{ marginBottom: 32 }}>
                 <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 4 }}>Pick an arrival window for your walkthrough</div>
                 <p style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-muted)", marginBottom: 12, lineHeight: 1.5 }}>
-                  {slotsLoaded ? "These are real openings. Yours is booked when you send the form below." : "Loading openings…"}
+                  {slotsLoaded ? "These are real openings. Bri confirms your time by text after you send the form." : "Loading openings…"}
                 </p>
                 <div style={{ border: "2px solid var(--border)", borderRadius: "var(--r-lg)", overflow: "hidden", background: "var(--surface)" }}>
                   {/* Calendar header */}
@@ -363,7 +363,7 @@ export default function AssessmentPage() {
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                       <div>
                         <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.8125rem", color: "var(--ink)" }}>Time selected</div>
-                        <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-secondary)" }}>{fmtDate(cy, cm, day)}, arriving {time}. Booked when you submit</div>
+                        <div style={{ fontFamily: "var(--font-body)", fontSize: "0.8125rem", color: "var(--text-secondary)" }}>{fmtDate(cy, cm, day)}, arriving {time}. We&apos;ll text to confirm it</div>
                       </div>
                     </div>
                   )}

@@ -753,7 +753,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
             ) : (
               <p>We&apos;ll text you to take the deposit and set your first visit.</p>
             )}
-            {saved.saved && bookedISO && <p>Your first visit is booked for {slotDate(bookedISO)}, arriving {slotTime(bookedISO)}. We&apos;ll text you a reminder the day before.</p>}
+            {saved.saved && bookedISO && <p>You asked for your first visit on {slotDate(bookedISO)}, arriving {slotTime(bookedISO)}. We&apos;ll text you to confirm it.</p>}
             {saved.saved && depositPaid && !bookedISO && <p>We&apos;ll text you within one business day to set your first visit.</p>}
             <div className="tel">
               <div className="k">Questions? Call or text</div>
@@ -1288,7 +1288,7 @@ export default function PlanCalculator({ src, dryRun = false }: { src: string; d
                     {!depositPaid ? (
                       <p style={{ marginBottom: 0 }}>Pay the ${DEPOSIT_USD} deposit to pick your first visit.</p>
                     ) : bookedISO ? (
-                      <div className="ok">Booked: {slotDate(bookedISO)}, arriving {slotTime(bookedISO)}.</div>
+                      <div className="ok">Requested: {slotDate(bookedISO)}, arriving {slotTime(bookedISO)}. We&apos;ll text to confirm it.</div>
                     ) : !slotsLoaded ? (
                       <p style={{ marginBottom: 0 }}>Checking the calendar.</p>
                     ) : dayKeys.length === 0 ? (

@@ -64,6 +64,7 @@ interface Draft {
   ghl?: { contactId?: string; estimateId?: string; invoiceId?: string; opportunityId?: string }; // from the last send; a re-send updates these
   asInvoice?: boolean; // send an invoice (50% now, 50% on jobDate) instead of an estimate
   jobDate?: string; // YYYY-MM-DD
+  noDeposit?: boolean; // invoice for the full amount, no 50% deposit (Bri 2026-11-24: "most of the time 50%, but not always")
   sentAt?: number;
 }
 
@@ -582,7 +583,7 @@ export default function QuoteWizard() {
         pricingNote: draft.analysis?.pricingNote ?? "",
         files: draft.files ?? [],
         ghl: draft.ghl,
-        ...(draft.asInvoice && draft.jobDate ? { invoice: { jobDate: draft.jobDate } } : {}),
+        ...(draft.asInvoice && draft.jobDate ? { invoice: { jobDate: draft.jobDate, deposit: !draft.noDeposit } } : {}),
       });
       setSendResult(res);
       setDraft((d) => ({
@@ -1383,7 +1384,7 @@ export default function QuoteWizard() {
               <div className="mt-3 grid grid-cols-2 gap-2" role="radiogroup" aria-label="Send as">
                 {([
                   [false, "Estimate", "Client accepts, then pays 50%"],
-                  [true, "Invoice", "50% deposit now, the rest when the job's done"],
+                  [true, "Invoice", "50% deposit, or paid in full"],
                 ] as const).map(([v, label, sub]) => (
                   <button
                     key={label}
@@ -1400,10 +1401,27 @@ export default function QuoteWizard() {
               </div>
               {draft.asInvoice && (
                 <div className="mt-3">
-                  <label className={labelCls} htmlFor="q-jobdate">Job date (the deposit holds this day)</label>
+                  <label className="mb-3 flex min-h-11 cursor-pointer items-center gap-3 text-sm font-medium">
+                    <input
+                      type="checkbox"
+                      checked={!draft.noDeposit}
+                      onChange={(e) => patch({ noDeposit: !e.target.checked })}
+                      className="h-5 w-5 accent-[#2F6B66]"
+                    />
+                    Ask for a 50% deposit
+                  </label>
+                  <label className={labelCls} htmlFor="q-jobdate">
+                    {draft.noDeposit ? "Job date (the full amount is due this day)" : "Job date (the deposit holds this day)"}
+                  </label>
                   <input id="q-jobdate" type="date" className={inputCls} value={draft.jobDate ?? ""}
                     min={new Date().toLocaleDateString("en-CA")} onChange={(e) => patch({ jobDate: e.target.value })} />
-                  {total > 0 && <p className="mt-1.5 text-xs text-[#8A8072]">The client pays ${money(Math.round(total * 50) / 100)} now. The rest goes out only when the crew lead marks the job done in Job reports.</p>}
+                  {total > 0 && (
+                    <p className="mt-1.5 text-xs text-[#8A8072]">
+                      {draft.noDeposit
+                        ? `The client pays the full $${money(total)} in one payment, no deposit.`
+                        : `The client pays $${money(Math.round(total * 50) / 100)} now. The rest goes out only when the crew lead marks the job done in Job reports.`}
+                    </p>
+                  )}
                 </div>
               )}
               <label className="mt-3 flex min-h-11 cursor-pointer items-center gap-3 text-sm font-medium">

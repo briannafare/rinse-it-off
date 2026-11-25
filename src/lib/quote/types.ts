@@ -129,9 +129,10 @@ export interface SendQuotePayload {
   sendToClient: boolean;
   /** From an earlier send of this saved quote: update these instead of making new ones. */
   ghl?: { estimateId?: string; invoiceId?: string; opportunityId?: string };
-  /** Send a deposit invoice instead of an estimate: 50% due now to hold the job date (YYYY-MM-DD). The other
-   *  50% is billed only when the crew lead marks the job done in /jobs (src/lib/jobs/balance.ts). */
-  invoice?: { jobDate: string };
+  /** Send an invoice instead of an estimate (job date YYYY-MM-DD). deposit (default true): the invoice bills the
+   *  50% deposit only, due now; the other 50% is billed only when the crew lead marks the job done in /jobs
+   *  (src/lib/jobs/balance.ts). deposit false: the full amount is due on the job date, one payment. */
+  invoice?: { jobDate: string; deposit?: boolean };
   notes: string;
   summary: string;
   pricingNote: string;

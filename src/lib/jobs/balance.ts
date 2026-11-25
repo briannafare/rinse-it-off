@@ -1,5 +1,6 @@
 import "server-only";
-import { get, list, put } from "@vercel/blob";
+import { del, get, list, put } from "@vercel/blob";
+import { INVOICE_EMAIL_DEPOSIT, INVOICE_EMAIL_FULL, setInvoiceEmailTemplate } from "@/lib/ghl/invoiceEmail";
 
 /** The other half of a deposit invoice (Bri 2026-11-21: "change it so it only sends when the crew lead
  *  specifies the job is complete"). The quote tool's invoice now bills the 50% deposit only and leaves one
@@ -45,6 +46,11 @@ export async function writeBalance(b: BalanceDue): Promise<void> {
   await put(path(b.depositInvoiceId), JSON.stringify({ ...b, updatedAt: Date.now() }), {
     access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", cacheControlMaxAge: 60,
   });
+}
+
+/** Forget a waiting balance (its quote was re-sent as a no-deposit invoice). Never call it on a billed one. */
+export async function dropBalance(depositInvoiceId: string): Promise<void> {
+  if (ID.test(depositInvoiceId)) await del(path(depositInvoiceId));
 }
 
 /** Balances not billed yet. ponytail: reads every file; fine for a few hundred jobs. */
@@ -109,10 +115,23 @@ export async function sendBalanceInvoice(
   if (!made.ok || !invoiceId) return { ok: false, error: `GHL wouldn't make the balance invoice (${made.status}).` };
 
   const action = b.client.email && b.client.phone ? "sms_and_email" : b.client.email ? "email" : "sms";
-  const send = await fetch(`${GHL}/invoices/${invoiceId}/send`, {
-    method: "POST", headers, cache: "no-store",
-    body: JSON.stringify({ altId: loc, altType: "location", userId: senderUserId, action, liveMode: true }),
-  });
+  // The location's default invoice email asks for a 50% deposit, which is wrong for the balance, so the
+  // balance goes out on the paid-in-full copy and the default is put back after (src/lib/ghl/invoiceEmail.ts).
+  const swapEmail = !!b.client.email;
+  if (swapEmail && !(await setInvoiceEmailTemplate(INVOICE_EMAIL_FULL).catch(() => false))) {
+    return { ok: true, invoiceId, sent: false, problem: "The invoice is in GHL but didn't send: couldn't switch to the paid-in-full email. Send it from GHL." };
+  }
+  let send: Response;
+  try {
+    send = await fetch(`${GHL}/invoices/${invoiceId}/send`, {
+      method: "POST", headers, cache: "no-store",
+      body: JSON.stringify({ altId: loc, altType: "location", userId: senderUserId, action, liveMode: true }),
+    });
+  } finally {
+    if (swapEmail && !(await setInvoiceEmailTemplate(INVOICE_EMAIL_DEPOSIT).catch(() => false))) {
+      console.error("Invoice email template NOT restored to the 50% deposit default");
+    }
+  }
   return send.ok
     ? { ok: true, invoiceId, sent: true }
     : { ok: true, invoiceId, sent: false, problem: `The invoice is in GHL but didn't send (${send.status}). Send it from GHL.` };

@@ -19,7 +19,8 @@ import type {
   SendStepResult,
   SendToGhlResult,
 } from "@/lib/quote/types";
-import { halfOf, readBalance, writeBalance } from "@/lib/jobs/balance";
+import { dropBalance, halfOf, readBalance, writeBalance } from "@/lib/jobs/balance";
+import { INVOICE_EMAIL_DEPOSIT, INVOICE_EMAIL_FULL, setInvoiceEmailTemplate } from "@/lib/ghl/invoiceEmail";
 
 const usd = (n: number) => `$${n.toFixed(2)}`;
 
@@ -41,6 +42,7 @@ const RESIDENTIAL_STAGE_ID = process.env.GHL_RESIDENTIAL_STAGE_ID || "";
 // on purpose: the old GHL_SENDER_USER_ID on Vercel was set from .env.local (Kenn's id), and a new name means it
 // stops being read the moment this deploys. Default: Bri.
 const GHL_SENDER_USER_ID = process.env.GHL_INVOICE_SENDER_USER_ID || "9iXXFaE4tKyRGSvd2aBq";
+// Invoice email template swap (one location-wide template in GHL): src/lib/ghl/invoiceEmail.ts.
 
 const ghlHeaders = {
   Authorization: `Bearer ${GHL_API_KEY}`,
@@ -366,19 +368,32 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
   // "payment due" on every installment date, and the old schedule dated the balance on the job day, so Mike
   // got that email the morning of his job (INV-000633, 2026-11-20). The balance waits in Blob until the lead
   // marks the job done in /jobs, which makes and sends a second invoice (src/lib/jobs/balance.ts).
+  // No-deposit invoices (#53, deposit: false) are one payment of the full amount, due on the job date.
   const inv = payload.invoice;
   const deposit = halfOf(total);
+  const withDeposit = inv?.deposit !== false;
   const docPath = inv ? "/invoices" : "/invoices/estimate";
   const invoiceBody = (): Record<string, unknown> => {
     const b: Record<string, unknown> = { ...baseEstimateBody };
     delete b.expiryDate;
     delete b.frequencySettings;
     const day = new Date(`${inv!.jobDate}T12:00:00`).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
-    const what = lineItems.filter((i) => i.qty * i.unitPrice > 0).map((i) => i.name).join(", ");
-    return {
+    const common = {
       ...b,
       name: `INV : ${contact.name}`,
       title: "INVOICE",
+      ...(isResidential ? { attachments: [RES_TERMS_PDF] } : {}),
+    };
+    if (!withDeposit) {
+      return {
+        ...common,
+        dueDate: inv!.jobDate,
+        termsNotes: `<ul><li>Full amount due ${day}, in one payment</li><li>No deposit</li><li>Services weather-dependent</li><li>Not responsible for pre-existing damage</li></ul>`,
+      };
+    }
+    const what = lineItems.filter((i) => i.qty * i.unitPrice > 0).map((i) => i.name).join(", ");
+    return {
+      ...common,
       dueDate: isoDate(now),
       items: [{
         name: `Deposit to hold your ${day} appointment`,
@@ -390,7 +405,6 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
       }],
       discount: { type: "percentage", value: 0 },
       termsNotes: `<ul><li>50% deposit due now to hold your ${day} appointment</li><li>The other 50% is invoiced when the job is done, not before</li><li>Services weather-dependent</li><li>Not responsible for pre-existing damage</li></ul>`,
-      ...(isResidential ? { attachments: [RES_TERMS_PDF] } : {}),
     };
   };
 
@@ -429,15 +443,20 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
             status: "ok",
             id: estimateId,
             detail: inv
-              ? `${updated ? "Updated the deposit invoice" : "Created the deposit invoice"}: ${usd(deposit)} due now. The other ${usd(total - deposit)} waits until the crew marks the job done in /jobs`
+              ? (withDeposit
+                  ? `${updated ? "Updated the deposit invoice" : "Created the deposit invoice"}: ${usd(deposit)} due now. The other ${usd(total - deposit)} waits until the crew marks the job done in /jobs`
+                  : `${updated ? "Updated the earlier invoice" : "Created the invoice"}: ${usd(total)} in one payment, due ${inv.jobDate}, no deposit`)
               : (updated ? "Updated the earlier estimate" : "Created") +
               (usedDeposit ? " with 50% deposit schedule + auto-invoice" : " WITHOUT deposit schedule (GHL rejected the schedule fields — set the deposit in the GHL UI)"),
           }
         : fail("Estimate created but no id returned");
       if (inv && estimateId) {
-        // Park the balance for the crew lead. A re-send rewrites it unless it was already billed.
+        // Park the balance for the crew lead. A re-send rewrites it unless it was already billed. A no-deposit
+        // invoice has no balance, so a waiting one from an earlier deposit send of this quote is dropped.
         const prev = await readBalance(estimateId).catch(() => null);
-        if (prev?.status !== "billed") {
+        if (!withDeposit) {
+          if (prev?.status === "waiting") await dropBalance(estimateId).catch((e) => console.error("Balance drop failed:", e));
+        } else if (prev?.status !== "billed") {
           await writeBalance({
             depositInvoiceId: estimateId,
             contactId,
@@ -475,7 +494,13 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
   } else if (!contact.email && !contact.phone) {
     result.sent = { status: "skip", detail: "Contact has no email or phone" };
   } else {
+    // ponytail: the template swap is location-wide for ~2 s; two invoices sent in the same seconds
+    // could get each other's email. Fine for a two-person crew.
+    const swapEmail = !!inv && !withDeposit && !!contact.email;
     try {
+      if (swapEmail && !(await setInvoiceEmailTemplate(INVOICE_EMAIL_FULL))) {
+        throw new Error("Could not switch to the paid-in-full invoice email");
+      }
       const res = await fetch(`${GHL_API_BASE}${docPath}/${estimateId}/send`, {
         method: "POST",
         headers: ghlHeaders,
@@ -496,7 +521,11 @@ export async function sendQuoteToGhl(payload: SendQuotePayload): Promise<SendToG
       }
     } catch (e) {
       console.error("GHL estimate send error:", e);
-      result.sent = fail("Send failed — network error (estimate saved as draft)");
+      result.sent = fail(`Send failed — ${e instanceof Error && swapEmail ? e.message : "network error"} (saved as draft)`);
+    } finally {
+      if (swapEmail && !(await setInvoiceEmailTemplate(INVOICE_EMAIL_DEPOSIT).catch(() => false))) {
+        console.error("Invoice email template NOT restored to the 50% deposit default");
+      }
     }
   }
 
