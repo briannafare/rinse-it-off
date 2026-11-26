@@ -10,7 +10,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { searchGhlContacts } from "@/app/quote/actions";
 import type { GhlContactMatch } from "@/lib/quote/types";
 import { firstName, SERVICES, sliderPair, STAGES, WORKERS, type JobMedia, type JobReport, type Stage } from "@/lib/jobs/types";
-import { listReports, loadReport, newReport, saveReport, sendReport, writeRemarks } from "./actions";
+import { balancesForJob, billBalance, listReports, loadReport, newReport, saveReport, sendReport, writeRemarks, type BalanceOption } from "./actions";
 
 const inputCls =
   "min-h-11 w-full rounded-xl border border-retro-line bg-white px-4 py-3 text-[15px] text-[#26211B] placeholder:text-[#8A8072] focus:border-[#2F6B66] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6B66]";
@@ -363,7 +363,9 @@ export default function JobTool() {
             value={r.note} onChange={(e) => edit((x) => ({ ...x, note: e.target.value }))} />
         </section>
 
-        {err && <p className="rounded-xl bg-[#FDE8E2] px-4 py-3 text-sm font-medium text-[#B23A1E]">{err}</p>}
+        <BalanceCard r={r} save={() => saveReport(r)} />
+
+        {err &&<p className="rounded-xl bg-[#FDE8E2] px-4 py-3 text-sm font-medium text-[#B23A1E]">{err}</p>}
         {sentInfo && (
           <div className="rounded-xl bg-[#E3ECE6] px-4 py-3 text-sm text-[#1F4D49]">
             <p className="font-semibold">Sent to {first} by {sentInfo.sent.join(" and ")}.</p>
@@ -387,6 +389,74 @@ export default function JobTool() {
         )}
       </div>
     </div>
+  );
+}
+
+/** The other half of a deposit invoice goes out from here and nowhere else (Bri 2026-11-21: "only sends
+ *  when the crew lead specifies the job is complete"). The lead picks this client's balance and taps once. */
+function BalanceCard({ r, save }: { r: JobReport; save: () => Promise<unknown> }) {
+  const [rows, setRows] = useState<BalanceOption[] | null>(null);
+  const [pick, setPick] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const load = useCallback(() => {
+    balancesForJob(r.id).then((x) => {
+      setRows(x);
+      const mine = x.filter((b) => b.thisClient && !b.billed);
+      if (mine.length === 1) setPick(mine[0].id);
+    });
+  }, [r.id]);
+  useEffect(load, [load, r.client.contactId]);
+
+  const done = rows?.find((b) => b.billed); // only this job's own billed balance comes back billed
+  const open = (rows ?? []).filter((b) => !b.billed);
+  const chosen = open.find((b) => b.id === pick);
+  const money = (n: number) => `$${n.toFixed(2)}`;
+
+  async function bill() {
+    if (!chosen) return;
+    if (!confirm(`The job's done and ${r.lead} is the lead. Send ${chosen.name} the ${money(chosen.balance)} balance invoice now?`)) return;
+    setBusy(true); setMsg(null);
+    await save(); // billBalance reads the lead from the saved report
+    const res = await billBalance(r.id, chosen.id).catch(() => ({ ok: false as const, error: "Couldn't reach the server. Try again." }));
+    setBusy(false);
+    if (!res.ok) { setMsg({ ok: false, text: res.error }); return; }
+    setMsg({ ok: res.sent, text: res.sent ? `Balance invoice for ${money(res.amount)} sent.` : res.problem || "The invoice is in GHL but didn't send." });
+    load();
+  }
+
+  return (
+    <section className={cardCls}>
+      <h2 className="font-display text-lg font-semibold">Job done? Bill the balance</h2>
+      {rows === null ? (
+        <p className="mt-2 flex items-center gap-2 text-sm text-[#5F676C]"><Loader2 className="h-4 w-4 animate-spin" /> Looking for the balance</p>
+      ) : done ? (
+        <p className="mt-2 text-sm text-[#2F6B66]"><Check className="mr-1 inline h-4 w-4" />{money(done.balance)} balance billed to {done.name}{done.billed?.by ? ` by ${done.billed.by}` : ""}.</p>
+      ) : !open.length ? (
+        <p className="mt-1 text-sm text-[#5F676C]">No balance is waiting. Only quotes sent as a deposit invoice leave one here.</p>
+      ) : (
+        <>
+          <p className="mt-1 text-sm text-[#5F676C]">The client only gets the second invoice when the lead taps this, once the work is finished. Nothing goes out on the job date by itself.</p>
+          <div className="mt-3 space-y-2">
+            {open.map((b) => (
+              <button key={b.id} onClick={() => setPick(b.id === pick ? "" : b.id)}
+                className={`flex min-h-12 w-full items-center gap-3 rounded-xl border-2 px-3 py-2 text-left text-sm ${pick === b.id ? "border-[#0C1215] bg-[#FCEBC0]" : "border-retro-line bg-white"}`}>
+                <span className="flex-1">
+                  <span className="font-semibold">{b.name}</span>{b.thisClient && <span className="ml-2 rounded-full bg-[#E3ECE6] px-2 py-0.5 text-xs text-[#2F6B66]">this client</span>}
+                  <span className="block text-xs text-[#5F676C]">{[b.address, `job ${niceDate(b.jobDate)}`, `${money(b.total)} total`].filter(Boolean).join(" · ")}</span>
+                </span>
+                <span className="font-semibold">{money(b.balance)}</span>
+              </button>
+            ))}
+          </div>
+          <button onClick={bill} disabled={!chosen || busy} className={`${btnPrimary} mt-3 w-full`}>
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            {chosen ? `Job's done: bill ${money(chosen.balance)}` : "Pick the balance for this job"}
+          </button>
+        </>
+      )}
+      {msg && <p className={`mt-2 text-sm font-medium ${msg.ok ? "text-[#2F6B66]" : "text-[#B23A1E]"}`}>{msg.text}</p>}
+    </section>
   );
 }
 

@@ -6,6 +6,7 @@
 import { randomBytes } from "node:crypto";
 import { isQuoteAuthed } from "@/app/quote/auth";
 import { allReports, readReport, writeReport } from "@/lib/jobs/store";
+import { readBalance, sendBalanceInvoice, waitingBalances, writeBalance } from "@/lib/jobs/balance";
 import { firstName, REPORT_ID, WORKERS, type JobRemarks, type JobReport } from "@/lib/jobs/types";
 import { SITE_URL } from "@/lib/seo";
 
@@ -50,7 +51,7 @@ export async function saveReport(r: JobReport): Promise<{ ok: boolean; error?: s
   if (!(await isQuoteAuthed())) return deny;
   if (!REPORT_ID.test(r.id)) return { ok: false, error: "Bad report id." };
   const prev = await readReport(r.id);
-  const next = { ...r, status: prev?.status ?? "draft", sentAt: prev?.sentAt, updatedAt: Date.now() };
+  const next = { ...r, status: prev?.status ?? "draft", sentAt: prev?.sentAt, balanceId: prev?.balanceId, updatedAt: Date.now() };
   await writeReport(next);
   return { ok: true, updatedAt: next.updatedAt };
 }
@@ -180,4 +181,63 @@ export async function sendReport(id: string): Promise<{ ok: true; url: string; s
   await ghl("POST", `/contacts/${contactId}/tags`, { tags: ["job-report-sent"] }).catch(() => null);
   await writeReport({ ...r, client: { ...r.client, contactId }, status: "sent", sentAt: Date.now(), updatedAt: Date.now() });
   return { ok: true, url, sent, problems };
+}
+
+// ── Bill the balance once the job is done ─────────────────────────────────────
+// Bri 2026-11-21: the other half "only sends when the crew lead specifies the job is complete". The quote
+// tool's deposit invoice parks the balance (src/lib/jobs/balance.ts); this is the only place that bills it.
+
+export interface BalanceOption {
+  id: string; // the deposit invoice id
+  name: string;
+  address: string;
+  jobDate: string;
+  balance: number;
+  total: number;
+  thisClient: boolean;
+  billed?: { at: number; by?: string };
+}
+
+/** Balances the lead can bill from this job: the waiting ones (this client's first), plus the one this job
+ *  already billed, so the card can say so. */
+export async function balancesForJob(id: string): Promise<BalanceOption[]> {
+  if (!(await isQuoteAuthed())) return [];
+  const r = await readReport(id);
+  if (!r) return [];
+  const linked = r.balanceId ? await readBalance(r.balanceId).catch(() => null) : null;
+  const waiting = await waitingBalances().catch(() => []);
+  const rows = [...(linked ? [linked] : []), ...waiting.filter((b) => b.depositInvoiceId !== linked?.depositInvoiceId)];
+  const name = r.client.name.trim().toLowerCase();
+  return rows
+    .map((b) => ({
+      id: b.depositInvoiceId, name: b.client.name, address: b.client.address, jobDate: b.jobDate, balance: b.balance, total: b.total,
+      thisClient: (!!r.client.contactId && b.contactId === r.client.contactId) || (!!name && b.client.name.trim().toLowerCase() === name),
+      ...(b.status === "billed" ? { billed: { at: b.billedAt ?? b.updatedAt, by: b.billedBy } } : {}),
+    }))
+    .sort((a, b) => Number(!!b.billed) - Number(!!a.billed) || Number(b.thisClient) - Number(a.thisClient) || a.jobDate.localeCompare(b.jobDate));
+}
+
+export async function billBalance(
+  id: string,
+  depositInvoiceId: string,
+): Promise<{ ok: true; amount: number; sent: boolean; problem?: string } | { ok: false; error: string }> {
+  if (!(await isQuoteAuthed())) return deny;
+  const r = await readReport(id);
+  if (!r) return { ok: false, error: "Couldn't find this job." };
+  if (r.balanceId && r.balanceId !== depositInvoiceId) return { ok: false, error: "This job already billed a different balance." };
+  const b = await readBalance(depositInvoiceId);
+  if (!b) return { ok: false, error: "Couldn't find that balance." };
+  if (b.status === "billed") return { ok: false, error: `That balance was already billed${b.billedBy ? ` by ${b.billedBy}` : ""}.` };
+  if (!(b.balance > 0)) return { ok: false, error: "Nothing left to bill on that job." };
+
+  const lead = WORKERS.find((w) => w.name === r.lead) ?? WORKERS[0];
+  const res = await sendBalanceInvoice(b, lead.ghlUserId, pacificToday());
+  if (!res.ok) return res;
+  // Marked billed as soon as the invoice exists, even if the send hiccupped, so a second tap can't bill twice.
+  await writeBalance({ ...b, status: "billed", balanceInvoiceId: res.invoiceId, billedAt: Date.now(), billedBy: lead.name });
+  await writeReport({ ...r, balanceId: depositInvoiceId, updatedAt: Date.now() });
+  await ghl("POST", `/contacts/${b.contactId}/notes`, {
+    body: `Job marked done by ${lead.name} (${pacificToday()}). Balance invoice for $${b.balance.toFixed(2)} ${res.sent ? "sent" : "made in GHL, not sent"}.`,
+  }).catch(() => null);
+  return { ok: true, amount: b.balance, sent: res.sent, ...(res.problem ? { problem: res.problem } : {}) };
 }

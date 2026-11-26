@@ -1411,7 +1411,7 @@ export default function QuoteWizard() {
                     Ask for a 50% deposit
                   </label>
                   <label className={labelCls} htmlFor="q-jobdate">
-                    {draft.noDeposit ? "Job date (the full amount is due this day)" : "Job date (the other 50% is due this day)"}
+                    {draft.noDeposit ? "Job date (the full amount is due this day)" : "Job date (the deposit holds this day)"}
                   </label>
                   <input id="q-jobdate" type="date" className={inputCls} value={draft.jobDate ?? ""}
                     min={new Date().toLocaleDateString("en-CA")} onChange={(e) => patch({ jobDate: e.target.value })} />
@@ -1419,7 +1419,7 @@ export default function QuoteWizard() {
                     <p className="mt-1.5 text-xs text-[#8A8072]">
                       {draft.noDeposit
                         ? `The client pays the full $${money(total)} in one payment, no deposit.`
-                        : `The client pays $${money(Math.round(total * 50) / 100)} now and the rest on the job date.`}
+                        : `The client pays $${money(Math.round(total * 50) / 100)} now. The rest goes out only when the crew lead marks the job done in Job reports.`}
                     </p>
                   )}
                 </div>
