@@ -71,7 +71,7 @@ export async function waitingBalances(): Promise<BalanceDue[]> {
 
 const money = (n: number) => `$${n.toFixed(2)}`;
 
-/** Makes the balance invoice in GHL, due today, and texts and emails it from `senderUserId` (the crew lead,
+/** Makes the balance invoice in GHL, due today, and texts it (email only when there is no phone) from `senderUserId` (the crew lead,
  *  so the message is signed with their name). Returns the new invoice id, or an error a person can act on. */
 export async function sendBalanceInvoice(
   b: BalanceDue,
@@ -114,10 +114,13 @@ export async function sendBalanceInvoice(
   const invoiceId = data._id || data.id || "";
   if (!made.ok || !invoiceId) return { ok: false, error: `GHL wouldn't make the balance invoice (${made.status}).` };
 
-  const action = b.client.email && b.client.phone ? "sms_and_email" : b.client.email ? "email" : "sms";
-  // The location's default invoice email asks for a 50% deposit, which is wrong for the balance, so the
-  // balance goes out on the paid-in-full copy and the default is put back after (src/lib/ghl/invoiceEmail.ts).
-  const swapEmail = !!b.client.email;
+  // GHL has one location-wide invoice email and neither copy fits a balance: the default asks for a 50%
+  // deposit, and the paid-in-full one says "The full amount is due in one payment, with no deposit" (read on
+  // the Nov 24 probe sends). So the balance goes by text, GHL's plain invoice text signed by the lead. Only a
+  // client with no phone gets the email, on the paid-in-full copy, and the default is put back after.
+  // TODO(Bri): a "balance due" email template in GHL would let this email everyone.
+  const action = b.client.phone ? "sms" : "email";
+  const swapEmail = action === "email";
   if (swapEmail && !(await setInvoiceEmailTemplate(INVOICE_EMAIL_FULL).catch(() => false))) {
     return { ok: true, invoiceId, sent: false, problem: "The invoice is in GHL but didn't send: couldn't switch to the paid-in-full email. Send it from GHL." };
   }
